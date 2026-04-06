@@ -1,0 +1,855 @@
+{
+  "navbar": {
+    "logo": {
+      "main": "drona",
+      "highlight": "host"
+    },
+    "menu": [
+      { "label": "Web Hosting", "hasDropdown": true },
+      { "label": "Wordpress", "hasDropdown": true },
+      { "label": "Website Building", "hasDropdown": true },
+      { "label": "E commerce", "hasDropdown": false },
+      { "label": "Email Marketing", "hasDropdown": false }
+    ],
+    "cta": {
+      "label": "Login",
+      "link": "/login"
+    }
+  },
+  "heroSection": {
+    "title": "Reliable & Powerful Cloud Web Hosting",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+    "buttons": [
+      {
+        "label": "Get Started",
+        "variant": "primary",
+        "link": "/get-started"
+      },
+      {
+        "label": "View Plans",
+        "variant": "secondary",
+        "link": "/plans"
+      }
+    ],
+    "members": {
+      "countText": "50K+ Members",
+      "avatars": [
+        "/clients.svg",
+        "/avatar2.svg",
+        "/avatar3.svg"
+      ]
+    },
+    "heroImage": {
+      "src": "/Images/Home/ManWithLaptop.svg",
+      "alt": "User working on laptop"
+    },
+    "floatingCards": [
+      {
+        "title": "Lorem ipsum dolor",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        "position": "top-left"
+      },
+      {
+        "title": "Lorem ipsum dolor",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        "position": "middle-left"
+      },
+      {
+        "title": "Lorem ipsum dolor",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+        "position": "bottom-left"
+      }
+    ],
+    "decorations": {
+      "backgroundBlur": true,
+      "gradientOverlay": true,
+      "curvedLines": true
+    }
+  },
+  "featuresSection": {
+    "tagline": "LOREM IPSUM DOLOR SIT",
+    "title": "Lorem ipsum dolor sit",
+    "features": [
+      {
+        "id": 1,
+        "title": "Lorem ipsum dolor sit",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et commodo",
+        "image": "/images/feature-analytics.png",
+        "icon": "/icons/analytics.svg",
+        "badge": null,
+        "progress": null,
+        "list": null,
+        "cta": {
+          "label": "Learn More",
+          "link": "/feature-1"
+        }
+      },
+      {
+        "id": 2,
+        "title": "Lorem ipsum dolor sit",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et commodo",
+        "image": "/images/feature-search.png",
+        "icon": "/icons/grid.svg",
+        "badge": null,
+        "progress": null,
+        "list": null,
+        "cta": {
+          "label": "Learn More",
+          "link": "/feature-2"
+        }
+      },
+      {
+        "id": 3,
+        "title": "Lorem ipsum dolor sit",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et commodo",
+        "image": "/images/feature-progress.png",
+        "icon": "/icons/grid.svg",
+        "badge": "NEW",
+        "progress": {
+          "text": "15 of 15 items completed",
+          "value": 100
+        },
+        "list": ["Task completed", "Task completed"],
+        "cta": {
+          "label": "Learn More",
+          "link": "/feature-3"
+        }
+      }
+    ]
+  },
+  "servicesSection": {
+    "tagline": "LOREM IPSUM DOLOR SIT",
+    "title": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "services": [
+      {
+        "id": 1,
+        "title": "Lorem ipsum dolor sit ame",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+        "icon": "/icons/cursor.svg",
+        "cta": {
+          "label": "Learn More",
+          "link": "/service-1"
+        }
+      },
+      {
+        "id": 2,
+        "title": "Lorem ipsum dolor sit ame",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+        "icon": "/icons/cursor.svg",
+        "cta": {
+          "label": "Learn More",
+          "link": "/service-2"
+        }
+      },
+      {
+        "id": 3,
+        "title": "Lorem ipsum dolor sit ame",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+        "icon": "/icons/cursor.svg",
+        "cta": {
+          "label": "Learn More",
+          "link": "/service-3"
+        }
+      },
+      {
+        "id": 4,
+        "title": "Lorem ipsum dolor sit ame",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+        "icon": "/icons/cursor.svg",
+        "cta": {
+          "label": "Learn More",
+          "link": "/service-4"
+        }
+      }
+    ],
+    "layout": {
+      "columns": 4,
+      "showDividers": true,
+      "alignment": "center"
+    }
+  },
+  "caseStudySection": {
+    "tagline": "CASE STUDY",
+    "title": "Creating an immersive digital experience that embodies an iconic brand",
+    "description": "CXR.Agency harnesses the power of Headless and the flexibility of WordPress to build Sony's Wonderverse, an interactive platform combining cutting-edge technology and seamless performance.",
+    "ctaPrimary": {
+      "label": "Read the Case Study",
+      "link": "/case-study"
+    },
+    "ctaSecondary": {
+      "label": "View all stories",
+      "link": "/case-studies"
+    },
+    "stats": [
+      {
+        "value": "4x",
+        "label": "Faster page loads"
+      },
+      {
+        "value": "2.5M+",
+        "label": "Monthly active users"
+      }
+    ],
+    "image": {
+      "src": "/images/case-study-design.png",
+      "alt": "Design workspace showing UI wireframe on screen"
+    },
+    "slider": {
+      "enabled": true,
+      "items": [
+        {
+          "id": 1,
+          "title": "Sony Wonderverse",
+          "image": "/images/case-study-design.png"
+        },
+        {
+          "id": 2,
+          "title": "Ecommerce Platform",
+          "image": "/images/case-study-2.png"
+        }
+      ],
+      "controls": {
+        "arrows": true,
+        "dots": false
+      }
+    },
+    "layout": {
+      "type": "split",
+      "imagePosition": "right",
+      "alignment": "center"
+    }
+  },
+  "ctaSection": {
+    "tagline": "LET'S GET STARTED",
+    "title": "Ready to migrate today?",
+    "buttons": [
+      {
+        "label": "Get Started",
+        "variant": "primary",
+        "link": "/get-started",
+        "icon": "arrow-right"
+      },
+      {
+        "label": "Get in Touch",
+        "variant": "secondary",
+        "link": "/contact"
+      }
+    ],
+    "image": {
+      "src": "/images/cta-illustration.png",
+      "alt": "Illustration of person working on laptop"
+    },
+    "layout": {
+      "type": "split",
+      "imagePosition": "left",
+      "alignment": "center"
+    },
+    "style": {
+      "background": "light",
+      "hasBlur": false,
+      "spacing": "large"
+    }
+  },
+  "managedHostingSection": {
+    "tagline": "WORDPRESS HOSTING BY WP ENGINE",
+    "title": "Managed hosting you can trust for every stage of your business",
+    "description": "Build, manage, and optimize your website with confidence. Experience hosting that drives results, transforming your site into a powerful engine for business growth.",
+    "features": [
+      {
+        "text": "Maximize engagement with faster load times & a platform designed to scale",
+        "icon": "check"
+      },
+      {
+        "text": "Rely on 24/7 support from experts in WordPress registered ready to help you succeed",
+        "icon": "check"
+      },
+      {
+        "text": "Protect your site with proactive threat detection and daily backups",
+        "icon": "check"
+      }
+    ],
+    "buttons": [
+      {
+        "label": "Plans & Pricing",
+        "variant": "primary",
+        "link": "/pricing"
+      },
+      {
+        "label": "Get Started",
+        "variant": "secondary",
+        "link": "/get-started"
+      }
+    ],
+    "image": {
+      "src": "/images/managed-hosting.png",
+      "alt": "Person using laptop with website interface background"
+    },
+    "layout": {
+      "type": "split",
+      "imagePosition": "left",
+      "alignment": "center"
+    },
+    "style": {
+      "background": "light",
+      "spacing": "large",
+      "showIllustrationOverlay": true
+    }
+  },
+  "managedHostingIllustrationSection": {
+    "tagline": "WORDPRESS HOSTING BY WP ENGINE",
+    "title": "Managed hosting you can trust for every stage of your business",
+    "description": "Build, manage, and optimize your website with confidence. Experience hosting that drives results, transforming your site into a powerful engine for business growth.",
+    "features": [
+      {
+        "text": "Maximize engagement with faster load times & a platform designed to scale",
+        "icon": "check"
+      },
+      {
+        "text": "Rely on 24/7 support from experts in WordPress registered ready to help you succeed",
+        "icon": "check"
+      },
+      {
+        "text": "Protect your site with proactive threat detection and daily backups",
+        "icon": "check"
+      }
+    ],
+    "buttons": [
+      {
+        "label": "Plans & Pricing",
+        "variant": "primary",
+        "link": "/pricing"
+      },
+      {
+        "label": "Get Started",
+        "variant": "secondary",
+        "link": "/get-started"
+      }
+    ],
+    "illustration": {
+      "type": "vector",
+      "src": "/images/hosting-illustration.png",
+      "alt": "Illustration of secure package delivery with shield and umbrella protection"
+    },
+    "decorations": {
+      "dotsPattern": true,
+      "floatingElements": [
+        {
+          "type": "umbrella",
+          "position": "center"
+        },
+        {
+          "type": "box",
+          "position": "right"
+        },
+        {
+          "type": "heart",
+          "position": "top-right"
+        }
+      ]
+    },
+    "layout": {
+      "type": "split",
+      "imagePosition": "right",
+      "alignment": "center"
+    },
+    "style": {
+      "background": "light",
+      "spacing": "large",
+      "illustrationStyle": "line-art",
+      "accentColor": "yellow-teal"
+    }
+  },
+  "managedHostingAbstractSection": {
+    "tagline": "WORDPRESS HOSTING BY WP ENGINE",
+    "title": "Managed hosting you can trust for every stage of your business",
+    "description": "Build, manage, and optimize your website with confidence. Experience hosting that drives results, transforming your site into a powerful engine for business growth.",
+    "features": [
+      {
+        "text": "Maximize engagement with faster load times & a platform designed to scale",
+        "icon": "check"
+      },
+      {
+        "text": "Rely on 24/7 support from experts in WordPress registered ready to help you succeed",
+        "icon": "check"
+      },
+      {
+        "text": "Protect your site with proactive threat detection and daily backups",
+        "icon": "check"
+      }
+    ],
+    "buttons": [
+      {
+        "label": "Plans & Pricing",
+        "variant": "primary",
+        "link": "/pricing"
+      },
+      {
+        "label": "Get Started",
+        "variant": "secondary",
+        "link": "/get-started"
+      }
+    ],
+    "graphics": {
+      "type": "abstract",
+      "elements": [
+        {
+          "type": "sphere",
+          "style": "striped",
+          "color": "#5B7C85",
+          "position": "center-left"
+        },
+        {
+          "type": "gridDots",
+          "style": "pattern",
+          "position": "center"
+        },
+        {
+          "type": "illustration",
+          "name": "goalkeeper",
+          "position": "left"
+        },
+        {
+          "type": "badge",
+          "value": "01",
+          "position": "top-left"
+        }
+      ]
+    },
+    "layout": {
+      "type": "split",
+      "imagePosition": "left",
+      "alignment": "center"
+    },
+    "style": {
+      "background": "light",
+      "spacing": "large",
+      "visualStyle": "abstract-minimal",
+      "accentColor": "teal-gray"
+    }
+  },
+  "managedHostingUISection": {
+    "tagline": "WORDPRESS HOSTING BY WP ENGINE",
+    "title": "Managed hosting you can trust for every stage of your business",
+    "description": "Build, manage, and optimize your website with confidence. Experience hosting that drives results, transforming your site into a powerful engine for business growth.",
+    "features": [
+      {
+        "text": "Maximize engagement with faster load times & a platform designed to scale",
+        "icon": "check"
+      },
+      {
+        "text": "Rely on 24/7 support from experts in WordPress registered ready to help you succeed",
+        "icon": "check"
+      },
+      {
+        "text": "Protect your site with proactive threat detection and daily backups",
+        "icon": "check"
+      }
+    ],
+    "buttons": [
+      {
+        "label": "Plans & Pricing",
+        "variant": "primary",
+        "link": "/pricing"
+      },
+      {
+        "label": "Get Started",
+        "variant": "secondary",
+        "link": "/get-started"
+      }
+    ],
+    "illustration": {
+      "type": "line-art",
+      "src": "/images/hosting-user-illustration.png",
+      "alt": "Illustration of user working on laptop with UI elements"
+    },
+    "uiElements": [
+      {
+        "type": "chat-bubble",
+        "style": "dashboard",
+        "position": "top-right",
+        "content": {
+          "layout": "grid",
+          "items": 3
+        }
+      },
+      {
+        "type": "floating-object",
+        "name": "paperclip",
+        "position": "right"
+      }
+    ],
+    "layout": {
+      "type": "split",
+      "imagePosition": "right",
+      "alignment": "center"
+    },
+    "style": {
+      "background": "light",
+      "spacing": "large",
+      "illustrationStyle": "minimal-line",
+      "accentColor": "blue-gray"
+    }
+  },
+  "pricingSection": {
+    "tagline": "MIGRATE ONCE, SCALE AS YOUR BUSINESS GROWS",
+    "title": "Plans for every stage of your journey",
+    "billingToggle": {
+      "label": "Subscription plans are listed",
+      "options": ["monthly", "yearly"],
+      "default": "monthly"
+    },
+    "plans": [
+      {
+        "id": "essential",
+        "name": "Essential",
+        "badge": null,
+        "description": "Perfect tools to efficiently manage websites with simplicity, reliability, and speed",
+        "price": {
+          "amount": 30,
+          "currency": "USD",
+          "duration": "mo",
+          "note": "Pay $300 today"
+        },
+        "cta": {
+          "label": "Buy Now",
+          "variant": "outline",
+          "link": "/buy-essential"
+        },
+        "featuresTitle": "ESSENTIAL PACKAGES INCLUDE:",
+        "features": [
+          "Edge content delivery with global CDN",
+          "Managed WP, PHP & MySQL updates",
+          "24/7 WordPress technical expertise",
+          "Real-time WordPress threat defense",
+          "Free automated migration plugin",
+          "Local development tool"
+        ],
+        "customPlanBuilder": {
+          "enabled": true,
+          "basePlan": {
+            "name": "Startup",
+            "price": 30,
+            "visits": "25,000 Visits/mo",
+            "storage": "10 GB Storage",
+            "bandwidth": "75 GB Bandwidth/mo"
+          },
+          "addons": [
+            {
+              "name": "Additional Site(s)",
+              "price": 20,
+              "type": "stepper"
+            },
+            {
+              "name": "Automated Plugin Updates",
+              "price": 3,
+              "type": "checkbox"
+            },
+            {
+              "name": "Extra Layer of Security",
+              "price": 20,
+              "type": "checkbox"
+            },
+            {
+              "name": "Page Speed Boost",
+              "price": 20,
+              "type": "checkbox"
+            }
+          ]
+        },
+        "footer": {
+          "cta": "Buy Now",
+          "secondaryLink": "Compare all features"
+        }
+      },
+      {
+        "id": "core",
+        "name": "Core",
+        "badge": "BEST VALUE",
+        "description": "Enhanced features and performance with expert support scalability and growth",
+        "price": {
+          "amount": 400,
+          "currency": "USD",
+          "duration": "mo"
+        },
+        "cta": {
+          "label": "Get in Touch",
+          "variant": "primary",
+          "link": "/contact"
+        },
+        "featuresTitle": "ALL ESSENTIAL FEATURES, PLUS:",
+        "features": [
+          "Isolated resources with 99.99% uptime SLA",
+          "AI-powered plugin & theme updates",
+          "Fast-track support from senior experts",
+          "On-demand performance investigations",
+          "Advanced uptime monitoring alerts",
+          "Managed bug site migrations",
+          "Personalized onboarding experience",
+          "GeoTarget for relevant content"
+        ],
+        "extensions": {
+          "title": "AVAILABLE EXTENSIONS",
+          "items": [
+            "eCommerce Performance Pack",
+            "Application Performance",
+            "Managed Vector Database",
+            "Smart Search AI"
+          ]
+        },
+        "footer": {
+          "cta": "Contact Sales",
+          "secondaryLink": "Compare all features"
+        }
+      },
+      {
+        "id": "enterprise",
+        "name": "Enterprise",
+        "badge": null,
+        "description": "Advanced performance and security with advisory services into reliability processes",
+        "price": {
+          "custom": true,
+          "label": "Custom"
+        },
+        "cta": {
+          "label": "Get in Touch",
+          "variant": "outline",
+          "link": "/contact"
+        },
+        "featuresTitle": "ALL CORE FEATURES, PLUS:",
+        "features": [
+          "High capacity infrastructure for traffic spikes",
+          "High availability & single-node solutions",
+          "Top-tier priority support access",
+          "Dedicated expert team & ongoing alignment",
+          "Incident analysis & proactive management",
+          "Advanced DDoS & managed WAF",
+          "Managed migration & consultative dev",
+          "Git-powered CI/CD & SSH gateway"
+        ],
+        "extensions": {
+          "title": "AVAILABLE EXTENSIONS",
+          "items": [
+            "AI core extensions included",
+            "Dedicated Account Manager",
+            "Custom SLA Agreements",
+            "Enterprise Architecture Guidance"
+          ]
+        },
+        "footer": {
+          "cta": "Contact Sales",
+          "secondaryLink": "Compare all features"
+        }
+      }
+    ],
+    "layout": {
+      "columns": 3,
+      "highlightedPlan": "core"
+    }
+  },
+  "testimonialsSection": {
+    "title": "Trusted By 25+ Million Users Around The World",
+    "tabs": [
+      {
+        "label": "Testimonials",
+        "active": true
+      },
+      {
+        "label": "Reviews",
+        "active": false
+      },
+      {
+        "label": "Case Studies",
+        "active": false
+      }
+    ],
+    "testimonials": [
+      {
+        "id": 1,
+        "rating": 5,
+        "source": {
+          "platform": "G2",
+          "label": "reviewed on G2",
+          "icon": "/icons/g2.svg"
+        },
+        "content": "I love the platform for their outstanding customer support which is always available to help when I have an issue or a confidence gap. They help me navigate any uncertainties.",
+        "author": {
+          "name": "Joey B",
+          "role": "Verified User",
+          "avatar": "/avatars/user1.jpg"
+        }
+      },
+      {
+        "id": 2,
+        "rating": 5,
+        "source": {
+          "platform": "G2",
+          "label": "reviewed on G2",
+          "icon": "/icons/g2.svg"
+        },
+        "content": "I love the platform for their outstanding customer support which is always available to help when I have an issue or a confidence gap. They help me navigate any uncertainties.",
+        "author": {
+          "name": "Joey B",
+          "role": "Verified User",
+          "avatar": "/avatars/user2.jpg"
+        }
+      },
+      {
+        "id": 3,
+        "rating": 5,
+        "source": {
+          "platform": "G2",
+          "label": "reviewed on G2",
+          "icon": "/icons/g2.svg"
+        },
+        "content": "I love the platform for their outstanding customer support which is always available to help when I have an issue or a confidence gap. They help me navigate any uncertainties.",
+        "author": {
+          "name": "Joey B",
+          "role": "Verified User",
+          "avatar": "/avatars/user3.jpg"
+        }
+      }
+    ],
+    "layout": {
+      "columns": 3,
+      "showDivider": true,
+      "alignment": "center"
+    },
+    "style": {
+      "background": "light",
+      "spacing": "large",
+      "cardStyle": "minimal",
+      "accentColor": "orange"
+    }
+  },
+  "faqSection": {
+    "tagline": "A GUIDE TO WORDPRESS HOSTING BY WP ENGINE",
+    "title": "An overview and FAQs",
+    "categories": [
+      {
+        "label": "WordPress Hosting",
+        "active": false
+      },
+      {
+        "label": "Managed Hosting",
+        "active": false
+      },
+      {
+        "label": "WordPress CMS",
+        "active": false
+      },
+      {
+        "label": "How WordPress Works",
+        "active": false
+      },
+      {
+        "label": "Open Source 101",
+        "active": false
+      },
+      {
+        "label": "Website Hosting",
+        "active": true
+      }
+    ],
+    "content": {
+      "title": "What is website hosting?",
+      "description": "Website hosting or web hosting is a service that enables you to put your content on the internet. It provides space on a server that stores your website's files and makes them available online.",
+      "highlightBox": {
+        "text": "Servers are the structures powering the world wide web-made up of both hardware and software. Their job is to process online user requests and deliver content via browsers."
+      },
+      "additionalInfo": [
+        "Through a series of web protocols, servers can access a website by following a web address that's typed into your browser. The type of server and optimization tools you choose will significantly affect your site's performance.",
+        "Servers require lots of resources, maintenance, and management, so web hosting is provided by private companies. These are typically referred to as 'web hosts' or 'hosting providers'. Each web host will usually offer multiple hosting plans that vary based on server configurations and added features."
+      ]
+    },
+    "faqs": [
+      {
+        "id": 1,
+        "question": "How do web servers work?",
+        "answer": "",
+        "isOpen": false
+      },
+      {
+        "id": 2,
+        "question": "What are the main types of web hosting?",
+        "answer": "",
+        "isOpen": false
+      },
+      {
+        "id": 3,
+        "question": "Can a website run without hosting?",
+        "answer": "",
+        "isOpen": false
+      },
+      {
+        "id": 4,
+        "question": "Does a domain come with hosting?",
+        "answer": "",
+        "isOpen": false
+      },
+      {
+        "id": 5,
+        "question": "Can I host my own WordPress site?",
+        "answer": "",
+        "isOpen": false
+      }
+    ],
+    "layout": {
+      "type": "split",
+      "contentPosition": "left",
+      "faqPosition": "right"
+    },
+    "style": {
+      "background": "light",
+      "spacing": "large",
+      "categoryStyle": "pill",
+      "faqStyle": "accordion",
+      "highlightBoxStyle": "soft"
+    }
+  },
+  "trustSection": {
+    "rating": {
+      "label": "Excellent",
+      "value": 5,
+      "platform": "Trustpilot",
+      "reviews": "1,706 reviews",
+      "icon": "/icons/trustpilot.svg"
+    },
+    "title": {
+      "text": "Join 1.5M+ sites that call WP Engine home",
+      "highlight": "1.5M+ sites"
+    },
+    "logos": [
+      {
+        "name": "Logoipsum",
+        "src": "/logos/logo1.svg"
+      },
+      {
+        "name": "Logoipsum",
+        "src": "/logos/logo2.svg"
+      },
+      {
+        "name": "Logoipsum",
+        "src": "/logos/logo3.svg"
+      },
+      {
+        "name": "Logoipsum",
+        "src": "/logos/logo4.svg"
+      },
+      {
+        "name": "Logoipsum",
+        "src": "/logos/logo5.svg"
+      }
+    ],
+    "layout": {
+      "alignment": "center",
+      "logoStyle": "grayscale",
+      "logoSpacing": "even"
+    },
+    "style": {
+      "background": "light",
+      "spacing": "medium",
+      "highlightColor": "orange"
+    }
+  }
+}

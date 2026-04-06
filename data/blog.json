@@ -1,0 +1,382 @@
+{
+  "insightsSection": {
+    "tagline": "BLOG & RESOURCES",
+    "title": {
+      "main": "Insights On Web, Mobile,",
+      "highlight": "And Digital Marketing"
+    },
+    "description": "Tips, guides, and updates on development, design, SEO, and growth—so you can build and scale your business online.",
+
+    "search": {
+      "placeholder": "Search here..."
+    },
+
+    "filters": [
+      { "label": "Content Writing", "active": true },
+      { "label": "Digital Marketing", "active": false },
+      { "label": "Mobile Apps", "active": false },
+      { "label": "Seo", "active": false },
+      { "label": "Software Development", "active": false },
+      { "label": "UI/UX", "active": false },
+      { "label": "Web Development", "active": false }
+    ],
+
+    "featuredPosts": [
+      {
+        "id": 1,
+        "category": "Digital Marketing",
+        "title": "Email Segmentation 2025: Complete Blueprint for Personalized Marketing",
+        "image": "/images/blog/blog1.jpg",
+        "author": "Admin",
+        "date": "Jan 12, 2025"
+      },
+      {
+        "id": 2,
+        "category": "Web Development",
+        "title": "Headless CMS vs. Traditional CMS: Which is Best for 2025?",
+        "image": "/images/blog/blog2.jpg",
+        "author": "Admin",
+        "date": "Jan 10, 2025"
+      },
+      {
+        "id": 3,
+        "category": "UI/UX",
+        "title": "Accessibility Design: Why WCAG Compliance is Non-Negotiable in 2025",
+        "image": "/images/blog/blog3.jpg",
+        "author": "Admin",
+        "date": "Jan 8, 2025"
+      },
+      {
+        "id": 4,
+        "category": "Software Development",
+        "title": "How to Build Scalable SaaS Platforms in 2025: A Technical Guide",
+        "image": "/images/blog/blog4.jpg",
+        "author": "Admin",
+        "date": "Jan 6, 2025"
+      },
+      {
+        "id": 5,
+        "category": "UI/UX",
+        "title": "Designing for Smart Devices: UI/UX Tips for 2025",
+        "image": "/images/blog/blog5.jpg",
+        "author": "Admin",
+        "date": "Jan 4, 2025"
+      },
+      {
+        "id": 6,
+        "category": "Software Development",
+        "title": "AI-Powered Low-Code Platforms: Will They Replace Developers in 2025?",
+        "image": "/images/blog/blog6.jpg",
+        "author": "Admin",
+        "date": "Jan 2, 2025"
+      }
+    ],
+
+    "featuredInsight": {
+      "tag": "FEATURED INSIGHT",
+      "title": "The Evolution of Microservices: Building Resilient Distributed Systems for 2025",
+      "description": "Discover how modern microservices architecture is transforming distributed systems—improving scalability, fault tolerance, and performance.",
+      "image": "/images/blog/featured.jpg",
+      "author": "Admin User",
+      "date": "Jan 1, 2025",
+      "readTime": "5 min read"
+    },
+
+    "trending": {
+      "title": "Trending Now",
+      "posts": [
+        {
+          "id": 1,
+          "title": "Serverless Architecture: A Practical Guide for CTOs",
+          "link": "/blog/serverless-guide"
+        },
+        {
+          "id": 2,
+          "title": "Why Real-Time Messaging is Critical for Modern Apps",
+          "link": "/blog/realtime-messaging"
+        },
+        {
+          "id": 3,
+          "title": "Optimizing Blog Performance for Core Web Vitals",
+          "link": "/blog/core-web-vitals"
+        },
+        {
+          "id": 4,
+          "title": "Next-Gen SEO: AI + Semantic Search Explained",
+          "link": "/blog/ai-seo"
+        }
+      ]
+    },
+
+    "newsletter": {
+      "title": "Latest Newsletter",
+      "description": "Get the latest insights, tips, and trends delivered directly to your inbox.",
+      "cta": {
+        "label": "Download PDF",
+        "link": "/newsletter"
+      }
+    },
+
+    "ctaBanner": {
+      "tagline": "DIGITAL MARKETING",
+      "title": "Never miss a deep dive",
+      "description": "Get the latest insights, tips, and trends delivered directly to your inbox.",
+      "inputPlaceholder": "Enter your email",
+      "button": {
+        "label": "Join Newsletter",
+        "link": "/subscribe"
+      }
+    }
+  },
+  "mediaHubSection": {
+    "popularVideos": {
+      "title": "Popular Videos",
+      "controls": {
+        "arrows": true
+      },
+      "videos": [
+        {
+          "id": 1,
+          "type": "WEBINAR",
+          "title": "Fine Tuning Your Site",
+          "subtitle": "Fine Tuning Your Site: Custom Blocks With ACF",
+          "duration": "45:20",
+          "image": "/images/videos/video1.jpg",
+          "cta": {
+            "label": "Watch Now",
+            "link": "/videos/fine-tuning-site"
+          }
+        },
+        {
+          "id": 2,
+          "type": "WEBINAR",
+          "title": "WP Engine Webinar",
+          "subtitle": "WP Engine Webinar: Proven WordPress Security Tips",
+          "duration": "1:12:05",
+          "image": "/images/videos/video2.jpg",
+          "cta": {
+            "label": "Watch Now",
+            "link": "/videos/wp-engine-webinar"
+          }
+        },
+        {
+          "id": 3,
+          "type": "WEBINAR",
+          "title": "How To Fix a Site You Didn’t Build",
+          "subtitle": "How To Fix a Site You Didn’t Build for Optimal Performance",
+          "duration": "38:10",
+          "image": "/images/videos/video3.jpg",
+          "cta": {
+            "label": "Watch Now",
+            "link": "/videos/fix-site-performance"
+          }
+        }
+      ]
+    },
+
+    "developmentHub": {
+      "title": "Development Hub",
+      "cta": {
+        "label": "Explore All Guides",
+        "link": "/guides"
+      },
+
+      "topics": [
+        {
+          "id": 1,
+          "category": "ARCHITECTURE",
+          "title": "Serverless Edge Computing",
+          "description": "Deploying logic closer to users with Cloudflare Workers.",
+          "image": "/images/guides/architecture.jpg",
+          "link": "/guides/serverless-edge"
+        },
+        {
+          "id": 2,
+          "category": "SECURITY",
+          "title": "OWASP Top 10 for 2024",
+          "description": "A developer’s checklist for securing modern web APIs.",
+          "image": "/images/guides/security.jpg",
+          "link": "/guides/owasp-top-10"
+        },
+        {
+          "id": 3,
+          "category": "BACKEND",
+          "title": "Go Microservices Patterns",
+          "description": "Scalable design patterns for high-concurrency systems.",
+          "image": "/images/guides/backend.jpg",
+          "link": "/guides/go-microservices"
+        }
+      ],
+
+      "featuredGuide": {
+        "tag": "FEATURED GUIDE",
+        "title": "Mastering Cloud-Native Development: The 2024 Roadmap",
+        "description": "The definitive guide to Kubernetes, Docker, and distributed tracing for senior engineers.",
+        "image": "/images/guides/featured.jpg",
+        "cta": {
+          "label": "Start Reading Now",
+          "link": "/guides/cloud-native-roadmap"
+        }
+      }
+    }
+  },
+  "platformSupportSection": {
+    "intro": {
+      "tagline": "THE MOST TRUSTED HOSTING PLATFORM",
+      "title": "Power the freedom to create"
+    },
+
+    "features": [
+      {
+        "id": 1,
+        "icon": "wordpress",
+        "title": "WordPress Hosting",
+        "description": "High-performance managed infrastructure optimized for scale.",
+        "cta": {
+          "label": "Learn More",
+          "link": "/wordpress-hosting"
+        }
+      },
+      {
+        "id": 2,
+        "icon": "headless",
+        "title": "Headless Platform",
+        "description": "Decouple your CMS for ultimate front-end flexibility and speed.",
+        "cta": {
+          "label": "Learn More",
+          "link": "/headless-platform"
+        }
+      },
+      {
+        "id": 3,
+        "icon": "security",
+        "title": "Advanced Security",
+        "description": "Enterprise protection against DDoS, bots, and global threats.",
+        "cta": {
+          "label": "Learn More",
+          "link": "/security"
+        }
+      },
+      {
+        "id": 4,
+        "icon": "cdn",
+        "title": "Global CDN",
+        "description": "Edge network delivery for millisecond latency across 200+ POPs.",
+        "cta": {
+          "label": "Learn More",
+          "link": "/cdn"
+        }
+      }
+    ],
+
+    "support": {
+      "title": "Our Award Winning Support Has You Covered",
+
+      "searchCard": {
+        "icon": "search",
+        "title": "Discover solutions faster with AI assistance",
+
+        "aiHint": {
+          "label": "AI",
+          "text": "This AI-powered search can quickly find and summarize answers for you. What do you need help with today? For example, you can ask \"How do I point DNS to my new domain?\""
+        },
+
+        "input": {
+          "placeholder": "I need help with..."
+        },
+
+        "cta": {
+          "icon": "arrow",
+          "label": "Search",
+          "action": "submit"
+        },
+
+        "note": "This search cannot connect to a live agent. For customers that need help from a support agent, please log into the User Portal."
+      }
+    }
+  },
+  "supportHubSection": {
+    "helpCategories": [
+      {
+        "id": 1,
+        "icon": "wordpress",
+        "title": "WordPress Help",
+        "articles": [
+          "Disallowed Plugins",
+          "WordPress Core Automatic Updates and Deferrals",
+          "7 Steps for Front End Optimization (Video)"
+        ],
+        "cta": {
+          "label": "Learn More",
+          "link": "/help/wordpress"
+        }
+      },
+      {
+        "id": 2,
+        "icon": "troubleshoot",
+        "title": "Troubleshoot",
+        "articles": [
+          "Insecure and Mixed Content Warnings",
+          "Troubleshoot High Time to First Byte (TTFB)",
+          "DMARC Policies for Email Deliverability"
+        ],
+        "cta": {
+          "label": "Learn More",
+          "link": "/help/troubleshoot"
+        }
+      },
+      {
+        "id": 3,
+        "icon": "browse",
+        "title": "Browse All",
+        "articles": [
+          "Regex for Redirect Rules and SSL",
+          "Sites and Environments",
+          "Build a New Site on WP Engine"
+        ],
+        "cta": {
+          "label": "Learn More",
+          "link": "/help"
+        }
+      }
+    ],
+
+    "supportHighlight": {
+      "title": "Real support, real humans 24/7",
+      "description": "From smart troubleshooting tools to our knowledgeable support staff, we give you the best of both worlds: automated efficiency and human understanding.",
+
+      "media": {
+        "imagePrimary": "/images/support/person1.jpg",
+        "imageSecondary": "/images/support/person2.jpg",
+        "badge": "Online Now: Sarah M."
+      },
+
+      "stats": [
+        {
+          "id": 1,
+          "icon": "users",
+          "title": "20+ years",
+          "description": "Experience helping businesses succeed online"
+        },
+        {
+          "id": 2,
+          "icon": "thumbs-up",
+          "title": "98% CSAT",
+          "description": "Customer satisfaction steady for over 10 years"
+        },
+        {
+          "id": 3,
+          "icon": "clock",
+          "title": "24/7 support",
+          "description": "Live chat and phone available around the clock"
+        },
+        {
+          "id": 4,
+          "icon": "award",
+          "title": "Award-winning",
+          "description": "Recognized globally for customer service"
+        }
+      ]
+    }
+  }
+}

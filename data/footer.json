@@ -1,0 +1,102 @@
+{
+  "footer": {
+    "brand": {
+      "logo": {
+        "main": "drona",
+        "highlight": "host"
+      },
+      "tagline": "wordpress optimized powerful cloud hosting"
+    },
+    "columns": [
+      {
+        "title": "ABOUT",
+        "links": [
+          { "label": "About Us", "link": "/about" },
+          { "label": "Affiliate Program", "link": "/affiliate" },
+          { "label": "Careers", "link": "/careers" },
+          { "label": "Contact", "link": "/contact" },
+          { "label": "Brand Assets", "link": "/brand-assets" }
+        ]
+      },
+      {
+        "title": "HELP",
+        "links": [
+          { "label": "Account", "link": "/account" },
+          { "label": "Open Support Ticket", "link": "/support" },
+          { "label": "DronaHost Blogs", "link": "/blog" },
+          { "label": "Offers", "link": "/offers" },
+          { "label": "Request a Consultation", "link": "/consultation" },
+          { "label": "Contact Us", "link": "/contact" }
+        ]
+      },
+      {
+        "title": "RESOURCES",
+        "links": [
+          { "label": "Hosting With Free SSL", "link": "/ssl-hosting" },
+          { "label": "Hosting With Full Access", "link": "/full-access" },
+          { "label": "Self-managed WordPress", "link": "/self-managed" },
+          { "label": "Premium Theme & Plugins", "link": "/themes" },
+          { "label": "Best Cloud Hosting Plans", "link": "/cloud-hosting" },
+          { "label": "cPanel/Plesk", "link": "/cpanel" },
+          { "label": "Free Domain", "link": "/free-domain" }
+        ]
+      },
+      {
+        "title": "FEATURES",
+        "links": [
+          { "label": "Free WordPress Migration", "link": "/migration" },
+          { "label": "WordPress Expert Assistance", "link": "/expert-help" },
+          { "label": "30 Days Money Back", "link": "/refund" },
+          { "label": "SSL, Email Backup & Security", "link": "/security" },
+          { "label": "Premium Cloud Servers", "link": "/servers" },
+          { "label": "Next-Gen Security", "link": "/next-gen-security" },
+          { "label": "Regular Backup", "link": "/backup" }
+        ]
+      },
+      {
+        "title": "SERVICES",
+        "links": [
+          { "label": "WordPress Website Design", "link": "/wp-design" },
+          { "label": "Custom Website Development", "link": "/custom-dev" },
+          { "label": "Register a New Domain", "link": "/register-domain" },
+          { "label": "Transfer Domain to Us", "link": "/transfer-domain" },
+          { "label": "SSL Certificate", "link": "/ssl" },
+          { "label": "SiteLock Certificates", "link": "/sitelock" }
+        ]
+      },
+      {
+        "title": "HOSTING",
+        "links": [
+          { "label": "Web Hosting", "link": "/web-hosting" },
+          { "label": "WordPress Hosting", "link": "/wordpress-hosting" },
+          { "label": "Business Hosting", "link": "/business-hosting" },
+          { "label": "Reseller Hosting", "link": "/reseller-hosting" },
+          { "label": "Serverless Solutions", "link": "/serverless" },
+          { "label": "Managed VPS Hosting", "link": "/vps-hosting" }
+        ]
+      }
+    ],
+    "partners": {
+      "logos": [
+        { "name": "Logoipsum", "src": "/logos/logo1.svg" },
+        { "name": "Logoipsum", "src": "/logos/logo2.svg" },
+        { "name": "Logoipsum", "src": "/logos/logo3.svg" },
+        { "name": "Logoipsum", "src": "/logos/logo4.svg" },
+        { "name": "Logoipsum", "src": "/logos/logo5.svg" }
+      ]
+    },
+    "bottom": {
+      "copyright":
+        "© Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
+      "description":
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "socials": [
+        { "platform": "twitter", "link": "https://twitter.com" },
+        { "platform": "github", "link": "https://github.com" },
+        { "platform": "instagram", "link": "https://instagram.com" },
+        { "platform": "youtube", "link": "https://youtube.com" },
+        { "platform": "facebook", "link": "https://facebook.com" }
+      ]
+    }
+  }
+}

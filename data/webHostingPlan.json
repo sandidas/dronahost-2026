@@ -1,0 +1,216 @@
+{
+  "webHostingPlanPage": {
+    "hero": {
+      "title": "Choose your web hosting plan",
+      "subtitle": "All plans include a 30-day risk-free trial",
+
+      "categories": [
+        { "label": "Web hosting", "active": true },
+        { "label": "Cloud hosting" },
+        { "label": "VPS hosting" },
+        { "label": "Website builder" },
+        { "label": "Node.js" },
+        { "label": "Business Email" },
+        { "label": "cPanel Hosting" },
+        { "label": "Managed WordPress" },
+        { "label": "Windows Hosting" }
+      ],
+
+      "filters": [
+        {
+          "label": "Type of Hosting",
+          "type": "dropdown",
+          "options": ["Shared", "Cloud", "VPS"]
+        },
+        {
+          "label": "Plan Duration",
+          "type": "dropdown",
+          "options": ["Monthly", "Yearly", "3 Years"]
+        }
+      ]
+    },
+
+    "plans": [
+      {
+        "id": 1,
+        "name": "Starter",
+        "tagline": "Great for first-time users.",
+        "discount": "83% OFF",
+        "price": "₹69.00",
+        "originalPrice": "₹239.00",
+        "duration": "/mo",
+        "cta": {
+          "label": "Choose Plan",
+          "link": "/plans/starter"
+        },
+        "renewal": "Renews at ₹239/mo - Guaranteed",
+        "features": [
+          "1 website",
+          "10 GB NVMe storage",
+          "Free domain for 1 year",
+          "1 email account",
+          "WordPress ready",
+          "Free AI website builder",
+          "Free SSL for your website",
+          "Node.js web apps"
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Premium",
+        "tagline": "Ideal for blogs & startup websites.",
+        "discount": "85% OFF",
+        "price": "₹99.00",
+        "originalPrice": "₹499.00",
+        "duration": "/mo",
+        "cta": {
+          "label": "Choose Plan",
+          "link": "/plans/premium"
+        },
+        "highlight": true,
+        "renewal": "Renews at ₹499/mo - Guaranteed",
+        "features": [
+          "25 websites",
+          "50 GB NVMe storage",
+          "Free domain for 1 year",
+          "50 email accounts",
+          "WordPress ready",
+          "Free AI website builder",
+          "Free SSL for every website",
+          "Node.js web apps"
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Max",
+        "tagline": "Node.js ready hosting.",
+        "discount": "77% OFF",
+        "price": "₹169.00",
+        "originalPrice": "₹739.00",
+        "duration": "/mo",
+        "cta": {
+          "label": "Choose Plan",
+          "link": "/plans/max"
+        },
+        "renewal": "Renews at ₹739/mo - Guaranteed",
+        "features": [
+          "50 websites",
+          "100 GB NVMe storage",
+          "Free domain for 1 year",
+          "150 email accounts",
+          "WordPress ready",
+          "Free AI website builder",
+          "Free SSL for every website",
+          "20 Node.js web apps"
+        ]
+      },
+      {
+        "id": 4,
+        "name": "Cloud Pro",
+        "tagline": "For high-traffic websites.",
+        "discount": "61% OFF",
+        "price": "₹499.00",
+        "originalPrice": "₹1299.00",
+        "duration": "/mo",
+        "cta": {
+          "label": "Choose Plan",
+          "link": "/plans/cloud-pro"
+        },
+        "renewal": "Renews at ₹1299/mo - Guaranteed",
+        "features": [
+          "100 websites",
+          "150 GB NVMe storage",
+          "Free domain for 1 year",
+          "150 email accounts",
+          "WordPress ready",
+          "Free AI website builder",
+          "Free SSL for every website",
+          "40 Node.js web apps"
+        ]
+      }
+    ],
+
+    "includedFeatures": {
+      "title": "Included With Every Plan",
+      "items": [
+        {
+          "title": "AI Business Suite",
+          "description": "Plan smarter, write faster, and launch with confidence, thanks to AI-powered tools for strategy, content, and site creation."
+        },
+        {
+          "title": "Built-in Traffic Dashboard",
+          "description": "See who’s visiting, what they love, and where they’re coming from — all in a no-fuss dashboard that’s ready when you are."
+        },
+        {
+          "title": "Unmetered Bandwidth",
+          "description": "Keep your site running smoothly with unlimited traffic and no overage fees."
+        },
+        {
+          "title": "Professional Email, Free for 3 Months",
+          "description": "Kick off your business with professional email at your domain."
+        },
+        {
+          "title": "Free Domain for 1 Year",
+          "description": "Launch your site with a complimentary domain registration for the first year with any annual web hosting plan."
+        }
+      ]
+    },
+
+    "comparison": {
+      "title": "Why MilesWeb is the better deal",
+      "description": "We're not just another host — discover how we deliver more value, superior support, and powerful features for your money.",
+
+      "columns": ["Feature", "MilesWeb", "GoDaddy", "Bluehost", "BigRock"],
+
+      "rows": [
+        {
+          "feature": "VPS Location",
+          "values": ["India", "USA", "USA", "India"]
+        },
+        {
+          "feature": "CPU",
+          "values": ["2 vCPU", "2 vCPU", "2 vCPU", "2 vCPU"]
+        },
+        {
+          "feature": "RAM",
+          "values": ["8 GB", "4 GB", "4 GB", "4 GB"]
+        },
+        {
+          "feature": "Virtualization",
+          "values": ["KVM", "KVM", "KVM", "KVM"]
+        },
+        {
+          "feature": "Disk Space",
+          "values": ["100 GB", "100 GB", "SSD Only (60 GB)", "50 GB"]
+        },
+        {
+          "feature": "Bandwidth",
+          "values": ["8 TB", "Unmetered", "2 TB", "2 TB"]
+        },
+        {
+          "feature": "Price per month",
+          "values": ["₹499.00", "₹1,299.00", "₹1,098.18", "₹839.00"]
+        }
+      ],
+
+      "cta": {
+        "label": "Get Started",
+        "link": "/get-started"
+      }
+    },
+
+    "globalReach": {
+      "tag": "India - Best Latency 89ms",
+      "title": "Local deployment. Global reach",
+      "description": "Choose a server location or CDN close to your audience to boost loading speeds. We have data centers and CDNs all over the world: North America, Europe, Asia, South America, South Africa, and Australia.",
+      "cta": {
+        "label": "Get started",
+        "link": "/get-started"
+      },
+      "image": {
+        "src": "/images/global/map-globe.png",
+        "alt": "Global server locations"
+      }
+    }
+  }
+}

@@ -1,0 +1,365 @@
+{
+  "experienceGrowthPage": {
+    "hero": {
+      "tagline": "ENTERPRISE MANAGED HOSTING SOLUTIONS",
+      "title": "Creating Digital Experience That Drive Growth",
+      "description": "HostingPro delivers enterprise-ready performance with built-in security, performance monitoring, and automatic platform maintenance—saving companies engineering time and resources. Get the enterprise managed hosting platform trusted by global brands.",
+      "cta": [
+        {
+          "label": "Request a Demo",
+          "link": "/demo",
+          "variant": "primary"
+        },
+        {
+          "label": "Plans & Pricing",
+          "link": "/pricing",
+          "variant": "secondary"
+        }
+      ],
+      "image": {
+        "src": "/images/hero/experience-growth.png",
+        "alt": "Enterprise hosting illustration"
+      }
+    },
+
+    "expertise": {
+      "title": "Our Expertise",
+      "items": [
+        {
+          "title": "One, holistic solution",
+          "description": "Reduces your time spent integrating multiple vendors in your tech stack, saves you money, and allows you to spend more time innovating.",
+          "icon": "stack"
+        },
+        {
+          "title": "Node.js frontend",
+          "description": "Unlock new opportunities with higher-budget projects. Build with your choice of modern front-end JavaScript framework.",
+          "icon": "code"
+        },
+        {
+          "title": "High-performance hosting",
+          "description": "Achieve up to 10x performance with global CDN, the fastest TTFB scores, and smart scaling and auto-healing Node hosting.",
+          "icon": "pulse"
+        },
+        {
+          "title": "Robust CMS",
+          "description": "Reduce your clients' learning curve, give your dev team more flexibility, and save on sunk costs compared to other enterprise CMSs.",
+          "icon": "database"
+        },
+        {
+          "title": "Platform blueprints",
+          "description": "Jump-start your projects with pre-configured environments, templates, and demo content to quickly learn.",
+          "icon": "layout"
+        },
+        {
+          "title": "GraphQL API",
+          "description": "Optionally enable a GraphQL API to render pages and content on your frontend and query your data with enhanced clarity.",
+          "icon": "search"
+        },
+        {
+          "title": "Content modeling",
+          "description": "Model your data structure and editing experience while empowering both content creators and developers.",
+          "icon": "shield"
+        },
+        {
+          "title": "Developer toolkit",
+          "description": "An optional, server-first based toolkit for bringing common features like previews and page templates hierarchy to your project.",
+          "icon": "dev"
+        },
+        {
+          "title": "Smart Search",
+          "description": "Deliver a smarter, faster, and easier way to enable headless search with minimal configuration and an intuitive UI.",
+          "icon": "search-advanced",
+          "badge": "New"
+        }
+      ]
+    },
+
+    "services": {
+      "tagline": "OUR SERVICES",
+      "title": "High-Impact Services To Help Your Business",
+      "items": [
+        {
+          "title": "Business Website Development",
+          "description": "Professional websites that drive results. Custom solutions tailored to your brand and business goals.",
+          "tech": ["wordpress", "react", "node", "js"]
+        },
+        {
+          "title": "Full-Stack Web Applications",
+          "description": "Complete solutions from frontend to backend. Scalable applications built with modern frameworks.",
+          "tech": ["react", "node", "mongo", "js"]
+        },
+        {
+          "title": "Web Designing (UI/UX)",
+          "description": "User-focused designs that look great and convert. Clean interfaces built with modern design tools.",
+          "tech": ["figma", "xd", "css", "js"]
+        },
+        {
+          "title": "Custom Dashboard & Admin Panels",
+          "description": "Data-driven dashboards and admin panels. Real-time analytics, charts, and controls tailored to your workflow.",
+          "tech": ["react", "node", "chart", "js"]
+        },
+        {
+          "title": "API & Backend Development",
+          "description": "Secure, scalable APIs and backend systems. Authentication, data handling, and integrations built for reliability.",
+          "tech": ["node", "express", "mongo", "js"]
+        },
+        {
+          "title": "Ecommerce Website Development",
+          "description": "Online stores that sell. Custom shop on Shopify, WooCommerce, and secure checkout with Stripe and PayPal.",
+          "tech": ["shopify", "woo", "stripe", "js"]
+        }
+      ]
+    },
+
+    "partners": {
+      "title": "Our integrated partners",
+      "description": "Leverage the flexibility of open source and best-of-breed technology. We provide ecosystem integration with partners across the martech stack.",
+      "logos": [
+        "aws",
+        "azure",
+        "cloudflare",
+        "google-cloud",
+        "stripe"
+      ]
+    },
+
+    "process": {
+      "tagline": "OUR PROCESS",
+      "title": "Agile Course Of Action",
+      "description": "From Web Design & Development through to Digital Marketing. We'll increase traffic by 50%, generate more leads and boost sales.",
+      "steps": [
+        {
+          "title": "Information Gathering",
+          "icon": "file"
+        },
+        {
+          "title": "Planning",
+          "icon": "list"
+        },
+        {
+          "title": "Design",
+          "icon": "design",
+          "active": true
+        },
+        {
+          "title": "Development",
+          "icon": "code"
+        },
+        {
+          "title": "Testing & Delivery",
+          "icon": "truck"
+        }
+      ]
+    },
+
+    "integrations": {
+      "tagline": "INTEGRATIONS",
+      "title": "Speed Up Your Workflow With Our Integrations",
+      "description": "From web design & development through to digital marketing. We'll increase traffic by 50%, generate more leads and boost sales.",
+      "tools": [
+        "Node.js",
+        "React",
+        "Shopify",
+        "Python",
+        "WooCommerce",
+        "Express",
+        "MongoDB",
+        "Stripe"
+      ]
+    }
+  },
+  "clientWorkSection": {
+    "clients": {
+      "tagline": "CLIENTS",
+      "title": "Our Happy Clients",
+      "description": "Our dedication to quality and client satisfaction has made it possible for us to work with companies in an array of industries. Our valued clients who have trusted us are mentioned below.",
+
+      "logos": [
+        { "name": "Orange", "image": "/images/clients/orange.svg" },
+        { "name": "Blazemart", "image": "/images/clients/blazemart.svg" },
+        { "name": "Client 3", "image": "/images/clients/client3.svg" },
+        { "name": "Erez", "image": "/images/clients/erez.svg" },
+        { "name": "Client 5", "image": "/images/clients/client5.svg" },
+        { "name": "Easy Spelling", "image": "/images/clients/easyspelling.svg" },
+        { "name": "Waits Welt", "image": "/images/clients/waitswelt.svg" },
+        { "name": "Options Era", "image": "/images/clients/options.svg" }
+      ]
+    },
+
+    "ctaBanner": {
+      "title": "Schedule Your Free 30-Minute Growth Call Today",
+      "cta": {
+        "label": "Book a Demo",
+        "link": "/demo"
+      },
+      "decorations": {
+        "showIcons": true
+      }
+    },
+
+    "ourWork": {
+      "title": "Our Work",
+      "description": "Explore some of our recent projects below. Over the past 10 years, we've been fortunate to work with incredible clients and partners, creating sleek designs that are both time and cost-effective.",
+
+      "projects": [
+        {
+          "id": 1,
+          "title": "DLE Lawyers",
+          "image": "/images/work/work1.jpg",
+          "link": "/work/dle-lawyers"
+        },
+        {
+          "id": 2,
+          "title": "Interarmed",
+          "image": "/images/work/work2.jpg",
+          "link": "/work/interarmed"
+        },
+        {
+          "id": 3,
+          "title": "SEEQ",
+          "image": "/images/work/work3.jpg",
+          "link": "/work/seeq"
+        },
+        {
+          "id": 4,
+          "title": "BIG",
+          "image": "/images/work/work4.jpg",
+          "link": "/work/big"
+        }
+      ]
+    }
+  },
+  "servicesDetailSection": {
+    "servicesOverview": {
+      "title": "Services",
+      "description": "We offer everything you need to build, enhance, and maintain a successful brand. Each service is tailored to help you stand out in the digital world and achieve long-term success.",
+
+      "categories": [
+        {
+          "title": "Web Design & Development",
+          "items": [
+            "Business Website",
+            "Online Store",
+            "Shopify Website",
+            "Website Maintenance and Support"
+          ]
+        },
+        {
+          "title": "Traffic",
+          "items": [
+            "Google Ads Management",
+            "Meta Ads Management",
+            "Tik Tok Ads Management",
+            "Search Engine Optimization (SEO)"
+          ]
+        },
+        {
+          "title": "Content",
+          "items": [
+            "Photography",
+            "Videography",
+            "2D & 3D Animation",
+            "AI Photo & Video Creation"
+          ]
+        },
+        {
+          "title": "Custom Software & Mobile App",
+          "items": [
+            "Custom Software",
+            "Mobile App Development"
+          ]
+        },
+        {
+          "title": "Retention",
+          "items": [
+            "Email & SMS Marketing",
+            "Conversion Rate Optimization (CRO)"
+          ]
+        },
+        {
+          "title": "Branding",
+          "items": [
+            "Logo Design",
+            "Brand Identity"
+          ]
+        }
+      ]
+    },
+
+    "serviceDetail": {
+      "sidebar": {
+        "title": "Web Design & Development",
+        "items": [
+          {
+            "label": "Business Website",
+            "link": "/services/business-website"
+          },
+          {
+            "label": "Online Store",
+            "link": "/services/online-store"
+          },
+          {
+            "label": "Shopify Website",
+            "link": "/services/shopify"
+          },
+          {
+            "label": "Website Maintenance and Support",
+            "link": "/services/maintenance",
+            "active": true
+          }
+        ]
+      },
+
+      "content": {
+        "title": "Website Maintenance and Support Services",
+        "description": "We provide maintenance and expert support to ensure your website runs efficiently, securely, and continuously evolves with your business.",
+
+        "featuresTitle": "Our Maintenance and Support Service Includes",
+
+        "features": [
+          {
+            "id": 1,
+            "title": "Software Updates",
+            "description": "Keep your site up-to-date with the latest software and plugins to ensure compatibility and security."
+          },
+          {
+            "id": 2,
+            "title": "Security Monitoring",
+            "description": "We protect your site against threats and vulnerabilities with continuous monitoring and rapid response to security incidents."
+          },
+          {
+            "id": 3,
+            "title": "Performance Optimization",
+            "description": "We fine-tune site speed and database efficiency for optimal performance."
+          },
+          {
+            "id": 4,
+            "title": "Regular Backups",
+            "description": "We perform regular backups to protect your data and facilitate recovery in case of loss."
+          },
+          {
+            "id": 5,
+            "title": "Technical Consulting",
+            "description": "We provide expert advice to improve your web presence and ensure that your site meets your business goals."
+          },
+          {
+            "id": 6,
+            "title": "Technical Support",
+            "description": "We resolve bugs and issues quickly keeping your business online and running smoothly."
+          },
+          {
+            "id": 7,
+            "title": "Implementation of New Features",
+            "description": "As your needs evolve, we implement new features to enhance your site's capabilities and user experience."
+          }
+        ],
+
+        "cta": {
+          "label": "Contact Us!",
+          "link": "/contact"
+        }
+      }
+    }
+  }
+} 
+

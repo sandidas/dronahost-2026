@@ -1,0 +1,421 @@
+{
+  "domainPricingSection": {
+    "hero": {
+      "tagline": "Up to 80% off web hosting",
+      "title": "Launch your website in one minute",
+      "features": [
+        "Get everything to go online",
+        "Bring ideas to life with AI"
+      ],
+      "pricing": {
+        "price": "₹129.00",
+        "duration": "/mo",
+        "note": "+ 2 mo. free"
+      },
+      "cta": {
+        "label": "Start now",
+        "link": "/get-started"
+      },
+      "guarantee": "30-day money-back guarantee",
+      "reviews": {
+        "rating": "Excellent",
+        "stars": 5,
+        "count": "63,789 reviews",
+        "platform": "Trustpilot",
+        "recommendedBy": "Recommended by WordPress.org"
+      },
+      "image": {
+        "src": "/images/hero/hosting-hero.png",
+        "alt": "Hosting hero illustration"
+      }
+    },
+
+    "domainSearch": {
+      "tagline": "DOMAIN SEARCH",
+      "title": "Find the perfect domain for your brand",
+      "description": "Instantly check domain availability and secure your online identity with ease. Choose from top domain extensions and get started with your new website in just a few clicks.",
+
+      "searchBox": {
+        "placeholder": "e.g. hosture.id",
+        "button": {
+          "label": "Search Domain",
+          "action": "search"
+        },
+        "tldSelector": {
+          "default": ".id",
+          "options": [".id", ".com", ".xyz", ".online", ".store"]
+        }
+      },
+
+      "pricing": [
+        {
+          "tld": ".id",
+          "price": "$150",
+          "originalPrice": "$260",
+          "highlight": true
+        },
+        {
+          "tld": ".com",
+          "price": "$100",
+          "originalPrice": "$150"
+        },
+        {
+          "tld": ".xyz",
+          "price": "$80",
+          "originalPrice": "$100"
+        },
+        {
+          "tld": ".online",
+          "price": "$80",
+          "originalPrice": "$90"
+        },
+        {
+          "tld": ".store",
+          "price": "$40",
+          "originalPrice": "$60"
+        }
+      ]
+    }
+  },
+  "domainExtensionsSection": {
+    "countryExtensions": {
+      "title": "Get Local With Country Extensions",
+      "description": "Help local customers find and trust you online. Country-specific domains boost visibility in local searches, rank higher for \"near me\" queries, and show you're part of their community.",
+      "extensions": [
+        {
+          "country": "United States",
+          "flag": "🇺🇸",
+          "tld": ".us",
+          "price": "$17.99/yr"
+        },
+        {
+          "country": "European Union",
+          "flag": "🇪🇺",
+          "tld": ".eu",
+          "price": "$14.99/yr"
+        },
+        {
+          "country": "United Kingdom",
+          "flag": "🇬🇧",
+          "tld": ".co.uk",
+          "price": "$19.99/yr"
+        },
+        {
+          "country": "Spain",
+          "flag": "🇪🇸",
+          "tld": ".es",
+          "price": "$14.99/yr"
+        },
+        {
+          "country": "Australia",
+          "flag": "🇦🇺",
+          "tld": ".au",
+          "price": "$17.99/yr"
+        },
+        {
+          "country": "Italy",
+          "flag": "🇮🇹",
+          "tld": ".it",
+          "price": "$14.99/yr"
+        }
+      ]
+    },
+
+    "allExtensions": {
+      "title": "Domain Extensions For Every Business Need",
+
+      "mostPopular": [
+        {
+          "tld": ".com",
+          "price": "$17.99/yr",
+          "originalPrice": "$19.99/yr",
+          "discount": "-10%",
+          "highlight": true
+        },
+        {
+          "tld": ".org",
+          "price": "$19.99/yr",
+          "originalPrice": "$21.99/yr",
+          "discount": "-9%"
+        },
+        {
+          "tld": ".net",
+          "price": "$19.99/yr",
+          "originalPrice": "$21.99/yr",
+          "discount": "-9%"
+        },
+        {
+          "tld": ".biz",
+          "price": "$19.99/yr"
+        },
+        {
+          "tld": ".info",
+          "price": "$24.99/yr"
+        },
+        {
+          "tld": ".shop",
+          "price": "$39.99/yr"
+        }
+      ],
+
+      "countryDomains": [
+        { "tld": ".at", "price": "$19.99/yr" },
+        { "tld": ".co.za", "price": "$14.99/yr" },
+        { "tld": ".nom.es", "price": "$14.99/yr" },
+
+        { "tld": ".au", "price": "$17.99/yr" },
+        { "tld": ".de", "price": "$14.99/yr" },
+        { "tld": ".org.au", "price": "$17.99/yr" },
+
+        { "tld": ".be", "price": "$14.99/yr" },
+        { "tld": ".es", "price": "$14.99/yr" },
+        { "tld": ".nl", "price": "$17.99/yr" },
+
+        { "tld": ".ch", "price": "$19.99/yr" },
+        { "tld": ".com.mx", "price": "$24.99/yr" },
+        { "tld": ".org.nz", "price": "$29.99/yr" },
+
+        { "tld": ".ca", "price": "$19.99/yr" },
+        { "tld": ".fr", "price": "$14.99/yr" },
+        { "tld": ".org.uk", "price": "$19.99/yr" },
+
+        { "tld": ".co.nz", "price": "$29.99/yr" },
+        { "tld": ".it", "price": "$14.99/yr" },
+        { "tld": ".org.es", "price": "$14.99/yr" },
+
+        { "tld": ".co.uk", "price": "$19.99/yr" },
+        { "tld": ".eu", "price": "$14.99/yr" },
+        { "tld": ".pl", "price": "$19.99/yr" },
+
+        { "tld": ".co", "price": "$29.99/yr" },
+        { "tld": ".net.au", "price": "$17.99/yr" },
+        { "tld": ".uk", "price": "$19.99/yr" },
+
+        { "tld": ".com.au", "price": "$17.99/yr" },
+        { "tld": ".net.nz", "price": "$29.99/yr" },
+        { "tld": ".us", "price": "$17.99/yr" },
+
+        { "tld": ".com.es", "price": "$14.99/yr" },
+        { "tld": ".mx", "price": "$39.99/yr" }
+      ],
+
+      "cta": {
+        "label": "More Extensions",
+        "action": "expand"
+      },
+
+      "note": "Note: Discounted prices apply to the first invoice only. Regular prices apply for all consecutive renewals unless explicitly stated otherwise. Some domains have special requirements and may not be available in your region."
+    }
+  },
+  "growthPerformanceSection": {
+    "subscriberGrowth": {
+      "title": "Grow and Manage Subscribers Easily",
+      "description": "Build your email list from scratch or grow an existing one. Easily collect, organize, and manage subscribers — all in one place.",
+
+      "features": [
+        {
+          "id": 1,
+          "title": "Collect Leads with Our Plugin For WordPress",
+          "type": "collapsed"
+        },
+        {
+          "id": 2,
+          "title": "Integrate with Popular WordPress Plugins",
+          "type": "collapsed"
+        },
+        {
+          "id": 3,
+          "title": "Grow Your Reach with a Subscribe Page",
+          "type": "expanded",
+          "description": "Use a dedicated subscribe page to attract subscribers from social media, email, and other channels. Make it easy for people to join your list, wherever they are."
+        }
+      ],
+
+      "illustration": {
+        "src": "/images/illustrations/subscriber-growth.svg",
+        "alt": "Subscriber growth illustration"
+      }
+    },
+
+    "performance": {
+      "title": "Stop losing customers to slow loading",
+      "description": "Every second counts. We make sure your website loads fast - automatically.",
+
+      "features": [
+        {
+          "id": 1,
+          "icon": "cdn",
+          "title": "Free built-in CDN",
+          "description": "Your site loads instantly for visitors worldwide. Our free CDN delivers your content from the nearest location, every time."
+        },
+        {
+          "id": 2,
+          "icon": "database",
+          "title": "Multi-level caching",
+          "description": "Fast at every touchpoint - loading, browsing, and buying. Our caching works across all layers so nothing slows your visitors down."
+        },
+        {
+          "id": 3,
+          "icon": "infrastructure",
+          "title": "Premium infrastructure",
+          "description": "Built on Google Cloud with custom ultrafast PHP and MySQL, your site gets enterprise-grade speed - whether it's a blog or a busy online store."
+        },
+        {
+          "id": 4,
+          "icon": "wordpress",
+          "title": "WordPress-optimized",
+          "description": "Our Speed Optimizer plugin extracts maximum performance by adding another level of speed optimization at application level."
+        }
+      ]
+    }
+  },
+  "cloudPricingSection": {
+    "title": "Choose a Plan or Create Your Own Cloud",
+
+    "plans": [
+      {
+        "id": 1,
+        "name": "Jump Start",
+        "tagline": "Easy start on the cloud",
+        "price": "$100.00",
+        "duration": "/mo",
+        "note": "Ex. VAT",
+        "cta": {
+          "label": "Get Plan",
+          "link": "/plans/jump-start"
+        },
+        "features": {
+          "cpu": "4 CPU Cores",
+          "memory": "8GB Memory",
+          "storage": "40GB SSD Space",
+          "bandwidth": "5TB Data Transfer"
+        },
+        "highlight": false
+      },
+      {
+        "id": 2,
+        "name": "Business",
+        "tagline": "Optimal cloud experience",
+        "price": "$200.00",
+        "duration": "/mo",
+        "note": "Ex. VAT",
+        "cta": {
+          "label": "Get Plan",
+          "link": "/plans/business"
+        },
+        "features": {
+          "cpu": "8 CPU Cores",
+          "memory": "12GB Memory",
+          "storage": "80GB SSD Space",
+          "bandwidth": "5TB Data Transfer"
+        },
+        "highlight": true
+      },
+      {
+        "id": 3,
+        "name": "Business Plus",
+        "tagline": "Advanced performance",
+        "price": "$300.00",
+        "duration": "/mo",
+        "note": "Ex. VAT",
+        "cta": {
+          "label": "Get Plan",
+          "link": "/plans/business-plus"
+        },
+        "features": {
+          "cpu": "12 CPU Cores",
+          "memory": "16GB Memory",
+          "storage": "120GB SSD Space",
+          "bandwidth": "5TB Data Transfer"
+        },
+        "highlight": false
+      },
+      {
+        "id": 4,
+        "name": "Super Power",
+        "tagline": "Premium server power",
+        "price": "$400.00",
+        "duration": "/mo",
+        "note": "Ex. VAT",
+        "cta": {
+          "label": "Get Plan",
+          "link": "/plans/super-power"
+        },
+        "features": {
+          "cpu": "16 CPU Cores",
+          "memory": "20GB Memory",
+          "storage": "160GB SSD Space",
+          "bandwidth": "5TB Data Transfer"
+        },
+        "highlight": false
+      }
+    ],
+
+    "customCloud": {
+      "title": "Build Your Custom Cloud",
+
+      "tabs": [
+        "Jump Start",
+        "Business",
+        "Business Plus",
+        "Super Power"
+      ],
+
+      "sliders": [
+        {
+          "id": "cpu",
+          "label": "CPU",
+          "min": 1,
+          "max": 64,
+          "value": 33,
+          "unit": "Cores"
+        },
+        {
+          "id": "memory",
+          "label": "Memory",
+          "min": 1,
+          "max": 256,
+          "value": 108,
+          "unit": "GB"
+        },
+        {
+          "id": "storage",
+          "label": "SSD Space",
+          "min": 10,
+          "max": 2000,
+          "value": 1000,
+          "unit": "GB"
+        }
+      ],
+
+      "summary": {
+        "title": "Custom Cloud",
+        "price": "$1100.00",
+        "duration": "/mo",
+        "cta": {
+          "label": "Get Custom Cloud",
+          "link": "/custom-cloud"
+        },
+        "features": {
+          "cpu": "33 CPU Cores",
+          "memory": "108 GB Memory",
+          "storage": "40 GB SSD Space",
+          "bandwidth": "5 TB Data Transfer"
+        }
+      },
+
+      "navigation": {
+        "backToPlans": {
+          "label": "Go Back to Plans",
+          "link": "/plans"
+        }
+      }
+    },
+
+    "cta": {
+      "label": "Configure Your Own Cloud",
+      "action": "scrollToCustom"
+    }
+  }
+}
+

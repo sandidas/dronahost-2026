@@ -1,0 +1,728 @@
+{
+  "hostingLandingPage": {
+    "hero": {
+      "title": "High Performance Hosting For Websites",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+      "cta": [
+        {
+          "label": "Get Started",
+          "link": "/get-started",
+          "variant": "primary"
+        },
+        {
+          "label": "View Plans",
+          "link": "/plans",
+          "variant": "secondary"
+        }
+      ],
+
+      "socialProof": {
+        "members": "50K+ Members",
+        "avatars": [
+          "/images/users/user1.jpg",
+          "/images/users/user2.jpg",
+          "/images/users/user3.jpg"
+        ]
+      },
+
+      "floatingCards": [
+        {
+          "title": "Lorem ipsum dolor",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
+          "position": "top-right"
+        },
+        {
+          "title": "Lorem ipsum dolor",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
+          "position": "middle-left"
+        },
+        {
+          "title": "Lorem ipsum dolor",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
+          "position": "bottom-left"
+        }
+      ],
+
+      "image": {
+        "src": "/images/hero/hosting-main.png",
+        "alt": "Hosting hero"
+      }
+    },
+
+    "enterpriseSection": {
+      "tagline": "ENTERPRISE MANAGED HOSTING SOLUTIONS",
+      "title": "Enterprise hosting, without the complexity",
+      "description": "HostingPro delivers enterprise-ready performance with built-in security, performance monitoring, and automatic platform maintenance—saving companies engineering time and resources. Get the enterprise managed hosting platform trusted by global brands.",
+
+      "cta": [
+        {
+          "label": "Request a Demo",
+          "link": "/demo",
+          "variant": "primary"
+        },
+        {
+          "label": "Plans & Pricing",
+          "link": "/pricing",
+          "variant": "secondary"
+        }
+      ],
+
+      "image": {
+        "src": "/images/illustrations/enterprise.svg",
+        "alt": "Enterprise hosting illustration"
+      }
+    },
+
+    "testimonials": {
+      "tagline": "HOSTINGPRO IS TRUSTED BY MILLIONS",
+      "title": "You're in good company",
+
+      "reviews": [
+        {
+          "rating": 5,
+          "platform": "G2",
+          "title": "I've launched many websites personally and professionally with HostingPro.",
+          "description": "From small local farmers listing their locations on a map, to nationwide hardware store ordering systems and real estate agent CMS integrations. The benefits are that a small team of developers can launch high-performing systems quickly and inexpensively.",
+          "author": {
+            "name": "Michael H.",
+            "role": "Software Developer",
+            "company": "Small-Business"
+          }
+        },
+        {
+          "rating": 5,
+          "platform": "G2",
+          "title": "I've launched many websites personally and professionally with HostingPro.",
+          "description": "From small local farmers listing their locations on a map, to nationwide hardware store ordering systems and real estate agent CMS integrations.",
+          "author": {
+            "name": "Michael H.",
+            "role": "Software Developer",
+            "company": "Small-Business"
+          }
+        },
+        {
+          "rating": 5,
+          "platform": "G2",
+          "title": "I've launched many websites personally and professionally with HostingPro.",
+          "description": "From small local farmers listing their locations on a map, to nationwide hardware store ordering systems and real estate agent CMS integrations.",
+          "author": {
+            "name": "Michael H.",
+            "role": "Software Developer",
+            "company": "Small-Business"
+          }
+        }
+      ]
+    },
+
+    "publishingSupport": {
+      "tagline": "BUILT FOR HIGH-VISIBILITY PUBLISHING DEMANDS",
+      "title": "Supporting teams across the publishing lifecycle",
+
+      "items": [
+        {
+          "title": "News publishers",
+          "description": "Publish breaking news in real time while maintaining editorial approvals, governance, and operational stability across teams.",
+          "icon": "news"
+        },
+        {
+          "title": "B2B publishers",
+          "description": "Connect editorial output directly to engagement, SEO performance, and business outcomes using integrated analytics and insights.",
+          "icon": "b2b"
+        },
+        {
+          "title": "Digital magazines",
+          "description": "Power rich, media-driven experiences with native DAM integrations that keep visual assets organized, reusable, and consistent.",
+          "icon": "magazine"
+        },
+        {
+          "title": "News publishers",
+          "description": "Publish breaking news in real time while maintaining editorial approvals, governance, and operational stability across teams.",
+          "icon": "news"
+        },
+        {
+          "title": "B2B publishers",
+          "description": "Connect editorial output directly to engagement, SEO performance, and business outcomes using integrated analytics and insights.",
+          "icon": "b2b"
+        }
+      ]
+    }
+  },
+  "headlessSection": {
+    "testimonial": {
+      "quote": "[HostingPro] Newsroom brought our editorial workflows, assets, and analytics together in one place. We publish faster, collaborate better, and finally understand what content performs.",
+      "author": {
+        "name": "Matthew Amiot",
+        "role": "General Manager",
+        "company": "Lana",
+        "avatar": "/images/users/matthew.jpg"
+      }
+    },
+
+    "solutions": {
+      "tagline": "HOSTINGPRO IS TRUSTED BY MILLIONS",
+      "title": "Headless Solutions",
+
+      "tabs": [
+        {
+          "title": "Agency efficiency",
+          "active": true,
+          "description": "Streamline your development workflows with pre-configured environments and automated deployments. Focus on building great experiences while we handle the complex infrastructure."
+        },
+        {
+          "title": "Developer freedom",
+          "description": "Work with your preferred frameworks and tools while maintaining full flexibility and scalability across your projects."
+        },
+        {
+          "title": "Brand impact",
+          "description": "Deliver fast, consistent, and engaging digital experiences that elevate your brand presence across platforms."
+        }
+      ],
+
+      "image": {
+        "src": "/images/solutions/headless-workspace.jpg",
+        "alt": "Headless workspace"
+      }
+    },
+
+    "features": {
+      "tagline": "HEADLESS PLATFORM FEATURES",
+      "title": "A complete headless tech stack",
+
+      "items": [
+        {
+          "title": "One, holistic solution",
+          "description": "Reduces your time spent integrating multiple vendors in your tech stack, saves you money, and allows you to spend more time innovating.",
+          "icon": "stack"
+        },
+        {
+          "title": "Node.js frontend",
+          "description": "Unlock new opportunities with higher-budget projects. Build with your choice of modern front-end JavaScript framework.",
+          "icon": "code"
+        },
+        {
+          "title": "High-performance hosting",
+          "description": "Achieve up to 10x performance with global CDN, the fastest TTFB scores, and smart scaling and auto-healing Node hosting.",
+          "icon": "pulse"
+        },
+        {
+          "title": "Robust CMS",
+          "description": "Reduce your clients' learning curve, give your dev team more flexibility, and save on sunk costs compared to other enterprise CMSs.",
+          "icon": "database"
+        },
+        {
+          "title": "Platform blueprints",
+          "description": "Jump-start your projects with pre-configured environments, templates, and demo content to quickly learn.",
+          "icon": "layout"
+        },
+        {
+          "title": "GraphQL API",
+          "description": "Optionally enable a GraphQL API to render pages and content on your frontend and query your data with enhanced clarity.",
+          "icon": "search"
+        },
+        {
+          "title": "Content modeling",
+          "description": "Model your data structure and editing experience while empowering both content creators and developers.",
+          "icon": "shield"
+        },
+        {
+          "title": "Developer toolkit",
+          "description": "An optional, super fast toolkit for bringing common features like previews and page template hierarchy to your project.",
+          "icon": "dev"
+        },
+        {
+          "title": "Smart Search",
+          "description": "Deliver a smarter, easier, and faster way to enable headless search with minimal configuration and an intuitive UI.",
+          "icon": "search-advanced",
+          "badge": "New"
+        }
+      ]
+    }
+  },
+  "resourcesReviewsPartner": {
+    "resources": {
+      "tagline": "RESOURCES",
+      "title": "Insights to inspire",
+
+      "items": [
+        {
+          "id": 1,
+          "title": "Developer Resources",
+          "image": "/images/resources/dev-resources.jpg",
+          "link": "/resources/developer"
+        },
+        {
+          "id": 2,
+          "title": "Advanced Web Performance",
+          "image": "/images/resources/performance.jpg",
+          "link": "/resources/performance"
+        },
+        {
+          "id": 3,
+          "title": "The Rise of Multi-CMS in the Enterprise",
+          "image": "/images/resources/multi-cms.jpg",
+          "link": "/resources/multi-cms",
+          "cta": "Learn More"
+        }
+      ]
+    },
+
+    "reviews": {
+      "tagline": "BUILT FOR HIGH-VISIBILITY PUBLISHING DEMANDS",
+      "title": "Reviews & Feedback From Our Clients",
+
+      "tabs": ["Testimonials", "Reviews", "Case Studies"],
+
+      "items": [
+        {
+          "rating": 5,
+          "platform": "G2",
+          "text": "I love the platform for their outstanding customer support which is always available to help when I have an issue or a confidence gap. They help me navigate any uncertainties.",
+          "author": {
+            "name": "Joey B",
+            "role": "Verified User",
+            "avatar": "/images/users/user1.jpg"
+          }
+        },
+        {
+          "rating": 5,
+          "platform": "G2",
+          "text": "I love the platform for their outstanding customer support which is always available to help when I have an issue or a confidence gap.",
+          "author": {
+            "name": "Joey B",
+            "role": "Verified User",
+            "avatar": "/images/users/user2.jpg"
+          }
+        },
+        {
+          "rating": 5,
+          "platform": "G2",
+          "text": "I love the platform for their outstanding customer support which is always available to help when I have an issue.",
+          "author": {
+            "name": "Joey B",
+            "role": "Verified User",
+            "avatar": "/images/users/user3.jpg"
+          }
+        }
+      ]
+    },
+
+    "howItWorks": {
+      "tagline": "AGENCY PARTNER PROGRAM",
+      "title": "How it works",
+
+      "steps": [
+        {
+          "step": 1,
+          "title": "Submit application",
+          "description": "If your agency works in web development, from design to development and everywhere in between, then this program is built for you.",
+          "image": "/images/how-it-works/step1.png"
+        },
+        {
+          "step": 2,
+          "title": "Get approved",
+          "description": "We move fast. Keep an eye on your inbox and get ready to accelerate growth.",
+          "image": "/images/how-it-works/step2.png"
+        },
+        {
+          "step": 3,
+          "title": "Get started with HostingPro",
+          "description": "Get access to your Partner Portal, set up your free dev account, and claim your personalized referral link.",
+          "image": "/images/how-it-works/step3.png"
+        }
+      ]
+    },
+
+    "partnerProgram": {
+      "tagline": "ACCELERATE YOUR WAY THROUGH MEMBERSHIP TIERS",
+      "title": "Join Our Partner Program",
+
+      "tiers": [
+        {
+          "name": "Member",
+          "subtitle": "No minimum referrals"
+        },
+        {
+          "name": "Preferred",
+          "subtitle": "3 client referrals"
+        },
+        {
+          "name": "Advanced",
+          "subtitle": "$1,200 referred revenue"
+        },
+        {
+          "name": "Strategic",
+          "subtitle": "$5,000 referred revenue"
+        }
+      ],
+
+      "benefits": {
+        "salesMarketing": [
+          {
+            "label": "Recurring commissions for 12 months",
+            "values": ["8% per plan", "8% per plan", "10% per plan", "12% per plan"]
+          },
+          {
+            "label": "Listing in Preferred Agency Directory",
+            "values": ["-", "✓", "Optimized listing", "Highest ranking listing"]
+          },
+          {
+            "label": "Introductions to brands",
+            "values": ["-", "-", "Projects < $50K", "All projects"]
+          },
+          {
+            "label": "Co-Marketing opportunities",
+            "values": ["-", "-", "✓", "✓"]
+          },
+          {
+            "label": "Partner Success Manager",
+            "values": ["✓", "Dedicated Partner Manager", "Dedicated Partner Manager", "Senior Strategic Manager"]
+          }
+        ],
+
+        "additional": [
+          {
+            "title": "Pricing benefits",
+            "collapsed": true
+          },
+          {
+            "title": "Enablement & support benefits",
+            "collapsed": true
+          }
+        ]
+      },
+
+      "note": "*Tier status assessed on a rolling 12 month basis",
+
+      "cta": {
+        "label": "Become a Partner",
+        "link": "/partner"
+      }
+    }
+  },
+  "partnerMatchForm": {
+    "title": "Get matched with a HostingPro Partner",
+    "description": "Need help picking the right partner for your next project? Fill out our form and let our team make a match based on your needs! You will be sent a curated list of trusted agency partners who compliment your budget, geography, and project type.",
+
+    "fields": [
+      {
+        "name": "firstName",
+        "label": "First name",
+        "type": "text",
+        "required": true,
+        "placeholder": "Enter your first name"
+      },
+      {
+        "name": "lastName",
+        "label": "Last name",
+        "type": "text",
+        "required": true,
+        "placeholder": "Enter your last name"
+      },
+      {
+        "name": "email",
+        "label": "Email",
+        "type": "email",
+        "required": true,
+        "placeholder": "Enter your email"
+      },
+      {
+        "name": "phone",
+        "label": "Phone number",
+        "type": "tel",
+        "required": false,
+        "placeholder": "Enter your phone number"
+      },
+      {
+        "name": "companyName",
+        "label": "Company name",
+        "type": "text",
+        "required": false,
+        "placeholder": "Enter your company name"
+      },
+      {
+        "name": "companyWebsite",
+        "label": "Company Website/URL",
+        "type": "url",
+        "required": false,
+        "placeholder": "https://yourwebsite.com"
+      },
+      {
+        "name": "location",
+        "label": "Where are you located?",
+        "type": "text",
+        "required": true,
+        "placeholder": "Enter your location"
+      },
+      {
+        "name": "projectType",
+        "label": "What do you need help with?",
+        "type": "text",
+        "required": true,
+        "placeholder": "e.g. Website, App, SEO"
+      },
+      {
+        "name": "budget",
+        "label": "What is your estimated budget for this project?",
+        "type": "text",
+        "required": false,
+        "placeholder": "e.g. $1000 - $5000"
+      },
+      {
+        "name": "timeline",
+        "label": "What is your project timeline/anticipated launch date?",
+        "type": "text",
+        "required": false,
+        "placeholder": "e.g. 2 months"
+      },
+      {
+        "name": "projectDetails",
+        "label": "Please provide any details of your project. This will help our team match you with the right partner",
+        "type": "textarea",
+        "required": false,
+        "placeholder": "Describe your project..."
+      }
+    ],
+
+    "cta": {
+      "label": "Submit",
+      "action": "submitForm"
+    }
+  },
+  "featureComparisonSection": {
+    "features": {
+      "tagline": "LOREM IPSUM DOLOR SIT",
+      "title": "Lorem ipsum dolor sit",
+
+      "items": [
+        {
+          "id": 1,
+          "title": "Lorem ipsum dolor sit",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et commodo.",
+          "image": "/images/features/feature1.svg",
+          "cta": {
+            "label": "Learn More",
+            "link": "/features/1"
+          }
+        },
+        {
+          "id": 2,
+          "title": "Lorem ipsum dolor sit",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et commodo.",
+          "image": "/images/features/feature2.svg",
+          "cta": {
+            "label": "Learn More",
+            "link": "/features/2"
+          }
+        },
+        {
+          "id": 3,
+          "title": "Lorem ipsum dolor sit",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et commodo.",
+          "image": "/images/features/feature3.svg",
+          "badge": "NEW",
+          "cta": {
+            "label": "Learn More",
+            "link": "/features/3"
+          }
+        }
+      ]
+    },
+
+    "comparison": {
+      "tagline": "LOREM IPSUM DOLOR SIT",
+      "title": "Lorem ipsum dolor sit",
+
+      "columns": ["Feature", "Self-Hosting", "HostingPro"],
+
+      "rows": [
+        {
+          "feature": "Initial setup & migration",
+          "selfHosting": "$2,000–$22,000 (one-time)",
+          "hostingPro": "Included"
+        },
+        {
+          "feature": "Enterprise support & advisory services",
+          "selfHosting": "$1,000–$15,000/month",
+          "hostingPro": "Included"
+        },
+        {
+          "feature": "Enterprise security",
+          "selfHosting": "$1,000–$5,000/month",
+          "hostingPro": "Included"
+        },
+        {
+          "feature": "Performance & scalability",
+          "selfHosting": "$500–$5,000/month",
+          "hostingPro": "Included"
+        },
+        {
+          "feature": "Developer tools",
+          "selfHosting": "$500–$10,000/month",
+          "hostingPro": "Included"
+        },
+        {
+          "feature": "Enterprise hosting fees",
+          "selfHosting": "$250–$20,000/month",
+          "hostingPro": "$400–$15,000/month"
+        }
+      ],
+
+      "total": {
+        "label": "Total cost",
+        "selfHosting": "$3,250–$55,000/month",
+        "selfHostingNote": "+ $2,000–$22,000 setup cost",
+        "hostingPro": "$400–$15,000/month",
+        "hostingProNote": "+ $0 setup & migration cost"
+      },
+
+      "footnote": "Estimates are based on typical software costs for mid to large size companies and developer time, which varies by experience level."
+    },
+
+    "cta": {
+      "label": "Connect with our Team to Explore Savings",
+      "link": "/contact"
+    }
+  },
+  "pricingPlansSection": {
+    "header": {
+      "tagline": "HOSTINGPRO PRICING PLANS FOR SMALL BUSINESSES",
+      "title": "Choose your plan",
+      "billingToggle": {
+        "options": ["Annually", "Monthly"],
+        "default": "Annually"
+      }
+    },
+
+    "plans": [
+      {
+        "id": 1,
+        "category": "Essential Hosting",
+        "name": "Professional",
+        "price": "$54",
+        "currency": "USD",
+        "duration": "/mo",
+        "billingNote": "Billed at $65/mo",
+        "features": [
+          "Up to 3 sites",
+          "75,000 visits/mo",
+          "15 GB storage",
+          "150 GB bandwidth"
+        ],
+        "cta": {
+          "label": "Buy Now",
+          "link": "/buy/professional"
+        },
+        "footer": "Compare All Features"
+      },
+      {
+        "id": 2,
+        "category": "Essential Hosting",
+        "name": "Growth",
+        "price": "$108",
+        "currency": "USD",
+        "duration": "/mo",
+        "billingNote": "Billed at $130/mo",
+        "features": [
+          "Up to 10 sites",
+          "100,000 visits/mo",
+          "20 GB storage",
+          "240 GB bandwidth"
+        ],
+        "cta": {
+          "label": "Buy Now",
+          "link": "/buy/growth"
+        },
+        "footer": "Compare All Features"
+      },
+      {
+        "id": 3,
+        "category": "Essential Hosting",
+        "name": "Scale",
+        "price": "$275",
+        "currency": "USD",
+        "duration": "/mo",
+        "billingNote": "Billed at $330/mo",
+        "features": [
+          "Up to 30 sites",
+          "400,000 visits/mo",
+          "50 GB storage",
+          "550 GB bandwidth"
+        ],
+        "cta": {
+          "label": "Buy Now",
+          "link": "/buy/scale"
+        },
+        "footer": "Compare All Features"
+      },
+      {
+        "id": 4,
+        "category": "Core Hosting",
+        "name": "Core",
+        "price": "$400",
+        "currency": "USD",
+        "duration": "/mo",
+        "highlight": true,
+        "features": [
+          "Scales as your business grows",
+          "Priority technical support",
+          "Free migrations managed by experts",
+          "Always-on monitoring"
+        ],
+        "cta": {
+          "label": "Get in Touch",
+          "link": "/contact"
+        },
+        "footer": "Compare All Features"
+      }
+    ],
+
+    "starterNote": {
+      "title": "Just getting started?",
+      "description": "Our Startup plan includes 15,000 visits/mo, and all the essential features you need to launch and grow your website, with a team reliable performance and expert support— all starting at just $30/mo.",
+      "cta": {
+        "label": "Buy Now",
+        "link": "/buy/startup"
+      }
+    },
+
+    "trustIndicators": [
+      {
+        "label": "Enjoy proactive site security",
+        "icon": "shield"
+      },
+      {
+        "label": "Excellent",
+        "rating": 5,
+        "platform": "Trustpilot"
+      },
+      {
+        "label": "Rest easy with 24/7 support",
+        "icon": "support"
+      }
+    ],
+
+    "partners": {
+      "tagline": "EXTEND YOUR SOLUTIONS",
+      "title": "Our integrated partners",
+      "description": "Leverage the flexibility of open source and best-of-breed technology. We provide ecosystem integration with partners across the martech stack.",
+      "logos": [
+        "aws",
+        "azure",
+        "cloudflare",
+        "google-cloud",
+        "stripe"
+      ]
+    },
+
+    "ctaBanner": {
+      "title": "Ready to migrate your sites to HostingPro?",
+      "cta": {
+        "label": "View Plans",
+        "link": "/plans"
+      }
+    }
+  }
+}
+
+
