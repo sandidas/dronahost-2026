@@ -67,14 +67,15 @@
     }
   },
   "featuresSection": {
-    "tagline": "LOREM IPSUM DOLOR SIT",
+    
     "title": "Lorem ipsum dolor sit",
+    "tagline": "LOREM IPSUM DOLOR SIT",
     "features": [
       {
         "id": 1,
         "title": "Lorem ipsum dolor sit",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et commodo",
-        "image": "/images/feature-analytics.png",
+        "image": "/images/BoxyLayout1.svg",
         "icon": "/icons/analytics.svg",
         "badge": null,
         "progress": null,
@@ -88,7 +89,7 @@
         "id": 2,
         "title": "Lorem ipsum dolor sit",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et commodo",
-        "image": "/images/feature-search.png",
+        "image": "/images/BoxyLayout2.svg",
         "icon": "/icons/grid.svg",
         "badge": null,
         "progress": null,
@@ -102,7 +103,7 @@
         "id": 3,
         "title": "Lorem ipsum dolor sit",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et commodo",
-        "image": "/images/feature-progress.png",
+        "image": "/images/BoxyLayout3.svg",
         "icon": "/icons/grid.svg",
         "badge": "NEW",
         "progress": {
@@ -126,7 +127,7 @@
         "id": 1,
         "title": "Lorem ipsum dolor sit ame",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-        "icon": "/icons/cursor.svg",
+        "icon": "/icons/clickIcon.svg",
         "cta": {
           "label": "Learn More",
           "link": "/service-1"
@@ -136,7 +137,7 @@
         "id": 2,
         "title": "Lorem ipsum dolor sit ame",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-        "icon": "/icons/cursor.svg",
+        "icon": "/icons/clickIcon.svg",
         "cta": {
           "label": "Learn More",
           "link": "/service-2"
@@ -146,7 +147,7 @@
         "id": 3,
         "title": "Lorem ipsum dolor sit ame",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-        "icon": "/icons/cursor.svg",
+        "icon": "/icons/clickIcon.svg",
         "cta": {
           "label": "Learn More",
           "link": "/service-3"
@@ -156,7 +157,7 @@
         "id": 4,
         "title": "Lorem ipsum dolor sit ame",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-        "icon": "/icons/cursor.svg",
+        "icon": "/icons/clickIcon.svg",
         "cta": {
           "label": "Learn More",
           "link": "/service-4"
@@ -192,7 +193,7 @@
       }
     ],
     "image": {
-      "src": "/images/case-study-design.png",
+      "src": "/images/home/caseStudy.svg",
       "alt": "Design workspace showing UI wireframe on screen"
     },
     "slider": {
@@ -237,7 +238,7 @@
       }
     ],
     "image": {
-      "src": "/images/cta-illustration.png",
+      "src": "/images/home/CTA.svg",
       "alt": "Illustration of person working on laptop"
     },
     "layout": {
@@ -282,7 +283,7 @@
       }
     ],
     "image": {
-      "src": "/images/managed-hosting.png",
+      "src": "/images/home/pricingSection1.svg",
       "alt": "Person using laptop with website interface background"
     },
     "layout": {
@@ -328,7 +329,7 @@
     ],
     "illustration": {
       "type": "vector",
-      "src": "/images/hosting-illustration.png",
+      "src": "/images/home/pricingSection2.svg",
       "alt": "Illustration of secure package delivery with shield and umbrella protection"
     },
     "decorations": {
@@ -416,6 +417,11 @@
         }
       ]
     },
+    "illustration": {
+      "type": "line-art",
+      "src": "/images/home/pricingSection3.svg",
+      "alt": "Illustration of user working on laptop with UI elements"
+    },
     "layout": {
       "type": "split",
       "imagePosition": "left",
@@ -460,7 +466,7 @@
     ],
     "illustration": {
       "type": "line-art",
-      "src": "/images/hosting-user-illustration.png",
+      "src": "/images/home/pricingSection4.svg",
       "alt": "Illustration of user working on laptop with UI elements"
     },
     "uiElements": [
@@ -676,7 +682,7 @@
         "author": {
           "name": "Joey B",
           "role": "Verified User",
-          "avatar": "/avatars/user1.jpg"
+          "avatar": "/images/home/client1.svg"
         }
       },
       {
@@ -691,7 +697,7 @@
         "author": {
           "name": "Joey B",
           "role": "Verified User",
-          "avatar": "/avatars/user2.jpg"
+          "avatar": "/images/home/client2.svg"
         }
       },
       {
@@ -706,7 +712,7 @@
         "author": {
           "name": "Joey B",
           "role": "Verified User",
-          "avatar": "/avatars/user3.jpg"
+          "avatar": "/images/home/client3.svg"
         }
       }
     ],

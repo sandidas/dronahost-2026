@@ -1,4 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap");
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: oklch(0.648 0.22 38.17);
+  --color-primary-foreground: oklch(1 0 0);
+  --color-background: oklch(0.99 0.003 75);
+  --color-foreground: oklch(0.21 0.01 75);
+}
 
 :root {
   --primary: oklch(0.648 0.22 38.17);

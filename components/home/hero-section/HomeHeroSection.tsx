@@ -79,39 +79,19 @@ const getSafeHeroImage = (imageSrc: string) => {
 };
 
 const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
-  const { navbar, heroSection } = data;
+  const { heroSection } = data; 
 
   const titleParts = heroSection.title.split(" Cloud ");
 
   return (
-    <Section height="screen" padding="hero" hAlign="left" className="hero">
-      <div className="hero-overlay" aria-hidden="true" />
-
-      {/* Navbar */}
-      <nav className="hero-nav hero-container">
-        <div className="brand">
-          {navbar.logo.main}
-          <span>{navbar.logo.highlight}</span>
-        </div>
-
-        <ul className="nav-links">
-          {navbar.menu.map((item: MenuItem) => (
-            <li key={item.label}>
-              {item.label}
-              {item.hasDropdown ? " v" : ""}
-            </li>
-          ))}
-        </ul>
-
-        <button className="login-btn">{navbar.cta.label}</button>
-      </nav>
+    <Section height="screen" hAlign="left" className="hero">
 
       {/* Hero Body */}
       <div className="hero-body hero-container">
+        
         {/* Left */}
         <div className="hero-left">
 
-          {/*  HeadLineText USED HERE */}
           <HeadLineText
             as="h1"
             fontSize="sixXl"
