@@ -31,7 +31,7 @@ export default function FeatureSection2({ data }: FeatureSectionProps) {
   const features = section?.features?.slice(0, 3) ?? [];
 
   return (
-    <Section padding="lg" className="dark:bg-gray-900">
+    <Section padding="lg" className="bg-white dark:bg-[#071a3a]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Heading */}
@@ -41,6 +41,7 @@ export default function FeatureSection2({ data }: FeatureSectionProps) {
           align="center"
           fontWeight="bold"
           fontColor="muted"
+          className="text-slate-900 dark:text-slate-100"
         >
           {section?.title ?? "Features Overview"}
           <span className="block mt-2 text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -58,7 +59,7 @@ export default function FeatureSection2({ data }: FeatureSectionProps) {
                 
 
                 {/* Main card */}
-                <div className="relative w-[90%] rounded-2xl bg-white dark:bg-gray-900 shadow-md p-4 transition-transform duration-300 hover:-translate-y-2">
+                <div className="relative w-[90%] rounded-2xl border border-slate-200 bg-white shadow-md p-4 transition-transform duration-300 hover:-translate-y-2 dark:border-slate-700 dark:bg-slate-900">
                   
                   <Image
                     src={featureImages[index] ?? featureImages[0]}
@@ -72,7 +73,7 @@ export default function FeatureSection2({ data }: FeatureSectionProps) {
               </div>
 
               {/* Content */}
-              <h3 className="font-semibold text-lg mb-2">
+              <h3 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
                 {feature.title}
               </h3>
 
@@ -81,7 +82,7 @@ export default function FeatureSection2({ data }: FeatureSectionProps) {
               </p>
 
               {/* CTA */}
-              <button className="mt-4 text-sm font-semibold text-gray-800 dark:text-gray-200 hover:underline flex items-center gap-1">
+              <button className="mt-4 flex items-center gap-1 text-sm font-semibold text-gray-800 hover:underline dark:text-gray-200">
                 {(feature.cta?.label ?? "Learn More") + " →"}
               </button>
             </div>

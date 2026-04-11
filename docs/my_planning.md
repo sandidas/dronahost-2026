@@ -1,3 +1,0 @@
-- now i want to use the jsons in the folder C:\Users\dasso\Desktop\Projects\dronahost-2026\data for building the home page 
-- for home page i created the home.json (C:\Users\dasso\Desktop\Projects\dronahost-2026\data\home.json)
-- This home.json i want to call in page.tsx (C:\Users\dasso\Desktop\Projects\dronahost-2026\app\page.tsx) and no need to customly write the data in the all sections in this folder C:\Users\dasso\Desktop\Projects\dronahost-2026\components\home

@@ -2,8 +2,9 @@
   "insightsSection": {
     "tagline": "BLOG & RESOURCES",
     "title": {
-      "main": "Insights On Web, Mobile,",
-      "highlight": "And Digital Marketing"
+      "main": "Insights On Web, Mobile, And",
+      "highlight": "Digital ",
+      "main2": "Marketing"
     },
     "description": "Tips, guides, and updates on development, design, SEO, and growth—so you can build and scale your business online.",
 
@@ -26,7 +27,7 @@
         "id": 1,
         "category": "Digital Marketing",
         "title": "Email Segmentation 2025: Complete Blueprint for Personalized Marketing",
-        "image": "/images/blog/blog1.jpg",
+        "image": "/images/blog/blog1.svg",
         "author": "Admin",
         "date": "Jan 12, 2025"
       },
@@ -34,7 +35,7 @@
         "id": 2,
         "category": "Web Development",
         "title": "Headless CMS vs. Traditional CMS: Which is Best for 2025?",
-        "image": "/images/blog/blog2.jpg",
+        "image": "/images/blog/blog2.svg",
         "author": "Admin",
         "date": "Jan 10, 2025"
       },
@@ -42,7 +43,7 @@
         "id": 3,
         "category": "UI/UX",
         "title": "Accessibility Design: Why WCAG Compliance is Non-Negotiable in 2025",
-        "image": "/images/blog/blog3.jpg",
+        "image": "/images/blog/blog3.svg",
         "author": "Admin",
         "date": "Jan 8, 2025"
       },
@@ -50,7 +51,7 @@
         "id": 4,
         "category": "Software Development",
         "title": "How to Build Scalable SaaS Platforms in 2025: A Technical Guide",
-        "image": "/images/blog/blog4.jpg",
+        "image": "/images/blog/blog4.svg",
         "author": "Admin",
         "date": "Jan 6, 2025"
       },
@@ -58,7 +59,7 @@
         "id": 5,
         "category": "UI/UX",
         "title": "Designing for Smart Devices: UI/UX Tips for 2025",
-        "image": "/images/blog/blog5.jpg",
+        "image": "/images/blog/blog5.svg",
         "author": "Admin",
         "date": "Jan 4, 2025"
       },
@@ -66,18 +67,20 @@
         "id": 6,
         "category": "Software Development",
         "title": "AI-Powered Low-Code Platforms: Will They Replace Developers in 2025?",
-        "image": "/images/blog/blog6.jpg",
+        "image": "/images/blog/blog6.svg",
         "author": "Admin",
         "date": "Jan 2, 2025"
       }
     ],
 
     "featuredInsight": {
-      "tag": "FEATURED INSIGHT",
+      "tag": "Feature Insight",
       "title": "The Evolution of Microservices: Building Resilient Distributed Systems for 2025",
       "description": "Discover how modern microservices architecture is transforming distributed systems—improving scalability, fault tolerance, and performance.",
-      "image": "/images/blog/featured.jpg",
-      "author": "Admin User",
+      "image": "/images/blog/featuredinsight.svg",
+      "author": "Marcus Chen",
+      "authorImage": "/images/blog/client.svg",
+      "lead": "Lead DevOps Architect",
       "date": "Jan 1, 2025",
       "readTime": "5 min read"
     },
@@ -87,23 +90,31 @@
       "posts": [
         {
           "id": 1,
-          "title": "Serverless Architecture: A Practical Guide for CTOs",
-          "link": "/blog/serverless-guide"
+          "tag": "SECURITY",
+          "title": "Zero-Trust Implementation: A Practical Guide for CTOs",
+          "link": "/blog/serverless-guide",
+          "readTime": "4 min read"
         },
         {
           "id": 2,
-          "title": "Why Real-Time Messaging is Critical for Modern Apps",
-          "link": "/blog/realtime-messaging"
+          "tag": "DEVELOPMENT",
+          "title": "Why Rust is Replacing C++ in Core Infrastructure",
+          "link": "/blog/C++-vs-Rust",
+          "readTime": "7 min read"
         },
         {
           "id": 3,
-          "title": "Optimizing Blog Performance for Core Web Vitals",
-          "link": "/blog/core-web-vitals"
+          "tag": "PERFORMANCE",
+          "title": "Optimizing Edge Functions for Millisecond Latency",
+          "link": "/blog/core-web-vitals",
+          "readTime": "5 min read" 
         },
         {
           "id": 4,
-          "title": "Next-Gen SEO: AI + Semantic Search Explained",
-          "link": "/blog/ai-seo"
+          "tag": "AI",
+          "title": "Vector Databases: The Backbone of Modern AI  Systems",
+          "link": "/blog/vector-databases",
+          "readTime": "9 min read"
         }
       ]
     },
@@ -120,7 +131,7 @@
     "ctaBanner": {
       "tagline": "DIGITAL MARKETING",
       "title": "Never miss a deep dive",
-      "description": "Get the latest insights, tips, and trends delivered directly to your inbox.",
+      "description": "Join 45,000+ engineers receiving our weekly curated brief on technical strategy, high-end architecture, and the future of web standards.",
       "inputPlaceholder": "Enter your email",
       "button": {
         "label": "Join Newsletter",
@@ -128,6 +139,7 @@
       }
     }
   },
+
   "mediaHubSection": {
     "popularVideos": {
       "title": "Popular Videos",
@@ -141,7 +153,7 @@
           "title": "Fine Tuning Your Site",
           "subtitle": "Fine Tuning Your Site: Custom Blocks With ACF",
           "duration": "45:20",
-          "image": "/images/videos/video1.jpg",
+          "image": "/images/blog/video.svg",
           "cta": {
             "label": "Watch Now",
             "link": "/videos/fine-tuning-site"
@@ -153,7 +165,7 @@
           "title": "WP Engine Webinar",
           "subtitle": "WP Engine Webinar: Proven WordPress Security Tips",
           "duration": "1:12:05",
-          "image": "/images/videos/video2.jpg",
+          "image": "/images/blog/video.svg",
           "cta": {
             "label": "Watch Now",
             "link": "/videos/wp-engine-webinar"
@@ -165,7 +177,7 @@
           "title": "How To Fix a Site You Didn’t Build",
           "subtitle": "How To Fix a Site You Didn’t Build for Optimal Performance",
           "duration": "38:10",
-          "image": "/images/videos/video3.jpg",
+          "image": "/images/blog/video.svg",
           "cta": {
             "label": "Watch Now",
             "link": "/videos/fix-site-performance"
@@ -187,7 +199,7 @@
           "category": "ARCHITECTURE",
           "title": "Serverless Edge Computing",
           "description": "Deploying logic closer to users with Cloudflare Workers.",
-          "image": "/images/guides/architecture.jpg",
+          "image": "/images/blog/developmentHub1.svg",
           "link": "/guides/serverless-edge"
         },
         {
@@ -195,7 +207,7 @@
           "category": "SECURITY",
           "title": "OWASP Top 10 for 2024",
           "description": "A developer’s checklist for securing modern web APIs.",
-          "image": "/images/guides/security.jpg",
+          "image": "/images/blog/developmentHub2.svg",
           "link": "/guides/owasp-top-10"
         },
         {
@@ -203,7 +215,7 @@
           "category": "BACKEND",
           "title": "Go Microservices Patterns",
           "description": "Scalable design patterns for high-concurrency systems.",
-          "image": "/images/guides/backend.jpg",
+          "image": "/images/blog/developmentHub3.svg",
           "link": "/guides/go-microservices"
         }
       ],
@@ -212,7 +224,7 @@
         "tag": "FEATURED GUIDE",
         "title": "Mastering Cloud-Native Development: The 2024 Roadmap",
         "description": "The definitive guide to Kubernetes, Docker, and distributed tracing for senior engineers.",
-        "image": "/images/guides/featured.jpg",
+        "image": "/images/blog/developmentHub4.svg",
         "cta": {
           "label": "Start Reading Now",
           "link": "/guides/cloud-native-roadmap"
@@ -229,7 +241,7 @@
     "features": [
       {
         "id": 1,
-        "icon": "wordpress",
+        "icon": "/images/blog/wordpress.svg",
         "title": "WordPress Hosting",
         "description": "High-performance managed infrastructure optimized for scale.",
         "cta": {
@@ -239,7 +251,7 @@
       },
       {
         "id": 2,
-        "icon": "headless",
+        "icon": "/images/blog/headless.svg",
         "title": "Headless Platform",
         "description": "Decouple your CMS for ultimate front-end flexibility and speed.",
         "cta": {
@@ -249,7 +261,7 @@
       },
       {
         "id": 3,
-        "icon": "security",
+        "icon": "/images/blog/security.svg",
         "title": "Advanced Security",
         "description": "Enterprise protection against DDoS, bots, and global threats.",
         "cta": {
@@ -259,7 +271,7 @@
       },
       {
         "id": 4,
-        "icon": "cdn",
+        "icon": "/images/blog/cdn.svg",
         "title": "Global CDN",
         "description": "Edge network delivery for millisecond latency across 200+ POPs.",
         "cta": {
@@ -299,7 +311,7 @@
     "helpCategories": [
       {
         "id": 1,
-        "icon": "wordpress",
+        "icon": "images/blog/article1.svg",
         "title": "WordPress Help",
         "articles": [
           "Disallowed Plugins",
@@ -313,7 +325,7 @@
       },
       {
         "id": 2,
-        "icon": "troubleshoot",
+        "icon": "images/blog/article2.svg",
         "title": "Troubleshoot",
         "articles": [
           "Insecure and Mixed Content Warnings",
@@ -327,7 +339,7 @@
       },
       {
         "id": 3,
-        "icon": "browse",
+        "icon": "images/blog/article3.svg",
         "title": "Browse All",
         "articles": [
           "Regex for Redirect Rules and SSL",
@@ -346,33 +358,31 @@
       "description": "From smart troubleshooting tools to our knowledgeable support staff, we give you the best of both worlds: automated efficiency and human understanding.",
 
       "media": {
-        "imagePrimary": "/images/support/person1.jpg",
-        "imageSecondary": "/images/support/person2.jpg",
-        "badge": "Online Now: Sarah M."
+        "imagePrimary": "/images/blog/person.svg"
       },
 
       "stats": [
         {
           "id": 1,
-          "icon": "users",
+          "icon": "images/blog/support1.svg",
           "title": "20+ years",
           "description": "Experience helping businesses succeed online"
         },
         {
           "id": 2,
-          "icon": "thumbs-up",
+          "icon": "images/blog/support2.svg",
           "title": "98% CSAT",
           "description": "Customer satisfaction steady for over 10 years"
         },
         {
           "id": 3,
-          "icon": "clock",
+          "icon": "images/blog/support3.svg",
           "title": "24/7 support",
           "description": "Live chat and phone available around the clock"
         },
         {
           "id": 4,
-          "icon": "award",
+          "icon": "images/blog/support1.svg",
           "title": "Award-winning",
           "description": "Recognized globally for customer service"
         }

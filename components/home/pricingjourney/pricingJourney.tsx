@@ -62,11 +62,11 @@ export default function PricingJourney({ data }: Props) {
   const [currency, setCurrency] = useState("USD");
 
   return (
-    <Section padding="xl" className="bg-gray-50 dark:bg-gray-900">
+    <Section padding="xl" className="bg-gray-50 dark:bg-[#041635]">
       <div className="max-w-7xl mx-auto">
 
         {/* TAGLINE */}
-        <p className="text-xs tracking-widest text-orange-500 uppercase text-center mb-4">
+        <p className="mb-4 text-center text-xs tracking-widest text-orange-500 uppercase dark:text-orange-400">
           {section.tagline}
         </p>
 
@@ -76,21 +76,21 @@ export default function PricingJourney({ data }: Props) {
           fontSize="fiveXl"
           fontWeight="bold"
           align="center"
-          className="max-w-xl mx-auto"
+          className="mx-auto max-w-xl text-slate-900 dark:text-slate-100"
         >
           {section.title}
         </HeadLineText>
 
         {/* BILLING + CURRENCY */}
         <div className="mt-6 flex justify-center items-center gap-3 flex-wrap">
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-gray-500 dark:text-slate-300">
             {section.billingToggle?.label || "Subscription plans are listed"}
           </span>
 
           <select
             value={billing}
             onChange={(e) => setBilling(e.target.value)}
-            className="px-4 py-2 rounded-md border border-gray-300 text-sm bg-white"
+            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200"
           >
             {(section.billingToggle?.options || ["monthly", "annually"]).map(
               (opt) => (
@@ -101,12 +101,12 @@ export default function PricingJourney({ data }: Props) {
             )}
           </select>
 
-          <span className="text-sm text-gray-500">in</span>
+          <span className="text-sm text-gray-500 dark:text-slate-300">in</span>
 
           <select
             value={currency}
             onChange={(e) => setCurrency(e.target.value)}
-            className="px-4 py-2 rounded-md border border-gray-300 text-sm bg-white"
+            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200"
           >
             {["USD", "GBP", "EUR", "CAD", "AUD"].map((cur) => (
               <option key={cur}>{cur}</option>
@@ -125,8 +125,8 @@ export default function PricingJourney({ data }: Props) {
                 key={plan.id}
                 className={`relative rounded-2xl p-8 ${
                   isHighlighted
-                    ? "border-2 border-blue-200 bg-white shadow-xl scale-[1.03]"
-                    : "bg-white border border-gray-200 shadow-sm"
+                    ? "scale-[1.03] border-2 border-blue-200 bg-white shadow-xl dark:border-blue-500/70 dark:bg-slate-900"
+                    : "border border-gray-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900"
                 }`}
               >
                 {/* BADGE */}
@@ -137,27 +137,27 @@ export default function PricingJourney({ data }: Props) {
                 )}
 
                 {/* NAME */}
-                <h3 className="text-xl font-semibold text-center">
+                <h3 className="text-center text-xl font-semibold text-slate-900 dark:text-slate-100">
                   {plan.name}
                 </h3>
 
                 {/* DESC */}
-                <p className="text-sm text-gray-500 text-center mt-3">
+                <p className="mt-3 text-center text-sm text-gray-500 dark:text-slate-300">
                   {plan.description}
                 </p>
 
                 {/* PRICE */}
                 <div className="mt-6 text-center">
                   {plan.price.custom ? (
-                    <p className="text-3xl font-bold">
+                    <p className="text-3xl font-bold text-slate-900 dark:text-slate-100">
                       {plan.price.label}
                     </p>
                   ) : (
                     <>
-                      <p className="text-4xl font-bold">
+                      <p className="text-4xl font-bold text-slate-900 dark:text-slate-100">
                         ${plan.price.amount}
                       </p>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm text-gray-400 dark:text-slate-400">
                         {currency}/{plan.price.duration}
                       </p>
                     </>
@@ -172,8 +172,8 @@ export default function PricingJourney({ data }: Props) {
                       plan.cta.variant === "primary"
                         ? "bg-orange-500 text-white hover:bg-orange-600"
                         : plan.cta.variant === "outline"
-                        ? "border border-orange-500 text-orange-500 hover:bg-orange-50"
-                        : "border border-gray-300 text-gray-700 hover:bg-gray-100"
+                        ? "border border-orange-500 text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10"
+                        : "border border-gray-300 text-gray-700 hover:bg-gray-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
                     }`}
                   >
                     {plan.cta.label}
@@ -184,13 +184,13 @@ export default function PricingJourney({ data }: Props) {
                 {plan.id === "essential" && <EssentialBuilder />}
 
                 {/* FEATURES */}
-                <p className="mt-8 text-xs font-semibold text-gray-400">
+                <p className="mt-8 text-xs font-semibold text-gray-400 dark:text-slate-400">
                   {plan.featuresTitle}
                 </p>
 
                 <ul className="mt-4 space-y-3">
                   {plan.features.map((feature, i) => (
-                    <li key={i} className="flex gap-2 text-sm text-gray-600">
+                    <li key={i} className="flex gap-2 text-sm text-gray-600 dark:text-slate-300">
                       <span className="text-blue-500">✔</span>
                       {feature}
                     </li>
@@ -199,11 +199,11 @@ export default function PricingJourney({ data }: Props) {
 
                 {/* EXTENSIONS */}
                 {plan.extensions && (
-                  <div className="mt-6 bg-gray-100 rounded-lg p-4">
-                    <p className="text-xs font-semibold text-gray-500 mb-2">
+                  <div className="mt-6 rounded-lg bg-gray-100 p-4 dark:bg-slate-800/80">
+                    <p className="mb-2 text-xs font-semibold text-gray-500 dark:text-slate-300">
                       {plan.extensions.title}
                     </p>
-                    <ul className="space-y-1 text-sm text-gray-600">
+                    <ul className="space-y-1 text-sm text-gray-600 dark:text-slate-300">
                       {plan.extensions.items.map((item, i) => (
                         <li key={i}>+ {item}</li>
                       ))}
@@ -213,11 +213,11 @@ export default function PricingJourney({ data }: Props) {
 
                 {/* FOOTER */}
                 <div className="mt-6 text-center">
-                  <button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 rounded-md text-sm">
+                  <button className="w-full rounded-md bg-gray-100 py-2 text-sm text-gray-700 hover:bg-gray-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700">
                     {plan.footer.cta}
                   </button>
 
-                  <p className="mt-3 text-xs text-gray-400 hover:underline">
+                  <p className="mt-3 text-xs text-gray-400 hover:underline dark:text-slate-400">
                     {plan.footer.secondaryLink} →
                   </p>
                 </div>
@@ -282,22 +282,22 @@ function EssentialBuilder() {
       />
 
       {/*  PRICE CARD (UPDATED LIVE) */}
-      <div className="mt-4 border rounded-xl p-4 bg-white">
-        <h4 className="font-semibold text-lg">{current.name}</h4>
+      <div className="mt-4 rounded-xl border bg-white p-4 dark:border-slate-600 dark:bg-slate-900">
+        <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{current.name}</h4>
 
-        <p className="text-3xl font-bold mt-1">
+        <p className="mt-1 text-3xl font-bold text-slate-900 dark:text-slate-100">
           ${totalPrice} <span className="text-xs">USD/mo</span>
         </p>
       </div>
 
       {/* ADDITIONAL SITES */}
-      <div className="mt-4 border rounded-xl p-4 flex justify-between items-center">
+      <div className="mt-4 flex items-center justify-between rounded-xl border p-4 dark:border-slate-600">
         <div>
-          <p className="text-sm font-medium">Additional Site(s)</p>
-          <p className="text-xs text-gray-400">+$20/mo</p>
+          <p className="text-sm font-medium text-slate-800 dark:text-slate-200">Additional Site(s)</p>
+          <p className="text-xs text-gray-400 dark:text-slate-400">+$20/mo</p>
         </div>
 
-        <div className="flex items-center gap-3 border rounded-full px-3 py-1">
+        <div className="flex items-center gap-3 rounded-full border px-3 py-1 dark:border-slate-600 dark:text-slate-200">
           <button onClick={() => setSites(Math.max(0, sites - 1))}>-</button>
           <span>{sites}</span>
           <button onClick={() => setSites(sites + 1)}>+</button>
@@ -305,7 +305,7 @@ function EssentialBuilder() {
       </div>
 
       {/* ADDONS */}
-      <div className="mt-4 space-y-4 text-sm text-gray-600">
+      <div className="mt-4 space-y-4 text-sm text-gray-600 dark:text-slate-300">
 
         <label className="flex gap-2 items-start">
           <input

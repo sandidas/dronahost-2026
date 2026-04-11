@@ -134,6 +134,7 @@
       "title": "Included With Every Plan",
       "items": [
         {
+          "icon": "/images/webHosting/ai-business-suite.png",
           "title": "AI Business Suite",
           "description": "Plan smarter, write faster, and launch with confidence, thanks to AI-powered tools for strategy, content, and site creation."
         },
@@ -208,7 +209,7 @@
         "link": "/get-started"
       },
       "image": {
-        "src": "/images/global/map-globe.png",
+        "src": "/images/webHostingPlan/earth.svg",
         "alt": "Global server locations"
       }
     }

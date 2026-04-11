@@ -30,8 +30,8 @@ export default function Home() {
       <PricingSection4 data={homeData} />
       <PricingJourney data={homeData} />
       <TestimonialsSection data={homeData} />
-      <TeamsSection data={homeData} />
       <FAQSection data={homeData} />
+      <TeamsSection data={homeData} />
       <Footer />
     </div>
   );

@@ -17,8 +17,15 @@
     }
   },
   "heroSection": {
-    "title": "Reliable & Powerful Cloud Web Hosting",
+    "title1": "Reliable & Powerful ",
+    "title2": "Cloud Web Hosting",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+
+    "background": {
+    "src": "/images/home/Background.svg",
+    "alt": "Hero background"
+  },
+
     "buttons": [
       {
         "label": "Get Started",
@@ -34,13 +41,13 @@
     "members": {
       "countText": "50K+ Members",
       "avatars": [
-        "/clients.svg",
-        "/avatar2.svg",
-        "/avatar3.svg"
+        "/images/home/client1.svg",
+        "/images/home/client3.svg",
+        "/images/home/client2.svg"
       ]
     },
     "heroImage": {
-      "src": "/Images/Home/ManWithLaptop.svg",
+      "src": "/images/home/ManWithLaptop.svg",
       "alt": "User working on laptop"
     },
     "floatingCards": [
