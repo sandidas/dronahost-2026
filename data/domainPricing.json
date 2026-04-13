@@ -25,7 +25,7 @@
         "recommendedBy": "Recommended by WordPress.org"
       },
       "image": {
-        "src": "/images/hero/hosting-hero.png",
+        "src": "/images/home/ManWithLaptop.svg",
         "alt": "Hosting hero illustration"
       }
     },
@@ -51,7 +51,7 @@
         {
           "tld": ".id",
           "price": "$150",
-          "originalPrice": "$260",
+          "originalPrice": "$250",
           "highlight": true
         },
         {
@@ -67,7 +67,7 @@
         {
           "tld": ".online",
           "price": "$80",
-          "originalPrice": "$90"
+          "originalPrice": "$60"
         },
         {
           "tld": ".store",
@@ -84,37 +84,37 @@
       "extensions": [
         {
           "country": "United States",
-          "flag": "🇺🇸",
+          "flag": "images/domainHosting/us.svg",
           "tld": ".us",
           "price": "$17.99/yr"
         },
         {
           "country": "European Union",
-          "flag": "🇪🇺",
+          "flag": "images/domainHosting/eu.svg",
           "tld": ".eu",
           "price": "$14.99/yr"
         },
         {
           "country": "United Kingdom",
-          "flag": "🇬🇧",
+          "flag": "images/domainHosting/uk.svg",
           "tld": ".co.uk",
           "price": "$19.99/yr"
         },
         {
           "country": "Spain",
-          "flag": "🇪🇸",
+          "flag": "images/domainHosting/es.svg",
           "tld": ".es",
           "price": "$14.99/yr"
         },
         {
           "country": "Australia",
-          "flag": "🇦🇺",
+          "flag": "images/domainHosting/au.svg",
           "tld": ".au",
           "price": "$17.99/yr"
         },
         {
           "country": "Italy",
-          "flag": "🇮🇹",
+          "flag": "images/domainHosting/it.svg",
           "tld": ".it",
           "price": "$14.99/yr"
         }
@@ -126,6 +126,7 @@
 
       "mostPopular": [
         {
+          "Heading": "Most Popular",
           "tld": ".com",
           "price": "$17.99/yr",
           "originalPrice": "$19.99/yr",
@@ -159,6 +160,7 @@
       ],
 
       "countryDomains": [
+        {"Heading": "Country Domains"},
         { "tld": ".at", "price": "$19.99/yr" },
         { "tld": ".co.za", "price": "$14.99/yr" },
         { "tld": ".nom.es", "price": "$14.99/yr" },
@@ -216,12 +218,14 @@
         {
           "id": 1,
           "title": "Collect Leads with Our Plugin For WordPress",
-          "type": "collapsed"
+          "type": "collapsed",
+          "description": "Use our free plugin to add subscribe forms to your WordPress site. Collect leads and grow your list with ease."
         },
         {
           "id": 2,
           "title": "Integrate with Popular WordPress Plugins",
-          "type": "collapsed"
+          "type": "collapsed",
+          "description": " Seamlessly integrate with popular WordPress plugins to enhance your email marketing capabilities."
         },
         {
           "id": 3,
@@ -232,7 +236,7 @@
       ],
 
       "illustration": {
-        "src": "/images/illustrations/subscriber-growth.svg",
+        "src": "/images/home/CTA.svg",
         "alt": "Subscriber growth illustration"
       }
     },
@@ -271,7 +275,10 @@
   },
   "cloudPricingSection": {
     "title": "Choose a Plan or Create Your Own Cloud",
-
+    "CTAButton": {
+      "label": "CONFIGURE YOUR OWN CLOUD ",
+      "link": "/get-started"
+     },
     "plans": [
       {
         "id": 1,
@@ -397,9 +404,9 @@
           "link": "/custom-cloud"
         },
         "features": {
-          "cpu": "33 CPU Cores",
-          "memory": "108 GB Memory",
-          "storage": "40 GB SSD Space",
+          "cpu": "CPU Cores",
+          "memory": "GB Memory",
+          "storage": "GB SSD Space",
           "bandwidth": "5 TB Data Transfer"
         }
       },
@@ -410,11 +417,6 @@
           "link": "/plans"
         }
       }
-    },
-
-    "cta": {
-      "label": "Configure Your Own Cloud",
-      "action": "scrollToCustom"
     }
   }
 }

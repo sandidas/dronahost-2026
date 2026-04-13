@@ -17,13 +17,17 @@
         }
       ],
       "image": {
-        "src": "/images/hero/experience-growth.png",
+        "src": "/images/home/ManWithLaptop.svg",
         "alt": "Enterprise hosting illustration"
       }
     },
 
     "expertise": {
       "title": "Our Expertise",
+      "cta": {
+        "label": "Learn More",
+        "link": "/services"
+      },
       "items": [
         {
           "title": "One, holistic solution",
@@ -78,48 +82,62 @@
       "tagline": "OUR SERVICES",
       "title": "High-Impact Services To Help Your Business",
       "items": [
-        {
+        { 
+          "icon": "web-design",
           "title": "Business Website Development",
           "description": "Professional websites that drive results. Custom solutions tailored to your brand and business goals.",
-          "tech": ["wordpress", "react", "node", "js"]
+          "tech": ["icon/react.svg", "icon/nodejs.svg", "icon/typescript.svg", "icon/js.svg"],
+          "bgColor": "bg-[#ffc173] dark:bg-[#2a241c]"
         },
         {
+          "icon": "full-stack",
           "title": "Full-Stack Web Applications",
           "description": "Complete solutions from frontend to backend. Scalable applications built with modern frameworks.",
-          "tech": ["react", "node", "mongo", "js"]
+          "tech": ["icon/react.svg", "icon/nodejs.svg", "icon/typescript.svg", "icon/js.svg"],
+          "bgColor": "bg-[#dbeaf2] dark:bg-[#1f2a30]"
         },
         {
+          "icon": "UI/UX",
           "title": "Web Designing (UI/UX)",
           "description": "User-focused designs that look great and convert. Clean interfaces built with modern design tools.",
-          "tech": ["figma", "xd", "css", "js"]
+          "tech": ["icon/react.svg", "icon/nodejs.svg", "icon/typescript.svg", "icon/js.svg"],
+          "bgColor": "bg-[#f3e7d8] dark:bg-[#2a241c]"
+
         },
         {
+          "icon": "dashboard",
           "title": "Custom Dashboard & Admin Panels",
           "description": "Data-driven dashboards and admin panels. Real-time analytics, charts, and controls tailored to your workflow.",
-          "tech": ["react", "node", "chart", "js"]
+          "tech": ["icon/react.svg", "icon/nodejs.svg", "icon/typescript.svg", "icon/js.svg"],
+          "bgColor": "bg-[#f3e7d8] dark:bg-[#2a241c]"
         },
         {
+          "icon": "database",
           "title": "API & Backend Development",
           "description": "Secure, scalable APIs and backend systems. Authentication, data handling, and integrations built for reliability.",
-          "tech": ["node", "express", "mongo", "js"]
+          "tech": ["icon/react.svg", "icon/nodejs.svg", "icon/typescript.svg", "icon/js.svg"],
+          "bgColor": "bg-[#f3e7d8] dark:bg-[#2a241c]"
         },
         {
+          "icon": "ecommerce",
           "title": "Ecommerce Website Development",
           "description": "Online stores that sell. Custom shop on Shopify, WooCommerce, and secure checkout with Stripe and PayPal.",
-          "tech": ["shopify", "woo", "stripe", "js"]
+          "tech": ["icon/react.svg", "icon/nodejs.svg", "icon/typescript.svg", "icon/js.svg"],
+          "bgColor": "bg-[#f3e7d8] dark:bg-[#2a241c]"
         }
       ]
     },
 
     "partners": {
+      "tagline": "EXTEND YOUR SOLUTIONS",
       "title": "Our integrated partners",
       "description": "Leverage the flexibility of open source and best-of-breed technology. We provide ecosystem integration with partners across the martech stack.",
       "logos": [
-        "aws",
-        "azure",
-        "cloudflare",
-        "google-cloud",
-        "stripe"
+        "icon/aws.svg",
+        "icon/azure.svg",
+        "icon/cloudflare.svg",
+        "icon/google-cloud.svg",
+        "icon/stripe.svg"
       ]
     },
 
@@ -157,17 +175,17 @@
       "title": "Speed Up Your Workflow With Our Integrations",
       "description": "From web design & development through to digital marketing. We'll increase traffic by 50%, generate more leads and boost sales.",
       "tools": [
-        "Node.js",
-        "React",
-        "Shopify",
-        "Python",
-        "WooCommerce",
-        "Express",
-        "MongoDB",
-        "Stripe"
+        {"icon": "icon/nodejs.svg", "name": "Node.js"},
+        {"icon": "icon/react.svg", "name": "React"},
+        {"icon": "icon/shopify.svg", "name": "Shopify"},
+        {"icon": "icon/woocommerce.svg", "name": "WooCommerce"},
+        {"icon": "icon/js.svg", "name": "JavaScript"},
+        {"icon": "icon/mongodb.svg", "name": "MongoDB"},
+        {"icon": "icon/stripe.svg", "name": "Stripe"}
       ]
     }
   },
+
   "clientWorkSection": {
     "clients": {
       "tagline": "CLIENTS",

@@ -8,17 +8,17 @@ import Footer from "@/layouts/footer/footer";
 import Header from "@/layouts/header/header";
 
 export default function WebHostingPage() {
-  const { hero, plans, includedFeatures, comparison, globalReach } = webHostingPlanData.webHostingPlanPage;
+	const { hero, plans, includedFeatures, comparison, globalReach } = webHostingPlanData.webHostingPlanPage;
 
-  return (
-    <div>
-      <Header />
-      <WebHostingHeroSection heroData={hero} />
-      <PricingSection plans={plans} />
-      <IncludedEveryPlan includedFeatures={includedFeatures} />
-      <WhyBetter comparison={comparison} />
-      <GlobalReach globalReach={globalReach} />
-      <Footer />
-    </div>
-  );
+	return (
+		<div>
+			<Header />
+			<WebHostingHeroSection heroData={hero} />
+			<PricingSection plans={plans} />
+			<IncludedEveryPlan includedFeatures={includedFeatures} />
+			<WhyBetter comparison={comparison} />
+			<GlobalReach globalReach={globalReach} />
+			<Footer />
+		</div>
+	);
 }

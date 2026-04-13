@@ -51,7 +51,7 @@ const leftColumn: MegaItem[] = [
   {
     title: "Domains",
     description: "Choose and register a domain with the help of AI",
-    href: "/domains",
+    href: "/domains-pricing",
     icon: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
         <circle cx="12" cy="12" r="8" />

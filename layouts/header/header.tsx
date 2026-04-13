@@ -15,7 +15,7 @@ export default function Header() {
     "Web Hosting": "/web-hosting",
     Wordpress: "/",
     "Website Building": "/",
-    "E commerce": "/",
+    "E commerce": "/Experience&Growth",
     "Email Marketing": "/",
   };
 
