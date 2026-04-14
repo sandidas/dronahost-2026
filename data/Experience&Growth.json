@@ -223,25 +223,25 @@
         {
           "id": 1,
           "title": "DLE Lawyers",
-          "image": "/images/work/work1.jpg",
+          "image": "/images/Experience&Growth/work1.svg",
           "link": "/work/dle-lawyers"
         },
         {
           "id": 2,
           "title": "Interarmed",
-          "image": "/images/work/work2.jpg",
+          "image": "/images/Experience&Growth/work2.svg",
           "link": "/work/interarmed"
         },
         {
           "id": 3,
           "title": "SEEQ",
-          "image": "/images/work/work3.jpg",
+          "image": "/images/Experience&Growth/work3.svg",
           "link": "/work/seeq"
         },
         {
           "id": 4,
           "title": "BIG",
-          "image": "/images/work/work4.jpg",
+          "image": "/images/Experience&Growth/work4.svg",
           "link": "/work/big"
         }
       ]

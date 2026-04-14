@@ -12,13 +12,11 @@ import ServicesSection from "@/components/home/ServiceSection/ServiceSection";
 import TeamsSection from "@/components/home/Teams/TeamsSection";
 import TestimonialsSection from "@/components/home/Testimonials/TestimonialsSection";
 import homeData from "@/data/home.json";
-import Footer from "@/layouts/footer/footer";
-import Header from "@/layouts/header/header";
 
 export default function Home() {
   return (
-    <div>
-      <Header />
+    <>
+ 
       <HeroSection data={homeData} />
       <FeatureSection data={homeData} />
       <ServicesSection data={homeData} />
@@ -32,7 +30,7 @@ export default function Home() {
       <TestimonialsSection data={homeData} />
       <FAQSection data={homeData} />
       <TeamsSection data={homeData} />
-      <Footer />
-    </div>
+ 
+    </>
   );
 }

@@ -9,7 +9,7 @@
       { "label": "Wordpress", "hasDropdown": true },
       { "label": "Website Building", "hasDropdown": true },
       { "label": "E commerce", "hasDropdown": false },
-      { "label": "Email Marketing", "hasDropdown": false }
+      { "label": "Price", "hasDropdown": false }
     ],
     "cta": {
       "label": "Login",

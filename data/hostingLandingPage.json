@@ -3,7 +3,11 @@
     "hero": {
       "title": "High Performance Hosting For Websites",
       "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-
+      
+      "background": {
+    "src": "/images/home/Background.svg",
+    "alt": "Hero background"
+    },
       "cta": [
         {
           "label": "Get Started",
@@ -20,9 +24,9 @@
       "socialProof": {
         "members": "50K+ Members",
         "avatars": [
-          "/images/users/user1.jpg",
-          "/images/users/user2.jpg",
-          "/images/users/user3.jpg"
+          "/images/home/client1.svg",
+          "/images/home/client2.svg",
+          "/images/home/client3.svg"
         ]
       },
 
@@ -45,7 +49,7 @@
       ],
 
       "image": {
-        "src": "/images/hero/hosting-main.png",
+        "src": "/images/home/ManWithLaptop.svg",
         "alt": "Hosting hero"
       }
     },
@@ -69,7 +73,7 @@
       ],
 
       "image": {
-        "src": "/images/illustrations/enterprise.svg",
+        "src": "/images/home/CTA.svg",
         "alt": "Enterprise hosting illustration"
       }
     },
@@ -128,7 +132,7 @@
         {
           "title": "B2B publishers",
           "description": "Connect editorial output directly to engagement, SEO performance, and business outcomes using integrated analytics and insights.",
-          "icon": "b2b"
+          "icon": "company"
         },
         {
           "title": "Digital magazines",
@@ -143,7 +147,7 @@
         {
           "title": "B2B publishers",
           "description": "Connect editorial output directly to engagement, SEO performance, and business outcomes using integrated analytics and insights.",
-          "icon": "b2b"
+          "icon": "company"
         }
       ]
     }
@@ -155,7 +159,7 @@
         "name": "Matthew Amiot",
         "role": "General Manager",
         "company": "Lana",
-        "avatar": "/images/users/matthew.jpg"
+        "avatar": "/images/Web-Hosting/client.svg"
       }
     },
 
@@ -180,7 +184,7 @@
       ],
 
       "image": {
-        "src": "/images/solutions/headless-workspace.jpg",
+        "src": "/images/Web-Hosting/headlessSolutions.svg",
         "alt": "Headless workspace"
       }
     },
@@ -193,48 +197,60 @@
         {
           "title": "One, holistic solution",
           "description": "Reduces your time spent integrating multiple vendors in your tech stack, saves you money, and allows you to spend more time innovating.",
-          "icon": "stack"
+          "icon": "stack",
+          "cta": "Learn More →"
         },
         {
           "title": "Node.js frontend",
           "description": "Unlock new opportunities with higher-budget projects. Build with your choice of modern front-end JavaScript framework.",
-          "icon": "code"
+          "icon": "code",
+          "cta": "Learn More →"
+
         },
         {
           "title": "High-performance hosting",
           "description": "Achieve up to 10x performance with global CDN, the fastest TTFB scores, and smart scaling and auto-healing Node hosting.",
-          "icon": "pulse"
+          "icon": "pulse",
+          "cta": "Learn More →"
         },
         {
           "title": "Robust CMS",
           "description": "Reduce your clients' learning curve, give your dev team more flexibility, and save on sunk costs compared to other enterprise CMSs.",
-          "icon": "database"
+          "icon": "database",
+          "cta": "Learn More →"
+
         },
         {
           "title": "Platform blueprints",
           "description": "Jump-start your projects with pre-configured environments, templates, and demo content to quickly learn.",
-          "icon": "layout"
+          "icon": "layout",
+          "cta": "Learn More →"
         },
         {
           "title": "GraphQL API",
           "description": "Optionally enable a GraphQL API to render pages and content on your frontend and query your data with enhanced clarity.",
-          "icon": "search"
+          "icon": "search",
+          "cta": "Learn More →"
         },
         {
           "title": "Content modeling",
           "description": "Model your data structure and editing experience while empowering both content creators and developers.",
-          "icon": "shield"
+          "icon": "shield",
+          "cta": "Learn More →"
         },
         {
           "title": "Developer toolkit",
           "description": "An optional, super fast toolkit for bringing common features like previews and page template hierarchy to your project.",
-          "icon": "dev"
+          "icon": "dev",
+          "cta": "Learn More →"
+
         },
         {
           "title": "Smart Search",
           "description": "Deliver a smarter, easier, and faster way to enable headless search with minimal configuration and an intuitive UI.",
           "icon": "search-advanced",
-          "badge": "New"
+          "badge": "New",
+          "cta": "Learn More →"
         }
       ]
     }
@@ -248,19 +264,19 @@
         {
           "id": 1,
           "title": "Developer Resources",
-          "image": "/images/resources/dev-resources.jpg",
+          "image": "/images/Web-Hosting/ResourceInsights1.svg",
           "link": "/resources/developer"
         },
         {
           "id": 2,
           "title": "Advanced Web Performance",
-          "image": "/images/resources/performance.jpg",
+          "image": "/images/Web-Hosting/ResourceInsights2.svg",
           "link": "/resources/performance"
         },
         {
           "id": 3,
           "title": "The Rise of Multi-CMS in the Enterprise",
-          "image": "/images/resources/multi-cms.jpg",
+          "image": "/images/Web-Hosting/ResourceInsights3.svg",
           "link": "/resources/multi-cms",
           "cta": "Learn More"
         }
@@ -276,32 +292,32 @@
       "items": [
         {
           "rating": 5,
-          "platform": "G2",
+          "platform": "Reviewed on G2",
           "text": "I love the platform for their outstanding customer support which is always available to help when I have an issue or a confidence gap. They help me navigate any uncertainties.",
           "author": {
             "name": "Joey B",
             "role": "Verified User",
-            "avatar": "/images/users/user1.jpg"
+            "avatar": "/images/Web-Hosting/client1.svg"
           }
         },
         {
           "rating": 5,
-          "platform": "G2",
+          "platform": "Reviewed on G2",
           "text": "I love the platform for their outstanding customer support which is always available to help when I have an issue or a confidence gap.",
           "author": {
             "name": "Joey B",
             "role": "Verified User",
-            "avatar": "/images/users/user2.jpg"
+            "avatar": "/images/Web-Hosting/client1.svg"
           }
         },
         {
           "rating": 5,
-          "platform": "G2",
+          "platform": "Reviewed on G2",
           "text": "I love the platform for their outstanding customer support which is always available to help when I have an issue.",
           "author": {
             "name": "Joey B",
             "role": "Verified User",
-            "avatar": "/images/users/user3.jpg"
+            "avatar": "/images/Web-Hosting/client1.svg"
           }
         }
       ]
@@ -316,90 +332,128 @@
           "step": 1,
           "title": "Submit application",
           "description": "If your agency works in web development, from design to development and everywhere in between, then this program is built for you.",
-          "image": "/images/how-it-works/step1.png"
+          "image": "/images/Web-Hosting/step.svg"
         },
         {
           "step": 2,
           "title": "Get approved",
           "description": "We move fast. Keep an eye on your inbox and get ready to accelerate growth.",
-          "image": "/images/how-it-works/step2.png"
+          "image": "/images/Web-Hosting/step.svg"
         },
         {
           "step": 3,
           "title": "Get started with HostingPro",
           "description": "Get access to your Partner Portal, set up your free dev account, and claim your personalized referral link.",
-          "image": "/images/how-it-works/step3.png"
+          "image": "/images/Web-Hosting/step.svg"
         }
       ]
     },
 
     "partnerProgram": {
-      "tagline": "ACCELERATE YOUR WAY THROUGH MEMBERSHIP TIERS",
-      "title": "Join Our Partner Program",
+    "tagline": "ACCELERATE YOUR WAY THROUGH MEMBERSHIP TIERS",
+    "title": "Join Our Partner Program",
 
-      "tiers": [
-        {
-          "name": "Member",
-          "subtitle": "No minimum referrals"
-        },
-        {
-          "name": "Preferred",
-          "subtitle": "3 client referrals"
-        },
-        {
-          "name": "Advanced",
-          "subtitle": "$1,200 referred revenue"
-        },
-        {
-          "name": "Strategic",
-          "subtitle": "$5,000 referred revenue"
-        }
-      ],
-
-      "benefits": {
-        "salesMarketing": [
-          {
-            "label": "Recurring commissions for 12 months",
-            "values": ["8% per plan", "8% per plan", "10% per plan", "12% per plan"]
-          },
-          {
-            "label": "Listing in Preferred Agency Directory",
-            "values": ["-", "✓", "Optimized listing", "Highest ranking listing"]
-          },
-          {
-            "label": "Introductions to brands",
-            "values": ["-", "-", "Projects < $50K", "All projects"]
-          },
-          {
-            "label": "Co-Marketing opportunities",
-            "values": ["-", "-", "✓", "✓"]
-          },
-          {
-            "label": "Partner Success Manager",
-            "values": ["✓", "Dedicated Partner Manager", "Dedicated Partner Manager", "Senior Strategic Manager"]
-          }
-        ],
-
-        "additional": [
-          {
-            "title": "Pricing benefits",
-            "collapsed": true
-          },
-          {
-            "title": "Enablement & support benefits",
-            "collapsed": true
-          }
-        ]
+    "tiers": [
+      {
+        "name": "Member",
+        "subtitle": "No minimum referrals",
+        "highlight": false,
+        "color": "#E5E7EB"
       },
-
-      "note": "*Tier status assessed on a rolling 12 month basis",
-
-      "cta": {
-        "label": "Become a Partner",
-        "link": "/partner"
+      {
+        "name": "Preferred",
+        "subtitle": "3 client referrals",
+        "highlight": true,
+        "color": "#F59E0B"
+      },
+      {
+        "name": "Advanced",
+        "subtitle": "$1,200 referred revenue",
+        "highlight": false,
+        "color": "#10B981"
+      },
+      {
+        "name": "Strategic",
+        "subtitle": "$5,000 referred revenue",
+        "highlight": false,
+        "color": "#8B5CF6"
       }
+    ],
+
+    "benefits": {
+      "sections": [
+        {
+          "title": "Sales & marketing benefits",
+          "collapsed": false,
+          "rows": [
+            {
+              "label": "Recurring commissions for 12 months",
+              "values": [
+                { "type": "text", "value": "8% per plan" },
+                { "type": "text", "value": "8% per plan" },
+                { "type": "text", "value": "10% per plan" },
+                { "type": "text", "value": "12% per plan" }
+              ]
+            },
+            {
+              "label": "Listing in Preferred Agency Directory",
+              "values": [
+                { "type": "none" },
+                { "type": "check" },
+                { "type": "text", "value": "Optimized listing" },
+                { "type": "text", "value": "Highest ranking listing" }
+              ]
+            },
+            {
+              "label": "Introductions to brands",
+              "values": [
+                { "type": "none" },
+                { "type": "none" },
+                { "type": "text", "value": "Projects < $50K" },
+                { "type": "text", "value": "All projects" }
+              ]
+            },
+            {
+              "label": "Co-Marketing opportunities",
+              "values": [
+                { "type": "none" },
+                { "type": "none" },
+                { "type": "check" },
+                { "type": "check" }
+              ]
+            },
+            {
+              "label": "Partner Success Manager",
+              "values": [
+                { "type": "check" },
+                { "type": "text", "value": "Dedicated Partner Manager" },
+                { "type": "text", "value": "Dedicated Partner Manager" },
+                { "type": "text", "value": "Senior Strategic Manager" }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Pricing benefits",
+          "collapsed": true,
+          "rows": []
+        },
+        {
+          "title": "Enablement & support benefits",
+          "collapsed": true,
+          "rows": []
+        }
+      ]
+    },
+
+    "note": "*Tier status assessed on a rolling 12 month basis",
+
+    "cta": {
+      "label": "Become a Partner",
+      "link": "/partner"
     }
   },
+
   "partnerMatchForm": {
     "title": "Get matched with a HostingPro Partner",
     "description": "Need help picking the right partner for your next project? Fill out our form and let our team make a match based on your needs! You will be sent a curated list of trusted agency partners who compliment your budget, geography, and project type.",
@@ -489,6 +543,7 @@
       "action": "submitForm"
     }
   },
+
   "featureComparisonSection": {
     "features": {
       "tagline": "LOREM IPSUM DOLOR SIT",
@@ -499,7 +554,7 @@
           "id": 1,
           "title": "Lorem ipsum dolor sit",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et commodo.",
-          "image": "/images/features/feature1.svg",
+          "image": "/images/home/BoxyLayout1.svg",
           "cta": {
             "label": "Learn More",
             "link": "/features/1"
@@ -509,7 +564,7 @@
           "id": 2,
           "title": "Lorem ipsum dolor sit",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et commodo.",
-          "image": "/images/features/feature2.svg",
+          "image": "/images/home/BoxyLayout2.svg",
           "cta": {
             "label": "Learn More",
             "link": "/features/2"
@@ -519,7 +574,7 @@
           "id": 3,
           "title": "Lorem ipsum dolor sit",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et commodo.",
-          "image": "/images/features/feature3.svg",
+          "image": "/images/home/BoxyLayout3.svg",
           "badge": "NEW",
           "cta": {
             "label": "Learn More",
@@ -532,7 +587,7 @@
     "comparison": {
       "tagline": "LOREM IPSUM DOLOR SIT",
       "title": "Lorem ipsum dolor sit",
-
+      "toggle": ["Annually", "Monthly"],
       "columns": ["Feature", "Self-Hosting", "HostingPro"],
 
       "rows": [
@@ -584,6 +639,7 @@
       "link": "/contact"
     }
   },
+
   "pricingPlansSection": {
     "header": {
       "tagline": "HOSTINGPRO PRICING PLANS FOR SMALL BUSINESSES",
@@ -678,6 +734,7 @@
     ],
 
     "starterNote": {
+      "Heading": "Essential Hosting",
       "title": "Just getting started?",
       "description": "Our Startup plan includes 15,000 visits/mo, and all the essential features you need to launch and grow your website, with a team reliable performance and expert support— all starting at just $30/mo.",
       "cta": {
@@ -707,11 +764,11 @@
       "title": "Our integrated partners",
       "description": "Leverage the flexibility of open source and best-of-breed technology. We provide ecosystem integration with partners across the martech stack.",
       "logos": [
-        "aws",
-        "azure",
-        "cloudflare",
-        "google-cloud",
-        "stripe"
+        "icon/aws.svg",
+        "icon/azure.svg",
+        "icon/cloudflare.svg",
+        "icon/google-cloud.svg",
+        "icon/stripe.svg"
       ]
     },
 
@@ -721,8 +778,90 @@
         "label": "View Plans",
         "link": "/plans"
       }
+    },
+    "performanceSection": {
+      "id": "hosting-performance-comparison",
+      "tagline": "Performance Benchmark",
+      "title": "Proven faster performance",
+      "description": "See how our hosting stacks up against competitors with real-world performance tests and speed benchmarks.",
+      "seo": {
+        "metaTitle": "Hosting Performance Comparison | Faster Website Speed Benchmarks",
+        "metaDescription": "Compare real-world website performance metrics like TTFB and page speed improvements. Discover how HostingPro outperforms Bluehost, GoDaddy, Hostinger, and WP Engine.",
+        "keywords": [
+          "hosting performance comparison",
+          "TTFB comparison",
+          "fast web hosting",
+          "website speed optimization",
+          "hosting benchmarks",
+          "HostingPro vs Bluehost",
+          "HostingPro vs GoDaddy"
+        ]
+      },
+
+      "ttfbComparison": {
+        "title": "Real website Time To First Byte (TTFB) comparison",
+        "note": "Lower TTFB means faster website performance",
+        "legend": {
+          "primary": "HostingPro (faster)",
+          "secondary": "Previous Host (slower)"
+        },
+        "comparisons": [
+          {
+            "competitor": "Bluehost",
+            "hostingPro": "237ms",
+            "competitorValue": "815.5ms"
+          },
+          {
+            "competitor": "GoDaddy",
+            "hostingPro": "284ms",
+            "competitorValue": "664ms"
+          },
+          {
+            "competitor": "Hostinger",
+            "hostingPro": "264ms",
+            "competitorValue": "788.5ms"
+          },
+          {
+            "competitor": "WP Engine",
+            "hostingPro": "315ms",
+            "competitorValue": "477ms"
+          }
+        ]
+      },
+
+      "speedImprovements": {
+        "title": "Page speed results after migration to HostingPro",
+        "description": "Actual performance improvements observed after migrating real websites to HostingPro hosting.",
+        "results": [
+          {
+            "from": "Hostinger",
+            "to": "HostingPro",
+            "increase": "95.23%",
+            "title": "Speed Increase"
+          },
+          {
+            "from": "Bluehost",
+            "to": "HostingPro",
+            "increase": "74.3%",
+            "title": "Speed Increase"
+          },
+          {
+            "from": "GoDaddy",
+            "to": "HostingPro",
+            "increase": "79.5%",
+            "title": "Speed Increase"
+          },
+          {
+            "from": "WP Engine",
+            "to": "HostingPro",
+            "increase": "61%",
+            "title": "Speed Increase"
+          }
+        ]
+      },
+
+      "disclaimer": "Based on a comparison of real-world page speed and TTFB metrics of WordPress websites migrated from leading hosting providers including Bluehost, GoDaddy, Hostinger, and WP Engine to HostingPro. Data measured using Google Lighthouse and Speed Index metrics. Results may vary based on configuration and region."
     }
   }
 }
-
-
+}

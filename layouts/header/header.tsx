@@ -16,7 +16,7 @@ export default function Header() {
     Wordpress: "/",
     "Website Building": "/",
     "E commerce": "/Experience&Growth",
-    "Email Marketing": "/",
+    Price: "/hosting-price",
   };
 
   const { theme, setTheme } = useTheme();

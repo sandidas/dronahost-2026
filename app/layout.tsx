@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { ThemeProvider } from "next-themes";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Providers from "./providers";
 
 /* ───────────────── FONTS ───────────────── */
 
@@ -38,13 +38,9 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-white text-black dark:bg-black dark:text-white transition-colors duration-300">
 
         {/* Theme Provider */}
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-        >
+        <Providers>
           {children}
-        </ThemeProvider>
+        </Providers>
 
       </body>
     </html>

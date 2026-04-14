@@ -9,16 +9,12 @@ import PopularVideos from "@/components/blog/popularVideos/popularVideos";
 import Support from "@/components/blog/support/support";
 import TrustedPlatform from "@/components/blog/trustedPlatform/trustedPlatform";
 import blogData from "@/data/blog.json";
-import Footer from "@/layouts/footer/footer";
-import Header from "@/layouts/header/header";
 
 export default function BlogPage() {
 	const { insightsSection, mediaHubSection, platformSupportSection, supportHubSection } = blogData;
 
 	return (
-		<div>
-			<Header />
-			<HeroSection insightsSection={insightsSection} />
+		<>	<HeroSection insightsSection={insightsSection} />
 			<AllBlogs insightsSection={insightsSection} />
 			<FeatureInsight
 				featuredInsight={insightsSection.featuredInsight}
@@ -32,7 +28,6 @@ export default function BlogPage() {
 			<AiAssistance support={platformSupportSection.support} />
 			<Articles helpCategories={supportHubSection.helpCategories} />
 			<Support supportHighlight={supportHubSection.supportHighlight} />
-			<Footer />
-		</div>
+		</>
 	);
 }

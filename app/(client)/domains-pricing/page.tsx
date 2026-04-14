@@ -8,8 +8,6 @@ import PerformanceSection from "@/components/DomainHosting/Performance/Performan
 import SearchDomain from "@/components/DomainHosting/searchDomain/searchDomain";
 import data from "@/data/domainPricing.json";
 
-import Footer from "@/layouts/footer/footer";
-import Header from "@/layouts/header/header";
 
 export default function Page() {
   const hero = data.domainPricingSection.hero;
@@ -29,7 +27,7 @@ export default function Page() {
   const customCloud = data.cloudPricingSection.customCloud;
   return (
     <>
-      <Header />
+ 
       <HeroSection data={hero} />
       <SearchDomain data={domainSearch} />
       <CountryExtension data={countryExtensions} />
@@ -38,7 +36,7 @@ export default function Page() {
       <PerformanceSection data={performance} />
       <ChooseAPlan data={cloudPricing} />
       <BuildCustomCloud data={customCloud} />
-      <Footer />
+ 
     </>
   );
 }

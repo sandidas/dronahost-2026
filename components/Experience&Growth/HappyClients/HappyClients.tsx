@@ -54,7 +54,7 @@ export default function HappyClients({ data }: Props) {
           {data.description}
         </HeadLineText>
 
-        {/* 🔥 Logo Grid */}
+        {/*  Logo Grid */}
         <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 border border-border dark:border-white/10">
 
           {data.logos.map((client, i) => (
@@ -65,7 +65,7 @@ export default function HappyClients({ data }: Props) {
                 p-10
                 border-r border-b border-border dark:border-white/10
                 last:border-r-0
-                [&:nth-child(4n)]:border-r-0
+                
               "
             >
               <Image
