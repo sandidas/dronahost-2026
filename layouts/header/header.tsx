@@ -12,11 +12,11 @@ import { useEffect, useRef, useState } from "react";
 export default function Header() {
   const navbar = homeData.navbar;
   const navLinks: Record<string, string> = {
-    "Web Hosting": "/web-hosting",
+    "Web Hosting": "/wordpress-hosting",
     Wordpress: "/",
     "Website Building": "/",
-    "E commerce": "/Experience&Growth",
-    Price: "/hosting-price",
+    "E commerce": "/growth-services",
+    Price: "/pricing",
   };
 
   const { theme, setTheme } = useTheme();
@@ -57,7 +57,7 @@ export default function Header() {
     }
 
     if (label === "Web Hosting") {
-      setActiveDropdown("web-hosting");
+      setActiveDropdown("wordpress-hosting");
       return;
     }
 
@@ -98,7 +98,7 @@ export default function Header() {
             {/* MENU */}
             <nav className="hidden lg:flex items-center gap-8">
               {navbar.menu.map((item) => {
-                const isActive = item.label === "Web Hosting" && activeDropdown === "web-hosting";
+                const isActive = item.label === "Web Hosting" && activeDropdown === "wordpress-hosting";
 
                 return (
                   <Link
@@ -197,7 +197,7 @@ export default function Header() {
             </div>
           </div>
 
-          <WebHostingMegaMenu open={activeDropdown === "web-hosting"} />
+          <WebHostingMegaMenu open={activeDropdown === "wordpress-hosting"} />
         </div>
       </header>
 

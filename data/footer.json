@@ -67,7 +67,7 @@
       {
         "title": "HOSTING",
         "links": [
-          { "label": "Web Hosting", "link": "/web-hosting" },
+          { "label": "Web Hosting", "link": "/wordpress-hosting" },
           { "label": "WordPress Hosting", "link": "/wordpress-hosting" },
           { "label": "Business Hosting", "link": "/business-hosting" },
           { "label": "Reseller Hosting", "link": "/reseller-hosting" },

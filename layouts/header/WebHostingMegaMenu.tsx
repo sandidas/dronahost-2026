@@ -17,7 +17,7 @@ const leftColumn: MegaItem[] = [
   {
     title: "Web Hosting",
     description: "Grow your website with fast and secure web hosting",
-    href: "/web-hosting",
+    href: "/wordpress-hosting",
     icon: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
         <rect x="4" y="4" width="16" height="7" rx="1.5" />
@@ -51,7 +51,7 @@ const leftColumn: MegaItem[] = [
   {
     title: "Domains",
     description: "Choose and register a domain with the help of AI",
-    href: "/domains-pricing",
+    href: "/domains",
     icon: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
         <circle cx="12" cy="12" r="8" />

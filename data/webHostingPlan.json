@@ -36,14 +36,14 @@
         "name": "Starter",
         "tagline": "Great for first-time users.",
         "discount": "83% OFF",
-        "price": "₹69.00",
-        "originalPrice": "₹239.00",
+        "price": "$0.99",
+        "originalPrice": "$2.99",
         "duration": "/mo",
         "cta": {
           "label": "Choose Plan",
           "link": "/plans/starter"
         },
-        "renewal": "Renews at ₹239/mo - Guaranteed",
+        "renewal": "Renews at $2.99/mo - Guaranteed",
         "features": [
           "1 website",
           "10 GB NVMe storage",
@@ -60,15 +60,15 @@
         "name": "Premium",
         "tagline": "Ideal for blogs & startup websites.",
         "discount": "85% OFF",
-        "price": "₹99.00",
-        "originalPrice": "₹499.00",
+        "price": "$2.49",
+        "originalPrice": "$5.99",
         "duration": "/mo",
         "cta": {
           "label": "Choose Plan",
           "link": "/plans/premium"
         },
         "highlight": true,
-        "renewal": "Renews at ₹499/mo - Guaranteed",
+        "renewal": "Renews at $5.99/mo - Guaranteed",
         "features": [
           "25 websites",
           "50 GB NVMe storage",
@@ -82,17 +82,17 @@
       },
       {
         "id": 3,
-        "name": "Max",
+        "name": "Business",
         "tagline": "Node.js ready hosting.",
         "discount": "77% OFF",
-        "price": "₹169.00",
-        "originalPrice": "₹739.00",
+        "price": "$3.99",
+        "originalPrice": "$8.99",
         "duration": "/mo",
         "cta": {
           "label": "Choose Plan",
-          "link": "/plans/max"
+          "link": "/plans/business"
         },
-        "renewal": "Renews at ₹739/mo - Guaranteed",
+        "renewal": "Renews at $8.99/mo - Guaranteed",
         "features": [
           "50 websites",
           "100 GB NVMe storage",
@@ -109,14 +109,14 @@
         "name": "Cloud Pro",
         "tagline": "For high-traffic websites.",
         "discount": "61% OFF",
-        "price": "₹499.00",
-        "originalPrice": "₹1299.00",
+        "price": "$9.99",
+        "originalPrice": "$14.99",
         "duration": "/mo",
         "cta": {
           "label": "Choose Plan",
           "link": "/plans/cloud-pro"
         },
-        "renewal": "Renews at ₹1299/mo - Guaranteed",
+        "renewal": "Renews at $14.99/mo - Guaranteed",
         "features": [
           "100 websites",
           "150 GB NVMe storage",
@@ -190,7 +190,7 @@
         },
         {
           "feature": "Price per month",
-          "values": ["₹499.00", "₹1,299.00", "₹1,098.18", "₹839.00"]
+          "values": ["$9.99", "$15.99", "$13.99", "$10.99"]
         }
       ],
 
