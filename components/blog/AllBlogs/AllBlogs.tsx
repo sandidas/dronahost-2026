@@ -21,6 +21,7 @@ type InsightsSectionProps = {
     image: string;
     author: string;
     date: string;
+    slug?: string;
   }[];
 };
 
@@ -121,7 +122,7 @@ export default function AllBlogs({ insightsSection }: AllBlogsProps) {
                   readTime: post.date,
                   button: "Read More",
                   image: post.image,
-                  href: "/blog",
+                  href: post.slug ? `/blog/${post.slug}` : "/blog",
                 }}
                 showCategory
                 showDescription={false}
