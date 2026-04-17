@@ -1,8 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-
   async headers() {
     return [
       {
@@ -14,7 +12,16 @@ const nextConfig: NextConfig = {
         headers: [{ key: "Content-Type", value: "text/plain; charset=utf-8" }],
       },
     ];
-  }
+  },
+  async redirects() {
+    return [
+      { source: "/experience-growth", destination: "/about", permanent: true },
+      { source: "/Experience%26Growth", destination: "/about", permanent: true },
+      { source: "/web-hosting", destination: "/wordpress-hosting", permanent: true },
+      { source: "/hosting-price", destination: "/pricing", permanent: true },
+      { source: "/domains-pricing", destination: "/domains", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

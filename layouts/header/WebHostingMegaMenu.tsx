@@ -49,6 +49,18 @@ const leftColumn: MegaItem[] = [
     ),
   },
   {
+    title: "VPS Hosting",
+    description: "Full root access, NVMe SSD, and scalable resources for power users",
+    href: "/vps-hosting",
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="5" rx="1" />
+        <rect x="3" y="11" width="18" height="5" rx="1" />
+        <path d="M7 6.5h.01M7 13.5h.01" />
+      </svg>
+    ),
+  },
+  {
     title: "Domains",
     description: "Choose and register a domain with the help of AI",
     href: "/domains",
