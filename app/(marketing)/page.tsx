@@ -11,12 +11,21 @@ import PricingSection4 from "@/components/home/PricingSection4/PricingSection4";
 import ServicesSection from "@/components/home/ServiceSection/ServiceSection";
 import TeamsSection from "@/components/home/Teams/TeamsSection";
 import TestimonialsSection from "@/components/home/Testimonials/TestimonialsSection";
+import JsonLd from "@/components/seo/JsonLd";
 import homeData from "@/data/home.json";
+import { buildMetadata } from "@/lib/seo/metadata";
+import { faqPageSchema, organizationSchema, websiteSchema } from "@/lib/seo/jsonld";
+
+export const metadata = buildMetadata({
+  title: "DronaHost — Managed WordPress & Cloud Hosting",
+  description: "High-performance WordPress and cloud hosting with NVMe storage, LiteSpeed servers, and 24/7 support. Serving US, UK, and UAE businesses from $0.99/mo.",
+  path: "/",
+});
 
 export default function Home() {
   return (
     <>
- 
+      <JsonLd schema={[organizationSchema(), websiteSchema()]} />
       <HeroSection data={homeData} />
       <FeatureSection data={homeData} />
       <ServicesSection data={homeData} />
@@ -28,9 +37,10 @@ export default function Home() {
       <PricingSection4 data={homeData} />
       <PricingJourney data={homeData} />
       <TestimonialsSection data={homeData} />
+      <JsonLd schema={faqPageSchema(homeData.faqSection.faqs.map((f) => ({ question: f.question, answer: f.answer })))} />
       <FAQSection data={homeData} />
       <TeamsSection data={homeData} />
- 
+
     </>
   );
 }

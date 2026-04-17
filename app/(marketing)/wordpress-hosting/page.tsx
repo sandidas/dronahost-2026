@@ -15,11 +15,29 @@ import ReviewFeedback from "@/components/Web-Hosting/Review&Feedback/Review&Feed
 import SupportingTeam from "@/components/Web-Hosting/SupportingTeam/SupportingTeam";
 import TechStack from "@/components/Web-Hosting/TechStack/TechStack";
 import Testimonials from "@/components/Web-Hosting/testimonials/testimonials";
+import JsonLd from "@/components/seo/JsonLd";
 import data from "@/data/hostingLandingPage.json";
+import { buildMetadata } from "@/lib/seo/metadata";
+import { breadcrumbSchema, serviceSchema } from "@/lib/seo/jsonld";
+import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
+
+export const metadata = buildMetadata({
+  title: "WordPress Hosting Plans — Fast & Managed | DronaHost",
+  description: "Managed WordPress hosting on LiteSpeed with NVMe storage. Free migration, SSL, and daily backups. Plans from $0.99/mo with a 30-day money-back guarantee.",
+  path: "/wordpress-hosting",
+});
 
 export default function WebHostingPage() {
 	return (
 		<>
+			<JsonLd schema={[
+				breadcrumbSchema(buildBreadcrumbs("/wordpress-hosting")),
+				serviceSchema({
+					name: "WordPress Hosting",
+					description: "Managed WordPress hosting on LiteSpeed servers with NVMe storage, free SSL, and daily backups.",
+					url: "https://dronahost.com/wordpress-hosting",
+				}),
+			]} />
 			<HeroSection data={data.hostingLandingPage.hero} />
 			<EnterpriseSection data={data.hostingLandingPage.enterpriseSection} />
 			<Testimonials data={data.hostingLandingPage.testimonials} />
