@@ -10,8 +10,11 @@ export interface IPost extends Document {
   coverImage: string;       // absolute URL or /public path
   category: string;
   tags: string[];
-  authorName: string;
-  authorImage: string;
+  author: {
+    name: string;
+    bio: string;
+    avatar: string;
+  };
   status: "draft" | "published";
   publishedAt: Date | null;
   updatedAt: Date;
@@ -30,8 +33,11 @@ const PostSchema = new Schema<IPost>(
     coverImage: { type: String, required: true },
     category: { type: String, required: true, trim: true },
     tags: { type: [String], default: [] },
-    authorName: { type: String, required: true, trim: true },
-    authorImage: { type: String, default: "" },
+    author: {
+      name: { type: String, required: true, trim: true },
+      bio: { type: String, default: "" },
+      avatar: { type: String, default: "" },
+    },
     status: {
       type: String,
       enum: ["draft", "published"],

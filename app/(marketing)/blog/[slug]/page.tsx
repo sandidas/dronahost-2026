@@ -11,6 +11,7 @@ import { SITE_URL } from "@/lib/seo/config";
 import JsonLd from "@/components/seo/JsonLd";
 import { formatDate } from "@/lib/utils";
 import Section from "@/components/section/section";
+import HeadLineText from "@/components/HeadLineText/HeadLineText";
 
 // ─── Static generation ────────────────────────────────────────────────────────
 
@@ -109,7 +110,7 @@ export default async function BlogPostPage({
       imageUrl: post.coverImage?.startsWith("http")
         ? post.coverImage
         : `${SITE_URL}${post.coverImage}`,
-      authorName: post.authorName,
+      authorName: post.author.name,
       datePublished: publishedDateIso,
       dateModified: updatedDateIso,
     }),
@@ -122,7 +123,7 @@ export default async function BlogPostPage({
     <>
       <JsonLd schema={schemas} />
 
-      <article>
+      <Section as="article" size="sm" padding="lg">
         {/* ── Hero ── */}
         <Section
           id="blog-post-hero"
@@ -148,9 +149,9 @@ export default async function BlogPostPage({
             </span>
 
             {/* Title */}
-            <h1 className="mt-3 text-3xl font-bold leading-tight text-slate-900 dark:text-white sm:text-4xl lg:text-5xl">
+            <HeadLineText as="h1" fontSize="fiveXl" fontWeight="bold" align="left" className="mt-6">
               {post.title}
-            </h1>
+            </HeadLineText>
 
             {/* Excerpt */}
             <p className="mt-4 text-lg leading-relaxed text-slate-600 dark:text-slate-300">
@@ -159,10 +160,10 @@ export default async function BlogPostPage({
 
             {/* Author + date */}
             <div className="mt-6 flex items-center gap-4">
-              {post.authorImage && (
+              {post.author.avatar && (
                 <Image
-                  src={post.authorImage}
-                  alt={post.authorName}
+                  src={post.author.avatar}
+                  alt={post.author.name}
                   width={40}
                   height={40}
                   className="rounded-full object-cover"
@@ -170,7 +171,7 @@ export default async function BlogPostPage({
               )}
               <div>
                 <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">
-                  {post.authorName}
+                  {post.author.name}
                 </p>
                 <time
                   dateTime={publishedDateIso}
@@ -220,18 +221,29 @@ export default async function BlogPostPage({
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
 
-            {/* Back link */}
-            <div className="mt-16 border-t border-slate-100 pt-8 dark:border-slate-800">
-              <Link
-                href="/blog"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
-              >
-                ← Back to Blog
-              </Link>
-            </div>
+            {/* Related resources */}
+            <aside className="mt-16 border-t border-slate-100 pt-8 dark:border-slate-800">
+              <p className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                Continue reading
+              </p>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+                >
+                  ← Back to Blog
+                </Link>
+                <Link
+                  href="/web-hosting"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+                >
+                  Explore Hosting Plans →
+                </Link>
+              </div>
+            </aside>
           </div>
         </Section>
-      </article>
+      </Section>
     </>
   );
 }
