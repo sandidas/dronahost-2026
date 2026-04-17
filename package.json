@@ -6,7 +6,7 @@
     "dev": "next dev",
     "start": "next start",
     "lint": "eslint",
-    "build": "next build",
+    "build": "tsx scripts/generate-llms-txt.ts && next build",
     "generate:llms": "tsx scripts/generate-llms-txt.ts"
   },
   "dependencies": {

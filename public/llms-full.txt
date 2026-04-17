@@ -1,0 +1,51 @@
+# DronaHost — Managed WordPress & Cloud Hosting
+> Managed hosting for businesses in the US, UK, UAE, and Europe.
+> Fast NVMe SSD servers, 99.9% uptime SLA, free SSL, and 24/7 expert support.
+
+## Hosting Products
+
+- **WordPress Hosting** — Managed WordPress on LiteSpeed + NVMe SSD. From $0.99/mo. https://dronahost.com/wordpress-hosting
+- **Cloud Hosting** — Auto-scaling cloud with 99.99% SLA and global CDN. From $9.99/mo. https://dronahost.com/cloud-hosting
+- **VPS Hosting** — Full root access, NVMe SSD, scalable resources. From $9.99/mo. https://dronahost.com/vps-hosting
+- **Business Hosting** — Professional email, unlimited databases, priority support. From $3.99/mo. https://dronahost.com/business-hosting
+- **Domain Registration** — .com from $17.99/yr, AI-powered domain search. https://dronahost.com/domains
+- **Pricing Overview** — Compare all plans side by side. https://dronahost.com/pricing
+
+## Services
+
+- **Web Design** — Custom mobile-first websites for US, UK, UAE markets. https://dronahost.com/web-design
+- **SEO Services** — Technical SEO, content strategy, link building. https://dronahost.com/seo-services
+- **Growth Services** — CRM integrations, marketing automation, conversion optimisation. https://dronahost.com/growth-services
+
+## Regional Hosting
+
+- **USA Hosting** — Servers in New York & Los Angeles, CCPA compliant. https://dronahost.com/hosting/us
+- **UK Hosting** — London data centre, ICO registered, UK GDPR compliant. https://dronahost.com/hosting/uk
+- **EU Hosting** — Frankfurt & Amsterdam, full GDPR compliance, DPA included. https://dronahost.com/hosting/eu
+- **UAE Hosting** — Dubai data centre, sub-15ms latency for GCC. https://dronahost.com/hosting/uae
+
+## Company
+
+- **About DronaHost** — https://dronahost.com/about
+- **Contact** — 24/7 support, sales@dronahost.com. https://dronahost.com/contact
+- **Blog** — Hosting guides, web design tips, SEO tutorials. https://dronahost.com/blog
+
+## Legal & Compliance
+
+- Privacy Policy: https://dronahost.com/privacy
+- Terms of Service: https://dronahost.com/terms
+- Refund Policy (30-day money-back): https://dronahost.com/refund-policy
+- Service Level Agreement: https://dronahost.com/sla
+- Security & Data Protection: https://dronahost.com/security
+- GDPR Data Processing Agreement: https://dronahost.com/data-processing
+
+## Competitor Comparisons
+
+- DronaHost vs SiteGround: https://dronahost.com/vs/siteground
+- DronaHost vs Kinsta: https://dronahost.com/vs/kinsta
+- DronaHost vs WP Engine: https://dronahost.com/vs/wp-engine
+- DronaHost vs Bluehost: https://dronahost.com/vs/bluehost
+- DronaHost vs Hostinger: https://dronahost.com/vs/hostinger
+- DronaHost vs A2 Hosting: https://dronahost.com/vs/a2-hosting
+- DronaHost vs Cloudways: https://dronahost.com/vs/cloudways
+
