@@ -1,0 +1,22 @@
+# DronaHost
+
+> Affordable, high-performance web hosting from India. Shared hosting, 
+> VPS, dedicated servers, and domain registration with 24/7 support.
+
+## Hosting Plans
+- [Shared Hosting](https://dronahost.com/shared-hosting): Entry-level plans starting at ₹X/month
+- [WordPress Hosting](https://dronahost.com/wordpress-hosting): Optimized for WordPress sites
+- [VPS Hosting](https://dronahost.com/vps): Scalable virtual private servers
+- [Dedicated Servers](https://dronahost.com/dedicated): Full-server solutions
+
+## Domains
+- [Domain Registration](https://dronahost.com/domains): Register .com, .in, .net and more
+- [Domain Transfer](https://dronahost.com/transfer): Move your domain to DronaHost
+
+## Resources
+- [Knowledge Base](https://dronahost.com/kb): Tutorials and guides
+- [Blog](https://dronahost.com/blog): Hosting tips and industry news
+
+## Company
+- [About](https://dronahost.com/about): Our story and mission
+- [Contact](https://dronahost.com/contact): Support and sales

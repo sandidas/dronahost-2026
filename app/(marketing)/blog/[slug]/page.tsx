@@ -138,7 +138,7 @@ export default async function BlogPostPage({
               <span>/</span>
               <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
               <span>/</span>
-              <span className="text-slate-700 dark:text-slate-300 truncate max-w-[200px]">
+              <span className="text-slate-700 dark:text-slate-300 truncate max-w-50">
                 {post.title}
               </span>
             </nav>
@@ -186,7 +186,7 @@ export default async function BlogPostPage({
 
         {/* ── Cover image ── */}
         <div className="relative mx-auto max-w-5xl px-4">
-          <div className="relative aspect-[16/9] overflow-hidden rounded-2xl">
+          <div className="relative aspect-video overflow-hidden rounded-2xl">
             <Image
               src={post.coverImage}
               alt={post.title}
@@ -223,23 +223,12 @@ export default async function BlogPostPage({
 
             {/* Related resources */}
             <aside className="mt-16 border-t border-slate-100 pt-8 dark:border-slate-800">
-              <p className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                Continue reading
-              </p>
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <Link
-                  href="/blog"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
-                >
-                  ← Back to Blog
-                </Link>
-                <Link
-                  href="/web-hosting"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
-                >
-                  Explore Hosting Plans →
-                </Link>
-              </div>
+              <p className="mb-4 font-semibold">Related resources</p>
+              <ul className="space-y-2">
+                <li><Link href="/wordpress-hosting" className="text-primary hover:underline">WordPress Hosting Plans</Link></li>
+                <li><Link href="/pricing" className="text-primary hover:underline">Compare all hosting plans</Link></li>
+                <li><Link href="/blog" className="text-primary hover:underline">More articles</Link></li>
+              </ul>
             </aside>
           </div>
         </Section>
