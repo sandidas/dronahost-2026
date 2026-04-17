@@ -73,6 +73,17 @@
           { "label": "Serverless Solutions", "link": "/serverless" },
           { "label": "Managed VPS Hosting", "link": "/vps-hosting" }
         ]
+      },
+      {
+        "title": "LEGAL",
+        "links": [
+          { "label": "Privacy Policy", "link": "/privacy" },
+          { "label": "Terms of Service", "link": "/terms" },
+          { "label": "Refund Policy", "link": "/refund-policy" },
+          { "label": "Service Level Agreement", "link": "/sla" },
+          { "label": "Security Policy", "link": "/security" },
+          { "label": "Data Processing Agreement", "link": "/data-processing" }
+        ]
       }
     ],
     "partners": {
