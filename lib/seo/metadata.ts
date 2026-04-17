@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dronahost.com";
-const SITE_NAME = "DronaHost";
+import { SITE_URL, SITE_NAME } from "./config";
 
 type BuildMetadataInput = {
   title: string;         // 50-60 chars, already formatted
@@ -9,12 +7,19 @@ type BuildMetadataInput = {
   path: string;          // e.g. "/wordpress-hosting"
   ogImage?: string;      // absolute URL, defaults to /images/og/default.jpg
   noIndex?: boolean;
+  noFollow?: boolean;
   type?: "website" | "article";
+  hreflang?: Record<string, string>;
 };
 
 export function buildMetadata(input: BuildMetadataInput): Metadata {
-  const canonicalUrl = `${SITE_URL}${input.path}`;
+  const normalizedPath = input.path.endsWith("/") && input.path !== "/"
+    ? input.path.slice(0, -1)
+    : input.path;
+  const canonicalUrl = `${SITE_URL}${normalizedPath}`;
   const ogImage = input.ogImage ?? `${SITE_URL}/images/og/default.jpg`;
+  const noIndex = input.noIndex ?? false;
+  const noFollow = input.noFollow ?? noIndex;
 
   return {
     title: input.title,
@@ -22,6 +27,7 @@ export function buildMetadata(input: BuildMetadataInput): Metadata {
     metadataBase: new URL(SITE_URL),
     alternates: {
       canonical: canonicalUrl,
+      ...(input.hreflang ? { languages: input.hreflang } : {}),
     },
     openGraph: {
       title: input.title,
@@ -45,8 +51,8 @@ export function buildMetadata(input: BuildMetadataInput): Metadata {
       description: input.description,
       images: [ogImage],
     },
-    robots: input.noIndex
-      ? { index: false, follow: false }
+    robots: noIndex
+      ? { index: false, follow: noFollow ? false : true }
       : { index: true, follow: true, googleBot: { index: true, follow: true } },
   };
 }

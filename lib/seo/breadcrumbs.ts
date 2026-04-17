@@ -1,4 +1,4 @@
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dronahost.com";
+import { SITE_URL } from "./config";
 
 const LABEL_MAP: Record<string, string> = {
   "wordpress-hosting": "WordPress Hosting",
@@ -22,14 +22,21 @@ const LABEL_MAP: Record<string, string> = {
   "experience-growth": "Experience & Growth",
 };
 
-export function buildBreadcrumbs(path: string): Array<{ name: string; url: string }> {
+export function buildBreadcrumbs(
+  path: string,
+  overrides?: Record<string, string>
+): Array<{ name: string; url: string }> {
   const segments = path.split("/").filter(Boolean);
   const items = [{ name: "Home", url: SITE_URL }];
   let current = "";
   for (const segment of segments) {
     current += `/${segment}`;
+    const name =
+      (overrides && overrides[segment]) ??
+      LABEL_MAP[segment] ??
+      segment.replace(/-/g, " ");
     items.push({
-      name: LABEL_MAP[segment] ?? segment.replace(/-/g, " "),
+      name,
       url: `${SITE_URL}${current}`,
     });
   }

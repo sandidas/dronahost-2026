@@ -1,4 +1,4 @@
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dronahost.com";
+import { SITE_URL, SITE_NAME, LOGO_URL } from "./config";
 
 export type JsonLdScript = Record<string, unknown>;
 
@@ -6,9 +6,14 @@ export function organizationSchema(): JsonLdScript {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "DronaHost",
+    name: SITE_NAME,
     url: SITE_URL,
-    logo: `${SITE_URL}/images/logo.png`,
+    logo: {
+      "@type": "ImageObject",
+      url: LOGO_URL,
+      width: 112,
+      height: 112,
+    },
     sameAs: [
       "https://twitter.com/dronahost",
       "https://www.linkedin.com/company/dronahost",
@@ -26,16 +31,8 @@ export function websiteSchema(): JsonLdScript {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "DronaHost",
+    name: SITE_NAME,
     url: SITE_URL,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: "https://dronahost.com/search?q={search_term_string}",
-      },
-      "query-input": "required name=search_term_string",
-    },
   };
 }
 
@@ -46,6 +43,7 @@ export function productWithOfferSchema(input: {
   price: string;
   priceCurrency: string;
   priceValidUntil?: string;
+  imageUrl?: string;
   ratingValue?: number;
   reviewCount?: number;
 }): JsonLdScript {
@@ -69,6 +67,10 @@ export function productWithOfferSchema(input: {
     url: input.url,
     offers: offer,
   };
+
+  if (input.imageUrl) {
+    product.image = input.imageUrl;
+  }
 
   if (input.ratingValue !== undefined && input.reviewCount !== undefined) {
     product.aggregateRating = {
@@ -128,7 +130,10 @@ export function blogPostingSchema(input: {
     headline: input.title,
     description: input.description,
     url: input.url,
-    image: input.imageUrl,
+    image: {
+      "@type": "ImageObject",
+      url: input.imageUrl,
+    },
     datePublished: input.datePublished,
     dateModified: input.dateModified,
     author: {
@@ -137,10 +142,10 @@ export function blogPostingSchema(input: {
     },
     publisher: {
       "@type": "Organization",
-      name: "DronaHost",
+      name: SITE_NAME,
       logo: {
         "@type": "ImageObject",
-        url: `${SITE_URL}/images/logo.png`,
+        url: LOGO_URL,
       },
     },
   };
@@ -159,7 +164,7 @@ export function serviceSchema(opts: {
     url: opts.url,
     provider: {
       "@type": "Organization",
-      name: "DronaHost",
+      name: SITE_NAME,
       url: SITE_URL,
     },
     areaServed: [
@@ -168,5 +173,77 @@ export function serviceSchema(opts: {
       { "@type": "Country", name: "United Arab Emirates" },
       { "@type": "Country", name: "Germany" },
     ],
+  };
+}
+
+export function localBusinessSchema(opts: {
+  name: string;
+  description: string;
+  url: string;
+  telephone?: string;
+  email?: string;
+  address?: {
+    streetAddress?: string;
+    addressLocality?: string;
+    addressRegion?: string;
+    postalCode?: string;
+    addressCountry?: string;
+  };
+}): JsonLdScript {
+  return {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: opts.name,
+    description: opts.description,
+    url: opts.url,
+    logo: {
+      "@type": "ImageObject",
+      url: LOGO_URL,
+    },
+    ...(opts.telephone ? { telephone: opts.telephone } : {}),
+    ...(opts.email ? { email: opts.email } : {}),
+    ...(opts.address
+      ? {
+          address: {
+            "@type": "PostalAddress",
+            ...opts.address,
+          },
+        }
+      : {}),
+  };
+}
+
+export function articleSchema(input: {
+  title: string;
+  description: string;
+  url: string;
+  imageUrl?: string;
+  authorName: string;
+  datePublished: string;
+  dateModified?: string;
+}): JsonLdScript {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: input.title,
+    description: input.description,
+    url: input.url,
+    ...(input.imageUrl
+      ? { image: { "@type": "ImageObject", url: input.imageUrl } }
+      : {}),
+    datePublished: input.datePublished,
+    ...(input.dateModified ? { dateModified: input.dateModified } : {}),
+    author: {
+      "@type": "Person",
+      name: input.authorName,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      logo: {
+        "@type": "ImageObject",
+        url: LOGO_URL,
+      },
+    },
   };
 }
