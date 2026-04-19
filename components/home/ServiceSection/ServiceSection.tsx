@@ -83,8 +83,8 @@ export default function ServicesSection({ data }: ServicesSectionProps) {
               {/* Icon */}
               <div className="mb-6">
                 <Image
-                  src="/icon/clickIcon.svg"
-                  alt="service icon"
+                  src={service.icon}
+                  alt={`${service.title} service icon`}
                   width={50}
                   height={50}
                   className="object-contain"
@@ -108,7 +108,7 @@ export default function ServicesSection({ data }: ServicesSectionProps) {
                 fontSize="sm"
                 fontWeight="light"
                 align="left"
-                className="mb-4 text-gray-500"
+                className="mb-4 text-gray-500 dark:text-slate-400"
               >
                 {service.description}
               </HeadLineText>
@@ -117,7 +117,7 @@ export default function ServicesSection({ data }: ServicesSectionProps) {
               <div className="mt-6">
                 <Link
                   href={service.cta.link}
-                  className="border border-orange-400 text-orange-500 px-6 py-2 rounded-md text-sm font-medium hover:bg-orange-50 transition"
+                  className="border border-orange-400 text-orange-500 px-6 py-2 rounded-md text-sm font-medium hover:bg-orange-50 transition dark:text-orange-400 dark:border-orange-400 dark:hover:bg-orange-500/10"
                 >
                   {service.cta.label}
                 </Link>
