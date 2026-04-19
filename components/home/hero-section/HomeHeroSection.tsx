@@ -85,19 +85,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
   return (
     <Section
       size="lg"
-      
-      hAlign="left"
-      bgImage={heroSection.background?.src}
-      bgImagePosition="center"
-      bgImageSize="cover"
-      className="hero relative overflow-hidden"
+      className="hero"
+      aria-label="DronaHost web hosting"
     >
-    
+      {/* 2-column grid: text left, visual right */}
+      <div className="relative z-[1] grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center pb-9">
 
-      {/* ───────── MAIN CONTENT ───────── */}
-      <div className="hero-body hero-container relative z-2">
-        
-        {/* LEFT */}
+        {/* LEFT — text content */}
         <div className="hero-left">
 
           <HeadLineText
@@ -114,7 +108,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
             {heroSection.description}
           </p>
 
-          {/* BUTTONS */}
+          {/* CTA buttons */}
           <div className="action-row">
             {heroSection.buttons.map((button) => (
               <Link
@@ -127,14 +121,14 @@ const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
             ))}
           </div>
 
-          {/* MEMBERS */}
+          {/* Social proof avatars */}
           <div className="member-row" role="group" aria-label="Trusted by our customers">
             <div className="members">
               {heroSection.members.avatars.map((avatar, index) => (
                 <Image
                   key={index}
                   src={avatar}
-                  alt={`Team member ${index + 1}`}
+                  alt={`Customer ${index + 1}`}
                   width={32}
                   height={32}
                   loading="lazy"
@@ -142,22 +136,25 @@ const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
                 />
               ))}
             </div>
-            <span className="text-slate-700 dark:text-slate-200">{heroSection.members.countText}</span>
+            <span className="text-slate-700 dark:text-slate-200">
+              {heroSection.members.countText}
+            </span>
           </div>
         </div>
 
-        {/* RIGHT */}
+        {/* RIGHT — hero image + floating cards */}
         <div className="hero-right relative">
 
-          {/* OPTIONAL CURVED BG */}
           {heroSection.decorations?.curvedLines && (
-            <div className="absolute h-125 w-125 border border-orange-300 rounded-full blur-2xl opacity-40" />
+            <div
+              aria-hidden="true"
+              className="absolute h-125 w-125 border border-orange-300 rounded-full blur-2xl opacity-40"
+            />
           )}
 
-          {/* CONNECTOR */}
           <div className="connector" aria-hidden="true" />
 
-          {/* HERO IMAGE */}
+          {/* LCP image — priority=true disables lazy loading */}
           <LazyLoadImageCompWithSEO
             src={heroSection.heroImage.src}
             alt={heroSection.heroImage.alt}
@@ -167,7 +164,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
             className="hero-person"
           />
 
-          {/* FLOATING CARDS */}
           {heroSection.floatingCards.map((card, index) => (
             <article
               key={index}

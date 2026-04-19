@@ -159,7 +159,6 @@ body {
 
 .hero {
   position: relative;
-  min-height: 100vh;
   overflow: hidden;
   color: #111827;
   background:
@@ -196,13 +195,6 @@ body {
   inset: 0;
   background: linear-gradient(150deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.32));
   pointer-events: none;
-}
-
-.hero-container {
-  width: min(1180px, calc(100% - 3rem));
-  margin-inline: auto;
-  position: relative;
-  z-index: 1;
 }
 
 .hero-nav {
@@ -245,15 +237,6 @@ body {
   padding: 0.55rem 1.4rem;
   font-weight: 600;
   cursor: pointer;
-}
-
-.hero-body {
-  padding-top: 0;
-  padding-bottom: 2.25rem;
-  display: grid;
-  grid-template-columns: 1.05fr 1fr;
-  gap: 2rem;
-  align-items: center;
 }
 
 .hero-left h1 {
@@ -1024,12 +1007,6 @@ body.dark .footer-socials a:hover,
     display: none;
   }
 
-  .hero-body {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-    padding-top: 0;
-  }
-
   .hero-left {
     text-align: center;
     margin-inline: auto;
@@ -1067,10 +1044,6 @@ body.dark .footer-socials a:hover,
 }
 
 @media (max-width: 640px) {
-  .hero-container {
-    width: min(1180px, calc(100% - 1.5rem));
-  }
-
   .hero-nav {
     padding-top: 1rem;
   }
@@ -1082,10 +1055,6 @@ body.dark .footer-socials a:hover,
   .login-btn {
     padding: 0.45rem 1rem;
     font-size: 0.82rem;
-  }
-
-  .hero-body {
-    padding-top: 0;
   }
 
   .hero-left p {
