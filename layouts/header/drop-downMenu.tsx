@@ -2,6 +2,7 @@ import Link from "next/link";
 
 type DropDownMenuProps = {
 	open: boolean;
+	onClose: () => void;
 };
 
 function IconCircle({ children }: { children: React.ReactNode }) {
@@ -12,11 +13,15 @@ function IconCircle({ children }: { children: React.ReactNode }) {
 	);
 }
 
-export default function DropDownMenu({ open }: DropDownMenuProps) {
+export default function DropDownMenu({ open, onClose }: DropDownMenuProps) {
 	if (!open) return null;
 
 	return (
-		<div className="absolute right-0 top-full mt-3 w-96 sm:w-130 rounded-3xl border border-slate-200 bg-white p-5 text-slate-900 shadow-[0_24px_80px_-36px_rgba(15,23,42,0.45)] sm:p-6 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:shadow-[0_30px_90px_-48px_rgba(2,6,23,0.95)]">
+		<div
+			id="help-dropdown"
+			aria-label="Help navigation"
+			className="absolute right-0 top-full mt-3 w-96 sm:w-130 rounded-3xl border border-slate-200 bg-white p-5 text-slate-900 shadow-[0_24px_80px_-36px_rgba(15,23,42,0.45)] sm:p-6 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:shadow-[0_30px_90px_-48px_rgba(2,6,23,0.95)]"
+		>
 			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
 				<Link
 					href="/contact"
