@@ -5,10 +5,9 @@ import ShowcaseSidebar from "./_components/ShowcaseSidebar";
 
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
-import Section from "@/components/section/section";
-import GradientBackground from "@/components/gradient/gradient";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import GridCard from "@/components/Card/GridCard";
+import Section from "@/components/ui/Section";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Card from "@/components/ui/Card";
 import HeroSection from "@/components/home/hero-section/HomeHeroSection";
 import FeatureSection from "@/components/home/FeatureSection/FeatureSection";
 import ServicesSection from "@/components/home/ServiceSection/ServiceSection";
@@ -137,7 +136,6 @@ export default function V2ShowcasePage() {
             notes="Too many undocumented variants. Hard to pick the right one."
           >
             <div className="relative h-48 overflow-hidden rounded-lg">
-              <GradientBackground gradient="blue-cyan" className="absolute inset-0" />
               <p className="relative z-10 flex h-full items-center justify-center text-sm font-medium text-slate-700 dark:text-slate-200">
                 blue-cyan gradient
               </p>
@@ -184,12 +182,12 @@ export default function V2ShowcasePage() {
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               {gridItems.map((item, i) => (
-                <GridCard key={i} index={i} total={6} columns={3} size="md">
+                <Card key={i} variant="grid" index={i} total={6} columns={3} size="md">
                   <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-1">
                     {item.title}
                   </h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400">{item.description}</p>
-                </GridCard>
+                </Card>
               ))}
             </div>
           </ShowcaseSection>
@@ -573,6 +571,25 @@ export default function V2ShowcasePage() {
               description="We migrate for free. Your site stays live the entire time."
               tagline="Free migration"
               cta={[{ label: "Start free trial", href: "#" }, { label: "Talk to an expert", href: "#", variant: "secondary" }]}
+            />
+          </ShowcaseSection>
+
+          {/* ── ResourceGrid ── */}
+          <ShowcaseSection
+            id="resource-grid"
+            title="ResourceGrid"
+            status="built"
+            notes="2 or 3 column post grid. Optional featured first post. Replaces blog/AllBlogs, FeatureInsight, developmentHub."
+          >
+            <ResourceGrid
+              tagline="From the blog"
+              title="Resources for developers"
+              columns={3}
+              posts={[
+                { title: "Why LiteSpeed beats Apache for WordPress", description: "Benchmark results from 10 production sites.", href: "#", category: "Performance" },
+                { title: "GDPR compliance checklist for SaaS founders", description: "The 12 things you need before you ship in the EU.", href: "#", category: "Compliance" },
+                { title: "Free migration: what actually happens", description: "A behind-the-scenes look at our zero-downtime migration process.", href: "#", category: "Hosting" },
+              ]}
             />
           </ShowcaseSection>
 
