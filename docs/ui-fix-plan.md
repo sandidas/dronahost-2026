@@ -88,7 +88,7 @@
 
 | Component | Status | Issue | Priority |
 |---|---|---|---|
-| Trust Badges | ❌ | Not built. Required: Stripe, PayPal, Let's Encrypt, Cloudflare, Trustpilot | 🔴 |
+| Trust Badges | ✅ | Stripe, PayPal, Let's Encrypt, Cloudflare, Trustpilot, 30-Day Guarantee | — |
 | Uptime / Stats Bar | ❌ | Not built. Should surface live uptime %, TTFB, support response time | 🔴 |
 | Logo Wall | ⚠️ | Exists in footer. All logos are placeholder. No real partner brands. | 🔴 |
 | Review Score Widget | ❌ | Not built. Trustpilot / G2 / HostAdvice score display needed on homepage | 🟠 |
