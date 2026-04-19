@@ -11,6 +11,7 @@ import PricingSection4 from "@/components/home/PricingSection4/PricingSection4";
 import ServicesSection from "@/components/home/ServiceSection/ServiceSection";
 import TeamsSection from "@/components/home/Teams/TeamsSection";
 import TestimonialsSection from "@/components/home/Testimonials/TestimonialsSection";
+import TrustBadges from "@/components/trust/TrustBadges";
 import JsonLd from "@/components/seo/JsonLd";
 import homeData from "@/data/home.json";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -27,6 +28,7 @@ export default function Home() {
     <>
       <JsonLd schema={[organizationSchema(), websiteSchema()]} />
       <HeroSection data={homeData} />
+      <TrustBadges />
       <FeatureSection data={homeData} />
       <ServicesSection data={homeData} />
       <CaseStudy data={homeData} />
