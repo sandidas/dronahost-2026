@@ -1,5 +1,8 @@
 import HeadLineText from "@/components/HeadLineText/HeadLineText";
+import LazyLoadImageCompWithSEO from "@/components/lazyLoadImage/LazyLoadImageCompWithSEO";
 import Section from "@/components/section/section";
+import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 /* ───────────────── TYPES ───────────────── */
@@ -114,24 +117,28 @@ const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
           {/* BUTTONS */}
           <div className="action-row">
             {heroSection.buttons.map((button) => (
-              <button
+              <Link
                 key={button.label}
+                href={button.link}
                 className={getButtonClassName(button.variant)}
               >
                 {button.label}
-              </button>
+              </Link>
             ))}
           </div>
 
           {/* MEMBERS */}
-          <div className="member-row">
+          <div className="member-row" aria-label="Trusted by our customers">
             <div className="members">
               {heroSection.members.avatars.map((avatar, index) => (
-                <img
+                <Image
                   key={index}
                   src={avatar}
-                  alt={`Member ${index + 1}`}
-                  className="member-avatar"
+                  alt={`Team member ${index + 1}`}
+                  width={32}
+                  height={32}
+                  loading="lazy"
+                  className="member-avatar rounded-full"
                 />
               ))}
             </div>
@@ -151,9 +158,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
           <div className="connector" aria-hidden="true" />
 
           {/* HERO IMAGE */}
-          <img
+          <LazyLoadImageCompWithSEO
             src={heroSection.heroImage.src}
             alt={heroSection.heroImage.alt}
+            width={600}
+            height={600}
+            priority={true}
             className="hero-person"
           />
 
