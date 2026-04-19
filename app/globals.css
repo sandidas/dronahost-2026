@@ -317,6 +317,12 @@ body {
   color: #e5e7eb;
 }
 
+.primary-btn:focus-visible,
+.secondary-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .member-row {
   margin-top: 2rem;
   display: flex;

@@ -128,7 +128,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
           </div>
 
           {/* MEMBERS */}
-          <div className="member-row" aria-label="Trusted by our customers">
+          <div className="member-row" role="group" aria-label="Trusted by our customers">
             <div className="members">
               {heroSection.members.avatars.map((avatar, index) => (
                 <Image
@@ -137,7 +137,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
                   alt={`Team member ${index + 1}`}
                   width={32}
                   height={32}
-                  loading="lazy"
                   className="member-avatar rounded-full"
                 />
               ))}
