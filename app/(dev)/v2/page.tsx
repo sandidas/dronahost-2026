@@ -4,6 +4,7 @@ import ShowcaseSection from "./_components/ShowcaseSection";
 import ShowcaseSidebar from "./_components/ShowcaseSidebar";
 
 import Button from "@/components/ui/Button";
+import Badge from "@/components/ui/Badge";
 import Section from "@/components/section/section";
 import GradientBackground from "@/components/gradient/gradient";
 import HeadLineText from "@/components/HeadLineText/HeadLineText";
@@ -463,6 +464,21 @@ export default function V2ShowcasePage() {
             notes="4 stats: 99.95% uptime SLA, <200ms TTFB, 18 min support reply, Founded 2019. Static/hardcoded, dark strip, responsive grid."
           >
             <StatsBar />
+          </ShowcaseSection>
+
+          {/* ── Badge ── */}
+          <ShowcaseSection
+            id="badge"
+            title="Badge"
+            status="built"
+            notes="Four variants: primary (orange), secondary (blue), success (green), neutral (gray). Used for plan labels, status tags, taglines."
+          >
+            <div className="flex flex-wrap gap-3">
+              <Badge variant="primary">WordPress Hosting</Badge>
+              <Badge variant="secondary">VPS</Badge>
+              <Badge variant="success">GDPR Compliant</Badge>
+              <Badge variant="neutral">Beta</Badge>
+            </div>
           </ShowcaseSection>
 
         </main>
