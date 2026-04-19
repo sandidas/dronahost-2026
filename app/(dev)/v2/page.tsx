@@ -23,6 +23,8 @@ import TeamsSection from "@/components/home/Teams/TeamsSection";
 import Header from "@/layouts/header/header";
 import Footer from "@/layouts/footer/footer";
 import JsonLd from "@/components/seo/JsonLd";
+import TrustBadges from "@/components/trust/TrustBadges";
+import StatsBar from "@/components/trust/StatsBar";
 
 import {
   heroData,
@@ -221,15 +223,15 @@ export default function V2ShowcasePage() {
             id="buttons"
             title="Buttons"
             status="needs-work"
-            notes="No disabled state. No loading/spinner state."
+            notes="No disabled state. No loading/spinner state. No reusable Button component yet."
           >
             <div className="flex flex-wrap items-center gap-4">
-              <button className="btn-primary">Primary button</button>
-              <button className="btn-secondary">Secondary button</button>
-              <button className="btn-primary opacity-50 cursor-not-allowed" disabled>
+              <button className="primary-btn">Primary button</button>
+              <button className="secondary-btn">Secondary button</button>
+              <button className="primary-btn opacity-45 cursor-not-allowed" disabled>
                 Primary (disabled)
               </button>
-              <button className="btn-secondary opacity-50 cursor-not-allowed" disabled>
+              <button className="secondary-btn opacity-45 cursor-not-allowed" disabled>
                 Secondary (disabled)
               </button>
             </div>
@@ -256,7 +258,7 @@ export default function V2ShowcasePage() {
             id="header"
             title="Header"
             status="needs-work"
-            notes="Mobile hamburger missing. Mega menu lacks keyboard nav."
+            notes="Mobile hamburger ✅ fixed. Mega menu keyboard nav ✅ fixed. Footer: partner logos placeholder, social links unset."
           >
             <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
               <Header />
@@ -429,30 +431,24 @@ export default function V2ShowcasePage() {
             <JsonLd schema={orgSchema} />
           </ShowcaseSection>
 
-          {/* ── Trust Badges (missing) ── */}
+          {/* ── Trust Badges ── */}
           <ShowcaseSection
             id="trust-badges"
             title="Trust Badges"
-            status="missing"
+            status="built"
+            notes="Stripe, PayPal, Let's Encrypt, Cloudflare, Trustpilot, 30-Day Guarantee. Inline SVG icons, dark mode, WCAG accessible."
           >
-            <div className="flex items-center justify-center h-24 border-2 border-dashed border-red-200 rounded-lg">
-              <p className="text-sm text-red-500 dark:text-red-400">
-                Component not yet built — see docs/ui-fix-plan.md for priority.
-              </p>
-            </div>
+            <TrustBadges />
           </ShowcaseSection>
 
-          {/* ── Uptime / Stats Bar (missing) ── */}
+          {/* ── Uptime / Stats Bar ── */}
           <ShowcaseSection
             id="uptime-bar"
             title="Uptime / Stats Bar"
-            status="missing"
+            status="built"
+            notes="4 stats: 99.95% uptime SLA, <200ms TTFB, 18 min support reply, Founded 2019. Static/hardcoded, dark strip, responsive grid."
           >
-            <div className="flex items-center justify-center h-24 border-2 border-dashed border-red-200 rounded-lg">
-              <p className="text-sm text-red-500 dark:text-red-400">
-                Component not yet built — see docs/ui-fix-plan.md for priority.
-              </p>
-            </div>
+            <StatsBar />
           </ShowcaseSection>
 
         </main>
