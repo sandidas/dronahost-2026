@@ -27,6 +27,8 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const helpMenuRef = useRef<HTMLDivElement>(null);
+const webHostingTriggerRef = useRef<HTMLButtonElement>(null);
+const helpTriggerRef = useRef<HTMLButtonElement>(null);
 
   /*  Fix hydration */
   useEffect(() => {
@@ -47,6 +49,22 @@ export default function Header() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      if (activeDropdown === "wordpress-hosting") {
+        setActiveDropdown(null);
+        webHostingTriggerRef.current?.focus();
+      }
+      if (isHelpOpen) {
+        setIsHelpOpen(false);
+        helpTriggerRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [activeDropdown, isHelpOpen]);
 
   const isSolidHeader = true;
 
@@ -99,7 +117,59 @@ export default function Header() {
             {/* MENU */}
             <nav className="hidden lg:flex items-center gap-8">
               {navbar.menu.map((item) => {
-                const isActive = item.label === "Web Hosting" && activeDropdown === "wordpress-hosting";
+                const isWebHosting = item.hasDropdown && item.label === "Web Hosting";
+                const isActive = isWebHosting && activeDropdown === "wordpress-hosting";
+
+                if (isWebHosting) {
+                  return (
+                    <button
+                      key={item.label}
+                      ref={webHostingTriggerRef}
+                      onClick={() => {
+                        setIsHelpOpen(false);
+                        setActiveDropdown((prev) =>
+                          prev === "wordpress-hosting" ? null : "wordpress-hosting"
+                        );
+                      }}
+                      onMouseEnter={() => {
+                        setIsHelpOpen(false);
+                        handleNavHover(item.label, item.hasDropdown);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "ArrowDown") {
+                          e.preventDefault();
+                          const panel = document.getElementById("web-hosting-mega-menu");
+                          const firstFocusable = panel?.querySelector<HTMLElement>(
+                            "a[href], button:not([disabled])"
+                          );
+                          firstFocusable?.focus();
+                        }
+                      }}
+                      aria-expanded={isActive}
+                      aria-controls="web-hosting-mega-menu"
+                      aria-haspopup="true"
+                      className={cn(
+                        "flex items-center gap-1 text-[16px] font-semibold transition cursor-pointer",
+                        isSolidHeader
+                          ? "text-slate-700 hover:text-slate-900 dark:text-slate-200 dark:hover:text-white"
+                          : "text-white/95 hover:text-white",
+                        isActive && "text-indigo-600"
+                      )}
+                    >
+                      <span>{item.label}</span>
+                      <svg
+                        viewBox="0 0 20 20"
+                        className={cn("h-4 w-4 transition-transform", isActive && "rotate-180")}
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        aria-hidden="true"
+                      >
+                        <path d="M5 7.5 10 12.5 15 7.5" />
+                      </svg>
+                    </button>
+                  );
+                }
 
                 return (
                   <Link
@@ -113,23 +183,10 @@ export default function Header() {
                       "flex items-center gap-1 text-[16px] font-semibold transition cursor-pointer",
                       isSolidHeader
                         ? "text-slate-700 hover:text-slate-900 dark:text-slate-200 dark:hover:text-white"
-                        : "text-white/95 hover:text-white",
-                      isActive && "text-indigo-600"
+                        : "text-white/95 hover:text-white"
                     )}
                   >
                     <span>{item.label}</span>
-                    {item.hasDropdown && (
-                      <svg
-                        viewBox="0 0 20 20"
-                        className={cn("h-4 w-4 transition-transform", isActive && "rotate-180")}
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        aria-hidden="true"
-                      >
-                        <path d="M5 7.5 10 12.5 15 7.5" />
-                      </svg>
-                    )}
                   </Link>
                 );
               })}
@@ -171,10 +228,24 @@ export default function Header() {
                   }}
                 >
                   <button
+                    ref={helpTriggerRef}
                     onClick={() => {
-                      setActiveDropdown("nav-hover");
+                      setActiveDropdown(null);
                       setIsHelpOpen((prev) => !prev);
                     }}
+                    onKeyDown={(e) => {
+                      if (e.key === "ArrowDown") {
+                        e.preventDefault();
+                        const panel = document.getElementById("help-dropdown");
+                        const firstFocusable = panel?.querySelector<HTMLElement>(
+                          "a[href], button:not([disabled])"
+                        );
+                        firstFocusable?.focus();
+                      }
+                    }}
+                    aria-expanded={isHelpOpen}
+                    aria-controls="help-dropdown"
+                    aria-haspopup="true"
                     className={cn(
                       "rounded-full border px-4 py-2 text-sm font-medium transition",
                       isSolidHeader
@@ -186,7 +257,13 @@ export default function Header() {
                   </button>
 
                   {/* Dropdown */}
-                  <DropDownMenu open={isHelpOpen} />
+                  <DropDownMenu
+                    open={isHelpOpen}
+                    onClose={() => {
+                      setIsHelpOpen(false);
+                      helpTriggerRef.current?.focus();
+                    }}
+                  />
                 </div>
 
                 {/* LOGIN */}
@@ -236,7 +313,13 @@ export default function Header() {
             </div>
           </div>
 
-          <WebHostingMegaMenu open={activeDropdown === "wordpress-hosting"} />
+          <WebHostingMegaMenu
+            open={activeDropdown === "wordpress-hosting"}
+            onClose={() => {
+              setActiveDropdown(null);
+              webHostingTriggerRef.current?.focus();
+            }}
+          />
         </div>
       </header>
 
