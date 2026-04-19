@@ -1,6 +1,6 @@
 import HeadLineText from "@/components/HeadLineText/HeadLineText";
+import LazyLoadImageCompSkeleton from "@/components/lazyLoadImage/LazyLoadImageCompSkeleton";
 import Section from "@/components/section/section";
-import Image from "next/image";
 import Link from "next/link";
 
 type CaseStudyProps = {
@@ -40,7 +40,7 @@ export default function CaseStudySection({ data }: CaseStudyProps) {
         <div>
 
           {/* Tagline */}
-          <p className="text-xs tracking-widest text-blue-500 uppercase mb-4">
+          <p className="text-xs tracking-widest text-indigo-500 uppercase mb-4">
             {section.tagline}
           </p>
 
@@ -85,8 +85,8 @@ export default function CaseStudySection({ data }: CaseStudyProps) {
           <div className="mt-6 flex gap-12">
             {section.stats.map((stat, index) => (
               <div key={index}>
-                <p className="text-2xl font-bold">{stat.value}</p>
-                <p className="text-sm text-gray-500">{stat.label}</p>
+                <p className="text-2xl font-bold dark:text-white">{stat.value}</p>
+                <p className="text-sm text-gray-500 dark:text-slate-400">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -94,28 +94,28 @@ export default function CaseStudySection({ data }: CaseStudyProps) {
 
         {/* RIGHT IMAGE */}
         <div className="relative">
-
-          <Image
-            src="/images/home/caseStudy.svg"
-            alt={section.image?.alt}
+          <LazyLoadImageCompSkeleton
+            src={section.image.src}
+            alt={section.image.alt}
             width={600}
             height={400}
-            className="rounded-lg object-cover w-xl h-auto"
+            className="rounded-lg object-cover w-full h-auto"
           />
-
         </div>
       </div>
 
       {/* SLIDER CONTROLS */}
       <div className="mt-12 flex justify-center gap-4">
-        
-        {/* Left Arrow */}
-        <button className="w-10 h-10 rounded-full border border-orange-400 text-orange-500 flex items-center justify-center hover:bg-orange-50 transition">
+        <button
+          aria-label="Previous case study"
+          className="w-10 h-10 rounded-full border border-orange-400 text-orange-500 flex items-center justify-center hover:bg-orange-50 dark:hover:bg-white/10 transition"
+        >
           ←
         </button>
-
-        {/* Right Arrow */}
-        <button className="w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center hover:bg-orange-600 transition">
+        <button
+          aria-label="Next case study"
+          className="w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center hover:bg-orange-600 transition"
+        >
           →
         </button>
       </div>
