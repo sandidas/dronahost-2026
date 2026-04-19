@@ -344,7 +344,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .btn-spinner {
-    animation-duration: 2s;
+    animation: none;
   }
 }
 
