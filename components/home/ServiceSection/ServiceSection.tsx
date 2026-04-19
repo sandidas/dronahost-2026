@@ -42,7 +42,7 @@ export default function ServicesSection({ data }: ServicesSectionProps) {
       <div className="w-full">
 
         {/* Tagline */}
-        <p className="text-xs tracking-widest text-gray-400 uppercase mb-4 text-center">
+        <p className="text-xs tracking-widest text-gray-400 dark:text-slate-400 uppercase mb-4 text-center">
           {section.tagline}
         </p>
 
@@ -58,7 +58,7 @@ export default function ServicesSection({ data }: ServicesSectionProps) {
         </HeadLineText>
 
         {/* Description */}
-        <p className="mt-4 text-gray-500 max-w-2xl mx-auto text-center">
+        <p className="mt-4 text-gray-500 dark:text-slate-400 max-w-2xl mx-auto text-center">
           {section.description}
         </p>
 
@@ -117,7 +117,7 @@ export default function ServicesSection({ data }: ServicesSectionProps) {
               <div className="mt-6">
                 <Link
                   href={service.cta.link}
-                  className="border border-orange-400 text-orange-500 px-6 py-2 rounded-md text-sm font-medium hover:bg-orange-50 transition dark:text-orange-400 dark:border-orange-400 dark:hover:bg-orange-500/10"
+                  className="border border-orange-400 text-orange-500 px-6 py-2 rounded-md text-sm font-medium hover:bg-orange-50 transition dark:text-orange-400 dark:hover:bg-orange-500/10"
                 >
                   {service.cta.label}
                 </Link>
