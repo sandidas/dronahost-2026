@@ -11,6 +11,7 @@ type MegaItem = {
 
 type WebHostingMegaMenuProps = {
   open: boolean;
+  onClose: () => void;
 };
 
 const leftColumn: MegaItem[] = [
@@ -130,11 +131,15 @@ function MenuItem({ item }: { item: MegaItem }) {
   );
 }
 
-export default function WebHostingMegaMenu({ open }: WebHostingMegaMenuProps) {
+export default function WebHostingMegaMenu({ open, onClose }: WebHostingMegaMenuProps) {
   if (!open) return null;
 
   return (
-    <div className="absolute left-1/2 top-full z-1200 w-[min(96vw,1600px)] -translate-x-1/2 pt-3">
+    <div
+      id="web-hosting-mega-menu"
+      aria-label="Web Hosting navigation"
+      className="absolute left-1/2 top-full z-1200 w-[min(96vw,1600px)] -translate-x-1/2 pt-3"
+    >
       <div className="rounded-none border border-slate-200 bg-white p-6 text-slate-900 shadow-[0_32px_80px_-42px_rgba(15,23,42,0.35)] dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:shadow-[0_36px_90px_-48px_rgba(2,6,23,0.95)] lg:p-8">
         <div className="grid gap-8 lg:grid-cols-[1.1fr_1.1fr_0.9fr]">
           <div className="space-y-2">
