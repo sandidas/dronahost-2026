@@ -323,6 +323,26 @@ body {
   outline-offset: 3px;
 }
 
+/* ── Button disabled state ── */
+.primary-btn:disabled,
+.secondary-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Button loading spinner ── */
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.btn-spinner {
+  display: inline-block;
+  animation: btn-spin 0.7s linear infinite;
+}
+
 .member-row {
   margin-top: 2rem;
   display: flex;
