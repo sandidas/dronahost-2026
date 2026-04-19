@@ -8,13 +8,13 @@ import GradientBackground from "@/components/gradient/gradient";
 import HeadLineText from "@/components/HeadLineText/HeadLineText";
 import GridCard from "@/components/Card/GridCard";
 import HeroSection from "@/components/home/hero-section/HomeHeroSection";
-import FeatureSection2 from "@/components/home/FeatureSection/FeatureSection";
+import FeatureSection from "@/components/home/FeatureSection/FeatureSection";
 import ServicesSection from "@/components/home/ServiceSection/ServiceSection";
 import CaseStudySection from "@/components/home/CaseStudy/CaseStudy";
 import CTASection from "@/components/home/CTA/CTA";
-import PricingSection from "@/components/home/PricingSection1/PricingSection1";
+import PricingSection1 from "@/components/home/PricingSection1/PricingSection1";
 import ManagedHostingIllustrationSection from "@/components/home/PricingSection2/PricingSection2";
-import PricingSection2 from "@/components/home/PricingSection3/PricingSection3";
+import PricingSection3 from "@/components/home/PricingSection3/PricingSection3";
 import PricingSection4 from "@/components/home/PricingSection4/PricingSection4";
 import PricingJourney from "@/components/home/pricingjourney/pricingJourney";
 import TestimonialsSection from "@/components/home/Testimonials/TestimonialsSection";
@@ -89,6 +89,9 @@ export default function V2ShowcasePage() {
 
         {/* Main content */}
         <main className="flex-1 px-8 py-6 min-w-0">
+          <h1 className="mb-8 text-2xl font-bold text-slate-900 dark:text-slate-100">
+            Component Showcase
+          </h1>
 
           {/* ── Section ── */}
           <ShowcaseSection
@@ -293,7 +296,7 @@ export default function V2ShowcasePage() {
             status="needs-work"
             notes="Feature images placeholder SVGs. No real benchmark data."
           >
-            <FeatureSection2 data={featureData} />
+            <FeatureSection data={featureData} />
           </ShowcaseSection>
 
           {/* ── Services Section ── */}
@@ -333,7 +336,7 @@ export default function V2ShowcasePage() {
             status="needs-work"
             notes="Prices not from real data source."
           >
-            <PricingSection data={pricingSection1Data} />
+            <PricingSection1 data={pricingSection1Data} />
           </ShowcaseSection>
 
           {/* ── Pricing Section 2 ── */}
@@ -353,7 +356,7 @@ export default function V2ShowcasePage() {
             status="needs-work"
             notes="Same issues as Pricing 1."
           >
-            <PricingSection2 data={pricingSection3Data} />
+            <PricingSection3 data={pricingSection3Data} />
           </ShowcaseSection>
 
           {/* ── Pricing Section 4 ── */}
