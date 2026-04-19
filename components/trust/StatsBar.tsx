@@ -32,6 +32,7 @@ export default function StatsBar() {
           <div
             key={stat.label}
             className="flex flex-col items-center justify-center px-6 py-8 text-center"
+            aria-label={`${stat.value} ${stat.label} — ${stat.note}`}
           >
             <dt className="text-xs font-semibold uppercase tracking-widest text-slate-400">
               {stat.label}
@@ -39,7 +40,7 @@ export default function StatsBar() {
             <dd className="mt-1 text-3xl font-bold tracking-tight text-white sm:text-4xl">
               {stat.value}
             </dd>
-            <p className="mt-1 text-xs text-slate-500">{stat.note}</p>
+            <dd className="mt-1 text-xs text-slate-500">{stat.note}</dd>
           </div>
         ))}
       </dl>
