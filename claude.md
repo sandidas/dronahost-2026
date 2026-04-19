@@ -511,6 +511,8 @@ All integrations wrapped in `/lib/services/[service].ts`. Each service exports t
 ## What NOT to do
 
 - Do NOT use client-side rendering for indexable content
+- Do NOT build static or one-off components embedded in individual pages — all UI must be global components in `components/`
+- Do NOT skip updating `/v2` after shipping a new component — the `/v2` showcase at `app/(dev)/v2/page.tsx` is the component library source of truth; keep status badges and notes current
 - Do NOT add npm packages without discussing first
 - Do NOT create new page routes without confirming URL structure (SEO + i18n implications)
 - Do NOT use special characters (`&`, `+`, etc.) in folder/route names — use hyphenated slugs
