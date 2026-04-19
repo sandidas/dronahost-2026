@@ -328,7 +328,6 @@ body {
 .secondary-btn:disabled {
   opacity: 0.45;
   cursor: not-allowed;
-  pointer-events: none;
 }
 
 /* ── Button loading spinner ── */
@@ -341,6 +340,12 @@ body {
 .btn-spinner {
   display: inline-block;
   animation: btn-spin 0.7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-spinner {
+    animation-duration: 2s;
+  }
 }
 
 .member-row {
