@@ -86,14 +86,18 @@ export default function MobileMenu({
   navbar,
   navLinks,
 }: MobileMenuProps) {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<Element | null>(null);
 
-  /* Focus close button when drawer opens */
+  /* Focus close button when drawer opens; restore focus when it closes */
   useEffect(() => {
     if (open) {
+      previousFocusRef.current = document.activeElement;
       closeButtonRef.current?.focus();
+    } else {
+      (previousFocusRef.current as HTMLElement | null)?.focus();
     }
   }, [open]);
 
@@ -107,12 +111,13 @@ export default function MobileMenu({
 
   /* Escape key closes */
   useEffect(() => {
+    if (!open) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
+  }, [open, onClose]);
 
   /* Focus trap */
   const handlePanelKeyDown = (e: React.KeyboardEvent) => {
@@ -154,6 +159,7 @@ export default function MobileMenu({
         role="dialog"
         aria-modal="true"
         aria-label="Mobile navigation"
+        aria-hidden={!open}
         onKeyDown={handlePanelKeyDown}
         className={cn(
           "fixed top-0 right-0 z-[999] h-full w-80 bg-white dark:bg-slate-950 shadow-2xl flex flex-col lg:hidden transition-transform duration-300 ease-in-out",
@@ -257,8 +263,8 @@ export default function MobileMenu({
             aria-label="Toggle colour theme"
             className="flex w-full items-center justify-center gap-2 rounded-full border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800 transition"
           >
-            <span aria-hidden="true">{theme === "dark" ? "🌞" : "🌙"}</span>
-            {theme === "dark" ? "Light mode" : "Dark mode"}
+            <span aria-hidden="true">{resolvedTheme === "dark" ? "🌞" : "🌙"}</span>
+            {resolvedTheme === "dark" ? "Light mode" : "Dark mode"}
           </button>
         </div>
       </div>
