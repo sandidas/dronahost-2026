@@ -59,7 +59,7 @@
 | Component | Status | Issue | Priority |
 |---|---|---|---|
 | Header | ⚠️ | Mobile hamburger menu not implemented — nav completely hidden on mobile | 🔴 |
-| Mega Menu | ⚠️ | No keyboard navigation (arrow keys, Escape). Not accessible. | 🟠 |
+| Mega Menu | ✅ | Keyboard accessible — Escape to close, ArrowDown to enter panel, aria-expanded/controls/haspopup | — |
 | Footer | ⚠️ | Partner logos are placeholder images. Social links point nowhere. | 🟠 |
 
 ---
