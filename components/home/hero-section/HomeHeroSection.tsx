@@ -137,6 +137,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
                   alt={`Team member ${index + 1}`}
                   width={32}
                   height={32}
+                  loading="lazy"
                   className="member-avatar rounded-full"
                 />
               ))}

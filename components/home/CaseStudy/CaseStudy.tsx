@@ -111,13 +111,13 @@ export default function CaseStudySection({ data }: CaseStudyProps) {
           aria-label="Previous case study"
           className="w-10 h-10 rounded-full border border-orange-400 text-orange-500 flex items-center justify-center hover:bg-orange-50 dark:hover:bg-white/10 transition"
         >
-          ←
+          <span aria-hidden="true">←</span>
         </button>
         <button
           aria-label="Next case study"
           className="w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center hover:bg-orange-600 transition"
         >
-          →
+          <span aria-hidden="true">→</span>
         </button>
       </div>
     </Section>
