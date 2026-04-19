@@ -74,7 +74,7 @@ export default function CaseStudySection({ data }: CaseStudyProps) {
               className="flex items-center gap-2 text-gray-800 dark:text-gray-200 font-medium"
             >
               {section.ctaSecondary.label}
-              <span>→</span>
+              <span aria-hidden="true">→</span>
             </Link>
           </div>
 
@@ -99,7 +99,8 @@ export default function CaseStudySection({ data }: CaseStudyProps) {
             alt={section.image.alt}
             width={600}
             height={400}
-            className="rounded-lg object-cover w-full h-auto"
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover w-full h-auto"
           />
         </div>
       </div>
