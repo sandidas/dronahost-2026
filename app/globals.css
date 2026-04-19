@@ -4,14 +4,22 @@
 
 @theme {
   --color-primary: oklch(0.648 0.22 38.17);
+  --color-primary-light: oklch(0.72 0.185 44);
   --color-primary-foreground: oklch(1 0 0);
+  --color-secondary: oklch(0.62 0.13 220);
   --color-background: oklch(0.99 0.003 75);
   --color-foreground: oklch(0.21 0.01 75);
 }
 
 :root {
+  /* Brand orange — matches logo (#f35d16) */
   --primary: oklch(0.648 0.22 38.17);
+  /* Gradient end — slightly lighter/warmer orange (#ff7027) */
+  --primary-light: oklch(0.72 0.185 44);
   --primary-foreground: oklch(1 0 0);
+  /* Brand sky blue — matches logo (#06a7cb) */
+  --secondary: oklch(0.62 0.13 220);
+  --secondary-light: oklch(0.70 0.12 220);
   --background: oklch(0.99 0.003 75);
   --foreground: oklch(0.21 0.01 75);
   --card: oklch(0.968 0.005 75);
@@ -37,6 +45,11 @@
   --muted: oklch(0.21 0.01 75);
   --muted-foreground: oklch(0.56 0.01 75);
   --border: oklch(0.27 0.01 75);
+  /* Slightly brighter brand colors for dark backgrounds */
+  --primary: oklch(0.72 0.185 44);
+  --primary-light: oklch(0.78 0.165 48);
+  --secondary: oklch(0.70 0.12 220);
+  --secondary-light: oklch(0.76 0.11 220);
 }
 
 * {
@@ -196,11 +209,11 @@ body {
   font-size: 1.65rem;
   line-height: 1;
   font-weight: 800;
-  color: #0284c7;
+  color: var(--primary);
 }
 
 .brand span {
-  color: #fb923c;
+  color: var(--secondary);
 }
 
 .nav-links {
@@ -278,9 +291,9 @@ body {
 }
 
 .primary-btn {
-  background: linear-gradient(135deg, #f97316, #fb923c);
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
   color: white;
-  box-shadow: 0 14px 32px -18px rgba(249, 115, 22, 0.75);
+  box-shadow: 0 14px 32px -18px oklch(from var(--primary) l c h / 0.7);
 }
 
 .secondary-btn {
@@ -412,11 +425,11 @@ body {
 }
 
 .footer-brand-logo span {
-  color: #f35d16;
+  color: var(--primary);
 }
 
 .footer-brand-logo strong {
-  color: #06a7cb;
+  color: var(--secondary);
   font-weight: 800;
 }
 
@@ -547,13 +560,13 @@ body.dark .footer-brand p,
 html.dark .footer-brand-logo span,
 body.dark .footer-brand-logo span,
 .dark .footer-brand-logo span {
-  color: #ff7027;
+  color: var(--primary-light);
 }
 
 html.dark .footer-brand-logo strong,
 body.dark .footer-brand-logo strong,
 .dark .footer-brand-logo strong {
-  color: #10b7dd;
+  color: var(--secondary-light);
 }
 
 html.dark .footer-column h3,

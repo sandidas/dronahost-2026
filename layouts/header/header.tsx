@@ -87,11 +87,11 @@ export default function Header() {
             <Link href="/" className="flex items-center">
               <Image
                 src="/images/home/dronahostLogo.svg"
-                alt="Dronahost Logo"
+                alt="DronaHost"
                 width={150}
                 height={40}
-                className="h-9 w-auto"
-                
+                className="h-9 w-auto transition-opacity duration-200 dark:brightness-[1.15] dark:saturate-[1.1]"
+                priority
               />
             </Link>
 
