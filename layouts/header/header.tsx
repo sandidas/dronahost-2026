@@ -27,8 +27,8 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const helpMenuRef = useRef<HTMLDivElement>(null);
-const webHostingTriggerRef = useRef<HTMLButtonElement>(null);
-const helpTriggerRef = useRef<HTMLButtonElement>(null);
+  const webHostingTriggerRef = useRef<HTMLButtonElement>(null);
+  const helpTriggerRef = useRef<HTMLButtonElement>(null);
 
   /*  Fix hydration */
   useEffect(() => {
@@ -147,7 +147,7 @@ const helpTriggerRef = useRef<HTMLButtonElement>(null);
                       }}
                       aria-expanded={isActive}
                       aria-controls="web-hosting-mega-menu"
-                      aria-haspopup="true"
+                      aria-haspopup="menu"
                       className={cn(
                         "flex items-center gap-1 text-[16px] font-semibold transition cursor-pointer",
                         isSolidHeader
@@ -245,7 +245,7 @@ const helpTriggerRef = useRef<HTMLButtonElement>(null);
                     }}
                     aria-expanded={isHelpOpen}
                     aria-controls="help-dropdown"
-                    aria-haspopup="true"
+                    aria-haspopup="menu"
                     className={cn(
                       "rounded-full border px-4 py-2 text-sm font-medium transition",
                       isSolidHeader
