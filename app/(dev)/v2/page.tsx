@@ -14,6 +14,12 @@ import FeatureSection from "@/components/home/FeatureSection/FeatureSection";
 import ServicesSection from "@/components/home/ServiceSection/ServiceSection";
 import CaseStudySection from "@/components/home/CaseStudy/CaseStudy";
 import CTASection from "@/components/home/CTA/CTA";
+import PageHero from "@/components/sections/PageHero";
+import TwoColumn from "@/components/sections/TwoColumn";
+import FeatureGrid from "@/components/sections/FeatureGrid";
+import ProcessSteps from "@/components/sections/ProcessSteps";
+import NewCTASection from "@/components/sections/CTASection";
+import ResourceGrid from "@/components/sections/ResourceGrid";
 import PricingSection1 from "@/components/home/PricingSection1/PricingSection1";
 import ManagedHostingIllustrationSection from "@/components/home/PricingSection2/PricingSection2";
 import PricingSection3 from "@/components/home/PricingSection3/PricingSection3";
@@ -479,6 +485,95 @@ export default function V2ShowcasePage() {
               <Badge variant="success">GDPR Compliant</Badge>
               <Badge variant="neutral">Beta</Badge>
             </div>
+          </ShowcaseSection>
+
+          {/* ── PageHero ── */}
+          <ShowcaseSection
+            id="page-hero"
+            title="PageHero"
+            status="built"
+            notes="Centered and split layouts. gradient/plain backgrounds. Used on all non-home pages."
+          >
+            <PageHero
+              tagline="WordPress Hosting"
+              title="High-performance hosting built for WordPress"
+              description="LiteSpeed + NVMe storage. 200ms average TTFB from London, Frankfurt, and New York."
+              cta={[{ label: "Get started", href: "#" }, { label: "View plans", href: "#", variant: "secondary" }]}
+              layout="centered"
+              background="gradient"
+            />
+          </ShowcaseSection>
+
+          {/* ── TwoColumn ── */}
+          <ShowcaseSection
+            id="two-column"
+            title="TwoColumn"
+            status="built"
+            notes="Image left or right. Optional feature checklist. Replaces PricingSection1–4."
+          >
+            <TwoColumn
+              tagline="Managed WordPress"
+              title="Everything you need, nothing you don't"
+              description="Pre-configured caching, automatic updates, and daily backups — so you focus on your site."
+              features={["LiteSpeed cache pre-installed", "Daily off-site backups", "One-click staging", "Free SSL forever"]}
+              cta={[{ label: "Start free trial", href: "#" }]}
+              image={{ src: "/images/placeholder.png", alt: "Feature illustration", width: 560, height: 480 }}
+              imagePosition="right"
+            />
+          </ShowcaseSection>
+
+          {/* ── FeatureGrid ── */}
+          <ShowcaseSection
+            id="feature-grid"
+            title="FeatureGrid"
+            status="built"
+            notes="divided and undivided modes. 2/3/4 columns. Replaces ServiceSection and 4 others."
+          >
+            <FeatureGrid
+              tagline="Why DronaHost"
+              title="Built for speed, reliability, and growth"
+              columns={3}
+              divided={true}
+              items={[
+                { title: "LiteSpeed + NVMe", description: "200ms average TTFB from our London, Frankfurt, and New York nodes." },
+                { title: "99.95% Uptime SLA", description: "Automatic service credits if we miss. No excuses, no workarounds." },
+                { title: "18-min first response", description: "24/7 across US, UK, and UAE business hours. Real humans, not bots." },
+              ]}
+            />
+          </ShowcaseSection>
+
+          {/* ── ProcessSteps ── */}
+          <ShowcaseSection
+            id="process-steps"
+            title="ProcessSteps"
+            status="built"
+            notes="alternating and numbered layouts. Replaces HowItWorks + OurProcess."
+          >
+            <ProcessSteps
+              tagline="How it works"
+              title="Up and running in under 10 minutes"
+              layout="numbered"
+              steps={[
+                { step: 1, title: "Choose your plan", description: "Pick the hosting plan that fits your site size and traffic." },
+                { step: 2, title: "Point your domain", description: "Update your nameservers or transfer your domain to us." },
+                { step: 3, title: "Go live", description: "We migrate your site for free and you go live with zero downtime." },
+              ]}
+            />
+          </ShowcaseSection>
+
+          {/* ── CTASection ── */}
+          <ShowcaseSection
+            id="cta-section"
+            title="CTASection"
+            status="built"
+            notes="default and gradient variants. Image left + content right. Replaces 4 CTA components."
+          >
+            <NewCTASection
+              title="Ready to move your WordPress site?"
+              description="We migrate for free. Your site stays live the entire time."
+              tagline="Free migration"
+              cta={[{ label: "Start free trial", href: "#" }, { label: "Talk to an expert", href: "#", variant: "secondary" }]}
+            />
           </ShowcaseSection>
 
         </main>
