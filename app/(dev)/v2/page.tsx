@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import ShowcaseSection from "./_components/ShowcaseSection";
 import ShowcaseSidebar from "./_components/ShowcaseSidebar";
 
+import Button from "@/components/ui/Button";
 import Section from "@/components/section/section";
 import GradientBackground from "@/components/gradient/gradient";
 import HeadLineText from "@/components/HeadLineText/HeadLineText";
@@ -222,18 +223,31 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="buttons"
             title="Buttons"
-            status="needs-work"
-            notes="No disabled state. No loading/spinner state. No reusable Button component yet."
+            status="built"
+            notes="Primary and secondary variants. Disabled state and loading/spinner state implemented."
           >
-            <div className="flex flex-wrap items-center gap-4">
-              <button className="primary-btn">Primary button</button>
-              <button className="secondary-btn">Secondary button</button>
-              <button className="primary-btn opacity-45 cursor-not-allowed" disabled>
-                Primary (disabled)
-              </button>
-              <button className="secondary-btn opacity-45 cursor-not-allowed" disabled>
-                Secondary (disabled)
-              </button>
+            <div className="space-y-6">
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Default</p>
+                <div className="flex flex-wrap items-center gap-4">
+                  <Button variant="primary">Primary button</Button>
+                  <Button variant="secondary">Secondary button</Button>
+                </div>
+              </div>
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Disabled</p>
+                <div className="flex flex-wrap items-center gap-4">
+                  <Button variant="primary" disabled>Primary disabled</Button>
+                  <Button variant="secondary" disabled>Secondary disabled</Button>
+                </div>
+              </div>
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Loading</p>
+                <div className="flex flex-wrap items-center gap-4">
+                  <Button variant="primary" loading>Primary loading</Button>
+                  <Button variant="secondary" loading>Secondary loading</Button>
+                </div>
+              </div>
             </div>
           </ShowcaseSection>
 
