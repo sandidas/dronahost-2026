@@ -434,7 +434,7 @@ interface SectionProps {
 
 const Section = ({
   as: Tag = "section",
-  size = "lg", // max-w-7xl inner container
+  size = "2xl", // max-w-7xl inner container
   height = "auto", // no forced height — driven by content
   align = "center", // vertical centering when height is set
   hAlign = "left", // horizontal: left-aligned by default
@@ -524,4 +524,3 @@ export default Section;
 //   import { sizeClass, heightClass, paddingClass } from "@/components/global/Section";
 export { heightClass, horizontalAlignClass, overlayClass, paddingClass, sizeClass, variantClass, verticalAlignClass };
 export type { SectionProps };
-

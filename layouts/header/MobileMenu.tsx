@@ -41,12 +41,14 @@ function MobileAccordion({
   onClose: () => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const contentId = `accordion-${item.label.replace(/\s+/g, "-").toLowerCase()}`;
 
   return (
     <div>
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         aria-expanded={isOpen}
+        aria-controls={contentId}
         className="flex w-full items-center justify-between rounded-lg px-3 py-3 text-left text-[15px] font-semibold text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800/60 transition"
       >
         {item.label}
@@ -63,7 +65,7 @@ function MobileAccordion({
       </button>
 
       {isOpen && (
-        <div className="ml-3 mt-1 space-y-1 border-l border-slate-200 pl-3 dark:border-slate-700">
+        <div id={contentId} className="ml-3 mt-1 space-y-1 border-l border-slate-200 pl-3 dark:border-slate-700">
           {mobileHostingLinks.map((link) => (
             <Link
               key={link.title}
@@ -202,7 +204,7 @@ export default function MobileMenu({
           className="flex-1 overflow-y-auto px-4 py-4 space-y-1"
         >
           {navbar.menu.map((item) =>
-            item.hasDropdown ? (
+            item.hasDropdown && item.label === "Web Hosting" ? (
               <MobileAccordion key={item.label} item={item} onClose={onClose} />
             ) : (
               <Link
@@ -263,7 +265,16 @@ export default function MobileMenu({
             aria-label="Toggle colour theme"
             className="flex w-full items-center justify-center gap-2 rounded-full border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800 transition"
           >
-            <span aria-hidden="true">{resolvedTheme === "dark" ? "🌞" : "🌙"}</span>
+            {resolvedTheme === "dark" ? (
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            )}
             {resolvedTheme === "dark" ? "Light mode" : "Dark mode"}
           </button>
         </div>
