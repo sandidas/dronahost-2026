@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils";
+
 export type Status = "built" | "needs-work" | "missing";
 
 const config: Record<Status, { label: string; classes: string }> = {
@@ -18,7 +20,7 @@ const config: Record<Status, { label: string; classes: string }> = {
 export default function StatusBadge({ status }: { status: Status }) {
   const { label, classes } = config[status];
   return (
-    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${classes}`}>
+    <span className={cn("inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium", classes)}>
       {label}
     </span>
   );

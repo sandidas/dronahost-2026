@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 type SidebarItem = {
   id: string;
@@ -112,7 +113,7 @@ export default function ShowcaseSidebar() {
           <ul>
             {cat.items.map((item) => (
               <li key={item.id}>
-                <a
+                <Link
                   href={`#${item.id}`}
                   className={`block rounded-md px-3 py-1.5 text-sm transition-colors ${
                     activeId === item.id
@@ -121,7 +122,7 @@ export default function ShowcaseSidebar() {
                   }`}
                 >
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
