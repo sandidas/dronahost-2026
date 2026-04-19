@@ -1,6 +1,6 @@
 # DronaHost UI Fix Plan
 
-> Last updated: 2026-04-19
+> Last updated: 2026-04-19 (Tier 1 quality fixes shipped)
 > Update this file as components are fixed. Use /v2 to visually verify status changes.
 
 ## Status Legend
@@ -47,8 +47,8 @@
 
 | Component | Status | Issue | Priority |
 |---|---|---|---|
-| Primary Button | ⚠️ | No disabled state styling. No loading/spinner state. | 🟠 |
-| Secondary Button | ⚠️ | No disabled state styling. No loading/spinner state. | 🟠 |
+| Primary Button | ⚠️ | `focus-visible` outline added ✓. Still missing disabled state and loading/spinner state. | 🟠 |
+| Secondary Button | ⚠️ | `focus-visible` outline added ✓. Still missing disabled state and loading/spinner state. | 🟠 |
 | Destructive Button | ❌ | Not built — needed for delete/cancel actions in account dashboard | 🟡 |
 | Contact Form | ⚠️ | Embedded in /contact page only — not a reusable component. No loading or success state. | 🟠 |
 
@@ -68,10 +68,10 @@
 
 | Component | Status | Issue | Priority |
 |---|---|---|---|
-| Hero Section | ⚠️ | Floating card icons placeholder. Member avatars placeholder. Copy lorem ipsum in JSON. | 🔴 |
+| Hero Section | ⚠️ | Technical: LazyLoad + a11y fixed ✓, buttons functional ✓. Remaining: floating card icons placeholder, member avatars placeholder, copy lorem ipsum in JSON. | 🔴 |
 | Feature Section | ⚠️ | Feature images are placeholder SVGs. No real benchmark data. | 🟠 |
-| Services Section | ⚠️ | Icons generic. Descriptions are placeholder copy. | 🟠 |
-| Case Study | ⚠️ | No real case study. Metrics hardcoded. Image placeholder. | 🟠 |
+| Services Section | ⚠️ | Technical: icon src, alt text, dark mode fixed ✓. Remaining: descriptions are placeholder copy. | 🟠 |
+| Case Study | ⚠️ | Technical: skeleton image, brand colours, aria-labels, dark mode fixed ✓. Remaining: no real case study, metrics hardcoded, image placeholder. | 🟠 |
 | CTA Section | ✅ | Structure solid. Needs real copy + final CTA URLs. | — |
 | Pricing Section 1 | ⚠️ | Image placeholder. Prices not from real pricing data source. | 🟠 |
 | Pricing Section 2 | ⚠️ | Illustration placeholder. Feature copy generic. | 🟡 |
