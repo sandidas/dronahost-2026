@@ -1,6 +1,6 @@
-import GridCard from "@/components/Card/GridCard";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import Card from "@/components/ui/Card";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -24,7 +24,7 @@ export default function Articles({ helpCategories }: ArticlesProps) {
 		<Section size="lg" padding="md" className="bg-[#f3f4f6] dark:bg-slate-950" aria-label="Support articles categories">
 			<div className="grid grid-cols-1 overflow-hidden rounded-3xl md:grid-cols-2 xl:grid-cols-3">
 				{helpCategories.map((category, index) => (
-					<GridCard
+					<Card variant="grid"
 						key={category.id}
 						index={index}
 						total={helpCategories.length}
@@ -61,7 +61,7 @@ export default function Articles({ helpCategories }: ArticlesProps) {
 						>
 							{category.cta.label}
 						</Link>
-					</GridCard>
+					</Card>
 				))}
 			</div>
 		</Section>

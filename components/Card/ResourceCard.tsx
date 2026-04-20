@@ -1,4 +1,4 @@
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
+import HeadLineText from "@/components/ui/HeadLineText";
 import { cn } from "@/utils/cn";
 import Link from "next/link";
 

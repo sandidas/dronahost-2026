@@ -1,6 +1,5 @@
-import GradientBackground from "@/components/gradient/gradient";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 import Link from "next/link";
 type CtaBanner = {
 	tagline: string;
@@ -20,27 +19,7 @@ type CtaProps = {
 export default function Cta({ ctaBanner }: CtaProps) {
 	return (
 		<Section size="lg" padding="md" className="bg-[#f3f4f6] dark:bg-slate-950" aria-label="Blog call to action">
-			{/* Gradient Container */}
-      <GradientBackground
-        gradient="custom"
-        customGradient="
-          from-muted via-background to-muted
-					dark:from-[#0a1230] dark:via-[#1b2347] dark:to-[#d07a3b]
-        "
-        blobs={[
-          { color: "blue", size: "lg", effect: "float", position: "top-left", opacity: 10, blur: "xl" },
-          { color: "orange", size: "lg", effect: "drift", position: "top-right", opacity: 12, blur: "xl" },
-        ]}
-        glowSpots={[
-          { color: "#1d4ed8", position: "top-left", size: "xl", opacity: 8 },
-          { color: "#312e81", position: "bottom-right", size: "lg", opacity: 10 },
-        ]}
-        variant="outlined"
-        
-				className="rounded-[40px] border border-black/10 dark:border-white/20"
-        contentClassName="px-6 sm:px-10 md:px-12 lg:px-16 py-16 sm:py-20 md:py-24 text-center"
-      >
-
+			<div className="rounded-[40px] border border-black/10 dark:border-white/20 px-6 sm:px-10 md:px-12 lg:px-16 py-16 sm:py-20 md:py-24 text-center">
 				<div className="relative mx-auto max-w-3xl text-center">
 					<p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-900/85 dark:text-white/85">{ctaBanner.tagline}</p>
 
@@ -72,7 +51,7 @@ export default function Cta({ ctaBanner }: CtaProps) {
 
 					<p className="mt-6 text-sm text-slate-700/55 dark:text-white/60">Zero spam. Pure signal. Unsubscribe at any time.</p>
 				</div>
-                </GradientBackground>
+			</div>
 		</Section>
         
 	);

@@ -1,6 +1,6 @@
-import GridCard from "@/components/Card/GridCard";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import Card from "@/components/ui/Card";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 
 type IncludedFeatureItem = {
 	title: string;
@@ -39,7 +39,7 @@ export default function IncludedEveryPlan({ includedFeatures }: IncludedEveryPla
 				{/* Grid */}
 				<div className="mt-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
 					{items.map((item, index) => (
-						<GridCard
+						<Card variant="grid"
 							key={item.title}
 							index={index}
 							total={items.length}
@@ -58,7 +58,7 @@ export default function IncludedEveryPlan({ includedFeatures }: IncludedEveryPla
 							<p className="mt-3 text-lg leading-[1.6] text-slate-600 dark:text-slate-300">
 								{item.description}
 							</p>
-						</GridCard>
+						</Card>
 					))}
 				</div>
 			</div>

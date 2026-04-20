@@ -1,6 +1,6 @@
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import LazyLoadImageCompWithSEO from "@/components/lazyLoadImage/LazyLoadImageCompWithSEO";
-import Section from "@/components/section/section";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Image from "@/components/ui/Image";
+import Section from "@/components/ui/Section";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -155,7 +155,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ data }) => {
           <div className="connector" aria-hidden="true" />
 
           {/* LCP image — priority=true disables lazy loading */}
-          <LazyLoadImageCompWithSEO
+          <Image
             src={heroSection.heroImage.src}
             alt={heroSection.heroImage.alt}
             width={600}

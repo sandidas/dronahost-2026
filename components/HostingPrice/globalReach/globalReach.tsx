@@ -1,6 +1,5 @@
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import GradientBackground from "@/components/gradient/gradient";
-import Section from "@/components/section/section";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -23,13 +22,7 @@ type GlobalReachProps = {
 export default function GlobalReach({ globalReach }: GlobalReachProps) {
 	return (
 		<Section size="full" padding="none">
-			<GradientBackground
-				gradient="custom"
-				customGradient="from-[#ce8642] via-[#c59b75] to-[#b4b7b2] dark:from-[#0a1230] dark:via-[#1b2347] dark:to-[#2b1f24]"
-				variant="none"
-				className="w-full"
-				minHeight="580px"
-			>
+			<div className="w-full" style={{ minHeight: "580px" }}>
 				<div className="pointer-events-none absolute inset-0 bg-linear-to-r from-[#ff8a2b]/24 via-transparent to-transparent dark:from-[#ff8a2b]/14" />
 
 				<div className="relative z-2 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 px-6 py-14 md:grid-cols-2 md:px-10 lg:px-12">
@@ -70,7 +63,7 @@ export default function GlobalReach({ globalReach }: GlobalReachProps) {
 						/>
 					</div>
 				</div>
-			</GradientBackground>
+			</div>
 		</Section>
 	);
 }

@@ -1,6 +1,6 @@
-import GridCard from "@/components/Card/GridCard";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import Card from "@/components/ui/Card";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 import Link from "next/link";
 
 type Plan = {
@@ -44,7 +44,7 @@ export default function PricingSection({ plans }: PricingSectionProps) {
 
 				<div className="mt-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
 					{plans.map((plan, index) => (
-						<GridCard
+						<Card variant="grid"
 							key={plan.id}
 							index={index}
 							total={plans.length}
@@ -116,7 +116,7 @@ export default function PricingSection({ plans }: PricingSectionProps) {
 									</li>
 								))}
 							</ul>
-						</GridCard>
+						</Card>
 					))}
 				</div>
 			</div>

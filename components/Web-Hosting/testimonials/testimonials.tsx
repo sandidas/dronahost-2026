@@ -1,6 +1,6 @@
-import GridCard from "@/components/Card/GridCard";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import Card from "@/components/ui/Card";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 
 type Testimonial = {
   id: number;
@@ -76,7 +76,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {testimonials.map((item, index) => (
-            <GridCard
+            <Card variant="grid"
               key={item.id}
               index={index}
               total={testimonials.length}
@@ -148,7 +148,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
                   {item.company}
                 </HeadLineText>
               </div>
-            </GridCard>
+            </Card>
           ))}
         </div>
 

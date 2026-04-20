@@ -1,6 +1,5 @@
-import GradientBackground from "@/components/gradient/gradient";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 
 type DomainSearchProps = {
   data: {
@@ -34,34 +33,7 @@ export default function SearchDomain({ data }: DomainSearchProps) {
       {/*  CENTER CONTAINER (makes it thinner from sides) */}
       <div className="max-w-6xl mx-auto">
         
-        <GradientBackground
-          gradient="custom"
-          customGradient="
-            from-orange-100/70 via-background to-sky-100/70
-            dark:from-slate-900 dark:via-slate-900 dark:to-slate-800
-          "
-          blobs={[
-            {
-              color: "orange",
-              size: "lg",
-              effect: "float",
-              position: "top-left",
-              opacity: 35,
-              blur: "xl",
-            },
-            {
-              color: "blue",
-              size: "lg",
-              effect: "drift",
-              position: "bottom-right",
-              opacity: 35,
-              blur: "xl",
-            },
-          ]}
-          variant="none"
-          className="rounded-[40px] border border-border/70 bg-card/85 shadow-[0_12px_40px_rgba(15,23,42,0.12)] dark:bg-card/75 dark:shadow-[0_18px_48px_rgba(2,6,23,0.45)]"
-          contentClassName="px-6 sm:px-10 md:px-16 py-16 sm:py-20 text-center"
-        >
+        <div className="rounded-[40px] border border-border/70 bg-card/85 shadow-[0_12px_40px_rgba(15,23,42,0.12)] dark:bg-card/75 dark:shadow-[0_18px_48px_rgba(2,6,23,0.45)] px-6 sm:px-10 md:px-16 py-16 sm:py-20 text-center">
           <div className="flex flex-col items-center gap-6 max-w-3xl mx-auto">
 
             {/* Tagline */}
@@ -152,7 +124,7 @@ export default function SearchDomain({ data }: DomainSearchProps) {
             </div>
 
           </div>
-        </GradientBackground>
+        </div>
       </div>
     </Section>
   );

@@ -1,7 +1,7 @@
 "use client";
 
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 import Image from "next/image";
 import { useState } from "react";
 

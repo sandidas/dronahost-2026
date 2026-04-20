@@ -1,9 +1,9 @@
 "use client";
 
-import GridCard from "@/components/Card/GridCard";
-import ResourceCard from "@/components/Card/ResourceCard";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import Card from "@/components/ui/Card";
+import Card from "@/components/ui/Card";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 import { useMemo, useState } from "react";
 
 type InsightsSectionProps = {
@@ -106,7 +106,7 @@ export default function AllBlogs({ insightsSection }: AllBlogsProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
 
           {filteredPosts.map((post, index) => (
-            <GridCard
+            <Card variant="grid"
               key={post.id}
               index={index}
               total={filteredPosts.length}
@@ -114,7 +114,7 @@ export default function AllBlogs({ insightsSection }: AllBlogsProps) {
               size="md"
               variant="ghost"
             >
-              <ResourceCard
+              <Card variant="resource"
                 post={{
                   category: post.category,
                   title: post.title,
@@ -130,7 +130,7 @@ export default function AllBlogs({ insightsSection }: AllBlogsProps) {
                 imageClassName="h-65 mb-5 overflow-hidden rounded-xl"
                 contentClassName="px-1 pb-2"
               />
-            </GridCard>
+            </Card>
           ))}
 
         </div>

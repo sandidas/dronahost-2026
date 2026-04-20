@@ -1,6 +1,6 @@
-import GridCard from "@/components/Card/GridCard";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import Card from "@/components/ui/Card";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 import Image from "next/image";
 
 type Testimonial = {
@@ -84,7 +84,7 @@ export default function TestimonialsSection({ data }: Props) {
           }`}
         >
           {section.testimonials.map((item, index) => (
-            <GridCard
+            <Card variant="grid"
               key={item.id}
               index={index}
               total={section.testimonials.length}
@@ -127,7 +127,7 @@ export default function TestimonialsSection({ data }: Props) {
                   </p>
                 </div>
               </div>
-            </GridCard>
+            </Card>
           ))}
         </div>
       </div>

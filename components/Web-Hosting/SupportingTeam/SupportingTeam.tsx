@@ -1,7 +1,6 @@
-import GridCard from "@/components/Card/GridCard";
-import GradientBackground from "@/components/gradient/gradient";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import Card from "@/components/ui/Card";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 
 import { BookOpen, Building2, Newspaper } from "lucide-react";
 
@@ -38,17 +37,6 @@ export default function SupportingTeam({ data }: SupportingTeamProps) {
   };
 
   return (
-    <GradientBackground
-        gradient="custom"
-        gradientAngle={112}
-        variant="none"
-        shape="none"
-        grid="none"
-        noise="subtle"
-        blobs={[
-          { color: "orange", size: "lg", effect: "drift", position: "top-right", opacity: 30, blur: "lg" },
-        ]}
-		>
     <Section padding="lg" className="text-slate-900 dark:text-slate-100">
       <div className="max-w-7xl mx-auto space-y-16">
 
@@ -78,7 +66,7 @@ export default function SupportingTeam({ data }: SupportingTeamProps) {
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item, index) => (
-            <GridCard
+            <Card variant="grid"
               key={index}
               index={index}
               total={items.length}
@@ -112,12 +100,11 @@ export default function SupportingTeam({ data }: SupportingTeamProps) {
               >
                 {item.description}
               </HeadLineText>
-            </GridCard>
+            </Card>
           ))}
         </div>
 
       </div>
     </Section>
-    </GradientBackground>
   );
 }

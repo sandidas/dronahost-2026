@@ -1,6 +1,5 @@
-import GradientBackground from "@/components/gradient/gradient";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 type HeroCategory = {
 	label: string;
 	active?: boolean;
@@ -23,23 +22,6 @@ type WebHostingHeroSectionProps = {
 
 export default function WebHostingHeroSection({ heroData }: WebHostingHeroSectionProps) {
 	return (
-	<GradientBackground
-        gradient="custom"
-        customGradient="from-slate-100 via-slate-200 to-slate-300 dark:from-[#0a0d14] dark:via-[#171a24] dark:to-[#2a2342]"
-        gradientAngle={112}
-        variant="none"
-        shape="none"
-        grid="none"
-        noise="subtle"
-        blobs={[
-          { color: "blue", size: "lg", effect: "float", position: "top-left", opacity: 12, blur: "xl" },
-          { color: "orange", size: "lg", effect: "drift", position: "top-right", opacity: 30, blur: "xl" },
-        ]}
-        glowSpots={[
-          { color: "#1d4ed8", position: "top-left", size: "xl", opacity: 8 },
-          { color: "#312e81", position: "bottom-right", size: "lg", opacity: 10 },
-        ]}
-		>
 		<Section
 			height="screen"
 			hAlign="center"
@@ -102,6 +84,5 @@ export default function WebHostingHeroSection({ heroData }: WebHostingHeroSectio
 				</div>
 			</div>
 		</Section>
-        </GradientBackground>
 	);
 }

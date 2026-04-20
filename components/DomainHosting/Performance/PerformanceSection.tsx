@@ -1,6 +1,6 @@
-import GridCard from "@/components/Card/GridCard"; // ✅ use GridCard
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import Card from "@/components/ui/Card"; // ✅ use GridCard
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 import { Database, Layers, Rocket, Share2 } from "lucide-react";
 
 type Feature = {
@@ -61,7 +61,7 @@ export default function PerformanceSection({ data }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 dark:border-white/20 overflow-hidden">
           
           {data.features.map((item, i) => (
-            <GridCard
+            <Card variant="grid"
               key={item.id}
               index={i}
               total={data.features.length}
@@ -96,7 +96,7 @@ export default function PerformanceSection({ data }: Props) {
               >
                 {item.description}
               </HeadLineText>
-            </GridCard>
+            </Card>
           ))}
 
         </div>

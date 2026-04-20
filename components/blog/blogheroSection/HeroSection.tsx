@@ -1,7 +1,6 @@
 
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import GradientBackground from "@/components/gradient/gradient";
-import Section from "@/components/section/section";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 
 type HeroSectionProps = {
   insightsSection: {
@@ -18,23 +17,7 @@ type HeroSectionProps = {
 export default function HeroSection({ insightsSection }: HeroSectionProps) {
 
   return (
-    <GradientBackground
-        gradient="custom"
-        customGradient="from-slate-100 via-slate-200 to-slate-300 dark:from-[#0a0d14] dark:via-[#171a24] dark:to-[#2a2342]"
-        gradientAngle={112}
-        variant="none"
-        shape="none"
-        grid="none"
-        noise="subtle"
-        blobs={[
-          { color: "orange", size: "lg", effect: "float", position: "top-left", opacity: 20, blur: "xl" },
-          
-        ]}
-        glowSpots={[
-          
-          { color: "orange", position: "bottom-right", size: "lg", opacity: 20},
-        ]}
-        >
+    <>
             <Section
         id="blog-hero"
         height="lg"
@@ -96,7 +79,6 @@ export default function HeroSection({ insightsSection }: HeroSectionProps) {
         </span>
       </div>
       </Section>
-    </GradientBackground>
-    
+    </>
   );
 }

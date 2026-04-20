@@ -1,6 +1,6 @@
 import ResourceBox from "@/components/Card/ResourceBox";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 
 type Item = {
   icon?: string;

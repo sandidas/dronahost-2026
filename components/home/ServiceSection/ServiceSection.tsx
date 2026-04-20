@@ -1,6 +1,6 @@
-import GridCard from "@/components/Card/GridCard";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import Card from "@/components/ui/Card";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -71,7 +71,7 @@ export default function ServicesSection({ data }: ServicesSectionProps) {
           }`}
         >
           {services.map((service, index) => (
-            <GridCard
+            <Card variant="grid"
               key={service.id}
               index={index}
               total={services.length}
@@ -122,7 +122,7 @@ export default function ServicesSection({ data }: ServicesSectionProps) {
                   {service.cta.label}
                 </Link>
               </div>
-            </GridCard>
+            </Card>
           ))}
         </div>
       </div>

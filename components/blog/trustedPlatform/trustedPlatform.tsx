@@ -1,6 +1,6 @@
-import GridCard from "@/components/Card/GridCard";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import Card from "@/components/ui/Card";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -51,7 +51,7 @@ export default function TrustedPlatform({ intro, features }: TrustedPlatformProp
 					const iconWrap = iconWrapByPath[feature.icon] ?? "bg-[#e2e8f0]";
 
 					return (
-						<GridCard
+						<Card variant="grid"
 							key={feature.id}
 							index={index}
 							total={features.length}
@@ -83,7 +83,7 @@ export default function TrustedPlatform({ intro, features }: TrustedPlatformProp
 								{feature.cta.label}
 								<span>→</span>
 							</Link>
-						</GridCard>
+						</Card>
 					);
 				})}
 			</div>

@@ -1,6 +1,6 @@
-import GradientBackground from "@/components/gradient/gradient";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 
 type HeroProps = {
   data: {
@@ -33,26 +33,6 @@ type HeroProps = {
 
 export default function HeroSection({ data }: HeroProps) {
   return (
-    <GradientBackground
-      gradient="custom"
-      blobs={[
-        {
-          color: "orange",
-          size: "lg",
-          position: "top-left",
-          opacity: 20,
-          blur: "xl",
-        },
-        {
-          color: "orange",
-          size: "lg",
-          position: "bottom-right",
-          opacity: 25,
-          blur: "xl",
-        },
-      ]}
-      className="bg-white dark:bg-gray-900"
-    >
       <Section
         size="lg"
         height="screen"
@@ -165,6 +145,5 @@ export default function HeroSection({ data }: HeroProps) {
           </div>
         </div>
       </Section>
-    </GradientBackground>
   );
 }

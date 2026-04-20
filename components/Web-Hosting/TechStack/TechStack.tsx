@@ -1,6 +1,6 @@
-import GridCard from "@/components/Card/GridCard";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import Card from "@/components/ui/Card";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 
 import {
     Activity,
@@ -83,7 +83,7 @@ export default function TechStack({ data }: Props) {
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item, index) => (
-            <GridCard
+            <Card variant="grid"
               key={index}
               index={index}
               total={items.length}
@@ -136,7 +136,7 @@ export default function TechStack({ data }: Props) {
               >
                 {item.cta}
               </HeadLineText>
-            </GridCard>
+            </Card>
           ))}
         </div>
 

@@ -30,7 +30,7 @@ const gridAlignMap: Record<GridAlign, string> = {
   right: "items-end text-right",
 };
 
-const gridVariantMap: Record<GridCardVariant, string> = {
+const gridVariantMap: Record<Card variant="grid"Variant, string> = {
   default: "",
   ghost: "bg-neutral-50/80 dark:bg-white/[0.02]",
 };

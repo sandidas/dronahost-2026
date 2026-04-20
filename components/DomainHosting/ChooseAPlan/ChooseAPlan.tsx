@@ -1,6 +1,6 @@
-import GridCard from "@/components/Card/GridCard";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import Card from "@/components/ui/Card";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 
 type Plan = {
   id: number;
@@ -53,7 +53,7 @@ export default function ChooseAPlan({ data }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-12 dark:border-white/20 overflow-hidden">
 
           {data.plans.map((plan, i) => (
-            <GridCard
+            <Card variant="grid"
               key={plan.id}
               index={i}
               total={data.plans.length}
@@ -129,7 +129,7 @@ export default function ChooseAPlan({ data }: Props) {
                   {plan.features.bandwidth.split(" ").slice(1).join(" ")}
                 </p>
               </div>
-            </GridCard>
+            </Card>
           ))}
 
         </div>

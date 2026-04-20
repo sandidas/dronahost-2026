@@ -1,6 +1,6 @@
-import GridCard from "@/components/Card/GridCard";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import Card from "@/components/ui/Card";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 import Image from "next/image";
 
 type CountryExtensionsProps = {
@@ -53,7 +53,7 @@ export default function CountryExtension({
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 mt-10 border border-border rounded-2xl overflow-hidden">
           
           {data.extensions.map((item, i) => (
-            <GridCard
+            <Card variant="grid"
               key={i}
               index={i}
               total={data.extensions.length}
@@ -92,7 +92,7 @@ export default function CountryExtension({
               >
                 {item.price}
               </HeadLineText>
-            </GridCard>
+            </Card>
           ))}
 
         </div>

@@ -1,6 +1,6 @@
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import LazyLoadImageCompSkeleton from "@/components/lazyLoadImage/LazyLoadImageCompSkeleton";
-import Section from "@/components/section/section";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Image from "@/components/ui/Image";
+import Section from "@/components/ui/Section";
 import Link from "next/link";
 
 type CaseStudyProps = {
@@ -94,7 +94,7 @@ export default function CaseStudySection({ data }: CaseStudyProps) {
 
         {/* RIGHT IMAGE */}
         <div className="relative">
-          <LazyLoadImageCompSkeleton
+          <Image skeleton={true}
             src={section.image.src}
             alt={section.image.alt}
             width={600}

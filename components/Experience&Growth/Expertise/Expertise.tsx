@@ -1,6 +1,6 @@
-import GridCard from "@/components/Card/GridCard";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import Card from "@/components/ui/Card";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 
 import {
   Activity,
@@ -65,7 +65,7 @@ export default function Expertise({ data }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 dark:border-white/20 overflow-hidden">
 
           {data.items.map((item, i) => (
-            <GridCard
+            <Card variant="grid"
               key={i}
               index={i}
               total={data.items.length}
@@ -115,7 +115,7 @@ export default function Expertise({ data }: Props) {
               <span className="text-orange-500 text-sm font-medium mt-2 hover:underline cursor-pointer">
                 {data.cta.label}
               </span>
-            </GridCard>
+            </Card>
           ))}
 
         </div>

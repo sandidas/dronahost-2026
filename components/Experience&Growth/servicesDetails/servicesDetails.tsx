@@ -1,6 +1,6 @@
-import GridCard from "@/components/Card/GridCard";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import Card from "@/components/ui/Card";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
 
 type Category = {
   title: string;
@@ -48,7 +48,7 @@ export default function ServicesDetails({ data }: ServicesProps) {
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-stretch gap-10">
           {categories.map((category, index) => (
-            <GridCard
+            <Card variant="grid"
               key={index}
               index={index}
               total={categories.length}
@@ -72,7 +72,7 @@ export default function ServicesDetails({ data }: ServicesProps) {
                   </div>
                 ))}
               </div>
-            </GridCard>
+            </Card>
           ))}
         </div>
 

@@ -1,6 +1,7 @@
-import ResourceCard, { ResourcePost } from "@/components/Card/ResourceCard";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import Section from "@/components/section/section";
+import Card from "@/components/ui/Card";
+import HeadLineText from "@/components/ui/HeadLineText";
+import Section from "@/components/ui/Section";
+import type { ResourcePost } from "@/components/Card/ResourceCard";
 
 type FeatureItem = {
   id: number;
@@ -74,7 +75,7 @@ export default function FeatureComparisonSection({ data }: Props) {
                 </span>
               )}
 
-              <ResourceCard
+              <Card variant="resource"
                 post={post}
                 showCategory={false}
                 className="transition-all duration-300"
