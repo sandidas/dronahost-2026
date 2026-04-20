@@ -10,7 +10,6 @@ import HeadLineText from "@/components/ui/HeadLineText";
 import Card from "@/components/ui/Card";
 import HeroSection from "@/components/home/hero-section/HomeHeroSection";
 import FeatureSection from "@/components/home/FeatureSection/FeatureSection";
-import ServicesSection from "@/components/home/ServiceSection/ServiceSection";
 import CaseStudySection from "@/components/sections/CaseStudy";
 import CTASection from "@/components/home/CTA/CTA";
 import PageHero from "@/components/sections/PageHero";
@@ -32,7 +31,6 @@ import StatsBar from "@/components/sections/StatsBar";
 import {
   heroData,
   featureData,
-  serviceData,
   caseStudyData,
   ctaData,
   pricingJourneyData,
@@ -317,9 +315,19 @@ export default function V2ShowcasePage() {
             id="services"
             title="Services Section"
             status="needs-work"
-            notes="Icons generic. Descriptions placeholder copy."
+            notes="Replaces ServicesSection (home/ServiceSection). Use FeatureGrid for service grids."
           >
-            <ServicesSection data={serviceData} />
+            <FeatureGrid
+              tagline="Our Services"
+              title="What We Offer"
+              columns={3}
+              divided={true}
+              items={[
+                { title: "Web Hosting", description: "Managed LiteSpeed hosting with NVMe storage." },
+                { title: "VPS Hosting", description: "Full root access, scalable on demand." },
+                { title: "SEO Services", description: "Retainer-based SEO for Western markets." },
+              ]}
+            />
           </ShowcaseSection>
 
           {/* ── Case Study ── */}
