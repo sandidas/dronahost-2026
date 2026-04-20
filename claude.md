@@ -350,10 +350,8 @@ Place JSON-LD via inline `<script type="application/ld+json">` in Server Compone
   sitemap.ts
   robots.ts
 /components
-  /ui                   # Primitives (Button, Card, Input)
-  /sections             # Page sections (Hero, PricingTable, FAQ)
-  /seo                  # JsonLd, Breadcrumbs, Hreflang
-  /trust                # Testimonials, LogoWall, TrustBadges
+  /ui                   # Primitives (Button, Section, HeadLineText, Image, Card, Badge)
+  /sections             # Page sections (HomeHero, PageHero, TwoColumn, FeatureGrid, ProcessSteps, CTASection, ResourceGrid, Testimonials, FAQSection, LogoWall, CaseStudy, PricingCards, PricingJourney, StatsBar, TrustBadges, JsonLd)
 /lib
   /models               # Mongoose schemas
   /services             # Third-party API wrappers
@@ -512,6 +510,8 @@ All integrations wrapped in `/lib/services/[service].ts`. Each service exports t
 
 - Do NOT use client-side rendering for indexable content
 - Do NOT build static or one-off components embedded in individual pages — all UI must be global components in `components/`
+- Do NOT add reusable UI to page-level `_components/` folders — if a component is used on 2+ pages, it belongs in `components/sections/` or `components/ui/`
+- Page-level `_components/` folders are ONLY for interactive widgets used on exactly one page (domain search, blog filter, comparison tables)
 - Do NOT skip updating `/v2` after shipping a new component — the `/v2` showcase at `app/(dev)/v2/page.tsx` is the component library source of truth; keep status badges and notes current
 - Do NOT add npm packages without discussing first
 - Do NOT create new page routes without confirming URL structure (SEO + i18n implications)
