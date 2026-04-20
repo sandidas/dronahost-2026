@@ -1,8 +1,8 @@
-import IncludedEveryPlan from "@/components/HostingPrice/IncludedEveryPlan/IncludedEveryPlan";
-import WhyBetter from "@/components/HostingPrice/WhyBetter/WhyBetter";
-import GlobalReach from "@/components/HostingPrice/globalReach/globalReach";
-import WebHostingHeroSection from "@/components/HostingPrice/heroSection/heroSection";
-import PricingSection from "@/components/HostingPrice/webHostingPrice/pricing";
+import IncludedEveryPlan from "./_components/IncludedEveryPlan";
+import WhyBetter from "./_components/WhyBetter";
+import GlobalReach from "./_components/GlobalReach";
+import WebHostingHeroSection from "./_components/WebHostingHeroSection";
+import PricingSection from "./_components/WebHostingPrice";
 import JsonLd from "@/components/sections/JsonLd";
 import webHostingPlanData from "@/data/webHostingPlan.json";
 import { buildMetadata } from "@/lib/seo/metadata";
