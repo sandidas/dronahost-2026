@@ -65,16 +65,16 @@ export default function HeroSection({ insightsSection }: HeroSectionProps) {
         </p>
 
         {/* DECORATIVE STARS */}
-        <span className="absolute -left-6 top-10 text-5xl text-orange-400/70">
+        <span aria-hidden="true" className="absolute -left-6 top-10 text-5xl text-orange-400/70">
           ✦
         </span>
-        <span className="absolute right-0 top-14 text-4xl text-orange-400/60">
+        <span aria-hidden="true" className="absolute right-0 top-14 text-4xl text-orange-400/60">
           ✦
         </span>
-        <span className="absolute left-4 top-52 text-3xl text-orange-400/60">
+        <span aria-hidden="true" className="absolute left-4 top-52 text-3xl text-orange-400/60">
           ✦
         </span>
-        <span className="absolute right-10 top-64 text-5xl text-orange-400/70">
+        <span aria-hidden="true" className="absolute right-10 top-64 text-5xl text-orange-400/70">
           ✦
         </span>
       </div>

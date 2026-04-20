@@ -2,6 +2,7 @@
 
 import HeadLineText from "@/components/ui/HeadLineText";
 import Section from "@/components/ui/Section";
+import Link from "next/link";
 import { useState } from "react";
 
 type Slider = {
@@ -132,12 +133,12 @@ export default function BuildCustomCloud({ data }: Props) {
             </div>
 
             {/* CTA */}
-            <a
+            <Link
               href={data.summary.cta.link}
               className="block bg-orange-500 hover:bg-orange-600 text-white text-center py-3 rounded-lg font-medium mt-5 transition"
             >
               {data.summary.cta.label.toUpperCase()}
-            </a>
+            </Link>
 
             {/* Features */}
             <div className="mt-6 space-y-2 text-sm text-muted-foreground">
@@ -170,12 +171,12 @@ export default function BuildCustomCloud({ data }: Props) {
 
       {/* Bottom Nav */}
       <div className="text-center mt-6">
-        <a
+        <Link
           href={data.navigation.backToPlans.link}
           className="text-orange-500 text-sm font-medium hover:underline"
         >
           ← {data.navigation.backToPlans.label.toUpperCase()}
-        </a>
+        </Link>
       </div>
     </Section>
   );

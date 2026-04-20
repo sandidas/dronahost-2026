@@ -1,6 +1,7 @@
 import Card from "@/components/ui/Card";
 import HeadLineText from "@/components/ui/HeadLineText";
 import Section from "@/components/ui/Section";
+import Link from "next/link";
 
 type Plan = {
   id: number;
@@ -95,12 +96,12 @@ export default function ChooseAPlan({ data }: Props) {
               </p>
 
               {/* Button */}
-              <a
+              <Link
                 href={plan.cta.link}
                 className="bg-primary hover:bg-primary text-white px-5 py-2 rounded-lg text-sm font-medium mt-2 transition w-fit"
               >
                 {plan.cta.label.toUpperCase()}
-              </a>
+              </Link>
 
               {/* Features */}
               <div className="mt-4 space-y-2 text-sm text-muted-foreground">
@@ -136,12 +137,12 @@ export default function ChooseAPlan({ data }: Props) {
 
         {/* Bottom CTA */}
         <div className="mt-10">
-          <a
+          <Link
             href={data.CTAButton.link}
             className="text-orange-500 font-medium text-sm hover:underline"
           >
             {data.CTAButton.label} →
-          </a>
+          </Link>
         </div>
 
       </div>

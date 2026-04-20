@@ -1,6 +1,7 @@
 
 import HeadLineText from "@/components/ui/HeadLineText";
 import Section from "@/components/ui/Section";
+import Link from "next/link";
 
 type HeroProps = {
   data: {
@@ -95,12 +96,12 @@ export default function HeroSection({ data }: HeroProps) {
 
             {/* CTA + Guarantee */}
             <div className="flex flex-wrap items-center gap-6">
-              <a
+              <Link
                 href={data.cta.link}
                 className="bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-xl font-medium shadow-md transition"
               >
                 {data.cta.label}
-              </a>
+              </Link>
 
               <div className="flex items-center gap-2 text-gray-500 text-sm dark:text-gray-400">
                 <span>🛡️</span>

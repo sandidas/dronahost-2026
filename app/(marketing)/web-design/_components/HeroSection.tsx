@@ -1,5 +1,6 @@
 import HeadLineText from "@/components/ui/HeadLineText";
 import Section from "@/components/ui/Section";
+import Link from "next/link";
 type Props = {
   data: {
     tagline: string;
@@ -67,7 +68,7 @@ export default function HeroSection({ data }: Props) {
           {/* CTA Buttons */}
           <div className="flex flex-wrap gap-4 pt-2">
             {data.cta.map((btn, i) => (
-              <a
+              <Link
                 key={i}
                 href={btn.link}
                 className={`px-6 py-3 rounded-xl text-sm font-medium transition ${
@@ -77,7 +78,7 @@ export default function HeroSection({ data }: Props) {
                 }`}
               >
                 {btn.label}
-              </a>
+              </Link>
             ))}
           </div>
 

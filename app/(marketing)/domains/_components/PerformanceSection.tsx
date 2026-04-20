@@ -1,4 +1,4 @@
-import Card from "@/components/ui/Card"; // ✅ use GridCard
+import Card from "@/components/ui/Card";
 import HeadLineText from "@/components/ui/HeadLineText";
 import Section from "@/components/ui/Section";
 import { Database, Layers, Rocket, Share2 } from "lucide-react";
@@ -57,7 +57,6 @@ export default function PerformanceSection({ data }: Props) {
         {/* Divider */}
         <div className="mt-5 w-full h-px bg-border my-10 dark:bg-white/20" />
 
-        {/* Grid with GridCard */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 dark:border-white/20 overflow-hidden">
           
           {data.features.map((item, i) => (
