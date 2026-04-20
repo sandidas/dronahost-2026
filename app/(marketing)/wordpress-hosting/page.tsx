@@ -15,7 +15,7 @@ import ReviewFeedback from "@/components/Web-Hosting/Review&Feedback/Review&Feed
 import SupportingTeam from "@/components/Web-Hosting/SupportingTeam/SupportingTeam";
 import TechStack from "@/components/Web-Hosting/TechStack/TechStack";
 import Testimonials from "@/components/Web-Hosting/testimonials/testimonials";
-import JsonLd from "@/components/seo/JsonLd";
+import JsonLd from "@/components/sections/JsonLd";
 import data from "@/data/hostingLandingPage.json";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema, serviceSchema } from "@/lib/seo/jsonld";

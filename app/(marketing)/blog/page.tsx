@@ -8,7 +8,7 @@ import FeatureInsight from "@/components/blog/FeatureInsight/FeatureInsight";
 import PopularVideos from "@/components/blog/popularVideos/popularVideos";
 import Support from "@/components/blog/support/support";
 import TrustedPlatform from "@/components/blog/trustedPlatform/trustedPlatform";
-import JsonLd from "@/components/seo/JsonLd";
+import JsonLd from "@/components/sections/JsonLd";
 import blogData from "@/data/blog.json";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/jsonld";

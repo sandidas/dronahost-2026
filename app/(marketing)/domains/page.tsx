@@ -6,7 +6,7 @@ import GrowManage from "@/components/DomainHosting/Grow&Manage/Grow&Manage";
 import HeroSection from "@/components/DomainHosting/HeroSection/HeroSection";
 import PerformanceSection from "@/components/DomainHosting/Performance/PerformanceSection";
 import SearchDomain from "@/components/DomainHosting/searchDomain/searchDomain";
-import JsonLd from "@/components/seo/JsonLd";
+import JsonLd from "@/components/sections/JsonLd";
 import data from "@/data/domainPricing.json";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema, serviceSchema } from "@/lib/seo/jsonld";

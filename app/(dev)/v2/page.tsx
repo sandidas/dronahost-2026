@@ -29,9 +29,9 @@ import FAQSection from "@/components/home/FAQ/FAQSection";
 import TeamsSection from "@/components/home/Teams/TeamsSection";
 import Header from "@/layouts/header/header";
 import Footer from "@/layouts/footer/footer";
-import JsonLd from "@/components/seo/JsonLd";
-import TrustBadges from "@/components/trust/TrustBadges";
-import StatsBar from "@/components/trust/StatsBar";
+import JsonLd from "@/components/sections/JsonLd";
+import TrustBadges from "@/components/sections/TrustBadges";
+import StatsBar from "@/components/sections/StatsBar";
 
 import {
   heroData,

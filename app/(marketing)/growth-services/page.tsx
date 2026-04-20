@@ -2,7 +2,7 @@ import Integration from "@/components/Experience&Growth/Integrations/Integration
 import HeappyClients from "@/components/Experience&Growth/HappyClients/HappyClients";
 import CTA from "@/components/Experience&Growth/CTA/cta";
 import OurWork from "@/components/Experience&Growth/OurWork/OurWork";
-import JsonLd from "@/components/seo/JsonLd";
+import JsonLd from "@/components/sections/JsonLd";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema, serviceSchema } from "@/lib/seo/jsonld";

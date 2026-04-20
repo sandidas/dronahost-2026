@@ -1,8 +1,8 @@
 import HeroSection from "@/components/Experience&Growth/HeroSection/HeroSection";
 import Expertise from "@/components/Experience&Growth/Expertise/Expertise";
-import Section from "@/components/section/section";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
-import JsonLd from "@/components/seo/JsonLd";
+import Section from "@/components/ui/Section";
+import HeadLineText from "@/components/ui/HeadLineText";
+import JsonLd from "@/components/sections/JsonLd";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema, serviceSchema } from "@/lib/seo/jsonld";

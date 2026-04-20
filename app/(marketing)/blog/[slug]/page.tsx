@@ -8,10 +8,10 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { blogPostingSchema, breadcrumbSchema } from "@/lib/seo/jsonld";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 import { SITE_URL } from "@/lib/seo/config";
-import JsonLd from "@/components/seo/JsonLd";
+import JsonLd from "@/components/sections/JsonLd";
 import { formatDate } from "@/lib/utils";
-import Section from "@/components/section/section";
-import HeadLineText from "@/components/HeadLineText/HeadLineText";
+import Section from "@/components/ui/Section";
+import HeadLineText from "@/components/ui/HeadLineText";
 
 // ─── Static generation ────────────────────────────────────────────────────────
 
