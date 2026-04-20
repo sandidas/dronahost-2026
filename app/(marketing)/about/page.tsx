@@ -1,7 +1,7 @@
-import HeroSection from "@/components/Experience&Growth/HeroSection/HeroSection";
-import Expertise from "@/components/Experience&Growth/Expertise/Expertise";
-import OurPartners from "@/components/Experience&Growth/OurPartners/OurPartners";
-import OurProcess from "@/components/Experience&Growth/OurProcess/Ourprocess";
+import HeroSection from "@/components/sections/ExperienceHeroSection";
+import Expertise from "@/components/sections/Expertise";
+import OurPartners from "@/components/sections/OurPartners";
+import OurProcess from "@/components/sections/OurProcess";
 import JsonLd from "@/components/sections/JsonLd";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/seo/metadata";

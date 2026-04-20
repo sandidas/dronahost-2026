@@ -1,5 +1,5 @@
-import HeroSection from "@/components/Experience&Growth/HeroSection/HeroSection";
-import Expertise from "@/components/Experience&Growth/Expertise/Expertise";
+import HeroSection from "@/components/sections/ExperienceHeroSection";
+import Expertise from "@/components/sections/Expertise";
 import Section from "@/components/ui/Section";
 import HeadLineText from "@/components/ui/HeadLineText";
 import JsonLd from "@/components/sections/JsonLd";

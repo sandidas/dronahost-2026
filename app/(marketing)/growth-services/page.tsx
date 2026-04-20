@@ -1,7 +1,7 @@
-import Integration from "@/components/Experience&Growth/Integrations/Integrations";
-import HeappyClients from "@/components/Experience&Growth/HappyClients/HappyClients";
-import CTA from "@/components/Experience&Growth/CTA/cta";
-import OurWork from "@/components/Experience&Growth/OurWork/OurWork";
+import Integration from "@/components/sections/Integrations";
+import HeappyClients from "@/components/sections/HappyClients";
+import CTA from "@/components/sections/ExperienceCTA";
+import OurWork from "@/components/sections/OurWork";
 import JsonLd from "@/components/sections/JsonLd";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/seo/metadata";
