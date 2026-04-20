@@ -667,5 +667,3 @@ function EssentialBuilder() {
   );
 }
 
-/* CustomTierSlider is available as a named export for use in other sections */
-export { CustomTierSlider };
