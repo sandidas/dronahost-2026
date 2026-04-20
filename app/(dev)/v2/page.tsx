@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 
 import ShowcaseSection from "./_components/ShowcaseSection";
 import ShowcaseSidebar from "./_components/ShowcaseSidebar";
@@ -191,9 +192,9 @@ export default function V2ShowcasePage() {
           >
             <p className="text-sm text-slate-600 dark:text-slate-400">
               ResourceCard renders inside the blog and knowledge base listing pages. Visit{" "}
-              <a href="/blog" className="text-orange-600 underline hover:text-orange-700 dark:text-orange-400">
+              <Link href="/blog" className="text-orange-600 underline hover:text-orange-700 dark:text-orange-400">
                 /blog
-              </a>{" "}
+              </Link>{" "}
               to see it in use.
             </p>
           </ShowcaseSection>
@@ -207,9 +208,9 @@ export default function V2ShowcasePage() {
           >
             <p className="text-sm text-slate-600 dark:text-slate-400">
               ResourceBox renders inside the blog and knowledge base listing pages. Visit{" "}
-              <a href="/blog" className="text-orange-600 underline hover:text-orange-700 dark:text-orange-400">
+              <Link href="/blog" className="text-orange-600 underline hover:text-orange-700 dark:text-orange-400">
                 /blog
-              </a>{" "}
+              </Link>{" "}
               to see it in use.
             </p>
           </ShowcaseSection>
