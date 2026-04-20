@@ -1,7 +1,8 @@
 import Card from "@/components/ui/Card";
 import HeadLineText from "@/components/ui/HeadLineText";
 import Section from "@/components/ui/Section";
-import type { ResourcePost } from "@/components/Card/ResourceCard";
+import type { CardProps } from "@/components/ui/Card";
+type ResourcePost = NonNullable<CardProps["post"]>;
 
 type FeatureItem = {
   id: number;

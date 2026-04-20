@@ -1,4 +1,4 @@
-import ResourceBox from "@/components/Card/ResourceBox";
+import Card from "@/components/ui/Card";
 import HeadLineText from "@/components/ui/HeadLineText";
 import Section from "@/components/ui/Section";
 
@@ -48,7 +48,7 @@ export default function Services({ data }: Props) {
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {data.items.map((item, i) => (
-          <ResourceBox
+          <Card variant="box"
           key={i}
           icon={item.icon}
           title={item.title}

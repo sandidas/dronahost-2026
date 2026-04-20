@@ -1,4 +1,4 @@
-import ChooseYourPlan from "@/components/Web-Hosting/ChooseYourPlan/ChooseYourPlan";
+import PricingCards from "@/components/sections/PricingCards";
 import CTA from "@/components/Web-Hosting/CTA/cta";
 import EnterpriseSection from "@/components/Web-Hosting/EnterpriseHosting/EnterpriseHosting";
 import FeatureSection from "@/components/Web-Hosting/FeatureSection/FeatureSection";
@@ -52,7 +52,7 @@ export default function WebHostingPage() {
 			<HostingPro data={data.resourcesReviewsPartner.partnerMatchForm} />
 			<FeatureSection data={data.resourcesReviewsPartner.featureComparisonSection} />
 			<HostingProComparison data={data.resourcesReviewsPartner.featureComparisonSection} />
-			<ChooseYourPlan data={data.resourcesReviewsPartner.pricingPlansSection} />
+			<PricingCards data={data.resourcesReviewsPartner.pricingPlansSection} />
 			<IntegratedPartner data={data.resourcesReviewsPartner.pricingPlansSection} />
 			<Performance data={data.resourcesReviewsPartner.pricingPlansSection} />
 			</>

@@ -11,7 +11,7 @@ import Card from "@/components/ui/Card";
 import HeroSection from "@/components/home/hero-section/HomeHeroSection";
 import FeatureSection from "@/components/home/FeatureSection/FeatureSection";
 import ServicesSection from "@/components/home/ServiceSection/ServiceSection";
-import CaseStudySection from "@/components/home/CaseStudy/CaseStudy";
+import CaseStudySection from "@/components/sections/CaseStudy";
 import CTASection from "@/components/home/CTA/CTA";
 import PageHero from "@/components/sections/PageHero";
 import TwoColumn from "@/components/sections/TwoColumn";
@@ -19,14 +19,10 @@ import FeatureGrid from "@/components/sections/FeatureGrid";
 import ProcessSteps from "@/components/sections/ProcessSteps";
 import NewCTASection from "@/components/sections/CTASection";
 import ResourceGrid from "@/components/sections/ResourceGrid";
-import PricingSection1 from "@/components/home/PricingSection1/PricingSection1";
-import ManagedHostingIllustrationSection from "@/components/home/PricingSection2/PricingSection2";
-import PricingSection3 from "@/components/home/PricingSection3/PricingSection3";
-import PricingSection4 from "@/components/home/PricingSection4/PricingSection4";
-import PricingJourney from "@/components/home/pricingjourney/pricingJourney";
-import TestimonialsSection from "@/components/home/Testimonials/TestimonialsSection";
-import FAQSection from "@/components/home/FAQ/FAQSection";
-import TeamsSection from "@/components/home/Teams/TeamsSection";
+import PricingJourney from "@/components/sections/PricingJourney";
+import TestimonialsSection from "@/components/sections/Testimonials";
+import FAQSection from "@/components/sections/FAQSection";
+import LogoWall from "@/components/sections/LogoWall";
 import Header from "@/layouts/header/header";
 import Footer from "@/layouts/footer/footer";
 import JsonLd from "@/components/sections/JsonLd";
@@ -39,10 +35,6 @@ import {
   serviceData,
   caseStudyData,
   ctaData,
-  pricingSection1Data,
-  pricingSection2Data,
-  pricingSection3Data,
-  pricingSection4Data,
   pricingJourneyData,
   testimonialsData,
   faqData,
@@ -350,46 +342,6 @@ export default function V2ShowcasePage() {
             <CTASection data={ctaData} />
           </ShowcaseSection>
 
-          {/* ── Pricing Section 1 ── */}
-          <ShowcaseSection
-            id="pricing-1"
-            title="Pricing Section 1"
-            status="needs-work"
-            notes="Prices not from real data source."
-          >
-            <PricingSection1 data={pricingSection1Data} />
-          </ShowcaseSection>
-
-          {/* ── Pricing Section 2 ── */}
-          <ShowcaseSection
-            id="pricing-2"
-            title="Pricing Section 2"
-            status="needs-work"
-            notes="Illustration placeholder. Feature copy generic."
-          >
-            <ManagedHostingIllustrationSection data={pricingSection2Data} />
-          </ShowcaseSection>
-
-          {/* ── Pricing Section 3 ── */}
-          <ShowcaseSection
-            id="pricing-3"
-            title="Pricing Section 3"
-            status="needs-work"
-            notes="Same issues as Pricing 1."
-          >
-            <PricingSection3 data={pricingSection3Data} />
-          </ShowcaseSection>
-
-          {/* ── Pricing Section 4 ── */}
-          <ShowcaseSection
-            id="pricing-4"
-            title="Pricing Section 4"
-            status="needs-work"
-            notes="Missing CTA button."
-          >
-            <PricingSection4 data={pricingSection4Data} />
-          </ShowcaseSection>
-
           {/* ── Pricing Journey ── */}
           <ShowcaseSection
             id="pricing-journey"
@@ -427,7 +379,7 @@ export default function V2ShowcasePage() {
             status="needs-work"
             notes="No real photos. LinkedIn links missing."
           >
-            <TeamsSection data={teamsData} />
+            <LogoWall data={teamsData} />
           </ShowcaseSection>
 
           {/* ── JsonLd ── */}
