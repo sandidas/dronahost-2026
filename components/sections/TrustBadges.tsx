@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "react";
 
 const LockIcon = () => (
   <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
@@ -77,7 +77,7 @@ export default function TrustBadges() {
         </p>
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 sm:gap-x-8">
           {badges.map((badge, index) => (
-            <React.Fragment key={badge.label}>
+            <Fragment key={badge.label}>
               {index > 0 && (
                 <span
                   className="hidden h-4 w-px bg-slate-300 dark:bg-slate-700 sm:block"
@@ -90,7 +90,7 @@ export default function TrustBadges() {
                   {badge.label}
                 </span>
               </span>
-            </React.Fragment>
+            </Fragment>
           ))}
         </div>
       </div>

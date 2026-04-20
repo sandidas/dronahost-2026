@@ -48,7 +48,7 @@ export default function LogoWall({ data }: LogoWallProps) {
 					{titleParts[1]}
 				</HeadLineText>
 
-				<div className="mt-10 grid grid-cols-2 gap-50 sm:grid-cols-3 lg:grid-cols-5">
+				<div className="mt-10 grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-5">
 					{trustSection.logos.map((logo, index) => (
 						<div key={`${logo.name}-${index}`} className="flex items-center justify-center gap-3 text-slate-400 grayscale dark:text-slate-500">
 							<span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-current/20 text-xl">✦</span>

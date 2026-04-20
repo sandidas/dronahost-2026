@@ -19,9 +19,32 @@ type Plan = {
   footer: string;
 };
 
+type StarterNote = {
+  Heading: string;
+  title: string;
+  description: string;
+  cta: {
+    label: string;
+    link: string;
+  };
+};
+
+type PricingSection = {
+  header: {
+    tagline: string;
+    title: string;
+    billingToggle: {
+      default: string;
+      options: string[];
+    };
+  };
+  plans: Plan[];
+  starterNote: StarterNote;
+  trustIndicators: { label: string }[];
+};
+
 type Props = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any;
+  data: PricingSection & { pricingPlansSection?: PricingSection };
 };
 
 export default function PricingCards({ data }: Props) {
@@ -179,8 +202,7 @@ export default function PricingCards({ data }: Props) {
 
       {/* Trust Indicators */}
       <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
-        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-        {trustIndicators.map((item: any, i: number) => (
+        {trustIndicators.map((item: { label: string }, i: number) => (
           <div key={i} className="flex items-center gap-2">
             {item.label}
           </div>
