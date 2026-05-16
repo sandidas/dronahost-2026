@@ -46,40 +46,17 @@ This shapes: pricing currency, server locations, copywriting voice, compliance r
 
 ---
 
-## Brand Voice & Copywriting (CRITICAL FOR WESTERN MARKETS)
+## Brand Voice & Copywriting
 
-### Tone rules
+See **[docs/rules/content-writing-rules.md](docs/rules/content-writing-rules.md)** for the full enforced rule set, covering:
 
-- **Professional, specific, confident** — never hype-y
-- Write like a Western SaaS company, not an Indian reseller
-- Reference point: Fathom Analytics, Kinsta, Cloudways marketing copy — NOT Hostinger or local Indian hosts
-- Indian English patterns that MUST be avoided:
-  - "Don't fret!" / "Don't worry!"
-  - "Kindly" (use "please")
-  - "Do the needful"
-  - Excessive exclamation marks
-  - "Blazing fast" / "world-class" / "cutting-edge" / "state-of-the-art"
-  - "99.99% uptime" without specifying SLA credits
-  - "One-to-one support" (say "dedicated support")
-- No emojis in marketing copy (emojis fine in blog posts selectively)
-- No ALL CAPS for emphasis
-- No "Click here" — use descriptive link text
-
-### Replace vague superlatives with specifics
-
-- ❌ "Blazing fast servers"
-  ✅ "LiteSpeed + NVMe storage with 200ms average TTFB from our London, Frankfurt, and New York nodes"
-- ❌ "World-class support"
-  ✅ "Average first response time: 18 minutes, 24/7 across US, UK, and UAE business hours"
-- ❌ "Amazing uptime"
-  ✅ "99.95% uptime SLA with automatic service credits"
-
-### Copy structure
-
-- Lead with specificity and outcome, not adjectives
-- Include numbers wherever possible (load times, response times, sample benchmarks)
-- Social proof must be concrete: company name + person name + role + (ideally) LinkedIn-verifiable
-- Every claim needs backing (screenshots, benchmarks, case studies)
+- Tone of voice and prohibited patterns (Indian English, generic SaaS buzzwords)
+- Consistent terminology (product names, technical terms, pricing language)
+- Heading hierarchy rules (H1–H4 with examples per page type)
+- CTA copy patterns (what to write, what to avoid, urgency rules)
+- Error message guide (validation, API errors, payment failures, provisioning)
+- Empty state copy patterns (structure and examples per context)
+- SEO content rules (title format, meta description formula, keyword intent matching, E-E-A-T, AI discoverability)
 
 ---
 
@@ -214,86 +191,21 @@ Each page should:
 
 ---
 
-## SEO Requirements (CRITICAL — Western keyword focus)
+## SEO Requirements
 
-### Target keywords (Western-focused)
+See **[docs/rules/seo-rules.md](docs/rules/seo-rules.md)** for the full enforced rule set, covering:
 
-**High commercial intent:**
+- `buildMetadata()` helper usage and required fields for every page
+- JSON-LD schema code for every page type (Organization, WebSite, Product, Offer, AggregateRating, BlogPosting, BreadcrumbList, FAQPage, Service, Article)
+- `app/sitemap.ts` and `app/robots.ts` implementation patterns
+- International SEO — hreflang rules, locale URL structure, regional landing page requirements
+- Core Web Vitals — LCP, CLS, INP targets and what breaks them in Next.js
+- Crawl budget — what to noindex, canonical rules, redirect patterns
+- Off-page strategy — link building targets, review platforms, Reddit citation tactics
+- SEO monitoring — Google Search Console setup, KPIs, weekly checks
+- Per-page-type pre-ship checklists (hosting plans, blog posts, comparison pages, regional pages)
 
-- "siteground alternative"
-- "wordpress hosting uk"
-- "managed wordpress hosting usa"
-- "gdpr compliant hosting europe"
-- "uae web hosting"
-- "next.js hosting alternative to vercel"
-- "web design agency small business"
-- "affordable website redesign services"
-
-**Do NOT target:**
-
-- "cheap hosting india" and similar India-specific terms
-- Ultra-competitive head terms ("best web hosting", "web hosting") — Hostinger/Bluehost own these with massive annual SEO budgets
-
-### Metadata (every page)
-
-Export Next.js `metadata` object OR `generateMetadata` for dynamic routes.
-Required fields on EVERY page:
-
-- `title` (50–60 chars, unique, keyword-first)
-- `description` (140–160 chars, unique, includes CTA)
-- `openGraph` (title, description, url, siteName, images [1200×630], locale, type)
-- `twitter` (card: "summary_large_image", title, description, images)
-- `alternates.canonical` (absolute URL)
-- `alternates.languages` (hreflang for all locales)
-- `robots` (index/follow directives)
-
-### Structured Data (JSON-LD) — required schemas
-
-- **Homepage**: `Organization` + `WebSite` with `SearchAction`
-- **Hosting plan pages**: `Product` + `Offer` (with `priceCurrency` matching region) + `AggregateRating`
-- **Blog posts**: `BlogPosting` with author, datePublished, dateModified, image
-- **All non-home pages**: `BreadcrumbList`
-- **FAQ sections**: `FAQPage`
-- **Service pages**: `Service` schema with `areaServed` (countries)
-- **Contact page**: `LocalBusiness` or `Organization` with `contactPoint` (multiple language support)
-- **Case studies**: `Article` schema with `mentions` of client organizations
-
-Place JSON-LD via inline `<script type="application/ld+json">` in Server Components (not `next/script` — must render in HTML).
-
-### Sitemap & robots
-
-- `app/sitemap.ts` — dynamic; includes all published blog posts, all hreflang alternates, priority weights
-- `app/robots.ts` — allow all except `/api/*`, `/admin/*`, `/account/*`, `/checkout/*`
-- Submit to Google Search Console (separate properties for each locale)
-- Submit to Bing Webmaster Tools
-- Submit to Yandex (if targeting Eastern Europe)
-
-### Regional SEO signals
-
-- Google Search Console: use international targeting (no country lock on .com)
-- Business citations: Google Business Profile for any served regions
-- Regional directory listings: G2, Capterra (US), Trustpilot (EU/UK), HostAdvice, Clutch.co
-
-### HTML & content rules
-
-- One `<h1>` per page, keyword-rich
-- Semantic tags: `<article>`, `<nav>`, `<main>`, `<section>`, `<aside>`
-- All images via `next/image` with descriptive `alt`, explicit `width`/`height`
-- Internal linking: every page links to 3+ related pages
-- URLs: lowercase, hyphenated, no trailing slash, no query strings for primary content
-- Locale-prefixed URLs: `/en-gb/hosting/wordpress` for localized variants
-- Every pillar page 800+ words minimum
-- FAQ sections on every plan/product page (boosts SEO + AI citations)
-
-### AI Discoverability (ChatGPT, Perplexity, Claude, Gemini)
-
-- Everything SEO-critical must be server-rendered — AI crawlers rarely execute JS
-- Maintain `/public/llms.txt` and `/public/llms-full.txt` (generation script: `/scripts/generate-llms-txt.ts`)
-- FAQ answers in clean declarative prose — AI tools quote these verbatim
-- Clear factual headings ("How much does WordPress hosting cost at DronaHost?")
-- Comparison tables (DronaHost vs SiteGround, vs Kinsta, vs WP Engine) — AI loves these
-- Author bios with credentials on blog posts (E-E-A-T signals)
-- Target Reddit citations: Western AI tools increasingly cite Reddit in answers
+See also **[docs/rules/content-writing-rules.md §7](docs/rules/content-writing-rules.md)** for the copy side: title format, meta description formula, keyword intent matching, content length requirements, FAQ writing rules, and E-E-A-T implementation.
 
 ---
 
@@ -392,22 +304,6 @@ Place JSON-LD via inline `<script type="application/ld+json">` in Server Compone
 
 All integrations wrapped in `/lib/services/[service].ts`. Each service exports typed functions, handles errors, logs failures.
 
-### Payment Gateway — Stripe (primary) + PayPal (secondary)
-
-**Razorpay is de-prioritized** — not a Western payment method.
-
-- **Stripe** is primary — required for US/UK/EU/UAE credit cards, Apple Pay, Google Pay, SEPA, BACS
-- **PayPal** is secondary — essential for ~20% of Western buyers who prefer it
-- Wrap in `/lib/services/payment/stripe.ts` and `/lib/services/payment/paypal.ts`
-- Verify webhook signatures on every callback (Stripe: `stripe-signature`, PayPal: PAYPAL-TRANSMISSION-ID)
-- Store transactions in `transactions` collection with idempotency keys
-- **Stripe Tax** for automatic VAT/GST calculation (UK, EU, UAE, Canada)
-- **Strong Customer Authentication (SCA / 3D Secure)** required for EU — use Stripe Payment Intents API
-- Handle disputes/chargebacks via webhook (higher rate in Western markets than India)
-- Use Stripe Checkout or Payment Element (not deprecated Charges API)
-- Never expose secret keys to client; Server Actions or Route Handlers only
-- Add INR as an option for India via Razorpay if needed, but default to USD/GBP/EUR/AED by region
-
 ### Domain Registrar
 
 - Wrap in `/lib/services/domains.ts`
@@ -426,16 +322,6 @@ All integrations wrapped in `/lib/services/[service].ts`. Each service exports t
 - Expose status via polling or SSE
 - **Assign to regional server based on user location** at provisioning time
 
-### Email / SMTP
-
-- Wrap in `/lib/services/email.ts`
-- Use React Email for templates (type-safe, previewable)
-- All transactional emails queued
-- Set SPF, DKIM, DMARC on the sending domain
-- Reply-to must be monitored (Western buyers will email back)
-- Separate streams for transactional vs marketing (SendGrid IP pools, or separate Resend domains)
-- **CAN-SPAM (US), CASL (Canada), GDPR (EU/UK)** compliance: unsubscribe link, physical address, explicit consent on marketing emails
-
 ### Analytics
 
 - **Plausible or Fathom preferred** — cookieless, GDPR-compliant, no consent banner required
@@ -451,19 +337,6 @@ All integrations wrapped in `/lib/services/[service].ts`. Each service exports t
 - Defer widget until user idle or scrolls past hero
 - **Business hours indicator**: show "Online" only during actual covered hours across US/UK/UAE timezones
 
-### Auth
-
-- NextAuth.js (Auth.js v5) or Clerk — both handle Western compliance
-- Route Handlers only for auth endpoints
-- bcrypt (cost 12+) or argon2 for passwords
-- HTTP-only, Secure, SameSite=Lax cookies
-- Rate-limit login/signup/reset endpoints
-- Session invalidation on password change
-- **2FA strongly recommended** for all accounts (Western buyers expect it)
-- Social login: Google (US/global), Apple (if mobile app), Microsoft (enterprise)
-
----
-
 ## Security Rules (Western target = high-value target)
 
 - All secrets in `.env.local`, never committed — `.gitignore` rules
@@ -478,57 +351,21 @@ All integrations wrapped in `/lib/services/[service].ts`. Each service exports t
 - Stripe: use Radar for fraud detection; expect higher attempt rates on Western cards
 - Plan for DDoS protection (Cloudflare) — hosting companies are targeted
 
----
+## Coding Rules
 
-## VPS Deployment Notes
+See **[docs/rules/coding-rules.md](docs/rules/coding-rules.md)** for the full enforced rule set, covering:
 
-- PM2 ecosystem file: `ecosystem.config.js` with cluster mode (`instances: "max"`)
-- Build on server: `npm ci && npm run build && pm2 reload ecosystem.config.js`
-- Nginx in front for TLS (Let's Encrypt), gzip/brotli, static caching, rate limiting
-- **Cloudflare in front of Nginx** — critical for Western latency and DDoS
-- `NODE_ENV=production`, `.env.production` for server
-- Logs: PM2 logs rotated daily; app logs to `/var/log/dronahost/`
-- Health check: `/api/health` — returns 200 if DB reachable
-- Graceful shutdown: handle SIGTERM, close DB connections
-- **Consider multi-region deployment in phase 2** — current single-VPS setup will have latency for Western users unless Cloudflare caches aggressively
-
----
-
-## Code Style
-
-- TypeScript strict mode — no `any` without written justification in a comment
-- Files: `kebab-case.ts`; components: `PascalCase`
-- One component per file, named export preferred
-- Prefer composition over prop drilling
-- No inline styles except for truly dynamic values
-- Tailwind: `cn()` utility (clsx + tailwind-merge) for conditional classes
-- Extract repeated class strings into component variants
-
----
-
-## What NOT to do
-
-- Do NOT use client-side rendering for indexable content
-- Do NOT build static or one-off components embedded in individual pages — all UI must be global components in `components/`
-- Do NOT add reusable UI to page-level `_components/` folders — if a component is used on 2+ pages, it belongs in `components/sections/` or `components/ui/`
-- Page-level `_components/` folders are ONLY for interactive widgets used on exactly one page (domain search, blog filter, comparison tables)
-- Do NOT skip updating `/v2` after shipping a new component — the `/v2` showcase at `app/(dev)/v2/page.tsx` is the component library source of truth; keep status badges and notes current
-- Do NOT add npm packages without discussing first
-- Do NOT create new page routes without confirming URL structure (SEO + i18n implications)
-- Do NOT use special characters (`&`, `+`, etc.) in folder/route names — use hyphenated slugs
-- Do NOT disable TypeScript errors with `@ts-ignore` — fix the type
-- Do NOT hardcode secrets, API keys, URLs — use typed env config
-- Do NOT skip alt text, meta descriptions, canonical tags, hreflang
-- Do NOT use `<a href>` for internal links — always `next/link` with locale awareness
-- Do NOT fetch data in client components when a Server Component works
-- Do NOT commit `.env*` files (except `.env.example`)
-- Do NOT ship without Lighthouse 95+ on changed pages
-- Do NOT write Indian-English marketing copy ("Don't fret!", "Kindly", "blazing fast")
-- Do NOT display prices in INR by default — auto-detect and show USD/GBP/EUR/AED
-- Do NOT use emojis in marketing copy (OK selectively in blog posts)
-- Do NOT use stock photos as testimonials
-- Do NOT make performance/uptime claims without data to back them
-- Do NOT forget GDPR cookie consent before loading any non-essential scripts in EU
+- TypeScript strict mode (no `any`, typed API responses)
+- SSR enforcement (`"use client"` banned at page level)
+- SEO (`generateMetadata` on every page, JSON-LD schemas, sitemap/robots)
+- Code readability (file/function length limits, naming conventions)
+- Reusable components (typed props, no editing shadcn source)
+- Optional chaining + nullish coalescing patterns
+- Loop guards (array checks, hard caps on user input)
+- Fallback guards (error boundaries, DB try/catch, route handler shape)
+- Mongoose rules (`.lean()`, `select: false`, Zod validation)
+- Tailwind + shadcn (`cn()`, dark mode, design tokens)
+- What NOT to do (banned patterns across SSR, SEO, copy, security)
 
 ---
 
@@ -547,23 +384,4 @@ All integrations wrapped in `/lib/services/[service].ts`. Each service exports t
 
 ## Content & Brand Voice Summary
 
-### The DronaHost voice
-
-- **Confident, specific, calm** — we know what we're doing, we don't need to shout
-- **Honest about being a small team** — this is a feature, not a bug, for buyers tired of faceless giants
-- **Technical credibility first** — we talk TTFB, LCP, LiteSpeed, NVMe because our buyers care
-- **Indian team, Western professionalism** — we don't hide our origin, but we communicate at Western professional standard
-
-### Avoid
-
-- Salesy language, fake urgency, "limited time" without substance
-- Superlatives without proof
-- Buzzwords: "revolutionary", "cutting-edge", "game-changing", "next-generation"
-- Feature lists without outcomes — always answer "so what?"
-
-### Always include on marketing pages
-
-- Specific outcome or benchmark
-- Social proof (real, verifiable)
-- Clear next step (one primary CTA)
-- Trust signal (certification, case study link, money-back guarantee)
+See **[docs/rules/content-writing-rules.md](docs/rules/content-writing-rules.md)** — full tone guide, terminology list, CTA patterns, error messages, empty states, and SEO content rules.

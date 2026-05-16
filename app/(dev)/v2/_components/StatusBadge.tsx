@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-export type Status = "built" | "needs-work" | "missing";
+export type Status = "built" | "needs-work" | "missing" | "pending-review";
 
 const config: Record<Status, { label: string; classes: string }> = {
   built: {
@@ -14,6 +14,10 @@ const config: Record<Status, { label: string; classes: string }> = {
   missing: {
     label: "❌ Missing",
     classes: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
+  },
+  "pending-review": {
+    label: "🔍 Pending review",
+    classes: "bg-violet-100 text-violet-800 dark:bg-violet-900/30 dark:text-violet-400",
   },
 };
 

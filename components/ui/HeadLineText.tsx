@@ -55,8 +55,8 @@ const HeadLineText = ({
 }: IProps) => {
   const Component = as;
 
-  // 🔹 Base Font
-  const baseFont = "font-[family-name:var(--font-mulish)]";
+  // 🔹 Base Font — Sora (loaded via next/font, var set in layout.tsx)
+  const baseFont = "font-[family-name:var(--font-heading)]";
 
   // 🔹 Font Weight
   const fontWeightClass = {

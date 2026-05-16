@@ -36,8 +36,8 @@
   --border: oklch(0.9 0.008 75);
   --ring: oklch(0.511 0.237 282.4);
   --radius: 0.5rem;
-  --font-sans: "Manrope", sans-serif;
-  --font-heading: "Sora", sans-serif;
+  --font-sans: var(--font-manrope, "Manrope", sans-serif);
+  --font-heading: var(--font-sora, "Sora", sans-serif);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

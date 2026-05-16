@@ -27,7 +27,12 @@ import Header from "@/layouts/header/header";
 import Footer from "@/layouts/footer/footer";
 import JsonLd from "@/components/sections/JsonLd";
 import TrustBadges from "@/components/sections/TrustBadges";
+import GradientText from "@/components/ui/GradientText";
 import StatsBar from "@/components/sections/StatsBar";
+import HomeHeroBanner from "@/components/sections/HomeHeroBanner";
+import InnerPageHeroBanner from "@/components/sections/InnerPageHeroBanner";
+import HeroServicesCard from "@/components/sections/HeroServicesCard";
+import HeroPerformanceCard from "@/components/sections/HeroPerformanceCard";
 
 import {
   heroData,
@@ -119,17 +124,35 @@ export default function V2ShowcasePage() {
             </div>
           </ShowcaseSection>
 
-          {/* ── GradientBackground ── */}
+          {/* ── GradientText ── */}
           <ShowcaseSection
-            id="gradient-background"
-            title="GradientBackground"
-            status="needs-work"
-            notes="Too many undocumented variants. Hard to pick the right one."
+            id="gradient-text"
+            title="GradientText"
+            status="built"
+            notes="Inline gradient fill via bg-clip-text. 4 presets: brand (sky→indigo→orange), warm (indigo→orange), cool (sky→indigo), aurora (wide sweep). Use inside any HeadLineText or paragraph."
           >
-            <div className="relative h-48 overflow-hidden rounded-lg">
-              <p className="relative z-10 flex h-full items-center justify-center text-sm font-medium text-slate-700 dark:text-slate-200">
-                blue-cyan gradient
-              </p>
+            <div className="space-y-6">
+              {(["brand", "warm", "cool", "aurora"] as const).map((g) => (
+                <div key={g}>
+                  <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                    {g}
+                  </p>
+                  <p className="font-[family-name:var(--font-heading)] text-4xl font-black">
+                    <GradientText gradient={g}>
+                      Speed you can measure
+                    </GradientText>
+                  </p>
+                </div>
+              ))}
+              <div>
+                <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                  brand — inside HeadLineText (hero usage)
+                </p>
+                <HeadLineText as="h2" fontSize="fourXl" align="left">
+                  Hosting built for{" "}
+                  <GradientText gradient="brand">speed you can measure</GradientText>
+                </HeadLineText>
+              </div>
             </div>
           </ShowcaseSection>
 
@@ -552,6 +575,79 @@ export default function V2ShowcasePage() {
                 { title: "Free migration: what actually happens", description: "A behind-the-scenes look at our zero-downtime migration process.", href: "#", category: "Hosting" },
               ]}
             />
+          </ShowcaseSection>
+
+          {/* ── Hero right-panel card options ── */}
+          <ShowcaseSection
+            id="hero-card-options"
+            title="Hero Panel Cards"
+            status="pending-review"
+            notes="Two options for the right panel of HomeHeroBanner. HeroServicesCard: cycles through services (SiteGround style). HeroPerformanceCard: Lighthouse score rings with scan animation. Currently HomeHeroBanner uses HeroServicesCard."
+          >
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+              <div className="space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Option A — Services (currently active)</p>
+                <HeroServicesCard />
+                <div className="dark">
+                  <HeroServicesCard />
+                </div>
+              </div>
+              <div className="space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Option B — Lighthouse scores</p>
+                <HeroPerformanceCard />
+                <div className="dark">
+                  <HeroPerformanceCard />
+                </div>
+              </div>
+            </div>
+          </ShowcaseSection>
+
+          {/* ── HomeHeroBanner ── */}
+          <ShowcaseSection
+            id="home-hero-banner"
+            title="HomeHeroBanner"
+            status="pending-review"
+            notes="Single component, responds to page dark mode. YouTube bg lazy-loaded client-side (SSR = empty container + overlay only). Title: text-7xl xl. Two overlay divs toggle via block/hidden dark:block. Awaiting approval."
+          >
+            <div className="space-y-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Light mode</p>
+              <div className="overflow-hidden rounded-lg">
+                <HomeHeroBanner youtubeVideoId="RzVvThhjAKw" />
+              </div>
+              <p className="mt-6 text-xs font-semibold uppercase tracking-wide text-slate-400">Dark mode</p>
+              <div className="dark overflow-hidden rounded-lg">
+                <HomeHeroBanner youtubeVideoId="RzVvThhjAKw" />
+              </div>
+            </div>
+          </ShowcaseSection>
+
+          {/* ── InnerPageHeroBanner ── */}
+          <ShowcaseSection
+            id="inner-page-hero-banner"
+            title="InnerPageHeroBanner"
+            status="pending-review"
+            notes="Inner page hero (WordPress Hosting, VPS, etc.). Light bg with blobs, eyebrow badge, H1 with optional accent, CTAs, feature chips, right: browser-chrome tech stack card. All content via props. Awaiting approval before use on real pages."
+          >
+            <div className="overflow-hidden rounded-lg">
+              <InnerPageHeroBanner
+                tagline="WordPress Hosting"
+                title="High-performance hosting"
+                titleAccent="built for WordPress"
+                description="LiteSpeed + NVMe storage. 200ms average TTFB from London, Frankfurt, and New York. Managed updates, daily backups, and one-click staging — so you focus on your site."
+                cta={[
+                  { label: "Get started — $5.99/month", href: "/hosting/wordpress" },
+                  { label: "View all plans", href: "/hosting/wordpress#plans", variant: "secondary" },
+                ]}
+                features={[
+                  "Free SSL forever",
+                  "Daily off-site backups",
+                  "One-click staging",
+                  "Free migration",
+                  "LiteSpeed cache",
+                  "99.95% uptime SLA",
+                ]}
+              />
+            </div>
           </ShowcaseSection>
 
         </main>

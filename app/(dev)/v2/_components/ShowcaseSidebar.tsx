@@ -18,7 +18,7 @@ const categories: Category[] = [
     label: "Layout",
     items: [
       { id: "section", label: "Section" },
-      { id: "gradient-background", label: "GradientBackground" },
+      { id: "gradient-text", label: "GradientText" },
     ],
   },
   {
@@ -45,6 +45,13 @@ const categories: Category[] = [
     items: [
       { id: "header", label: "Header" },
       { id: "footer", label: "Footer" },
+    ],
+  },
+  {
+    label: "Banners",
+    items: [
+      { id: "home-hero-banner",       label: "HomeHeroBanner"      },
+      { id: "inner-page-hero-banner", label: "InnerPageHeroBanner" },
     ],
   },
   {
