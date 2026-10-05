@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import ShowcaseSection from "./_components/ShowcaseSection";
 import ShowcaseSidebar from "./_components/ShowcaseSidebar";
+import ShowcaseLayout from "./_components/ShowcaseLayout";
 
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
@@ -33,6 +34,8 @@ import HomeHeroBanner from "@/components/sections/HomeHeroBanner";
 import InnerPageHeroBanner from "@/components/sections/InnerPageHeroBanner";
 import HeroServicesCard from "@/components/sections/HeroServicesCard";
 import HeroPerformanceCard from "@/components/sections/HeroPerformanceCard";
+import HeroDashboardCard from "@/components/sections/HeroDashboardCard";
+import HeroTrustCards from "@/components/sections/HeroTrustCards";
 
 import {
   heroData,
@@ -86,14 +89,7 @@ export default function V2ShowcasePage() {
       </div>
 
       {/* ── Body: sidebar + main ── */}
-      <div className="flex pt-14">
-        {/* Sidebar */}
-        <aside className="w-52 shrink-0 border-r border-slate-200 dark:border-slate-800">
-          <ShowcaseSidebar />
-        </aside>
-
-        {/* Main content */}
-        <main className="flex-1 px-8 py-6 min-w-0">
+      <ShowcaseLayout sidebar={<ShowcaseSidebar />}>
           <h1 className="mb-8 text-2xl font-bold text-slate-900 dark:text-slate-100">
             Component Showcase
           </h1>
@@ -243,28 +239,45 @@ export default function V2ShowcasePage() {
             id="buttons"
             title="Buttons"
             status="built"
-            notes="Primary and secondary variants. Disabled state and loading/spinner state implemented."
+            notes="Link-based SSR component (renders <a>). Variants: primary, secondary. Sizes: sm, md (default), lg. fullWidth stretches to container. external adds target=_blank + rel. Hover: lift + shadow (primary), border accent (secondary)."
           >
             <div className="space-y-6">
               <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Default</p>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Variants</p>
                 <div className="flex flex-wrap items-center gap-4">
-                  <Button variant="primary">Primary button</Button>
-                  <Button variant="secondary">Secondary button</Button>
+                  <Button href="#" variant="primary">Primary</Button>
+                  <Button href="#" variant="secondary">Secondary</Button>
                 </div>
               </div>
               <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Disabled</p>
-                <div className="flex flex-wrap items-center gap-4">
-                  <Button variant="primary" disabled>Primary disabled</Button>
-                  <Button variant="secondary" disabled>Secondary disabled</Button>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Sizes — primary (resize window to see responsive scaling)</p>
+                <div className="flex flex-wrap items-end gap-4">
+                  <Button href="#" size="sm">Small</Button>
+                  <Button href="#" size="md">Medium</Button>
+                  <Button href="#" size="lg">Large</Button>
+                  <Button href="#" size="xl">Extra Large</Button>
                 </div>
               </div>
               <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Loading</p>
-                <div className="flex flex-wrap items-center gap-4">
-                  <Button variant="primary" loading>Primary loading</Button>
-                  <Button variant="secondary" loading>Secondary loading</Button>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Sizes — secondary</p>
+                <div className="flex flex-wrap items-end gap-4">
+                  <Button href="#" variant="secondary" size="sm">Small</Button>
+                  <Button href="#" variant="secondary" size="md">Medium</Button>
+                  <Button href="#" variant="secondary" size="lg">Large</Button>
+                  <Button href="#" variant="secondary" size="xl">Extra Large</Button>
+                </div>
+              </div>
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Full width</p>
+                <div className="max-w-sm space-y-3">
+                  <Button href="#" fullWidth>Primary full width</Button>
+                  <Button href="#" variant="secondary" fullWidth>Secondary full width</Button>
+                </div>
+              </div>
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">External link</p>
+                <div className="flex flex-wrap gap-4">
+                  <Button href="https://dronahost.com" external>Opens new tab ↗</Button>
                 </div>
               </div>
             </div>
@@ -582,22 +595,24 @@ export default function V2ShowcasePage() {
             id="hero-card-options"
             title="Hero Panel Cards"
             status="pending-review"
-            notes="Two options for the right panel of HomeHeroBanner. HeroServicesCard: cycles through services (SiteGround style). HeroPerformanceCard: Lighthouse score rings with scan animation. Currently HomeHeroBanner uses HeroServicesCard."
+            notes="Three options. Dashboard: always-dark luxury card with gradient border, typewriter domain, live visitor counter. Services: cycling action list (SiteGround style). Performance: Lighthouse score rings. Currently HomeHeroBanner uses HeroDashboardCard."
           >
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 xl:grid-cols-4">
               <div className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Option A — Services (currently active)</p>
-                <HeroServicesCard />
-                <div className="dark">
-                  <HeroServicesCard />
-                </div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Option A — Trust cards (currently active)</p>
+                <HeroTrustCards />
               </div>
               <div className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Option B — Lighthouse scores</p>
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Option B — Dashboard</p>
+                <HeroDashboardCard />
+              </div>
+              <div className="space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Option C — Services list</p>
+                <HeroServicesCard />
+              </div>
+              <div className="space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Option D — Lighthouse scores</p>
                 <HeroPerformanceCard />
-                <div className="dark">
-                  <HeroPerformanceCard />
-                </div>
               </div>
             </div>
           </ShowcaseSection>
@@ -650,8 +665,7 @@ export default function V2ShowcasePage() {
             </div>
           </ShowcaseSection>
 
-        </main>
-      </div>
+      </ShowcaseLayout>
     </div>
   );
 }

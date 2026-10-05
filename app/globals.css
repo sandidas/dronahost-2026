@@ -59,6 +59,18 @@
   /* Brighter orange accent for dark backgrounds */
   --accent: oklch(0.72 0.185 44);
   --accent-light: oklch(0.78 0.165 48);
+  /*
+   * Mirror every @theme --color-* token so Tailwind utilities
+   * (text-foreground, bg-primary/10, text-primary, etc.) pick up
+   * the correct dark-mode values. Without these, @theme values are
+   * static and never change regardless of the .dark class.
+   */
+  --color-foreground: oklch(0.95 0.005 75);
+  --color-background: oklch(0.148 0.008 75);
+  --color-primary: oklch(0.668 0.175 282.9);
+  --color-primary-light: oklch(0.753 0.133 284.6);
+  --color-accent: oklch(0.72 0.185 44);
+  --color-accent-light: oklch(0.78 0.165 48);
 }
 
 * {
@@ -271,21 +283,103 @@ body {
   gap: 0.9rem;
 }
 
+/* ── Button base — mobile-first ── */
 .primary-btn,
 .secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  white-space: nowrap;
   border-radius: 999px;
   border: 1px solid transparent;
-  padding: 0.85rem 1.5rem;
-  font-size: 0.95rem;
+  min-height: 2.75rem;           /* 44px touch target on all sizes */
+  padding: 0.75rem 1.5rem;       /* mobile default (md) */
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.01em;
   cursor: pointer;
+  transition:
+    background-position 0.45s ease,
+    box-shadow 0.22s ease,
+    transform 0.15s ease,
+    border-color 0.18s ease,
+    opacity 0.18s ease;
+  will-change: transform;
 }
 
+/* Scale up md to full size on sm+ */
+@media (min-width: 640px) {
+  .primary-btn,
+  .secondary-btn {
+    padding: 0.85rem 1.75rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* ── Primary variant ── */
 .primary-btn {
-  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  position: relative;
+  overflow: hidden;
+  /*
+   * 5-stop gradient: vivid violet → violet-pink → coral → warm orange → red-orange
+   * Stretched to 200% width. Rest shows the violet/indigo side; hover slides
+   * to coral/orange — that contrast IS the magic moment.
+   */
+  background: linear-gradient(
+    90deg,
+    oklch(0.56 0.27 284)  0%,
+    oklch(0.60 0.24 300) 22%,
+    oklch(0.68 0.22 350) 48%,
+    oklch(0.71 0.24 30)  75%,
+    oklch(0.66 0.27 20) 100%
+  );
+  background-size: 200% 100%;
+  background-position: 30% center;
   color: white;
-  box-shadow: 0 14px 32px -18px oklch(from var(--accent) l c h / 0.7);
+  box-shadow:
+    0 8px 28px -8px oklch(0.56 0.27 284 / 0.4),
+    0 4px 14px -6px oklch(0.68 0.24 30  / 0.28);
+}
+
+/* Top-of-button glass shine — always visible */
+.primary-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    170deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    transparent 52%
+  );
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Sweep shimmer — fires on hover */
+.primary-btn::after {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: -90%;
+  width: 50%;
+  height: 220%;
+  background: linear-gradient(
+    100deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 75%
+  );
+  pointer-events: none;
+  transition: left 0.6s ease;
+  z-index: 2;
+}
+
+.dark .primary-btn {
+  box-shadow:
+    0 8px 28px -8px oklch(0.56 0.27 284 / 0.3),
+    0 4px 14px -6px oklch(0.68 0.24 30  / 0.2);
 }
 
 .secondary-btn {
@@ -300,17 +394,101 @@ body {
   color: #e5e7eb;
 }
 
+/* ── Hover ── */
+.primary-btn:hover {
+  /* Slide gradient to the coral/orange half — the magic moment */
+  background-position: 100% center;
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.12),
+    0 18px 50px -10px oklch(0.56 0.27 284 / 0.55),
+    0 8px 28px -6px  oklch(0.68 0.24 30  / 0.38),
+    0 2px 8px -2px   oklch(0.56 0.27 284 / 0.2);
+  transform: translateY(-2px);
+}
+
+.dark .primary-btn:hover {
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.08),
+    0 18px 50px -10px oklch(0.56 0.27 284 / 0.45),
+    0 8px 28px -6px  oklch(0.68 0.24 30  / 0.3),
+    0 2px 8px -2px   oklch(0.56 0.27 284 / 0.15);
+  transform: translateY(-2px);
+}
+
+/* Shimmer sweeps across on hover */
+.primary-btn:hover::after {
+  left: 130%;
+}
+
+.secondary-btn:hover {
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.dark .secondary-btn:hover {
+  border-color: rgba(226, 232, 240, 0.65);
+  background: rgba(15, 23, 42, 0.55);
+}
+
+/* ── Focus ── */
 .primary-btn:focus-visible,
 .secondary-btn:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
-/* ── Button disabled state ── */
+/* ── Size modifiers — mobile-first, each tier scales on sm+ ── */
+
+/* sm: compact on all screens */
+.btn-sm {
+  padding: 0.5rem 1.1rem;
+  font-size: 0.85rem;
+  min-height: 2.25rem;
+  letter-spacing: 0;
+}
+
+/* lg: md-desktop size on mobile → grows on sm+ */
+.btn-lg {
+  padding: 0.85rem 1.75rem;
+  font-size: 0.95rem;
+}
+
+@media (min-width: 640px) {
+  .btn-lg {
+    padding: 1.05rem 2.25rem;
+    font-size: 1.05rem;
+  }
+}
+
+/* xl: generous on mobile → hero-scale on sm+ */
+.btn-xl {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  letter-spacing: 0.015em;
+}
+
+@media (min-width: 640px) {
+  .btn-xl {
+    padding: 1.2rem 2.75rem;
+    font-size: 1.15rem;
+    letter-spacing: 0.02em;
+  }
+}
+
+/* ── Full-width override — block-level flex so w-full fills the container ── */
+.primary-btn.w-full,
+.secondary-btn.w-full {
+  display: flex;
+}
+
+/* ── Disabled ── */
 .primary-btn:disabled,
-.secondary-btn:disabled {
+.secondary-btn:disabled,
+.primary-btn[aria-disabled="true"],
+.secondary-btn[aria-disabled="true"] {
   opacity: 0.45;
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 /* ── Button loading spinner ── */
@@ -328,6 +506,16 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .btn-spinner {
     animation: none;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    transition: none;
+    transform: none !important;
+  }
+
+  .primary-btn::after {
+    transition: none;
   }
 }
 

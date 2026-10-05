@@ -1,10 +1,8 @@
-"use client";
-
 import { cn } from "@/utils/cn";
 import { BarChart3, Code, Database, Globe, Layout, ShoppingCart } from "lucide-react";
 import NextImage from "next/image";
 import Link from "next/link";
-import { useMemo, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import HeadLineText from "@/components/ui/HeadLineText";
 
 /* ── Shared types ── */
@@ -32,13 +30,13 @@ const gridAlignMap: Record<GridAlign, string> = {
 
 const gridVariantMap: Record<GridCardVariant, string> = {
   default: "",
-  ghost: "bg-neutral-50/80 dark:bg-white/[0.02]",
+  ghost: "bg-[var(--muted)]",
 };
 
 const separatorMap: Record<SeparatorTone, string> = {
-  soft: "[border-color:rgba(15,23,42,0.12)] dark:[border-color:rgba(148,163,184,0.2)]",
-  default: "[border-color:rgba(15,23,42,0.18)] dark:[border-color:rgba(148,163,184,0.26)]",
-  strong: "[border-color:rgba(0,0,0,0.99)] dark:[border-color:rgba(255,255,255,0.06)]",
+  soft: "[border-color:color-mix(in_oklch,var(--border)_60%,transparent)]",
+  default: "[border-color:var(--border)]",
+  strong: "[border-color:color-mix(in_oklch,var(--foreground)_80%,transparent)]",
 };
 
 function notLastCol(i: number, cols: number) {
@@ -136,18 +134,13 @@ export default function Card({
   tech = [],
   bgColor,
 }: CardProps) {
-  const borders = useMemo(
-    () => borderClasses(index, total, columns, separatorTone),
-    [index, total, columns, separatorTone],
-  );
+  const borders = borderClasses(index, total, columns, separatorTone);
 
   if (variant === "grid") {
     return (
       <div
         className={cn(
           "relative w-full flex flex-col",
-          "transition-colors duration-150",
-          "hover:bg-neutral-100 dark:hover:bg-white/1.5",
           gridSizeMap[size],
           gridAlignMap[align],
           gridVariantMap[gridVariant],
@@ -161,38 +154,43 @@ export default function Card({
   }
 
   if (variant === "resource") {
-    const p = post!;
+    if (!post) return null;
     return (
       <article className={cn("w-full", className)}>
-        <div className={cn("relative h-50 mb-6 overflow-hidden rounded-2xl bg-gray-100 dark:bg-gray-800", imageClassName)}>
-          {p.image && (
-            <img src={p.image} alt={p.title} className="h-full w-full object-cover" />
+        <div className={cn("relative aspect-video mb-6 overflow-hidden rounded-2xl bg-[var(--muted)]", imageClassName)}>
+          {post.image && (
+            <NextImage src={post.image} alt={post.title} fill sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw" className="object-cover" />
           )}
         </div>
         <div className={cn(contentClassName)}>
-          {showCategory && p.category && (
+          {showCategory && post.category && (
             <div className="mb-4 flex items-center justify-between gap-3">
-              <span className="rounded-full bg-orange-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-orange-600 dark:bg-orange-900/30 dark:text-orange-300">
-                {p.category}
+              <span className="rounded-full bg-accent/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-accent">
+                {post.category}
               </span>
-              {p.readTime && (
-                <span className="text-xs font-medium text-orange-500 dark:text-orange-300">{p.readTime}</span>
+              {post.readTime && (
+                <span className="text-xs font-medium text-accent/80">{post.readTime}</span>
               )}
             </div>
           )}
           <HeadLineText as="h3" fontSize="twoXl" fontWeight="bold" align="none" className="text-left">
-            {p.title}
+            {post.title}
           </HeadLineText>
-          {showDescription && p.description && (
-            <p className="mt-3 text-sm text-gray-600 dark:text-gray-300">{p.description}</p>
+          {showDescription && post.description && (
+            <p className="mt-3 text-sm text-[var(--muted-foreground)]">{post.description}</p>
           )}
           {showCTA && (
             <Link
-              href={p.href ?? "#"}
-              className="inline-flex items-center gap-1 mt-4 text-sm font-semibold text-gray-800 dark:text-gray-200 hover:gap-2 transition-all"
+              href={post.href ?? "#"}
+              className="group inline-flex items-center gap-1 mt-4 text-sm font-semibold text-foreground"
             >
-              {p.button ?? "Read more"}
-              <span className="transition-transform group-hover:translate-x-1">→</span>
+              {post.button ?? "Read more"}
+              <span
+                aria-hidden="true"
+                className="transition-transform duration-150 motion-reduce:transition-none group-hover:translate-x-1"
+              >
+                →
+              </span>
             </Link>
           )}
         </div>
@@ -205,9 +203,11 @@ export default function Card({
     <div
       className={cn(
         "rounded-2xl p-6 flex flex-col gap-4",
-        "border border-black/5 dark:border-white/10",
-        "shadow-sm transition-all duration-300",
-        "hover:shadow-xl hover:-translate-y-1",
+        "border",
+        "transition-[box-shadow,transform,border-color] duration-200 motion-reduce:transition-none",
+        "motion-safe:hover:[box-shadow:0_8px_32px_-4px_color-mix(in_oklch,var(--primary)_20%,transparent)]",
+        "motion-safe:hover:border-primary/30",
+        "motion-safe:hover:-translate-y-[3px]",
         bgColor,
         className,
       )}
@@ -219,15 +219,15 @@ export default function Card({
         </HeadLineText>
       )}
       {description && (
-        <HeadLineText as="p" fontSize="sm" fontWeight="light" align="left" className="text-muted-foreground leading-relaxed">
+        <HeadLineText as="p" fontSize="sm" fontWeight="light" align="left" className="text-[var(--muted-foreground)] leading-relaxed">
           {description}
         </HeadLineText>
       )}
       {tech.length > 0 && (
         <div className="flex gap-2 mt-2 flex-wrap">
           {tech.map((t, i) => (
-            <div key={i} className="w-9 h-9 flex items-center justify-center bg-white dark:bg-gray-800 border border-black/5 dark:border-white/10 rounded-md">
-              <NextImage src={`/${t}`} alt="tech" width={24} height={24} />
+            <div key={i} className="w-9 h-9 flex items-center justify-center bg-[var(--muted)] border rounded-md">
+              <NextImage src={`/${t}`} alt={t} width={24} height={24} />
             </div>
           ))}
         </div>

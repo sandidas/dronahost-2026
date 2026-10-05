@@ -1,10 +1,10 @@
-import Link from "next/link";
 import Section from "@/components/ui/Section";
 import HeadLineText from "@/components/ui/HeadLineText";
 import Badge from "@/components/ui/Badge";
+import Button from "@/components/ui/Button";
 import HomeHeroBannerVideo from "@/components/sections/HomeHeroBannerVideo";
 import GradientText from "@/components/ui/GradientText";
-import HeroServicesCard from "@/components/sections/HeroServicesCard";
+import HeroTrustCards from "@/components/sections/HeroTrustCards";
 
 export interface HomeHeroBannerProps {
   /**
@@ -15,9 +15,9 @@ export interface HomeHeroBannerProps {
 }
 
 const metrics = [
-  { label: "Page Speed",   value: "200ms",  sub: "London → NYC"    },
-  { label: "Always Online", value: "99.95%", sub: "guaranteed"      },
-  { label: "Expert Help",  value: "18 min", sub: "response, 24/7"  },
+  { label: "Page Speed",    value: "200ms",  sub: "London → NYC"  },
+  { label: "Always Online", value: "99.95%", sub: "guaranteed"    },
+  { label: "Expert Help",   value: "~5 min", sub: "avg · 24/7"    },
 ] as const;
 
 export default function HomeHeroBanner({ youtubeVideoId }: HomeHeroBannerProps) {
@@ -30,7 +30,7 @@ export default function HomeHeroBanner({ youtubeVideoId }: HomeHeroBannerProps) 
 
       {/* Content — above video and overlay */}
       <Section as="div" padding="hero" size="xl" className="relative z-10">
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <div className="grid grid-cols-1 items-center gap-10 md:gap-12 lg:gap-16 xl:grid-cols-2">
 
           {/* ── Left: headline + CTAs ── */}
           <div className="flex flex-col items-start gap-5">
@@ -40,7 +40,7 @@ export default function HomeHeroBanner({ youtubeVideoId }: HomeHeroBannerProps) 
             <HeadLineText
               as="h1"
               fontSize="custom"
-              className="text-5xl lg:text-6xl xl:text-8xl xl:leading-[0.95] tracking-[-0.03em]"
+              className="text-4xl tracking-[-0.03em] sm:text-5xl lg:text-6xl xl:text-8xl xl:leading-[0.95]"
               align="left"
             >
               Cloud web hosting{" "}
@@ -49,72 +49,69 @@ export default function HomeHeroBanner({ youtubeVideoId }: HomeHeroBannerProps) 
               </GradientText>
             </HeadLineText>
 
-            <p className="max-w-[50ch] text-base leading-relaxed text-slate-600 dark:text-slate-300 sm:text-lg">
+            <p className="max-w-[50ch] text-base leading-relaxed text-[var(--muted-foreground)] sm:text-lg">
               Stop losing customers to slow pages and unexpected downtime.{" "}
-              <strong className="text-slate-900 dark:text-white">
+              <strong className="text-foreground">
                 We handle everything
               </strong>{" "}
               — so your website is always fast, always online, and always
               working as hard as you do.
             </p>
 
-            <div className="flex flex-wrap gap-3.5">
-              <Link href="/hosting/wordpress" className="primary-btn">
-                Launch Your Website Today
-              </Link>
-              <Link href="/contact" className="secondary-btn">
-                Talk to an expert
-              </Link>
-            </div>
+            <Button href="/hosting/wordpress" size="xl" fullWidth>
+              Get Started
+            </Button>
 
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+            <p className="text-sm text-[var(--muted-foreground)]">
               30-day money-back guarantee · We migrate for free · Cancel anytime
             </p>
-          </div>
 
-          {/* ── Right: performance card + floating metrics (desktop only) ── */}
-          <div className="hidden flex-col items-center gap-4 lg:flex">
-            {/* Animated services cycling card */}
-            <HeroServicesCard />
-
-            {/* Floating metric cards */}
-            <div className="flex w-full max-w-[360px] gap-3">
-              {metrics.map((m, i) => (
+            {/* Metric strip — visible below xl (right column is hidden below xl) */}
+            <div className="grid w-full grid-cols-3 gap-2.5 xl:hidden">
+              {metrics.map((m) => (
                 <div
                   key={m.label}
-                  className="animate-card-loop flex-1 rounded-xl border border-slate-200/60 bg-white/85 p-3.5 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-white/5"
-                  style={{ animationDelay: `${i * 1.4}s` }}
+                  className="rounded-xl border bg-[var(--card)]/85 p-3 text-center backdrop-blur-xl"
                 >
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
-                    {m.label}
-                  </p>
-                  <p className="mt-0.5 font-[family-name:var(--font-heading)] text-xl font-bold text-slate-900 dark:text-white">
+                  <p className="font-[family-name:var(--font-heading)] text-base font-bold text-foreground sm:text-lg">
                     {m.value}
                   </p>
-                  <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                  <p className="mt-0.5 text-[11px] text-[var(--muted-foreground)]">
+                    {m.label}
+                  </p>
+                  <p className="mt-0.5 hidden text-[10px] text-[var(--muted-foreground)] sm:block">
                     {m.sub}
                   </p>
                 </div>
               ))}
             </div>
           </div>
-        </div>
 
-        {/* ── Mobile metric strip (hidden lg+) ── */}
-        <div className="mt-10 grid grid-cols-3 gap-3 lg:hidden">
-          {metrics.map((m) => (
-            <div
-              key={m.label}
-              className="rounded-xl border border-slate-200/60 bg-white/85 p-3 text-center backdrop-blur-xl dark:border-white/10 dark:bg-white/5"
-            >
-              <p className="font-[family-name:var(--font-heading)] text-lg font-bold text-slate-900 dark:text-white">
-                {m.value}
-              </p>
-              <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-                {m.label}
-              </p>
+          {/* ── Right: trust cards + metric row (xl+) ── */}
+          <div className="hidden flex-col items-center gap-4 xl:flex">
+            <HeroTrustCards />
+
+            {/* Floating metric cards */}
+            <div className="flex w-full max-w-[360px] gap-2.5">
+              {metrics.map((m, i) => (
+                <div
+                  key={m.label}
+                  className="animate-card-loop flex-1 rounded-xl border bg-[var(--card)]/85 p-3 shadow-lg backdrop-blur-xl lg:p-3.5"
+                  style={{ animationDelay: `${i * 1.4}s` }}
+                >
+                  <p className="text-[11px] text-[var(--muted-foreground)]">
+                    {m.label}
+                  </p>
+                  <p className="mt-0.5 font-[family-name:var(--font-heading)] text-lg font-bold text-foreground lg:text-xl">
+                    {m.value}
+                  </p>
+                  <p className="mt-0.5 text-[11px] text-[var(--muted-foreground)]">
+                    {m.sub}
+                  </p>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </Section>
     </section>

@@ -23,6 +23,9 @@
 14. [DO's — Always](#14-dos--always)
 15. [DON'Ts — Never](#15-donts--never)
 16. [Quick Reference](#16-quick-reference)
+17. [Responsive Design](#17-responsive-design)
+18. [Dark / Light Mode](#18-dark--light-mode)
+19. [Pre-Ship Checklist](#19-pre-ship-checklist)
 
 ---
 
@@ -1016,9 +1019,15 @@ dronahost/
 - Minimum 4.5:1 contrast ratio for body text in both themes (WCAG AA)
 - `aria-label` on all icon-only buttons
 - Visible `focus-visible` styles for keyboard navigation
-- `prefers-reduced-motion` media query on all animation blocks
+- `prefers-reduced-motion` media query on all animation blocks — use `motion-reduce:transition-none` and `motion-safe:hover:` Tailwind variants on components, global `@media` block in `globals.css` for CSS animations
 - Cards visually elevated above page background in both themes
 - One orange CTA above the fold maximum
+- Mobile-first: write base styles for 320px, scale up with `sm:` `md:` `lg:` `xl:` prefixes
+- All interactive elements ≥ 44×44px touch target (WCAG 2.5.5)
+- `aspect-*` utilities on all image containers — never fixed `h-*` heights on image wrappers
+- `sizes` prop on every `next/image` — match actual rendered width at each breakpoint
+- Test every component at 320px / 375px / 768px / 1024px / 1440px before `/v2` approval
+- No horizontal scroll at any breakpoint — treat any overflow as a blocker
 
 ### Code
 
@@ -1050,14 +1059,23 @@ dronahost/
 - Hardcode any hex, rgb, or hsl color — CSS variables only
 - Use Inter, Roboto, Arial, system-ui, DM Sans, or Geist as heading/body fonts — use Sora + Manrope
 - Purple-to-pink gradients, rainbow, or neon glow aesthetics
-- Pure `#FFFFFF` in light mode — use `--bg-primary: #FAFBFC`
-- Pure `#000000` in dark mode — use `--bg-primary: #08090A`
+- Pure `#FFFFFF` in light mode — use `var(--background)`
+- Pure `#000000` in dark mode — use `var(--background)` (dark value)
 - Clip art, stock photo grids, or generic SaaS illustration packs
 - Looping / auto-playing animations — only on interaction or scroll entry
 - Transitions > 600ms on any interactive element
 - Orange CTA on more than one hero-level button per page
 - Centered walls of text longer than 2 lines
 - Any component that looks identical in both themes — means variables weren't used
+- `dark:text-gray-300` — use `text-[var(--muted-foreground)]` (auto-switches, no `dark:` override needed)
+- `bg-white dark:bg-gray-900` — use `bg-[var(--card)]`
+- `border-black/5 dark:border-white/10` — use `border` (global token) or `color-mix` separator patterns (§18.5)
+- `style={{ color: '#4F46E5' }}` — always `style={{ color: 'var(--primary)' }}`
+- Tailwind palette colors (`gray-*`, `neutral-*`, `orange-*`) for surfaces, text, or borders — use design token variables
+- Fixed `h-*` heights on image containers — use `aspect-video`, `aspect-square`, or `aspect-[n/n]`
+- Fixed `px` widths on layout containers or section wrappers
+- Horizontal scroll on any breakpoint — treat as a blocker before shipping
+- Hiding SEO-critical content with `hidden sm:block` — Google indexes mobile-first; keep in DOM with `sr-only` if needed visually hidden
 
 ### Code
 
@@ -1087,22 +1105,381 @@ dronahost/
 
 ## 16. Quick Reference
 
-| Token | Light | Dark |
+### Implemented CSS tokens (`globals.css` — source of truth)
+
+| Variable | Tailwind usage | Light | Dark |
+|---|---|---|---|
+| `--background` | `bg-background` | `oklch(0.99 0.003 75)` | `oklch(0.148 0.008 75)` |
+| `--foreground` | `text-foreground` | `oklch(0.21 0.01 75)` | `oklch(0.95 0.005 75)` |
+| `--card` | `bg-[var(--card)]` | `oklch(0.968 0.005 75)` | `oklch(0.19 0.01 75)` |
+| `--card-foreground` | `text-[var(--card-foreground)]` | same as foreground | same |
+| `--muted` | `bg-[var(--muted)]` | `oklch(0.95 0.006 75)` | `oklch(0.21 0.01 75)` |
+| `--muted-foreground` | `text-[var(--muted-foreground)]` | `oklch(0.52 0.012 75)` | `oklch(0.56 0.01 75)` |
+| `--border` | `border` (global default) | `oklch(0.9 0.008 75)` | `oklch(0.27 0.01 75)` |
+| `--primary` | `text-primary`, `bg-primary/N` | indigo `oklch(0.511 0.237 282.4)` | `oklch(0.668 0.175 282.9)` (brighter) |
+| `--accent` | `text-accent`, `bg-accent/N` | orange `oklch(0.648 0.22 38.17)` | `oklch(0.72 0.185 44)` (brighter) |
+| `--secondary` | `text-secondary` | teal `oklch(0.62 0.13 220)` | same |
+| `--ring` | `ring-*` utilities | indigo (same as `--primary`) | same |
+
+> `bg-primary/N`, `text-accent/N`, `border-primary/N` opacity modifiers work because `--color-primary`, `--color-accent`, `--color-foreground`, `--color-background` are registered in the `@theme` block. All other variables must use `var(--*)` arbitrary syntax.
+
+### Breakpoints
+
+| Prefix | Min-width | Common use |
 |---|---|---|
-| `--bg-primary` | `#FAFBFC` | `#08090A` |
-| `--bg-secondary` | `#FFFFFF` | `#0F1012` |
-| `--bg-elevated` | `#F2F4F8` | `#16181C` |
-| `--accent-primary` | `#4F46E5` (indigo) | `#6D64F0` (brighter) |
-| `--orange` | `#E04800` | `#FE5403` |
-| `--teal` | `#0489A8` | `#05A2C6` |
-| `--text-primary` | `#0D0F14` | `#F0F2F7` |
-| `--text-secondary` | `#4A5268` | `#9BA3B8` |
-| Display font | Sora | same |
-| Body font | Manrope | same |
-| Mono font | JetBrains Mono | same |
-| Theme class | none (light default) | `.dark` on `<html>` |
-| Theme storage | `localStorage: 'dronahost-theme'` | same |
-| Framework | Next.js 16 App Router + TypeScript | same |
-| Styling | Tailwind CSS + CSS custom properties | same |
-| Phone | +1-206-201-2431 | same |
-| Email | sales@dronahost.com | same |
+| (none) | 0px | Mobile base |
+| `sm:` | 640px | Large mobile / small tablet |
+| `md:` | 768px | Tablet |
+| `lg:` | 1024px | Laptop / desktop |
+| `xl:` | 1280px | Wide desktop |
+
+### Fonts & brand
+
+| Role | Font | CSS variable |
+|---|---|---|
+| Display / headings | Sora | `var(--font-heading)` |
+| Body copy | Manrope | `var(--font-sans)` |
+| Code | JetBrains Mono | — |
+
+| Item | Value |
+|---|---|
+| Theme class | none = light, `.dark` on `<html>` = dark |
+| Theme storage key | `localStorage: 'dronahost-theme'` |
+| Framework | Next.js 16 App Router + TypeScript |
+| Styling | Tailwind CSS v4 + CSS custom properties |
+| Phone | +1-206-201-2431 |
+| Email | sales@dronahost.com |
+
+---
+
+## 17. Responsive Design
+
+> Mobile-first. Every component works at 320px before it works at 1440px.
+
+### 17.1 Approach
+
+- **Mobile-first always** — base Tailwind classes target 320px+; use `sm:` `md:` `lg:` `xl:` to scale up
+- **Never** use `max-width` Tailwind media queries — always min-width (mobile-first direction)
+- The most important content stacks first on mobile — visual embellishments come last
+
+### 17.2 Breakpoints
+
+| Tailwind prefix | Min-width | Target viewport |
+|---|---|---|
+| (none) | 0px | Mobile (320px – 639px) |
+| `sm:` | 640px | Large mobile / small tablet |
+| `md:` | 768px | Tablet portrait |
+| `lg:` | 1024px | Laptop / desktop |
+| `xl:` | 1280px | Wide desktop |
+| `2xl:` | 1536px | Ultra-wide |
+
+Always define columns for every applicable breakpoint — never leave a mid-size viewport unaddressed.
+
+### 17.3 Touch Targets
+
+- All interactive elements: minimum **44×44px** (WCAG 2.5.5 — required for US ADA compliance)
+- Buttons: `min-h-[2.75rem]` is the floor — never shrink below this
+- Dense navigation links: add `py-2 px-3` to expand the tap area without changing visual size
+- Icon-only buttons: always wrap in a `min-w-11 min-h-11` container
+
+### 17.4 Typography
+
+- Use `clamp()` for all display heading sizes — CSS tokens `--text-2xl` through `--text-hero` have this built in (§3.4)
+- **Body text minimum: `text-base` (16px)** — never below `text-sm` (14px) for body copy
+- Line length: `max-w-prose` (65ch) on body paragraphs — never let text span >80ch on desktop
+- Use `text-balance` on multi-line headings to prevent orphan words on narrow viewports
+
+```tsx
+// GOOD — fluid heading via CSS token
+<h1 className="text-balance" style={{ fontSize: "var(--text-hero)" }}>...</h1>
+
+// BAD — fixed Tailwind size, no fluid scaling
+<h1 className="text-6xl">...</h1>
+```
+
+### 17.5 Layout & Containers
+
+```tsx
+// Standard content container
+<div className="w-full max-w-[var(--max-w-content)] mx-auto px-[clamp(1rem,5vw,2rem)]">
+
+// Section vertical rhythm
+<section className="py-[clamp(5rem,10vw,9rem)]">
+```
+
+Rules:
+- Never use fixed `px` widths on layout containers — `max-w-*` sets the ceiling, width is always fluid
+- Grids: always declare columns for every relevant breakpoint: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`
+- Stacking order on mobile: primary content first, decorative visuals last (SEO + readability)
+- Avoid fixed `height` on layout rows — use `min-h-*` or let content define height naturally
+
+### 17.6 Images
+
+```tsx
+// GOOD — fluid aspect-ratio container
+<div className="relative aspect-video w-full overflow-hidden rounded-xl">
+  <Image
+    src={src}
+    alt={alt}
+    fill
+    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+    className="object-cover"
+  />
+</div>
+
+// BAD — fixed height prevents fluid scaling
+<div className="relative h-48 w-full">
+  <Image src={src} alt={alt} fill className="object-cover" />
+</div>
+```
+
+Rules:
+- All images via `next/image` with a `sizes` prop matching actual rendered width at each breakpoint
+- Use `aspect-video`, `aspect-square`, or `aspect-[n/n]` on image containers — **never fixed `h-*` heights**
+- LCP image: `priority` prop, no lazy loading, explicit `sizes`
+- Below-fold: `next/image` lazy-loads by default — no extra attribute needed
+- Use `fill` + positioned parent for card images; `width`/`height` for fixed-size icons/avatars
+
+### 17.7 Component Responsive Behaviour
+
+| Component | Mobile (default) | `sm:` | `lg:` |
+|---|---|---|---|
+| Card grid | `grid-cols-1` | `grid-cols-2` | `grid-cols-3` |
+| Pricing cards | `grid-cols-1` | `grid-cols-1` | `grid-cols-3` |
+| Hero section | single column, centre-aligned | single column | two columns side-by-side |
+| Navbar | hamburger + slide drawer | hamburger | full horizontal links |
+| Footer columns | `grid-cols-1` | `grid-cols-2` | `grid-cols-3` → `grid-cols-6` |
+| Stats bar | `grid-cols-2` | `grid-cols-2` | `grid-cols-4` |
+| Feature grid | `grid-cols-1` | `grid-cols-2` | `grid-cols-3` |
+| Testimonials | single column | `grid-cols-2` | `grid-cols-3` |
+
+### 17.8 Testing Requirements
+
+Test every new component at these widths **before** marking it `approved` in `/v2`:
+
+| Width | Device reference |
+|---|---|
+| 320px | Oldest supported Android |
+| 375px | iPhone SE / 13 mini |
+| 390px | iPhone 14 |
+| 768px | iPad portrait |
+| 1024px | iPad landscape / laptop |
+| 1440px | Standard desktop |
+
+- Use browser DevTools device emulation — window resizing alone is insufficient
+- Check for horizontal scroll (`overflow-x`) — any overflow is a blocker, not a warning
+- Verify all interactive elements are tappable without pinch-zoom
+
+### 17.9 DON'Ts — Responsive
+
+- Fixed `px` widths on layout containers or section wrappers
+- `max-width` media queries in Tailwind — use min-width (mobile-first)
+- `hidden sm:block` on SEO-critical content — Google indexes mobile-first; use `sr-only` to hide visually
+- `vh` units for primary content height — unreliable on iOS Safari with browser chrome showing/hiding
+- Fixed `h-*` on image containers — use `aspect-*` instead
+- Horizontal scroll on any breakpoint — zero tolerance
+
+---
+
+## 18. Dark / Light Mode
+
+> Both modes are first-class. A component that looks identical in both themes has a bug.
+
+### 18.1 The Token-Only Rule
+
+Every surface color, text color, border, and shadow must reference a CSS custom property. Hardcoded hex, rgb, hsl, or oklch values in component `className` or `style={}` props are forbidden.
+
+```tsx
+// BAD — hardcoded, breaks dark mode
+<div className="bg-white text-gray-900 border-gray-200">
+
+// GOOD — token-driven, switches automatically
+<div className="bg-[var(--card)] text-foreground border">
+```
+
+Light mode is the `:root` default. Dark mode activates by adding `.dark` to `<html>`. Toggle via `classList.toggle("dark", isDark)` — never `data-theme` attributes.
+
+### 18.2 Surface Hierarchy
+
+| Layer | CSS Variable | Tailwind | Notes |
+|---|---|---|---|
+| Page background | `var(--background)` | `bg-background` | `<body>` and page wrappers |
+| Muted section / input | `var(--muted)` | `bg-[var(--muted)]` | Alternating sections, inputs, skeleton loaders |
+| Card / panel | `var(--card)` | `bg-[var(--card)]` | All card, panel, drawer backgrounds |
+| Elevated overlay | `var(--card)` + `shadow-lg` | — | Dropdowns, tooltips — elevation via shadow, not bg colour |
+| Border | `var(--border)` | `border` | Global `* { border-color: var(--border) }` — just add `border` class |
+
+**Rule:** Card must appear visually elevated above page background in both modes. If they look the same in dark mode, the token was not applied.
+
+### 18.3 Text Hierarchy
+
+| Role | Variable | Tailwind |
+|---|---|---|
+| Headings, key UI text | `var(--foreground)` | `text-foreground` |
+| Body copy, labels, descriptions | `var(--muted-foreground)` | `text-[var(--muted-foreground)]` |
+| Text on primary (indigo) buttons | `var(--primary-foreground)` | `text-primary-foreground` |
+| Text on orange CTA buttons | white | `text-white` |
+
+### 18.4 Brand Colour Usage in Both Modes
+
+| Colour | Variable | Tailwind token works? | Usage |
+|---|---|---|---|
+| Brand Indigo | `var(--primary)` | `text-primary`, `bg-primary/N`, `border-primary/N` ✅ | Buttons, links, rings, active nav |
+| Brand Orange | `var(--accent)` | `text-accent`, `bg-accent/N`, `border-accent/N` ✅ | Hero CTA, badges, highlights |
+| Brand Teal | `var(--secondary)` | `text-secondary` ✅ | Info accents, secondary links |
+
+The variable auto-shifts value between light and dark — never hardcode either value.
+
+**Opacity modifiers** (require `--color-*` registration in `@theme` — already done for primary, accent, foreground, background):
+
+```tsx
+bg-accent/10       // 10% orange fill — category badges
+text-accent        // full orange text
+text-accent/80     // 80% orange — read-time, secondary accents
+border-primary/30  // 30% indigo border on hover
+bg-primary/10      // 10% indigo fill — highlight backgrounds
+```
+
+### 18.5 Separator and Border Patterns
+
+```tsx
+// Standard — picks up var(--border) globally, just use border class
+<div className="border-t" />
+
+// Soft (60% opacity of border token)
+<div className="[border-color:color-mix(in_oklch,var(--border)_60%,transparent)]" />
+
+// Strong (80% of foreground — near-black light / near-white dark)
+<div className="[border-color:color-mix(in_oklch,var(--foreground)_80%,transparent)]" />
+```
+
+### 18.6 Shadow Treatment by Mode
+
+| Mode | What works | What disappears |
+|---|---|---|
+| Light | Neutral grey shadows (`shadow-sm` – `shadow-xl`) | — |
+| Dark | Coloured glows via `color-mix` | Neutral grey shadows — invisible against dark bg |
+
+Use coloured glows for all interactive hover states:
+
+```tsx
+// Primary UI hover glow (indigo)
+"motion-safe:hover:[box-shadow:0_8px_32px_-4px_color-mix(in_oklch,var(--primary)_20%,transparent)]"
+
+// CTA / featured card hover glow (orange)
+"motion-safe:hover:[box-shadow:0_8px_32px_-4px_color-mix(in_oklch,var(--accent)_20%,transparent)]"
+```
+
+Always test shadows in dark mode before approving in `/v2`.
+
+### 18.7 Component Dark Mode Checklist
+
+Before marking any component `approved` in `/v2`:
+
+- [ ] Card background visually distinct from page background in dark mode
+- [ ] All text passes 4.5:1 contrast in dark mode (WCAG AA)
+- [ ] Borders visible in dark mode — not invisible against dark surfaces
+- [ ] Focus rings visible in dark mode
+- [ ] Hover shadows visible in dark mode (coloured glow, not neutral)
+- [ ] No hardcoded hex/rgb/oklch in `className` or `style={}`
+- [ ] Brand colours use variables — not Tailwind palette (`indigo-600`, `orange-500`, etc.)
+
+### 18.8 Theme Flash Prevention
+
+The inline script in `app/layout.tsx` must run before React hydrates. Never rely on `useEffect` alone — it runs after paint and causes CLS.
+
+```tsx
+// app/layout.tsx — inside <head>, before any React output
+<script dangerouslySetInnerHTML={{ __html: `(function(){
+  try {
+    var t = localStorage.getItem('dronahost-theme');
+    var s = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+    if ((t || s) === 'dark') document.documentElement.classList.add('dark');
+  } catch(e) {}
+}())` }} />
+```
+
+### 18.9 DON'Ts — Dark / Light Mode
+
+- `dark:text-gray-300` — use `text-[var(--muted-foreground)]` (auto-switches, no `dark:` needed)
+- `bg-white dark:bg-gray-900` — use `bg-[var(--card)]`
+- `text-gray-600 dark:text-gray-300` — use `text-[var(--muted-foreground)]`
+- `border-black/5 dark:border-white/10` — use `border` or `color-mix` patterns (§18.5)
+- `style={{ color: '#4F46E5' }}` — always `style={{ color: 'var(--primary)' }}`
+- A component that looks identical in light and dark — this is a bug, not a design choice
+- `data-theme` attribute — always `.dark` class on `<html>`
+- `localStorage` access outside `useEffect` — causes SSR crash
+
+---
+
+## 19. Pre-Ship Checklist
+
+> Run before every PR that touches a component, page, or content block.
+> Each item cites its authoritative rule file.
+
+### Design & UI/UX (`docs/rules/ui-ux-rules.md`)
+
+- [ ] Every colour references a CSS variable — no hardcoded hex, rgb, or oklch (§2.5, §18.1)
+- [ ] Component verified visually in **both light and dark mode** (§18.7)
+- [ ] No Tailwind palette colors (`gray-*`, `neutral-*`, `orange-*`) for surfaces, text, or borders (§18.9)
+- [ ] Hover: `translateY(-3px)`, `duration-200`, coloured glow shadow (§7.02, §18.6)
+- [ ] Transitions wrapped with `motion-reduce:transition-none` or `motion-safe:hover:` guard (§8)
+- [ ] All interactive elements have visible `focus-visible` ring (§14)
+- [ ] Touch targets ≥ 44×44px (§17.3)
+- [ ] Image containers use `aspect-*` — no fixed `h-*` heights on image wrappers (§17.6)
+- [ ] All `next/image` has descriptive `alt` and `sizes` prop (§17.6)
+- [ ] LCP image has `priority` prop (§17.6)
+- [ ] Card visually elevated above page background in both themes (§7.02, §18.2)
+- [ ] Component tested at 320px / 375px / 768px / 1024px / 1440px — no horizontal scroll (§17.8)
+- [ ] Shadows verified in dark mode — use coloured glow if neutral shadow is invisible (§18.6)
+
+### Code (`docs/rules/coding-rules.md`)
+
+- [ ] No `"use client"` at page level — pages are Server Components (§2)
+- [ ] `"use client"` only on leaf components that need hooks or browser APIs (§2)
+- [ ] No bare `<img>` — always `next/image` (§3)
+- [ ] No bare `<a href>` for internal routes — always `next/link` (§3)
+- [ ] `generateMetadata` or static `metadata` exported from every `page.tsx` (§3)
+- [ ] JSON-LD schema included for the page type (§3)
+- [ ] File ≤ 300 lines, functions ≤ 40 lines (§4)
+- [ ] All props explicitly typed — no `any`, no implicit `any` (§1, §5)
+- [ ] `cn()` used for all conditional class strings — no string concatenation (§11)
+- [ ] No `@ts-ignore` — root type error fixed instead (§1)
+- [ ] No `style={{ color: '#...' }}` — always `var(--*)` (§11, §18.9)
+- [ ] New component reviewed and approved in `/v2` before use on real pages (§6)
+
+### SEO (`docs/rules/seo-rules.md`)
+
+- [ ] `buildMetadata()` helper used — never inline metadata object
+- [ ] `title` 50–60 chars, unique, keyword-first
+- [ ] `description` 140–160 chars, includes CTA, unique
+- [ ] `alternates.canonical` absolute URL set
+- [ ] `hreflang` alternates for all active locales
+- [ ] One `<h1>` per page, logical H1 → H2 → H3 hierarchy
+- [ ] JSON-LD schema correct for page type (see CLAUDE.md schema table)
+- [ ] OG image (1200×630px) set in metadata
+- [ ] Lighthouse 95+ on Performance, SEO, Accessibility, Best Practices on changed pages
+- [ ] No client-side-only rendering for indexable content
+
+### Content (`docs/rules/content-writing-rules.md`)
+
+- [ ] No banned phrases: "Don't fret!", "blazing fast", "world-class", "cutting-edge", "Kindly"
+- [ ] No Indian-English patterns or non-Western copywriting voice
+- [ ] All performance/uptime claims backed by real data — no invented stats
+- [ ] Prices show currency symbol and period: `$5.99/month`, `£5.99/month + VAT`
+- [ ] CTA copy is action-led — not "Click here", "Learn more", or "Submit"
+
+### Performance (CLAUDE.md)
+
+- [ ] Total JS per changed page < 150KB gzipped
+- [ ] No blocking third-party scripts in `<head>`
+- [ ] New `"use client"` components checked for client bundle size impact
+- [ ] `next/dynamic` with `ssr: false` only for genuinely client-only widgets (maps, canvas)
+- [ ] Below-fold heavy components lazy-loaded via `IntersectionObserver` or `next/dynamic`
+
+### Trust & Compliance (CLAUDE.md)
+
+- [ ] New user-data features reviewed for GDPR implications before shipping to EU/UK
+- [ ] New forms have CSRF protection and Zod validation on the server
+- [ ] New API routes are rate-limited and Zod-validated before processing
+- [ ] No secrets, API keys, or tokens in client-side code or committed `.env` files

@@ -139,6 +139,92 @@ Every page should reinforce trust. Required elements across the site:
 
 ---
 
+## Pricing — Single Source of Truth (NON-NEGOTIABLE)
+
+**All pricing data lives in `data/pricing.json` and nowhere else.**
+
+### The rule
+
+- **Never hardcode a price** in a component, page, metadata, CTA label, or copy string.
+- **Never duplicate pricing** into another file, constant, or inline object.
+- All components, `generateMetadata()`, JSON-LD schemas, CTAs, and content files read from `data/pricing.json`.
+- When a price changes, update `data/pricing.json` only — every consumer updates automatically.
+
+### How to read prices
+
+```ts
+import pricing from "@/data/pricing.json";
+
+// Get annual USD price for Growth plan
+const plan = pricing.plans.find(p => p.id === "growth");
+const price = plan.pricing.annual.USD; // 19.99
+
+// Format for CTA (content-writing-rules §4: include price in CTA)
+// → "Start Growth — $19.99/month"
+
+// Get currency metadata (symbol, VAT display)
+const currency = pricing.currencies.USD;
+// → { symbol: "$", vatDisplay: null }
+
+// UK: "Start Growth — £15.99/month + VAT"
+// EU: "Start Growth — €17.99/month + VAT"
+```
+
+### Rendering conventions
+
+| Value | What to render |
+|---|---|
+| `null` on a limit field | "Unlimited" |
+| `trafficType: "semi-dedicated"` | "Semi-Dedicated" badge |
+| `trafficType: "dedicated"` | "Dedicated" badge |
+| `pricing.monthly.USD: null` | "Custom pricing — contact us" |
+| `vatDisplay: "+ VAT"` | Append to price: "£15.99/month + VAT" |
+| `vatDisplay: null` | Show price only: "$19.99/month" |
+
+### Renewal pricing
+
+- Renewal price is always identical to signup price — this is a key trust signal.
+- Every plan card **must** show the renewal price line beneath the signup price.
+- Format: `Renews at $X/month — same price, no increase`
+- Never hide renewal pricing or put it in a tooltip.
+
+### CTA format (per content-writing-rules §4)
+
+```
+Start [Plan Name] — $[annual price]/month
+30-day money-back guarantee. No questions asked.
+```
+
+### VAT handling
+
+- **UK (GBP):** Show price ex-VAT, append "+ VAT". VAT added at checkout.
+- **EU (EUR):** Show price ex-VAT, append "+ VAT". VAT rate varies by member state, calculated at checkout.
+- **US (USD):** Tax excluded. Show price only.
+- **UAE (AED):** Show price only. No VAT display required.
+- **INR:** Show price only.
+- VAT metadata is in `pricing.currencies[code].vatDisplay`.
+
+### Addons
+
+- All addon pricing in `pricing.addons[]`.
+- Never create a one-off addon price outside this file.
+- Addons rendered as optional line items on plan cards and checkout.
+
+### Regional pages
+
+- Each region's default currency is in `pricing.regions[regionKey].defaultCurrency`.
+- Use this to auto-select currency on `/hosting/uk`, `/hosting/eu`, `/hosting/us`, `/hosting/uae`.
+
+### When to update pricing.json
+
+- A plan price changes → update `pricing` object for that plan in all currencies.
+- A new plan is added → add to `plans[]` array with all required fields.
+- A feature changes → update `limits` or `capabilities` objects.
+- A new addon is introduced → add to `addons[]`.
+- **Always update `_meta.lastUpdated`** when any value changes.
+
+---
+
 ## Server Locations Strategy (SEO + Compliance)
 
 Create dedicated landing pages for each region:
@@ -366,6 +452,7 @@ See **[docs/rules/coding-rules.md](docs/rules/coding-rules.md)** for the full en
 - Mongoose rules (`.lean()`, `select: false`, Zod validation)
 - Tailwind + shadcn (`cn()`, dark mode, design tokens)
 - What NOT to do (banned patterns across SSR, SEO, copy, security)
+- **Pricing source of truth** — `data/pricing.json` only. No hardcoded prices anywhere. See [Pricing — Single Source of Truth](#pricing--single-source-of-truth-non-negotiable).
 
 ---
 
@@ -376,7 +463,9 @@ See **[docs/rules/coding-rules.md](docs/rules/coding-rules.md)** for the full en
 - Flag Core Web Vitals regressions
 - Flag GDPR/compliance implications for any feature touching user data
 - Flag copywriting that sounds non-Western
-- Show pricing in USD + note if other currencies need updates
+- **Pricing changes:** Always update `data/pricing.json` first — never suggest hardcoded prices in components or copy. Show the JSON diff alongside any component change.
+- **Any component that renders a price:** Verify it imports from `data/pricing.json`, not a hardcoded value. Flag and fix if not.
+- **New plan pages or pricing sections:** Confirm `data/pricing.json` has the plan before writing any component or copy.
 - For DB schema changes, propose migration strategy
 - For payment/auth changes, call out security implications explicitly
 
