@@ -11,11 +11,16 @@ import Badge from "@/components/ui/Badge";
 import Section from "@/components/ui/Section";
 import HeadLineText from "@/components/ui/HeadLineText";
 import Card from "@/components/ui/Card";
-import FeatureSection from "@/components/sections/HomeFeatureSection";
 import CaseStudySection from "@/components/sections/CaseStudy";
 import CTASection from "@/components/sections/HomeCTA";
 import TwoColumn from "@/components/sections/TwoColumn";
 import FeatureGrid from "@/components/sections/FeatureGrid";
+import BentoGrid from "@/components/sections/BentoGrid";
+import ComparisonTable from "@/components/sections/ComparisonTable";
+import { buildPlanComparison } from "@/lib/pricing/compare";
+import { HOME_BENTO, HOME_COMPARE, HOME_OFFER, HOME_SPLITS } from "@/content/home";
+import { CacheVisual, ChannelsVisual, GrowthVisual, RestoreVisual } from "@/components/sections/visuals/bento";
+import { MigrationVisual, ProtectionVisual, SupportChannelsVisual, WordPressSettingsVisual } from "@/components/sections/visuals/split";
 import ProcessSteps from "@/components/sections/ProcessSteps";
 import NewCTASection from "@/components/sections/CTASection";
 import ResourceGrid from "@/components/sections/ResourceGrid";
@@ -388,34 +393,83 @@ export default function V2ShowcasePage() {
             </div>
           </ShowcaseSection>
 
-          {/* ── Feature Section ── */}
+          {/* ── Content sections (Batch C) ── */}
           <ShowcaseSection
-            id="features"
-            title="Feature Section"
-            status="needs-work"
-            notes="Feature images placeholder SVGs. No real benchmark data."
+            id="feature-grid"
+            title="FeatureGrid"
+            status="pending-review"
+            notes="Cards, divided or plain variants; 2/3/4 columns; 1 to 12 items. Used for 'What we offer'. Replaces ServiceSection, FeatureSection and the old divided Card grid."
           >
-            <FeatureSection data={featureData} />
+            <div className="space-y-10">
+              <FeatureGrid {...HOME_OFFER} columns={4} headingLevel="h3" className="!py-0" />
+              <FeatureGrid variant="divided" columns={3} items={[...HOME_OFFER.items, ...HOME_OFFER.items].slice(0, 6).map((it, i) => ({ ...it, title: `${it.title}${i > 3 ? " (long text test)" : ""}` }))} className="!py-0" />
+            </div>
           </ShowcaseSection>
 
-          {/* ── Services Section ── */}
           <ShowcaseSection
-            id="services"
-            title="Services Section"
-            status="needs-work"
-            notes="Replaces ServicesSection (home/ServiceSection). Use FeatureGrid for service grids."
+            id="bento-grid"
+            title="BentoGrid"
+            status="pending-review"
+            notes="Asymmetric tiles that pair a short claim with a small CSS visual. Used for 'Why DronaHost' on the homepage."
           >
-            <FeatureGrid
-              tagline="Our Services"
-              title="What We Offer"
-              columns={3}
-              divided={true}
-              items={[
-                { title: "Web Hosting", description: "Managed LiteSpeed hosting with NVMe storage." },
-                { title: "VPS Hosting", description: "Full root access, scalable on demand." },
-                { title: "SEO Services", description: "Retainer-based SEO for Western markets." },
-              ]}
+            <BentoGrid
+              eyebrow={HOME_BENTO.eyebrow}
+              title={HOME_BENTO.title}
+              description={HOME_BENTO.description}
+              headingLevel="h3"
+              className="!py-0"
+              items={HOME_BENTO.items.map((it) => ({
+                title: it.title,
+                description: it.description,
+                span: it.span,
+                href: it.href,
+                linkLabel: it.linkLabel,
+                visual: { cache: <CacheVisual />, growth: <GrowthVisual />, restore: <RestoreVisual />, channels: <ChannelsVisual /> }[it.visual],
+              }))}
             />
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="two-column"
+            title="TwoColumn"
+            status="pending-review"
+            notes="Text, checklist and actions beside a designed visual (no placeholder images). Four visuals shown: settings, migration, protection, support."
+          >
+            <div className="space-y-4">
+              {HOME_SPLITS.map((split, i) => (
+                <TwoColumn
+                  key={split.title}
+                  eyebrow={split.eyebrow}
+                  title={split.title}
+                  description={split.description}
+                  features={split.features}
+                  cta={split.cta}
+                  headingLevel="h3"
+                  className="!py-8"
+                  visualPosition={i % 2 === 0 ? "right" : "left"}
+                  visual={[<WordPressSettingsVisual key="a" />, <MigrationVisual key="b" />, <ProtectionVisual key="c" />, <SupportChannelsVisual key="d" />][i]}
+                />
+              ))}
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="comparison-table"
+            title="ComparisonTable"
+            status="pending-review"
+            notes="Real <table> with caption, row/column headers, sticky first column and a keyboard-scrollable wrapper. Top: hosting types (homepage). Bottom: plans, built from data/pricing.json."
+          >
+            <div className="space-y-6">
+              <ComparisonTable {...HOME_COMPARE} headingLevel="h3" rowHeader="Hosting type" className="!py-0" />
+              <ComparisonTable
+                title="Compare plans"
+                caption="Comparison of DronaHost hosting plans"
+                {...buildPlanComparison()}
+                rowHeader="Plan"
+                headingLevel="h3"
+                className="!py-0"
+              />
+            </div>
           </ShowcaseSection>
 
           {/* ── Case Study ── */}
@@ -531,44 +585,6 @@ export default function V2ShowcasePage() {
               <Badge variant="success">GDPR Compliant</Badge>
               <Badge variant="neutral">Beta</Badge>
             </div>
-          </ShowcaseSection>
-
-          {/* ── TwoColumn ── */}
-          <ShowcaseSection
-            id="two-column"
-            title="TwoColumn"
-            status="built"
-            notes="Image left or right. Optional feature checklist. Replaces PricingSection1–4."
-          >
-            <TwoColumn
-              tagline="Managed WordPress"
-              title="Everything you need, nothing you don't"
-              description="Pre-configured caching, automatic updates, and daily backups — so you focus on your site."
-              features={["LiteSpeed cache pre-installed", "Daily off-site backups", "One-click staging", "Free SSL forever"]}
-              cta={[{ label: "Get started", href: "#" }]}
-              image={{ src: "/images/placeholder.png", alt: "Feature illustration", width: 560, height: 480 }}
-              imagePosition="right"
-            />
-          </ShowcaseSection>
-
-          {/* ── FeatureGrid ── */}
-          <ShowcaseSection
-            id="feature-grid"
-            title="FeatureGrid"
-            status="built"
-            notes="divided and undivided modes. 2/3/4 columns. Replaces ServiceSection and 4 others."
-          >
-            <FeatureGrid
-              tagline="Why DronaHost"
-              title="Built for speed, reliability, and growth"
-              columns={3}
-              divided={true}
-              items={[
-                { title: "LiteSpeed + NVMe", description: "Server-level caching and fast storage on managed WordPress plans." },
-                { title: "Published SLA", description: "Uptime commitment and service-credit terms set out in writing." },
-                { title: "Human support", description: "Open a ticket, start a live chat, or message us on WhatsApp." },
-              ]}
-            />
           </ShowcaseSection>
 
           {/* ── ProcessSteps ── */}

@@ -203,16 +203,15 @@ export default function Card({
     <div
       className={cn(
         "rounded-2xl p-6 flex flex-col gap-4",
-        "border",
+        "border border-border bg-card shadow-sm",
         "transition-[box-shadow,transform,border-color] duration-200 motion-reduce:transition-none",
-        "motion-safe:hover:[box-shadow:0_8px_32px_-4px_color-mix(in_oklch,var(--primary)_20%,transparent)]",
-        "motion-safe:hover:border-primary/30",
-        "motion-safe:hover:-translate-y-[3px]",
+        "motion-safe:hover:shadow-md motion-safe:hover:border-border-strong",
+        "motion-safe:hover:-translate-y-0.5",
         bgColor,
         className,
       )}
     >
-      {icon && <div className="text-primary">{iconMap[icon] ?? null}</div>}
+      {icon && <div className="text-link">{iconMap[icon] ?? null}</div>}
       {title && (
         <HeadLineText as="h3" fontSize="md" fontWeight="bold" align="left" className="text-foreground dark:text-white">
           {title}

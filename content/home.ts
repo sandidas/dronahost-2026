@@ -10,95 +10,13 @@
  * Hero copy lives in content/heroes.ts. The navbar still lives in data/home.json.
  */
 import base from "@/data/home.json";
+import type { FeatureIconName } from "@/components/ui/FeatureIcon";
 
 const cta = (label: string, link: string, variant: "primary" | "secondary" = "primary") => ({
   label,
   variant,
   link,
 });
-
-const check = (text: string) => ({ text, icon: "check" });
-
-const features = {
-  tagline: "Why DronaHost",
-  title: "Hosting that stays out of your way",
-  features: [
-    {
-      id: 1,
-      title: "Tuned for WordPress",
-      description:
-        "LiteSpeed servers with built-in page caching, configured for WordPress so you do not have to maintain a stack of caching plugins.",
-      image: "/images/BoxyLayout1.svg",
-      icon: "/icons/analytics.svg",
-      badge: null,
-      progress: null,
-      list: null,
-      cta: { label: "Explore WordPress hosting", link: "/wordpress-hosting" },
-    },
-    {
-      id: 2,
-      title: "Room to grow",
-      description:
-        "Start on a managed plan and move to VPS or cloud hosting when your traffic or requirements change, without changing provider.",
-      image: "/images/BoxyLayout2.svg",
-      icon: "/icons/grid.svg",
-      badge: null,
-      progress: null,
-      list: null,
-      cta: { label: "Compare hosting types", link: "/cloud-hosting" },
-    },
-    {
-      id: 3,
-      title: "Safe to change",
-      description:
-        "Staging environments and restore points let you test updates and undo mistakes before your visitors notice.",
-      image: "/images/BoxyLayout3.svg",
-      icon: "/icons/grid.svg",
-      badge: null,
-      progress: null,
-      list: null,
-      cta: { label: "How we protect sites", link: "/security" },
-    },
-  ],
-};
-
-const services = {
-  tagline: "What we offer",
-  title: "Hosting and web services under one roof",
-  description:
-    "From a single WordPress site to a cloud server, plus the design, SEO and development work that goes with it.",
-  services: [
-    {
-      id: 1,
-      title: "Managed WordPress hosting",
-      description: "Updates, caching, backups and security handled at the server level so you can focus on your site.",
-      icon: "/icons/clickIcon.svg",
-      cta: { label: "See WordPress hosting", link: "/wordpress-hosting" },
-    },
-    {
-      id: 2,
-      title: "VPS and cloud hosting",
-      description: "Root access and dedicated resources for applications, stores and teams that need more control.",
-      icon: "/icons/clickIcon.svg",
-      cta: { label: "See VPS hosting", link: "/vps-hosting" },
-    },
-    {
-      id: 3,
-      title: "Web design and development",
-      description: "WordPress, React and Next.js builds scoped around what your business needs the site to do.",
-      icon: "/icons/clickIcon.svg",
-      cta: { label: "See web design", link: "/web-design" },
-    },
-    {
-      id: 4,
-      title: "SEO services",
-      description: "Retainer-based search work with plain reporting, covering technical fixes, content and links.",
-      icon: "/icons/clickIcon.svg",
-      cta: { label: "See SEO services", link: "/seo-services" },
-    },
-  ],
-  layout: {"columns": 4, "showDividers": true, "alignment": "center"},
-};
 
 /** Hidden by CaseStudy until a customer-approved `sourceUrl` exists. */
 const caseStudy = {
@@ -121,74 +39,6 @@ const ctaSection = {
   image: { src: "/images/home/CTA.svg", alt: "" },
   layout: {"type": "split", "imagePosition": "left", "alignment": "center"},
   style: {"background": "light", "hasBlur": false, "spacing": "large"},
-};
-
-const feature = (tagline: string, title: string, description: string, features: string[], buttons: ReturnType<typeof cta>[]) => ({
-  tagline,
-  title,
-  description,
-  features: features.map(check),
-  buttons,
-});
-
-const managedHosting = {
-  ...feature(
-    "Managed WordPress hosting",
-    "WordPress hosting that is looked after for you",
-    "We configure, update and monitor the server stack so your time goes into the site itself.",
-    [
-      "LiteSpeed web servers with server-level caching",
-      "Staging environments to test updates before they go live",
-      "SSL certificates on every site",
-    ],
-    [cta("View plans", "/pricing"), cta("Talk to our team", "/contact", "secondary")],
-  ),
-  image: { src: "/images/home/pricingSection1.svg", alt: "" },
-};
-
-const managedMigration = {
-  ...feature(
-    "Free migration",
-    "Move your site without losing a weekend",
-    "Tell us where your site lives today. We copy it across and let you review the result before you switch your domain.",
-    [
-      "We copy your files and database",
-      "You check the new site before DNS changes",
-      "Your current host stays live until you switch",
-    ],
-    [cta("Start a migration", "/contact"), cta("View plans", "/pricing", "secondary")],
-  ),
-  illustration: { src: "/images/home/pricingSection2.svg", alt: "" },
-};
-
-const managedSecurity = {
-  ...feature(
-    "Security and backups",
-    "Protection that runs in the background",
-    "Security and recovery are part of the platform, not extra products to remember to buy.",
-    [
-      "Automatic backups you can restore from",
-      "Malware scanning and firewall rules",
-      "SSL certificates that renew on their own",
-    ],
-    [cta("Read our security practices", "/security"), cta("See the SLA", "/sla", "secondary")],
-  ),
-  illustration: { src: "/images/home/pricingSection3.svg", alt: "" },
-};
-
-const managedSupport = {
-  ...feature(
-    "Support",
-    "Real people, through the channel you prefer",
-    "Open a ticket, start a live chat or message us on WhatsApp. You reach the team that runs your server.",
-    [
-      "Ticket, live chat and WhatsApp",
-      "Plain-English answers with clear next steps",
-      "Escalation to engineers when a problem needs one",
-    ],
-    [cta("Contact support", "/contact"), cta("Read the blog", "/blog", "secondary")],
-  ),
-  illustration: { src: "/images/home/pricingSection4.svg", alt: "" },
 };
 
 const faq = {
@@ -259,17 +109,197 @@ const trust = {
 
 export const homeData = {
   navbar: base.navbar,
-  featuresSection: features,
-  servicesSection: services,
   caseStudySection: caseStudy,
   ctaSection,
-  managedHostingSection: managedHosting,
-  managedHostingIllustrationSection: managedMigration,
-  managedHostingAbstractSection: managedSecurity,
-  managedHostingUISection: managedSupport,
   faqSection: faq,
   testimonialsSection: testimonials,
   trustSection: trust,
 };
 
 export type HomeData = typeof homeData;
+
+/* ── Section copy for the Batch C components ───────────────────────────────── */
+
+
+export const HOME_BENTO = {
+  eyebrow: "Why DronaHost",
+  title: "Hosting that stays out of your way",
+  description: "A managed platform for WordPress and the sites around it, run by a team you can reach.",
+  items: [
+    {
+      title: "Tuned for WordPress",
+      description:
+        "LiteSpeed servers with built-in page caching, configured for WordPress so you do not have to maintain a stack of caching plugins.",
+      visual: "cache",
+      span: "twoThirds",
+      href: "/wordpress-hosting",
+      linkLabel: "Explore WordPress hosting",
+    },
+    {
+      title: "Room to grow",
+      description: "Start on a managed plan and move to cloud or VPS hosting when your needs change, without changing provider.",
+      visual: "growth",
+      span: "third",
+      href: "/cloud-hosting",
+      linkLabel: "Compare hosting types",
+    },
+    {
+      title: "Safe to change",
+      description: "Staging copies and restore points let you test updates and undo mistakes before visitors notice.",
+      visual: "restore",
+      span: "third",
+      href: "/security",
+      linkLabel: "How we protect sites",
+    },
+    {
+      title: "Support you can reach",
+      description: "Open a ticket, start a live chat or message us on WhatsApp. You talk to the team that runs your server.",
+      visual: "channels",
+      span: "twoThirds",
+      href: "/contact",
+      linkLabel: "Contact the team",
+    },
+  ],
+} as const;
+
+export const HOME_OFFER: {
+  eyebrow: string;
+  title: string;
+  description: string;
+  items: { icon: FeatureIconName; title: string; description: string; cta: { label: string; href: string } }[];
+} = {
+  eyebrow: "What we offer",
+  title: "Hosting and web services under one roof",
+  description: "From a single WordPress site to a cloud server, plus the design, SEO and development work that goes with it.",
+  items: [
+    {
+      icon: "layers",
+      title: "Managed WordPress hosting",
+      description: "Updates, caching, backups and security handled at the server level so you can focus on your site.",
+      cta: { label: "See WordPress hosting", href: "/wordpress-hosting" },
+    },
+    {
+      icon: "server",
+      title: "VPS and cloud hosting",
+      description: "Dedicated resources for applications, stores and teams that need more control.",
+      cta: { label: "See VPS hosting", href: "/vps-hosting" },
+    },
+    {
+      icon: "palette",
+      title: "Web design and development",
+      description: "WordPress, React and Next.js builds scoped around what your business needs the site to do.",
+      cta: { label: "See web design", href: "/web-design" },
+    },
+    {
+      icon: "search",
+      title: "SEO services",
+      description: "Retainer-based search work with plain reporting, covering technical fixes, content and links.",
+      cta: { label: "See SEO services", href: "/seo-services" },
+    },
+  ],
+};
+
+export const HOME_SPLITS = [
+  {
+    visual: "wordpress",
+    eyebrow: "Managed WordPress hosting",
+    title: "WordPress hosting that is looked after for you",
+    description: "We configure, update and monitor the server stack so your time goes into the site itself.",
+    features: [
+      "LiteSpeed web servers with server-level caching",
+      "Staging environments to test updates before they go live",
+      "SSL certificates on every site",
+    ],
+    cta: [
+      { label: "View plans", href: "/pricing" },
+      { label: "Talk to our team", href: "/contact" },
+    ],
+  },
+  {
+    visual: "migration",
+    eyebrow: "Free migration",
+    title: "Move your site without losing a weekend",
+    description: "Tell us where your site lives today. We copy it across and let you review the result before you switch your domain.",
+    features: [
+      "We copy your files and database",
+      "You check the new site before DNS changes",
+      "Your current host stays live until you switch",
+    ],
+    cta: [
+      { label: "Start a migration", href: "/contact" },
+      { label: "View plans", href: "/pricing" },
+    ],
+  },
+  {
+    visual: "protection",
+    eyebrow: "Security and backups",
+    title: "Protection that runs in the background",
+    description: "Security and recovery are part of the platform, not extra products to remember to buy.",
+    features: [
+      "Automatic backups you can restore from",
+      "Malware scanning and firewall rules",
+      "SSL certificates that renew on their own",
+    ],
+    cta: [
+      { label: "Read our security practices", href: "/security" },
+      { label: "See the SLA", href: "/sla" },
+    ],
+  },
+  {
+    visual: "support",
+    eyebrow: "Support",
+    title: "Real people, through the channel you prefer",
+    description: "Open a ticket, start a live chat or message us on WhatsApp. You reach the team that runs your server.",
+    features: [
+      "Ticket, live chat and WhatsApp",
+      "Plain-English answers with clear next steps",
+      "Escalation to engineers when a problem needs one",
+    ],
+    cta: [
+      { label: "Contact support", href: "/contact" },
+      { label: "Read the blog", href: "/blog" },
+    ],
+  },
+] as const;
+
+export const HOME_COMPARE = {
+  eyebrow: "Choosing a plan type",
+  title: "Which hosting fits your site?",
+  description: "Managed WordPress hosting suits most WordPress sites. Move to cloud or VPS hosting when you need more control over resources.",
+  caption: "Comparison of WordPress, cloud and VPS hosting",
+  columns: [
+    { key: "wp", label: "WordPress hosting", href: "/wordpress-hosting", highlight: true },
+    { key: "cloud", label: "Cloud hosting", href: "/cloud-hosting" },
+    { key: "vps", label: "VPS hosting", href: "/vps-hosting" },
+  ],
+  groups: [
+    {
+      rows: [
+        {
+          label: "Best for",
+          values: {
+            wp: "WordPress sites and stores",
+            cloud: "Sites that outgrow shared resources",
+            vps: "Applications and custom software",
+          },
+        },
+        {
+          label: "Choose it when you",
+          values: {
+            wp: "Want the server handled for you",
+            cloud: "Expect traffic to change over time",
+            vps: "Need dedicated resources",
+          },
+        },
+        {
+          label: "You get",
+          values: {
+            wp: "A managed stack with a staging area",
+            cloud: "Flexible plans that scale up",
+            vps: "Resources reserved for your workload",
+          },
+        },
+      ],
+    },
+  ],
+} as const;

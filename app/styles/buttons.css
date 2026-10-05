@@ -114,6 +114,15 @@
   text-decoration-thickness: 2px;
 }
 
+/* Link buttons are inline text: no side padding at any size, so they align with surrounding copy */
+.btn-link,
+.btn-link.btn-sm,
+.btn-link.btn-lg,
+.btn-link.btn-xl {
+  padding-inline: 0;
+  min-height: 2.75rem;
+}
+
 /* Sizes */
 .btn-sm {
   min-height: 2.5rem;

@@ -1,108 +1,98 @@
+import Link from "next/link";
 import { useId } from "react";
-import Badge from "@/components/ui/Badge";
-import Card from "@/components/ui/Card";
-import HeadLineText from "@/components/ui/HeadLineText";
-import Section from "@/components/ui/Section";
+import FeatureIcon, { type FeatureIconName } from "@/components/ui/FeatureIcon";
+import Surface from "@/components/ui/Surface";
 import { cn } from "@/utils/cn";
-import { type ReactNode } from "react";
+import SectionHeader from "./SectionHeader";
 
-type FeatureGridItem = {
-  icon?: ReactNode;
-  iconKey?: string;
+export type FeatureGridItem = {
+  icon?: FeatureIconName;
   title: string;
   description: string;
+  /** Optional link; the whole card becomes the click target. */
   cta?: { label: string; href: string };
-  tech?: string[];
 };
 
 type FeatureGridProps = {
-  /** Heading level of the section title so each page keeps exactly one H1. Default "h2". */
-  headingLevel?: "h2" | "h3";
-  tagline?: string;
+  eyebrow?: string;
   title?: string;
   description?: string;
+  items: readonly FeatureGridItem[];
+  /** 2, 3 or 4 columns at large widths; always 1 on phones. Default 3. */
   columns?: 2 | 3 | 4;
-  items: FeatureGridItem[];
-  divided?: boolean;
+  /** cards = surfaces with gaps · divided = hairline-separated cells · plain = no chrome. */
+  variant?: "cards" | "divided" | "plain";
+  /** Heading level of the section title; item titles sit one level below. Default "h2". */
+  headingLevel?: "h2" | "h3";
   className?: string;
 };
 
-const colClass: Record<2 | 3 | 4, string> = {
-  2: "grid-cols-1 sm:grid-cols-2",
-  3: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
-  4: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
-};
+const COLS = {
+  2: "sm:grid-cols-2",
+  3: "sm:grid-cols-2 lg:grid-cols-3",
+  4: "sm:grid-cols-2 lg:grid-cols-4",
+} as const;
 
+/**
+ * Feature or service grid. Handles 1 to 12 items, long text and missing icons.
+ * Cards with a `cta` are fully clickable through a stretched link, so the link text stays
+ * descriptive and crawlable while the whole tile is the target.
+ */
 export default function FeatureGrid({
-  tagline,
+  eyebrow,
   title,
   description,
-  columns = 3,
   items,
-  divided = false,
-  className,
+  columns = 3,
+  variant = "cards",
   headingLevel = "h2",
+  className,
 }: FeatureGridProps) {
   const headingId = useId();
-  const childLevel = headingLevel === "h2" ? "h3" : "h4";
-  const ItemHeading = childLevel;
-  const total = items.length;
+  const Item = headingLevel === "h2" ? "h3" : "h4";
+  if (items.length === 0) return null;
 
   return (
-    <Section aria-labelledby={headingId} size="lg" padding="lg" className={cn("bg-white dark:bg-gray-900", className)}>
-      {/* Header */}
-      {(tagline || title || description) && (
-        <div className="mb-12 space-y-4 text-center">
-          {tagline && <Badge variant="neutral">{tagline}</Badge>}
-          {title && (
-            <HeadLineText as={headingLevel}
-            id={headingId} fontSize="fiveXl" fontWeight="bold" align="center">
-              {title}
-            </HeadLineText>
+    <section aria-labelledby={title ? headingId : undefined} className={cn("section-y", className)}>
+      <div className="container-site">
+        {title && <SectionHeader id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} />}
+        <ul
+          className={cn(
+            "grid grid-cols-1",
+            title && "mt-12 sm:mt-14",
+            variant === "divided" ? "gap-px overflow-hidden rounded-2xl border border-border bg-border" : "gap-4 sm:gap-6",
+            COLS[columns],
           )}
-          {description && (
-            <p className="mx-auto max-w-2xl text-gray-600 dark:text-gray-300">{description}</p>
-          )}
-        </div>
-      )}
-
-      {/* Grid */}
-      <div className={cn("grid", colClass[columns])}>
-        {items.map((item, index) =>
-          divided ? (
-            <Card
-              key={index}
-              variant="grid"
-              index={index}
-              total={total}
-              columns={columns}
-              align="left"
-            >
-              {item.icon && <div className="mb-4 text-primary">{item.icon}</div>}
-              <ItemHeading className="mb-2 font-bold text-gray-900 dark:text-white">{item.title}</ItemHeading>
-              <p className="text-sm text-gray-600 dark:text-gray-300">{item.description}</p>
-              {item.cta && (
-                <a
-                  href={item.cta.href}
-                  className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:gap-2 transition-all"
-                >
-                  {item.cta.label} →
-                </a>
-              )}
-            </Card>
-          ) : (
-            <Card
-              key={index}
-              variant="box"
-              icon={item.iconKey}
-              title={item.title}
-              description={item.description}
-              tech={item.tech}
-              className="m-3"
-            />
-          ),
-        )}
+        >
+          {items.map((item) => (
+            <li key={item.title} className="flex">
+              <Surface
+                as="div"
+                interactive={Boolean(item.cta) && variant === "cards"}
+                padding="lg"
+                className={cn(
+                  "relative flex w-full flex-col",
+                  variant === "divided" && "!rounded-none !border-0 !shadow-none",
+                  variant === "plain" && "!border-0 !bg-transparent !p-0 !shadow-none",
+                )}
+              >
+                {item.icon && <FeatureIcon name={item.icon} className="mb-5" />}
+                <Item className="t-h4 text-foreground">{item.title}</Item>
+                <p className="t-small mt-2 flex-1 text-muted-foreground">{item.description}</p>
+                {item.cta && (
+                  <Link
+                    href={item.cta.href}
+                    className="btn btn-link mt-3 static self-start after:absolute after:inset-0 after:content-['']"
+                  >
+                    {item.cta.label}
+                    <span aria-hidden="true"> →</span>
+                  </Link>
+                )}
+              </Surface>
+            </li>
+          ))}
+        </ul>
       </div>
-    </Section>
+    </section>
   );
 }

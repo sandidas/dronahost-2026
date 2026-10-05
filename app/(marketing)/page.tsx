@@ -1,26 +1,57 @@
-import CaseStudy from "@/components/sections/CaseStudy";
+import BentoGrid, { type BentoItem } from "@/components/sections/BentoGrid";
+import ComparisonTable from "@/components/sections/ComparisonTable";
 import CTASection from "@/components/sections/HomeCTA";
 import FAQSection from "@/components/sections/FAQSection";
-import FeatureSection from "@/components/sections/HomeFeatureSection";
-import ProductHero from "@/components/sections/ProductHero";
-import { HOME_HERO } from "@/content/heroes";
-import TwoColumn from "@/components/sections/TwoColumn";
 import FeatureGrid from "@/components/sections/FeatureGrid";
+import JsonLd from "@/components/sections/JsonLd";
+import ProductHero from "@/components/sections/ProductHero";
+import StatsBar from "@/components/sections/StatsBar";
+import TrustBadges from "@/components/sections/TrustBadges";
+import TwoColumn from "@/components/sections/TwoColumn";
+import CaseStudy from "@/components/sections/CaseStudy";
 import LogoWall from "@/components/sections/LogoWall";
 import TestimonialsSection from "@/components/sections/Testimonials";
-import TrustBadges from "@/components/sections/TrustBadges";
-import StatsBar from "@/components/sections/StatsBar";
-import JsonLd from "@/components/sections/JsonLd";
-import { homeData } from "@/content/home";
+import { CacheVisual, ChannelsVisual, GrowthVisual, RestoreVisual } from "@/components/sections/visuals/bento";
+import {
+  MigrationVisual,
+  ProtectionVisual,
+  SupportChannelsVisual,
+  WordPressSettingsVisual,
+} from "@/components/sections/visuals/split";
+import { HOME_HERO } from "@/content/heroes";
+import { HOME_BENTO, HOME_COMPARE, HOME_OFFER, HOME_SPLITS, homeData } from "@/content/home";
+import { faqPageSchema, organizationSchema, websiteSchema } from "@/lib/seo/jsonld";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { startingPriceLabel } from "@/lib/pricing";
-import { faqPageSchema, organizationSchema, websiteSchema } from "@/lib/seo/jsonld";
 
 export const metadata = buildMetadata({
   title: "DronaHost — Managed WordPress & Cloud Hosting",
   description: `High-performance WordPress and cloud hosting with NVMe storage and LiteSpeed servers. Serving US, UK, and UAE businesses${startingPriceLabel() ? ` from ${startingPriceLabel()}` : ""}.`,
   path: "/",
 });
+
+const BENTO_VISUALS = {
+  cache: <CacheVisual />,
+  growth: <GrowthVisual />,
+  restore: <RestoreVisual />,
+  channels: <ChannelsVisual />,
+} as const;
+
+const SPLIT_VISUALS = {
+  wordpress: <WordPressSettingsVisual />,
+  migration: <MigrationVisual />,
+  protection: <ProtectionVisual />,
+  support: <SupportChannelsVisual />,
+} as const;
+
+const bentoItems: BentoItem[] = HOME_BENTO.items.map((item) => ({
+  title: item.title,
+  description: item.description,
+  span: item.span,
+  href: item.href,
+  linkLabel: item.linkLabel,
+  visual: BENTO_VISUALS[item.visual],
+}));
 
 export default function Home() {
   return (
@@ -29,64 +60,46 @@ export default function Home() {
       <ProductHero {...HOME_HERO} />
       <TrustBadges />
       <StatsBar />
-      <FeatureSection data={homeData} />
+
+      <BentoGrid eyebrow={HOME_BENTO.eyebrow} title={HOME_BENTO.title} description={HOME_BENTO.description} items={bentoItems} />
+
       <FeatureGrid
-        tagline={homeData.servicesSection?.tagline}
-        title={homeData.servicesSection?.title}
-        description={homeData.servicesSection?.description}
-        columns={3}
-        divided={true}
-        items={homeData.servicesSection?.services?.map((s) => ({
-          iconKey: s.icon,
-          title: s.title,
-          description: s.description,
-          cta: s.cta ? { label: s.cta.label, href: s.cta.link } : undefined,
-        }))}
+        eyebrow={HOME_OFFER.eyebrow}
+        title={HOME_OFFER.title}
+        description={HOME_OFFER.description}
+        items={HOME_OFFER.items}
+        columns={4}
       />
+
+      {HOME_SPLITS.map((split, i) => (
+        <TwoColumn
+          key={split.title}
+          eyebrow={split.eyebrow}
+          title={split.title}
+          description={split.description}
+          features={split.features}
+          cta={split.cta}
+          visual={SPLIT_VISUALS[split.visual]}
+          visualPosition={i % 2 === 0 ? "right" : "left"}
+        />
+      ))}
+
+      <ComparisonTable
+        eyebrow={HOME_COMPARE.eyebrow}
+        title={HOME_COMPARE.title}
+        description={HOME_COMPARE.description}
+        caption={HOME_COMPARE.caption}
+        columns={HOME_COMPARE.columns}
+        groups={HOME_COMPARE.groups}
+        rowHeader="Hosting type"
+      />
+
       <CaseStudy data={homeData} />
       <CTASection data={homeData} />
-      <TwoColumn
-        tagline={homeData.managedHostingSection.tagline}
-        title={homeData.managedHostingSection.title}
-        description={homeData.managedHostingSection.description}
-        features={homeData.managedHostingSection.features.map((f) => f.text)}
-        cta={homeData.managedHostingSection.buttons.map((b) => ({ label: b.label, href: b.link, variant: b.variant as "primary" | "secondary" }))}
-        image={{ src: homeData.managedHostingSection.image.src, alt: homeData.managedHostingSection.image.alt }}
-        imagePosition="left"
-      />
-      <TwoColumn
-        tagline={homeData.managedHostingIllustrationSection.tagline}
-        title={homeData.managedHostingIllustrationSection.title}
-        description={homeData.managedHostingIllustrationSection.description}
-        features={homeData.managedHostingIllustrationSection.features.map((f) => f.text)}
-        cta={homeData.managedHostingIllustrationSection.buttons.map((b) => ({ label: b.label, href: b.link, variant: b.variant as "primary" | "secondary" }))}
-        image={{ src: homeData.managedHostingIllustrationSection.illustration.src, alt: homeData.managedHostingIllustrationSection.illustration.alt }}
-        imagePosition="right"
-      />
-      <TwoColumn
-        tagline={homeData.managedHostingAbstractSection.tagline}
-        title={homeData.managedHostingAbstractSection.title}
-        description={homeData.managedHostingAbstractSection.description}
-        features={homeData.managedHostingAbstractSection.features.map((f) => f.text)}
-        cta={homeData.managedHostingAbstractSection.buttons.map((b) => ({ label: b.label, href: b.link, variant: b.variant as "primary" | "secondary" }))}
-        image={{ src: homeData.managedHostingAbstractSection.illustration.src, alt: homeData.managedHostingAbstractSection.illustration.alt }}
-        imagePosition="left"
-      />
-      <TwoColumn
-        tagline={homeData.managedHostingUISection.tagline}
-        title={homeData.managedHostingUISection.title}
-        description={homeData.managedHostingUISection.description}
-        features={homeData.managedHostingUISection.features.map((f) => f.text)}
-        cta={homeData.managedHostingUISection.buttons.map((b) => ({ label: b.label, href: b.link, variant: b.variant as "primary" | "secondary" }))}
-        image={{ src: homeData.managedHostingUISection.illustration.src, alt: homeData.managedHostingUISection.illustration.alt }}
-        imagePosition="right"
-      />
-      {/* PricingJourney removed until Batch D: it hardcodes prices that do not match data/pricing.json. */}
       <TestimonialsSection data={homeData} />
       <JsonLd schema={faqPageSchema(homeData.faqSection.faqs.map((f) => ({ question: f.question, answer: f.answer })))} />
       <FAQSection data={homeData} />
       <LogoWall data={homeData} />
-
     </>
   );
 }
