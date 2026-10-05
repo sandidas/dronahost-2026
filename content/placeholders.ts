@@ -1,3 +1,11 @@
+// TODO: replace with verified data
+// ---------------------------------------------------------------------------
+// SAMPLE DATA ONLY. Every value in this file is a layout fixture for the /v2
+// showcase. None of it is verified: people, companies, metrics, reviews, SLAs
+// and prices below must NEVER ship to a public page. Public pages read verified
+// facts from `content/claims.ts` and prices from `data/pricing.json`.
+// ---------------------------------------------------------------------------
+
 /**
  * Dummy data fixtures for the /v2 component showcase.
  * All shapes match the exact TypeScript prop types defined in each component.
@@ -22,7 +30,7 @@ export const heroData = {
       { label: "View Plans", variant: "secondary", link: "/pricing" },
     ],
     members: {
-      countText: "Trusted by 1,200+ businesses across the US, UK, and EU",
+      countText: "Sample customer count (unverified)",
       avatars: [
         "/images/placeholder.png",
         "/images/placeholder.png",
@@ -409,7 +417,7 @@ export const testimonialsData = {
         rating: 5,
         source: {
           platform: "Trustpilot",
-          label: "Verified review",
+          label: "Sample review (unverified)",
           icon: "/icon/trustpilot.svg",
         },
         content:
@@ -425,7 +433,7 @@ export const testimonialsData = {
         rating: 5,
         source: {
           platform: "G2",
-          label: "Verified review",
+          label: "Sample review (unverified)",
           icon: "/icon/g2.svg",
         },
         content:
@@ -441,7 +449,7 @@ export const testimonialsData = {
         rating: 5,
         source: {
           platform: "HostAdvice",
-          label: "Verified review",
+          label: "Sample review (unverified)",
           icon: "/icon/hostadvice.svg",
         },
         content:
@@ -490,7 +498,7 @@ export const faqData = {
         id: 1,
         question: "How much does WordPress hosting cost at DronaHost?",
         answer:
-          "Plans start at $12/month for a single site on our Starter tier. The Essential plan (3 sites, staging, 30-day backups) is $30/month. All prices are in USD; we also bill in GBP, EUR, and AED — automatically detected from your location.",
+          "Pricing for each plan is listed on the pricing page, in USD. [Sample answer: replace with verified copy]",
         isOpen: false,
       },
       {
@@ -525,10 +533,10 @@ export const faqData = {
 export const teamsData = {
   trustSection: {
     rating: {
-      label: "Excellent",
+      label: "Sample rating",
       value: 5,
-      platform: "Trustpilot",
-      reviews: "134 reviews",
+      platform: "Sample platform",
+      reviews: "Unverified",
     },
     title: {
       text: "Powering sites for businesses that demand reliability.",

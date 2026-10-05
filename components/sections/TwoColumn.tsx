@@ -1,3 +1,4 @@
+import { useId } from "react";
 import Badge from "@/components/ui/Badge";
 import HeadLineText from "@/components/ui/HeadLineText";
 import Image from "@/components/ui/Image";
@@ -13,6 +14,8 @@ type CtaItem = {
 };
 
 type TwoColumnProps = {
+  /** Heading level of the section title so each page keeps exactly one H1. Default "h2". */
+  headingLevel?: "h2" | "h3";
   tagline?: string;
   title: string;
   description?: string;
@@ -39,18 +42,22 @@ export default function TwoColumn({
   imagePosition = "right",
   children,
   className,
+  headingLevel = "h2",
 }: TwoColumnProps) {
+  const headingId = useId();
+  const childLevel = headingLevel === "h2" ? "h3" : "h4";
   const imageFirst = imagePosition === "left";
 
   return (
-    <Section size="lg" padding="lg" className={cn("bg-white dark:bg-gray-900", className)}>
+    <Section aria-labelledby={headingId} size="lg" padding="lg" className={cn("bg-white dark:bg-gray-900", className)}>
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
 
         {/* Text column */}
         <div className={cn("space-y-6", imageFirst ? "lg:order-last" : "lg:order-first")}>
           {tagline && <Badge variant="neutral">{tagline}</Badge>}
 
-          <HeadLineText as="h2" fontSize="fiveXl" fontWeight="bold" align="left">
+          <HeadLineText as={headingLevel}
+            id={headingId} fontSize="fiveXl" fontWeight="bold" align="left">
             {title}
           </HeadLineText>
 

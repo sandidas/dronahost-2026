@@ -1,3 +1,4 @@
+import { useId } from "react";
 import HeadLineText from "@/components/ui/HeadLineText";
 import Section from "@/components/ui/Section";
 import { cn } from "@/utils/cn";
@@ -12,6 +13,8 @@ type CtaItem = {
 };
 
 type CTASectionProps = {
+  /** Heading level of the section title so each page keeps exactly one H1. Default "h2". */
+  headingLevel?: "h2" | "h3";
   title: string;
   description?: string;
   tagline?: string;
@@ -36,9 +39,12 @@ export default function CTASection({
   variant = "default",
   children,
   className,
+  headingLevel = "h2",
 }: CTASectionProps) {
+  const headingId = useId();
+  const childLevel = headingLevel === "h2" ? "h3" : "h4";
   return (
-    <Section
+    <Section aria-labelledby={headingId}
       size="lg"
       padding="lg"
       className={cn(
@@ -73,7 +79,8 @@ export default function CTASection({
           )}
 
           <HeadLineText
-            as="h2"
+            as={headingLevel}
+            id={headingId}
             fontSize="fourXl"
             fontWeight="bold"
             align={image ? "left" : "center"}

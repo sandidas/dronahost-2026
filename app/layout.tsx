@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "./providers";
 import { Suspense } from "react";
 import LoaderWithText from "@/components/loader/LoaderWithText";
+import { startingPriceLabel } from "@/lib/pricing";
 
 /* ───────────────── FONTS ───────────────── */
 
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
     default: "DronaHost — Managed WordPress & Cloud Hosting",
     template: "%s | DronaHost",
   },
-  description: "High-performance WordPress, VPS, and cloud hosting for US, UK, and UAE businesses. LiteSpeed, NVMe, 24/7 support from $0.99/mo.",
+  description: `High-performance WordPress, VPS, and cloud hosting for US, UK, and UAE businesses. LiteSpeed servers and NVMe storage${startingPriceLabel() ? `, from ${startingPriceLabel()}` : ""}.`,
   openGraph: {
     siteName: "DronaHost",
     locale: "en_US",
@@ -55,6 +56,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${manrope.variable} ${sora.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-white text-black dark:bg-black dark:text-white transition-colors duration-300">
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <Suspense fallback={<LoaderWithText text="Loading..." size="lg" fullScreen />}>{children}</Suspense>
         </ThemeProvider>

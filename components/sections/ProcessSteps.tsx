@@ -1,3 +1,4 @@
+import { useId } from "react";
 import Badge from "@/components/ui/Badge";
 import HeadLineText from "@/components/ui/HeadLineText";
 import Section from "@/components/ui/Section";
@@ -16,6 +17,8 @@ type ProcessStep = {
 };
 
 type ProcessStepsProps = {
+  /** Heading level of the section title so each page keeps exactly one H1. Default "h2". */
+  headingLevel?: "h2" | "h3";
   tagline?: string;
   title?: string;
   steps: ProcessStep[];
@@ -29,15 +32,19 @@ export default function ProcessSteps({
   steps,
   layout = "alternating",
   className,
+  headingLevel = "h2",
 }: ProcessStepsProps) {
+  const headingId = useId();
+  const childLevel = headingLevel === "h2" ? "h3" : "h4";
   return (
-    <Section size="lg" padding="lg" className={cn("bg-white dark:bg-gray-900", className)}>
+    <Section aria-labelledby={headingId} size="lg" padding="lg" className={cn("bg-white dark:bg-gray-900", className)}>
       {/* Header */}
       {(tagline || title) && (
         <div className="mb-16 space-y-4 text-center">
           {tagline && <Badge variant="neutral">{tagline}</Badge>}
           {title && (
-            <HeadLineText as="h2" fontSize="fiveXl" fontWeight="bold" align="center">
+            <HeadLineText as={headingLevel}
+            id={headingId} fontSize="fiveXl" fontWeight="bold" align="center">
               {title}
             </HeadLineText>
           )}
@@ -60,7 +67,7 @@ export default function ProcessSteps({
                   <>
                     {/* Text — right side */}
                     <div className="space-y-4 text-center lg:pr-10 lg:text-right">
-                      <HeadLineText as="h3" fontSize="xl" fontWeight="bold" align="right" className="text-black dark:text-white">
+                      <HeadLineText as={childLevel} fontSize="xl" fontWeight="bold" align="right" className="text-black dark:text-white">
                         {item.title}
                       </HeadLineText>
                       <p className="ml-auto max-w-md text-sm text-gray-600 dark:text-gray-400">
@@ -96,7 +103,7 @@ export default function ProcessSteps({
                     )}
                     {/* Text — right side */}
                     <div className={cn("order-1 space-y-4 text-center lg:order-2 lg:pl-10 lg:text-left", !item.image && "lg:col-start-2")}>
-                      <HeadLineText as="h3" fontSize="xl" fontWeight="bold" align="left" className="text-black dark:text-white">
+                      <HeadLineText as={childLevel} fontSize="xl" fontWeight="bold" align="left" className="text-black dark:text-white">
                         {item.title}
                       </HeadLineText>
                       <p className="max-w-md text-sm text-gray-600 dark:text-gray-400">

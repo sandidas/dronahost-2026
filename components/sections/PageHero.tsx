@@ -1,3 +1,4 @@
+import { useId } from "react";
 import Badge from "@/components/ui/Badge";
 import HeadLineText from "@/components/ui/HeadLineText";
 import Image from "@/components/ui/Image";
@@ -13,6 +14,8 @@ type CtaItem = {
 };
 
 type PageHeroProps = {
+  /** Heading level of the section title so each page keeps exactly one H1. Default "h1". */
+  headingLevel?: "h1" | "h2" | "h3";
   tagline?: string;
   title: string;
   description?: string;
@@ -37,11 +40,13 @@ export default function PageHero({
   layout = "centered",
   background = "gradient",
   children,
+  headingLevel = "h1",
 }: PageHeroProps) {
+  const headingId = useId();
   const isSplit = layout === "split";
 
   return (
-    <Section
+    <Section aria-labelledby={headingId}
       size="lg"
       padding="hero"
       className={cn(
@@ -70,7 +75,8 @@ export default function PageHero({
           <div className="space-y-6">
             {tagline && <Badge variant="neutral">{tagline}</Badge>}
 
-            <HeadLineText as="h1" fontSize="sixXl" fontWeight="bold" align="left">
+            <HeadLineText as={headingLevel}
+            id={headingId} fontSize="sixXl" fontWeight="bold" align="left">
               {title}
             </HeadLineText>
 
@@ -114,7 +120,8 @@ export default function PageHero({
         <div className="relative z-10 mx-auto max-w-3xl space-y-6 text-center">
           {tagline && <Badge variant="neutral">{tagline}</Badge>}
 
-          <HeadLineText as="h1" fontSize="sixXl" fontWeight="bold" align="center">
+          <HeadLineText as={headingLevel}
+            id={headingId} fontSize="sixXl" fontWeight="bold" align="center">
             {title}
           </HeadLineText>
 

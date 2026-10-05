@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { startingPriceLabel } from "@/lib/pricing";
 import Link from "next/link";
 
 import ShowcaseSection from "./_components/ShowcaseSection";
@@ -30,6 +31,7 @@ import JsonLd from "@/components/sections/JsonLd";
 import TrustBadges from "@/components/sections/TrustBadges";
 import GradientText from "@/components/ui/GradientText";
 import StatsBar from "@/components/sections/StatsBar";
+import { CLAIMS } from "@/content/claims";
 import HomeHeroBanner from "@/components/sections/HomeHeroBanner";
 import InnerPageHeroBanner from "@/components/sections/InnerPageHeroBanner";
 import HeroServicesCard from "@/components/sections/HeroServicesCard";
@@ -46,7 +48,7 @@ import {
   testimonialsData,
   faqData,
   teamsData,
-} from "./_data/dummy";
+} from "@/content/placeholders";
 
 const orgSchema = {
   "@context": "https://schema.org",
@@ -56,12 +58,12 @@ const orgSchema = {
 };
 
 const gridItems = [
-  { title: "Performance Hosting", description: "LiteSpeed + NVMe storage, sub-200ms TTFB globally." },
+  { title: "Performance Hosting", description: "LiteSpeed + NVMe storage, NVMe storage on every plan." },
   { title: "Managed WordPress", description: "Daily backups, staging, and one-click rollbacks." },
-  { title: "Global CDN", description: "Cloudflare in front of every site — 300+ PoPs." },
+  { title: "Global CDN", description: "Content delivered from a global edge network." },
   { title: "Developer Tools", description: "SSH, WP-CLI, Git deploy hooks, PHP version selector." },
   { title: "Security", description: "Let's Encrypt SSL, WAF, and automated malware scans." },
-  { title: "Transparent SLA", description: "99.95% uptime SLA with automatic service credits." },
+  { title: "Transparent SLA", description: "Published SLA with service-credit terms." },
 ];
 
 export default function V2ShowcasePage() {
@@ -374,7 +376,7 @@ export default function V2ShowcasePage() {
             status="needs-work"
             notes="No real case study. Metrics hardcoded."
           >
-            <CaseStudySection data={caseStudyData} />
+            <CaseStudySection data={caseStudyData} showSamples />
           </ShowcaseSection>
 
           {/* ── CTA Section ── */}
@@ -404,7 +406,7 @@ export default function V2ShowcasePage() {
             status="needs-work"
             notes="All placeholder. No LinkedIn links. Critical trust gap."
           >
-            <TestimonialsSection data={testimonialsData} />
+            <TestimonialsSection data={testimonialsData} showSamples />
           </ShowcaseSection>
 
           {/* ── FAQ Section ── */}
@@ -424,7 +426,7 @@ export default function V2ShowcasePage() {
             status="needs-work"
             notes="No real photos. LinkedIn links missing."
           >
-            <LogoWall data={teamsData} />
+            <LogoWall data={teamsData} showSamples />
           </ShowcaseSection>
 
           {/* ── JsonLd ── */}
@@ -452,9 +454,9 @@ export default function V2ShowcasePage() {
             id="trust-badges"
             title="Trust Badges"
             status="built"
-            notes="Stripe, PayPal, Let's Encrypt, Cloudflare, Trustpilot, 30-Day Guarantee. Inline SVG icons, dark mode, WCAG accessible."
+            notes="Accepted payment methods only (no endorsement marks). Hidden until methods are verified in content/claims.ts."
           >
-            <TrustBadges />
+            <TrustBadges showSamples />
           </ShowcaseSection>
 
           {/* ── Uptime / Stats Bar ── */}
@@ -462,9 +464,9 @@ export default function V2ShowcasePage() {
             id="uptime-bar"
             title="Uptime / Stats Bar"
             status="built"
-            notes="4 stats: 99.95% uptime SLA, <200ms TTFB, 18 min support reply, Founded 2019. Static/hardcoded, dark strip, responsive grid."
+            notes="Driven by content/claims.ts. Renders nothing until a claim is verified. Showcase previews the unverified list with a label."
           >
-            <StatsBar />
+            <StatsBar claims={CLAIMS} />
           </ShowcaseSection>
 
           {/* ── Badge ── */}
@@ -492,7 +494,7 @@ export default function V2ShowcasePage() {
             <PageHero
               tagline="WordPress Hosting"
               title="High-performance hosting built for WordPress"
-              description="LiteSpeed + NVMe storage. 200ms average TTFB from London, Frankfurt, and New York."
+              description="LiteSpeed servers and NVMe storage, tuned for WordPress."
               cta={[{ label: "Get started", href: "#" }, { label: "View plans", href: "#", variant: "secondary" }]}
               layout="centered"
               background="gradient"
@@ -511,7 +513,7 @@ export default function V2ShowcasePage() {
               title="Everything you need, nothing you don't"
               description="Pre-configured caching, automatic updates, and daily backups — so you focus on your site."
               features={["LiteSpeed cache pre-installed", "Daily off-site backups", "One-click staging", "Free SSL forever"]}
-              cta={[{ label: "Start free trial", href: "#" }]}
+              cta={[{ label: "Get started", href: "#" }]}
               image={{ src: "/images/placeholder.png", alt: "Feature illustration", width: 560, height: 480 }}
               imagePosition="right"
             />
@@ -530,9 +532,9 @@ export default function V2ShowcasePage() {
               columns={3}
               divided={true}
               items={[
-                { title: "LiteSpeed + NVMe", description: "200ms average TTFB from our London, Frankfurt, and New York nodes." },
-                { title: "99.95% Uptime SLA", description: "Automatic service credits if we miss. No excuses, no workarounds." },
-                { title: "18-min first response", description: "24/7 across US, UK, and UAE business hours. Real humans, not bots." },
+                { title: "LiteSpeed + NVMe", description: "Server-level caching and fast storage on managed WordPress plans." },
+                { title: "Published SLA", description: "Uptime commitment and service-credit terms set out in writing." },
+                { title: "Human support", description: "Open a ticket, start a live chat, or message us on WhatsApp." },
               ]}
             />
           </ShowcaseSection>
@@ -567,7 +569,7 @@ export default function V2ShowcasePage() {
               title="Ready to move your WordPress site?"
               description="We migrate for free. Your site stays live the entire time."
               tagline="Free migration"
-              cta={[{ label: "Start free trial", href: "#" }, { label: "Talk to an expert", href: "#", variant: "secondary" }]}
+              cta={[{ label: "Get started", href: "#" }, { label: "Talk to an expert", href: "#", variant: "secondary" }]}
             />
           </ShowcaseSection>
 
@@ -648,18 +650,18 @@ export default function V2ShowcasePage() {
                 tagline="WordPress Hosting"
                 title="High-performance hosting"
                 titleAccent="built for WordPress"
-                description="LiteSpeed + NVMe storage. 200ms average TTFB from London, Frankfurt, and New York. Managed updates, daily backups, and one-click staging — so you focus on your site."
+                description="LiteSpeed servers and NVMe storage, tuned for WordPress. Managed updates, daily backups, and one-click staging — so you focus on your site."
                 cta={[
-                  { label: "Get started — $5.99/month", href: "/hosting/wordpress" },
+                  { label: `Get started — ${startingPriceLabel()}`, href: "/hosting/wordpress" },
                   { label: "View all plans", href: "/hosting/wordpress#plans", variant: "secondary" },
                 ]}
                 features={[
-                  "Free SSL forever",
+                  "Free SSL certificates",
                   "Daily off-site backups",
                   "One-click staging",
                   "Free migration",
                   "LiteSpeed cache",
-                  "99.95% uptime SLA",
+                  "Published uptime SLA",
                 ]}
               />
             </div>

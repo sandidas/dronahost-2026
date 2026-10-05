@@ -4,6 +4,10 @@ import Section from "@/components/ui/Section";
 import Link from "next/link";
 
 type CaseStudyProps = {
+  /** Heading level for the title. Default "h2". */
+  headingLevel?: "h2" | "h3";
+  /** Showcase only: renders an unsourced case study with a visible "Sample data" label. */
+  showSamples?: boolean;
   data: {
     caseStudySection: {
       tagline: string;
@@ -25,15 +29,20 @@ type CaseStudyProps = {
         src: string;
         alt: string;
       };
+      /** Link to the published, customer-approved case study. Without it the section is hidden. */
+      sourceUrl?: string;
     };
   };
 };
 
-export default function CaseStudy({ data }: CaseStudyProps) {
+export default function CaseStudy({ data, headingLevel = "h2", showSamples = false }: CaseStudyProps) {
   const section = data.caseStudySection;
 
+  // Metrics need a customer-approved source; otherwise hide the section.
+  if (!showSamples && !section.sourceUrl) return null;
+
   return (
-    <Section padding="xl" className="bg-gray-50 dark:bg-gray-900">
+    <Section padding="xl" className="bg-gray-50 dark:bg-gray-900" aria-labelledby="case-study-heading">
       <div className="grid lg:grid-cols-2 gap-12 items-center">
 
         {/* LEFT CONTENT */}
@@ -42,11 +51,13 @@ export default function CaseStudy({ data }: CaseStudyProps) {
           {/* Tagline */}
           <p className="text-xs tracking-widest text-indigo-500 uppercase mb-4">
             {section.tagline}
+            {!section.sourceUrl && <span className="ms-2 font-semibold text-amber-600">Sample data (unverified)</span>}
           </p>
 
           {/* Title */}
           <HeadLineText
-            as="h2"
+            id="case-study-heading"
+            as={headingLevel}
             fontSize="fourXl"
             fontWeight="bold"
             align="left"

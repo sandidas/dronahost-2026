@@ -13,11 +13,12 @@ import StatsBar from "@/components/sections/StatsBar";
 import JsonLd from "@/components/sections/JsonLd";
 import homeData from "@/data/home.json";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { startingPriceLabel } from "@/lib/pricing";
 import { faqPageSchema, organizationSchema, websiteSchema } from "@/lib/seo/jsonld";
 
 export const metadata = buildMetadata({
   title: "DronaHost — Managed WordPress & Cloud Hosting",
-  description: "High-performance WordPress and cloud hosting with NVMe storage, LiteSpeed servers, and 24/7 support. Serving US, UK, and UAE businesses from $0.99/mo.",
+  description: `High-performance WordPress and cloud hosting with NVMe storage and LiteSpeed servers. Serving US, UK, and UAE businesses${startingPriceLabel() ? ` from ${startingPriceLabel()}` : ""}.`,
   path: "/",
 });
 

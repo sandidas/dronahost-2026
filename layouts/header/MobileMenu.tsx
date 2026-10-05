@@ -2,7 +2,7 @@
 
 import { cn } from "@/utils/cn";
 import { useTheme } from "next-themes";
-import Image from "next/image";
+import Logo from "@/components/ui/Logo";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
@@ -174,13 +174,7 @@ export default function MobileMenu({
         {/* Top bar */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-700">
           <Link href="/" onClick={onClose} className="flex items-center">
-            <Image
-              src="/images/home/dronahostLogo.svg"
-              alt="DronaHost"
-              width={120}
-              height={32}
-              className="h-8 w-auto dark:brightness-[1.15] dark:saturate-[1.1]"
-            />
+            <Logo size="sm" />
           </Link>
           <button
             ref={closeButtonRef}

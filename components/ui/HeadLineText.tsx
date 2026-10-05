@@ -37,6 +37,8 @@ interface IProps {
     | "custom";
   fontColor?: "default" | "primary" | "secondary" | "muted" | "destructive";
   as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span" | "div";
+  /** DOM id, e.g. for aria-labelledby on the parent section. */
+  id?: string;
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -52,6 +54,7 @@ const HeadLineText = ({
   fontSize = "default",
   fontColor = "default",
   as = "h2",
+  id,
 }: IProps) => {
   const Component = as;
 
@@ -120,7 +123,7 @@ const HeadLineText = ({
 
   return (
     <div className={cn(alignClass[align])}>
-      <Component className={commonClasses}>{children}</Component>
+      <Component id={id} className={commonClasses}>{children}</Component>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { useId } from "react";
 import HeadLineText from "@/components/ui/HeadLineText";
 import Section from "@/components/ui/Section";
 import Link from "next/link";
@@ -44,10 +45,14 @@ type PricingSection = {
 };
 
 type Props = {
+  /** Heading level of the section title so each page keeps exactly one H1. Default "h2". */
+  headingLevel?: "h2" | "h3";
   data: PricingSection & { pricingPlansSection?: PricingSection };
 };
 
-export default function PricingCards({ data }: Props) {
+export default function PricingCards({ data, headingLevel = "h2" }: Props) {
+  const headingId = useId();
+  const childLevel = headingLevel === "h2" ? "h3" : "h4";
   const pricingData = data?.pricingPlansSection ?? data;
 
   if (!pricingData) return null;
@@ -55,7 +60,7 @@ export default function PricingCards({ data }: Props) {
   const { header, plans, starterNote, trustIndicators } = pricingData;
 
   return (
-    <Section size="xl" padding="lg" hAlign="center" className="bg-background dark:bg-gray-900">
+    <Section aria-labelledby={headingId} size="xl" padding="lg" hAlign="center" className="bg-background dark:bg-gray-900">
       {/* Header */}
       <div className="mb-10">
         <HeadLineText
@@ -69,7 +74,8 @@ export default function PricingCards({ data }: Props) {
         </HeadLineText>
 
         <HeadLineText
-          as="h2"
+          as={headingLevel}
+            id={headingId}
           fontSize="fourXl"
           fontWeight="bold"
           align="center"
@@ -174,7 +180,7 @@ export default function PricingCards({ data }: Props) {
           </HeadLineText>
 
           <HeadLineText
-            as="h3"
+            as={childLevel}
             fontSize="xl"
             fontWeight="bold"
             align="left"

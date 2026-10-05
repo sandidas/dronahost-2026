@@ -15,11 +15,22 @@ type Testimonial = {
   author: {
     name: string;
     role: string;
+    /** Company name. Required for a testimonial to render publicly. */
+    company?: string;
     avatar: string;
+    /** Verifiable source (LinkedIn, company site, review URL). Required for public rendering. */
+    sourceUrl?: string;
   };
 };
 
+const isVerifiable = (t: Testimonial): boolean =>
+  Boolean(t.author.name && t.author.role && t.author.company && t.author.sourceUrl);
+
 type Props = {
+  /** Heading level for the section title so pages keep one H1. Default "h2". */
+  headingLevel?: "h2" | "h3";
+  /** Showcase only: renders unverified sample entries with a visible "Sample data" label. */
+  showSamples?: boolean;
   data: {
     testimonialsSection: {
       title: string;
@@ -35,13 +46,17 @@ type Props = {
   };
 };
 
-export default function Testimonials({ data }: Props) {
+export default function Testimonials({ data, headingLevel = "h2", showSamples = false }: Props) {
   const section = data.testimonialsSection;
+  const entries = showSamples ? section.testimonials : section.testimonials.filter(isVerifiable);
+
+  // Hide the whole section rather than show vague or unsourced testimonials.
+  if (entries.length === 0) return null;
 
   const columns = section.layout?.columns ?? 3;
 
   return (
-    <Section padding="xl" className="bg-gray-50 dark:bg-gray-900">
+    <Section padding="xl" className="bg-gray-50 dark:bg-gray-900" aria-labelledby="testimonials-heading">
       <div className="max-w-7xl mx-auto">
 
         {/* HEADER */}
@@ -49,7 +64,8 @@ export default function Testimonials({ data }: Props) {
 
           {/* TITLE */}
           <HeadLineText
-            as="h2"
+            id="testimonials-heading"
+            as={headingLevel}
             fontSize="fourXl"
             fontWeight="bold"
             align="left"
@@ -83,12 +99,12 @@ export default function Testimonials({ data }: Props) {
               : "grid-cols-1 md:grid-cols-2"
           }`}
         >
-          {section.testimonials.map((item, index) => (
+          {entries.map((item, index) => (
             <Card
               key={item.id}
               variant="grid"
               index={index}
-              total={section.testimonials.length}
+              total={entries.length}
               columns={columns}
               size="md"
               align="left"
@@ -125,7 +141,11 @@ export default function Testimonials({ data }: Props) {
                   </p>
                   <p className="text-xs text-gray-400">
                     {item.author.role}
+                    {item.author.company ? `, ${item.author.company}` : ""}
                   </p>
+                  {!isVerifiable(item) && (
+                    <p className="text-xs font-semibold text-amber-600">Sample data (unverified)</p>
+                  )}
                 </div>
               </div>
             </Card>

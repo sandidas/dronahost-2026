@@ -57,7 +57,7 @@ export default function ShowcaseLayout({
       </div>
 
       {/* Main content */}
-      <main className="min-w-0 flex-1 px-8 py-6">
+      <main id="main-content" tabIndex={-1} className="min-w-0 flex-1 px-8 py-6">
         {children}
       </main>
     </div>

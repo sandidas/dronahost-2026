@@ -1,3 +1,4 @@
+import { useId } from "react";
 import Badge from "@/components/ui/Badge";
 import Card from "@/components/ui/Card";
 import HeadLineText from "@/components/ui/HeadLineText";
@@ -16,6 +17,8 @@ type ResourcePost = {
 };
 
 type ResourceGridProps = {
+  /** Heading level of the section title so each page keeps exactly one H1. Default "h2". */
+  headingLevel?: "h2" | "h3";
   tagline?: string;
   title?: string;
   posts: ResourcePost[];
@@ -36,17 +39,21 @@ export default function ResourceGrid({
   columns = 3,
   featured = false,
   className,
+  headingLevel = "h2",
 }: ResourceGridProps) {
+  const headingId = useId();
+  const childLevel = headingLevel === "h2" ? "h3" : "h4";
   const [firstPost, ...restPosts] = posts;
 
   return (
-    <Section size="lg" padding="lg" className={cn("bg-white dark:bg-gray-900", className)}>
+    <Section aria-labelledby={headingId} size="lg" padding="lg" className={cn("bg-white dark:bg-gray-900", className)}>
       {/* Header */}
       {(tagline || title) && (
         <div className="mb-12 space-y-4 text-center">
           {tagline && <Badge variant="neutral">{tagline}</Badge>}
           {title && (
-            <HeadLineText as="h2" fontSize="fiveXl" fontWeight="bold" align="center">
+            <HeadLineText as={headingLevel}
+            id={headingId} fontSize="fiveXl" fontWeight="bold" align="center">
               {title}
             </HeadLineText>
           )}

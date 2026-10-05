@@ -1,3 +1,4 @@
+import { useId } from "react";
 import HeadLineText from "@/components/ui/HeadLineText";
 import Section from "@/components/ui/Section";
 import Link from "next/link";
@@ -10,6 +11,8 @@ type Project = {
 };
 
 type OurWorkProps = {
+  /** Heading level of the section title so each page keeps exactly one H1. Default "h2". */
+  headingLevel?: "h2" | "h3";
   data: {
     title: string;
     description: string;
@@ -17,17 +20,20 @@ type OurWorkProps = {
   };
 };
 
-export default function OurWork({ data }: OurWorkProps) {
+export default function OurWork({ data, headingLevel = "h2" }: OurWorkProps) {
+  const headingId = useId();
+  const childLevel = headingLevel === "h2" ? "h3" : "h4";
   const { title, description, projects } = data;
 
   return (
-    <Section padding="lg" className="bg-background dark:bg-gray-900">
+    <Section aria-labelledby={headingId} padding="lg" className="bg-background dark:bg-gray-900">
       <div className="max-w-7xl mx-auto space-y-10">
 
         {/* Heading */}
         <div className="max-w-3xl space-y-4">
           <HeadLineText
-            as="h2"
+            as={headingLevel}
+            id={headingId}
             fontSize="fourXl"
             fontWeight="bold"
             align="left"

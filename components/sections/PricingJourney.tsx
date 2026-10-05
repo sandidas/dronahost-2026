@@ -1,5 +1,7 @@
 "use client";
 
+import { useId } from "react";
+
 import HeadLineText from "@/components/ui/HeadLineText";
 import Section from "@/components/ui/Section";
 import Link from "next/link";
@@ -353,6 +355,8 @@ type Plan = {
 };
 
 type Props = {
+  /** Heading level of the section title so each page keeps exactly one H1. Default "h2". */
+  headingLevel?: "h2" | "h3";
   data: {
     pricingSection: {
       tagline: string;
@@ -370,7 +374,9 @@ type Props = {
   };
 };
 
-export default function PricingJourney({ data }: Props) {
+export default function PricingJourney({ data, headingLevel = "h2" }: Props) {
+  const headingId = useId();
+  const childLevel = headingLevel === "h2" ? "h3" : "h4";
   const section = data.pricingSection;
 
   const [billing, setBilling] = useState(
@@ -379,7 +385,7 @@ export default function PricingJourney({ data }: Props) {
   const [currency, setCurrency] = useState("USD");
 
   return (
-    <Section padding="xl" className="bg-gray-50 dark:bg-[#041635]">
+    <Section aria-labelledby={headingId} padding="xl" className="bg-gray-50 dark:bg-[#041635]">
       <div className="max-w-7xl mx-auto">
 
         {/* TAGLINE */}
@@ -389,7 +395,8 @@ export default function PricingJourney({ data }: Props) {
 
         {/* TITLE */}
         <HeadLineText
-          as="h2"
+          as={headingLevel}
+            id={headingId}
           fontSize="fiveXl"
           fontWeight="bold"
           align="center"

@@ -6,7 +6,7 @@ import WebHostingMegaMenu from "@/layouts/header/WebHostingMegaMenu";
 import MobileMenu from "@/layouts/header/MobileMenu";
 import { cn } from "@/utils/cn";
 import { useTheme } from "next-themes";
-import Image from "next/image";
+import Logo from "@/components/ui/Logo";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
@@ -104,14 +104,7 @@ export default function Header() {
 
             {/* LOGO */}
             <Link href="/" className="flex items-center">
-              <Image
-                src="/images/home/dronahostLogo.svg"
-                alt="DronaHost"
-                width={150}
-                height={40}
-                className="h-9 w-auto transition-opacity duration-200 dark:brightness-[1.15] dark:saturate-[1.1]"
-                priority
-              />
+              <Logo size="md" priority />
             </Link>
 
             {/* MENU */}

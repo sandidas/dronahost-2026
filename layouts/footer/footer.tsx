@@ -1,5 +1,5 @@
 import footerData from "@/data/footer.json";
-import Image from "next/image";
+import Logo from "@/components/ui/Logo";
 import Link from "next/link";
 
 type FooterLink = {
@@ -29,15 +29,16 @@ export default function Footer() {
 	const { footer } = footerData;
 
 	return (
-		<footer className="site-footer" aria-label="Site footer">
+		<footer className="site-footer" aria-labelledby="footer-heading">
+			<h2 id="footer-heading" className="sr-only">
+				DronaHost site footer
+			</h2>
 			<div className="footer-shell">
 				<section className="footer-top">
 					<div className="footer-brand" aria-label="Brand block">
-						<h2 className="footer-brand-logo">
-							<span>{footer.brand.logo.main}</span>
-							<strong>{footer.brand.logo.highlight}</strong>
-						</h2>
-						<p>{footer.brand.tagline}</p>
+						<Link href="/" className="inline-block" aria-label="DronaHost home">
+							<Logo size="lg" />
+						</Link>
 					</div>
 
 					<div className="footer-columns">
@@ -54,19 +55,6 @@ export default function Footer() {
 							</nav>
 						))}
 					</div>
-				</section>
-
-				<section className="footer-partners" aria-label="Partners">
-					{footer.partners.logos.map((partner, index) => (
-						<Image
-							key={`${partner.name}-${index}`}
-							src="/images/home/partnerLogo.svg"
-							alt={partner.name}
-							width={166}
-							height={40}
-							className="footer-partner-logo"
-						/>
-					))}
 				</section>
 
 				<section className="footer-bottom">

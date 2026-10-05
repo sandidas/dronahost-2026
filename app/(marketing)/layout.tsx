@@ -9,7 +9,9 @@ export default function ClientEndLayout({
   return (
     <>
     <Header />
-      {children}
+      <main id="main-content" tabIndex={-1}>
+        {children}
+      </main>
       <Footer />
     </>
   );

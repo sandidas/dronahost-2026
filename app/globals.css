@@ -1269,3 +1269,25 @@ body.dark .footer-socials a:hover,
     opacity: 1;
   }
 }
+
+/* ── Skip link (visible on keyboard focus only) ── */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 1000;
+  transform: translateY(-200%);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.75rem;
+  background: #ffffff;
+  color: #07131f;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 3px solid #05a2c6;
+  outline-offset: 2px;
+}
