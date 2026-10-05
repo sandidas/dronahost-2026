@@ -1,0 +1,393 @@
+/*
+ * DronaHost design tokens
+ * ───────────────────────
+ * Single source of truth for colour, radius, shadow, type and motion.
+ * Dark is the default theme (`.dark` on <html>); light is `:root` / `.light`.
+ *
+ * Brand rules (docs/reference/brand):
+ *   Orange #FE5504  = the ACTION colour (primary CTA, one per viewport).
+ *   Teal   #05A2C6  = secondary (links, icons, data accents, one highlighted word per heading).
+ *   No other hues. No pink, purple or indigo.
+ *
+ * Contrast: white on #FE5504 (3.2:1) and on #05A2C6 (3.0:1) FAIL WCAG AA.
+ *   - On bright brand fills use navy text (#07131F).
+ *   - On white / light surfaces use the deep shades (#C23700 orange, #027280 teal).
+ * `npm run check:contrast` verifies every pair below and fails the build on a violation.
+ * Keep colour tokens as 6-digit hex so the checker can parse them.
+ */
+
+/* ── Raw brand palette (not theme-aware; use semantic tokens in components) ── */
+:root {
+  --brand-orange: #fe5504;
+  --brand-orange-deep: #c23700;
+  --brand-orange-darker: #a83000;
+  --brand-teal: #05a2c6;
+  --brand-teal-deep: #027280;
+  --brand-navy: #092f49;
+  --brand-ink: #07131f;
+  --brand-tint: #f1fafa;
+}
+
+/* ── Light theme ── */
+:root,
+.light {
+  color-scheme: light;
+
+  --background: #f1fafa;
+  --foreground: #092f49;
+  --card: #ffffff;
+  --card-foreground: #092f49;
+  --surface-raised: #ffffff;
+  --muted: #e3f1f2;
+  --muted-foreground: #3f5b70;
+  --subtle-foreground: #52697c;
+  --border: #cde0e3;
+  --border-strong: #a9c4ca;
+  --ring: #027280;
+
+  /* Action (orange): fill + text */
+  --action: #c23700;
+  --action-hover: #a83000;
+  --action-active: #8f2900;
+  --action-foreground: #ffffff;
+  /* Secondary (teal): fill + text/link */
+  --accent: #027280;
+  --accent-hover: #015c68;
+  --accent-foreground: #ffffff;
+  --link: #027280;
+
+  /* Semantic */
+  --success: #0b6b45;
+  --success-surface: #dff5ea;
+  --warning: #7a4e00;
+  --warning-surface: #fdf0d0;
+  --danger: #b42318;
+  --danger-surface: #fde4e1;
+
+  /* Inverse surfaces (stat strips, dark feature bands inside light pages) */
+  --inverse-surface: #092f49;
+  --inverse-foreground: #f1fafa;
+  --inverse-muted: #b8cdd9;
+
+  --shadow-rgb: 9 47 73;
+  --inner-highlight: rgb(255 255 255 / 0.7);
+  --glow-orange: rgb(254 85 4 / 0.1);
+  --glow-teal: rgb(5 162 198 / 0.12);
+  --grid-line: rgb(9 47 73 / 0.06);
+}
+
+/* ── Dark theme (default) ── */
+.dark {
+  color-scheme: dark;
+
+  --background: #07131f;
+  --foreground: #f1fafa;
+  --card: #0b1b2b;
+  --card-foreground: #f1fafa;
+  --surface-raised: #10263a;
+  --muted: #0d2033;
+  --muted-foreground: #a9bbc9;
+  --subtle-foreground: #8fa5b6;
+  --border: rgb(255 255 255 / 0.08);
+  --border-strong: rgb(255 255 255 / 0.16);
+  --ring: #05a2c6;
+
+  --action: #fe5504;
+  --action-hover: #ff6b26;
+  --action-active: #e84a00;
+  --action-foreground: #07131f;
+  --accent: #05a2c6;
+  --accent-hover: #2bb8d9;
+  --accent-foreground: #07131f;
+  --link: #3cc0dd;
+
+  --success: #4ade9a;
+  --success-surface: #0a2a22;
+  --warning: #fbbf24;
+  --warning-surface: #2b2108;
+  --danger: #ff8a80;
+  --danger-surface: #30130f;
+
+  --inverse-surface: #0b1b2b;
+  --inverse-foreground: #f1fafa;
+  --inverse-muted: #a9bbc9;
+
+  --shadow-rgb: 0 0 0;
+  --inner-highlight: rgb(255 255 255 / 0.06);
+  --glow-orange: rgb(254 85 4 / 0.12);
+  --glow-teal: rgb(5 162 198 / 0.14);
+  --grid-line: rgb(255 255 255 / 0.05);
+}
+
+/* ── Legacy aliases (existing components use these names) ── */
+:root,
+.light,
+.dark {
+  --primary: var(--action);
+  --primary-light: var(--action-hover);
+  --primary-foreground: var(--action-foreground);
+  --secondary: var(--accent);
+  --secondary-light: var(--accent-hover);
+  --accent-light: var(--accent-hover);
+
+  --radius: 0.75rem;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 150ms;
+  --dur: 200ms;
+  --dur-slow: 250ms;
+
+  --container-max: 80rem; /* 1280px */
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --section-y: clamp(4rem, 3rem + 5vw, 9rem); /* 64px mobile → 144px wide */
+}
+
+/* ── Tailwind bridge: utilities read the CSS variables above ── */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-surface-raised: var(--surface-raised);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-subtle-foreground: var(--subtle-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-ring: var(--ring);
+
+  --color-action: var(--action);
+  --color-action-hover: var(--action-hover);
+  --color-action-active: var(--action-active);
+  --color-action-foreground: var(--action-foreground);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-light: var(--accent-hover);
+  --color-link: var(--link);
+
+  --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+
+  --color-success: var(--success);
+  --color-success-surface: var(--success-surface);
+  --color-warning: var(--warning);
+  --color-warning-surface: var(--warning-surface);
+  --color-danger: var(--danger);
+  --color-danger-surface: var(--danger-surface);
+  --color-destructive: var(--danger);
+
+  --color-inverse-surface: var(--inverse-surface);
+  --color-inverse-foreground: var(--inverse-foreground);
+  --color-inverse-muted: var(--inverse-muted);
+
+  /* Radius scale: 12 / 16 / 24 (rounded-lg / xl / 2xl); 8 for small controls */
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+
+  /* Layered, soft shadows. Colour comes from --shadow-rgb so dark mode stays calm. */
+  --shadow-xs: 0 1px 2px rgb(var(--shadow-rgb) / 0.08);
+  --shadow-sm:
+    0 1px 2px rgb(var(--shadow-rgb) / 0.06), 0 2px 6px -1px rgb(var(--shadow-rgb) / 0.08);
+  --shadow-md:
+    0 1px 2px rgb(var(--shadow-rgb) / 0.06), 0 4px 12px -2px rgb(var(--shadow-rgb) / 0.1),
+    0 12px 24px -8px rgb(var(--shadow-rgb) / 0.12);
+  --shadow-lg:
+    0 2px 4px rgb(var(--shadow-rgb) / 0.06), 0 8px 20px -4px rgb(var(--shadow-rgb) / 0.12),
+    0 24px 48px -12px rgb(var(--shadow-rgb) / 0.16);
+  --shadow-xl:
+    0 4px 8px rgb(var(--shadow-rgb) / 0.06), 0 16px 32px -8px rgb(var(--shadow-rgb) / 0.16),
+    0 40px 80px -20px rgb(var(--shadow-rgb) / 0.24);
+  --shadow-2xl: 0 48px 96px -24px rgb(var(--shadow-rgb) / 0.32);
+
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-sora), var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* ── Base ── */
+html {
+  background: var(--background);
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: rgb(5 162 198 / 0.35);
+}
+
+/* ── Layout helpers ── */
+@layer components {
+  .container-site {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .section-y {
+    padding-block: var(--section-y);
+  }
+
+  /* ── Typography: fluid, tight tracking, balanced wrapping ── */
+  .t-display {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 1.6rem + 4vw, 4.5rem);
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+    font-weight: 600;
+    text-wrap: balance;
+  }
+  .t-h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 1.4rem + 2.8vw, 3.5rem);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    font-weight: 600;
+    text-wrap: balance;
+  }
+  .t-h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 1.3rem + 1.9vw, 2.75rem);
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+    text-wrap: balance;
+  }
+  .t-h3 {
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.75rem);
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    font-weight: 600;
+    text-wrap: balance;
+  }
+  .t-h4 {
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    font-weight: 600;
+  }
+  .t-lead {
+    font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem);
+    line-height: 1.6;
+    max-width: 62ch;
+    color: var(--muted-foreground);
+    text-wrap: pretty;
+  }
+  .t-body {
+    font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+    line-height: 1.7;
+    max-width: 65ch;
+    text-wrap: pretty;
+  }
+  .t-small {
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+  .t-eyebrow {
+    font-size: 0.75rem;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--link);
+  }
+
+  /* ── Surfaces: hairline border, inner highlight, layered shadow ── */
+  .surface {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    box-shadow:
+      inset 0 1px 0 var(--inner-highlight),
+      var(--shadow-sm);
+    color: var(--card-foreground);
+  }
+  .surface-raised {
+    background: var(--surface-raised);
+    box-shadow:
+      inset 0 1px 0 var(--inner-highlight),
+      var(--shadow-md);
+  }
+  .surface-glass {
+    background: color-mix(in srgb, var(--card) 72%, transparent);
+    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    box-shadow: inset 0 1px 0 var(--inner-highlight);
+  }
+  .surface-interactive {
+    transition:
+      border-color var(--dur) var(--ease-out),
+      box-shadow var(--dur) var(--ease-out),
+      transform var(--dur) var(--ease-out);
+  }
+  .surface-interactive:hover {
+    border-color: var(--border-strong);
+    box-shadow:
+      inset 0 1px 0 var(--inner-highlight),
+      var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  /* ── Ambient backgrounds: very low-opacity glows and a hairline grid ── */
+  .ambient-glow {
+    background:
+      radial-gradient(60% 50% at 15% 0%, var(--glow-teal), transparent 70%),
+      radial-gradient(50% 45% at 90% 10%, var(--glow-orange), transparent 70%);
+  }
+  .bg-grid {
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  }
+
+  /* ── Scroll-in (once). Client `Reveal` toggles these classes. ── */
+  .reveal-pending {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  .reveal-in {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity var(--dur-slow) var(--ease-out),
+      transform var(--dur-slow) var(--ease-out);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-pending {
+    opacity: 1;
+    transform: none;
+  }
+  .surface-interactive:hover {
+    transform: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}

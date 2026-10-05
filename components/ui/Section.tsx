@@ -66,15 +66,15 @@ const bgImageBreakpointClass = {
 // with no padding fighting the centering, use padding="none" + height="screen".
 const paddingClass = {
   none: "p-0",
-  xs: "px-4 py-6 sm:px-6 sm:py-8", // tight — toolbars, banners, inline callouts
-  sm: "px-4 py-8 sm:px-6 sm:py-10 md:px-8 md:py-12", // compact — cards, sidebar panels
-  md: "px-6 py-10 sm:px-8 sm:py-12 md:px-10 md:py-16 lg:px-12 lg:py-20", // standard — generic content sections
-  lg: "px-8 py-14 sm:px-10 sm:py-16 md:px-12 md:py-20 lg:px-16 lg:py-24", // spacious — features, testimonials, pricing
-  xl: "px-10 py-16 sm:px-12 sm:py-20 md:px-16 md:py-24 lg:px-20 lg:py-28 xl:px-24 xl:py-32", // airy — large marketing sections
-  responsive: "px-6 py-16 sm:px-8 sm:py-20 md:px-12 lg:px-16 xl:px-20 xl:py-28", // DEFAULT — balanced, scales across all breakpoints
-  topZero: "px-6 pb-16 sm:px-8 sm:pb-20 md:px-12 lg:px-16 xl:px-20 xl:pb-28", // no top padding — directly under sticky nav / prev section
-  bottomZero: "px-6 pt-16 sm:px-8 sm:pt-20 md:px-12 lg:px-16 xl:px-20 xl:pt-28", // no bottom padding — before a footer or next section
-  hero: "px-6 pt-24 pb-20 sm:px-8 sm:pt-28 sm:pb-24 md:px-12 lg:px-16 xl:px-20 xl:pt-36 xl:pb-32", // extra-tall top — above-the-fold heroes clearing a fixed navbar
+  xs: "px-4 py-6 sm:px-6 sm:py-8", // tight: toolbars, banners, inline callouts
+  sm: "px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12", // compact: cards, sidebar panels
+  md: "px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20", // standard: generic content sections (48 → 80px)
+  lg: "px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24 xl:py-28", // spacious: features, pricing (64 → 112px)
+  xl: "px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32 xl:py-36", // airy: large marketing sections (64 → 144px)
+  responsive: "px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24 xl:py-28", // DEFAULT: 64 → 112px, consistent gutters
+  topZero: "px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8 lg:pb-24 xl:pb-28", // no top padding
+  bottomZero: "px-4 pt-16 sm:px-6 sm:pt-20 lg:px-8 lg:pt-24 xl:pt-28", // no bottom padding
+  hero: "px-4 pt-24 pb-16 sm:px-6 sm:pt-28 sm:pb-20 lg:px-8 lg:pt-32 lg:pb-28 xl:pt-36 xl:pb-32", // above-the-fold, clears the navbar
 } as const;
 
 // ─── Section Variants ────────────────────────────────────────────────────────

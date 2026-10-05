@@ -63,7 +63,7 @@ const HeadLineText = ({
 
   // 🔹 Font Weight
   const fontWeightClass = {
-    default: "font-black",
+    default: "font-semibold",
     bold: "font-bold",
     medium: "font-medium",
     light: "font-light",
@@ -80,16 +80,17 @@ const HeadLineText = ({
   };
 
   // 🔹 Font Sizes
+  // Fluid scale (clamp) with tight tracking and balanced wrapping.
   const sizeClass = {
-    default: "text-4xl lg:text-5xl xl:text-7xl xl:leading-relaxed",
-    sm: "text-xs lg:text-sm xl:text-sm",
-    md: "text-lg lg:text-xl xl:text-xl",
-    xl: "text-xl lg:text-xl xl:text-2xl",
-    twoXl: "text-xl lg:text-2xl xl:text-2xl",
-    threeXl: "text-xl lg:text-2xl xl:text-3xl",
-    fourXl: "text-3xl lg:text-3xl xl:text-4xl xl:leading-tight",
-    fiveXl: "text-3xl lg:text-4xl xl:text-5xl xl:leading-relaxed",
-    sixXl: "text-3xl lg:text-4xl xl:text-6xl xl:leading-[1]",
+    default: "t-display",
+    sm: "text-sm leading-snug",
+    md: "text-[clamp(1.0625rem,1rem+0.3vw,1.25rem)] leading-snug",
+    xl: "text-[clamp(1.125rem,1.05rem+0.4vw,1.375rem)] leading-snug tracking-[-0.01em]",
+    twoXl: "text-[clamp(1.25rem,1.1rem+0.6vw,1.625rem)] leading-tight tracking-[-0.015em] text-balance",
+    threeXl: "t-h3",
+    fourXl: "text-[clamp(1.5rem,1.2rem+1.2vw,2.25rem)] leading-[1.15] tracking-[-0.02em] text-balance",
+    fiveXl: "t-h2",
+    sixXl: "t-h1",
     custom: "",
   };
 

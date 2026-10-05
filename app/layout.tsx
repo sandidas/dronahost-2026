@@ -55,11 +55,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className={`${manrope.variable} ${sora.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-white text-black dark:bg-black dark:text-white transition-colors duration-300">
+      <body className="min-h-full flex flex-col bg-background text-foreground">
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
           <Suspense fallback={<LoaderWithText text="Loading..." size="lg" fullScreen />}>{children}</Suspense>
         </ThemeProvider>
       </body>

@@ -3,56 +3,38 @@ import { cn } from "@/utils/cn";
 /**
  * GradientText
  * ────────────
- * Inline gradient fill on any text. Renders as <span> so it can sit inside
- * any heading or paragraph without breaking semantics.
+ * Highlights a phrase inside a heading. Brand rule: at most ONE highlighted
+ * phrase per heading, in teal. Gradients stay inside the teal family so
+ * contrast holds on both themes; there is no pink, purple or indigo.
  *
- * All gradients reference CSS custom properties so they adapt to dark mode
- * automatically (--primary, --accent, and --secondary shift in .dark).
- *
- * | Preset   | Stops                            | Use                         |
- * |----------|----------------------------------|-----------------------------|
- * | brand    | secondary → primary → accent     | Hero headlines, key phrases |
- * | warm     | primary → accent                 | CTAs, urgency               |
- * | cool     | secondary → primary              | Trust, tech, features       |
- * | aurora   | secondary → primary → accent-light | Wide text, display titles |
+ * Preset names are kept for backwards compatibility.
  *
  * @example
- * <h1>
- *   Hosting built for{" "}
- *   <GradientText gradient="brand">speed you can measure</GradientText>
- * </h1>
+ * <h2>Hosting built for <GradientText>speed you can measure</GradientText></h2>
  */
 
 type GradientPreset = "brand" | "warm" | "cool" | "aurora";
 
 const gradients: Record<GradientPreset, string> = {
-  // Sky-blue → indigo → orange — full brand palette sweep
-  brand: "linear-gradient(90deg, var(--secondary), var(--primary-light), var(--accent))",
-  // Indigo → vivid orange — bold CTA energy, works across wrapped lines
-  warm: "linear-gradient(105deg, var(--primary) 0%, var(--primary-light) 40%, var(--accent) 100%)",
-  // Sky-blue → indigo — cool, technical trust
-  cool: "linear-gradient(90deg, var(--secondary), var(--primary))",
-  // Wide sweeping brand gradient — great for long display text
-  aurora: "linear-gradient(90deg, var(--secondary), var(--primary), var(--primary-light), var(--accent-light))",
+  brand: "linear-gradient(90deg, var(--link), var(--accent-hover))",
+  cool: "linear-gradient(90deg, var(--link), var(--accent-hover))",
+  // Orange is reserved for actions; "warm" now resolves to the same teal treatment.
+  warm: "linear-gradient(90deg, var(--link), var(--accent-hover))",
+  aurora: "linear-gradient(90deg, var(--accent), var(--link), var(--accent-hover))",
 };
 
 interface GradientTextProps {
   children: React.ReactNode;
-  /** Gradient preset. Default: "brand" */
+  /** Gradient preset. All presets are teal. Default: "brand" */
   gradient?: GradientPreset;
-  /** Extra Tailwind classes e.g. for display or font tweaks */
   className?: string;
 }
 
-export default function GradientText({
-  children,
-  gradient = "brand",
-  className,
-}: GradientTextProps) {
+export default function GradientText({ children, gradient = "brand", className }: GradientTextProps) {
   return (
     <span
-      className={cn("inline-block bg-clip-text text-transparent", className)}
-      style={{ backgroundImage: gradients[gradient] }}
+      className={cn("bg-clip-text text-transparent", className)}
+      style={{ backgroundImage: gradients[gradient], WebkitBoxDecorationBreak: "clone", boxDecorationBreak: "clone" }}
     >
       {children}
     </span>

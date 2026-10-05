@@ -6,8 +6,10 @@
     "dev": "next dev",
     "start": "next start",
     "lint": "eslint",
-    "build": "tsx scripts/generate-llms-txt.ts && next build",
-    "generate:llms": "tsx scripts/generate-llms-txt.ts"
+    "build": "tsx scripts/check-contrast.ts && tsx scripts/generate-llms-txt.ts && next build",
+    "generate:llms": "tsx scripts/generate-llms-txt.ts",
+    "check:contrast": "tsx scripts/check-contrast.ts",
+    "screenshot": "tsx scripts/screenshot.ts"
   },
   "dependencies": {
     "clsx": "^2.1.1",

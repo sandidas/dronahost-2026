@@ -32,7 +32,7 @@ export default function ShowcaseLayout({
   return (
     <div className="flex pt-14">
       {/* Sticky sidebar column — stays visible while page scrolls */}
-      <div className="sticky top-14 h-[calc(100vh-3.5rem)] shrink-0 self-start relative">
+      <div className="relative sticky top-14 hidden h-[calc(100vh-3.5rem)] shrink-0 self-start md:block">
         {/* overflow-clip clips width transition without breaking inner sticky/scroll */}
         <aside
           className={`h-full overflow-clip border-r border-slate-200 dark:border-slate-800 ${
@@ -57,7 +57,7 @@ export default function ShowcaseLayout({
       </div>
 
       {/* Main content */}
-      <main id="main-content" tabIndex={-1} className="min-w-0 flex-1 px-8 py-6">
+      <main id="main-content" tabIndex={-1} className="min-w-0 flex-1 px-4 py-6 md:px-8">
         {children}
       </main>
     </div>

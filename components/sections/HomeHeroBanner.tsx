@@ -29,7 +29,7 @@ export default function HomeHeroBanner({ youtubeVideoId }: HomeHeroBannerProps) 
       )}
 
       {/* Content — above video and overlay */}
-      <Section as="div" padding="hero" size="xl" className="relative z-10">
+      <Section as="div" padding="hero" size="lg" className="relative z-10">
         <div className="grid grid-cols-1 items-center gap-10 md:gap-12 lg:gap-16 xl:grid-cols-2">
 
           {/* ── Left: headline + CTAs ── */}
@@ -58,7 +58,7 @@ export default function HomeHeroBanner({ youtubeVideoId }: HomeHeroBannerProps) 
               working as hard as you do.
             </p>
 
-            <Button href="/hosting/wordpress" size="xl" fullWidth>
+            <Button href="/hosting/wordpress" size="lg" fullWidth>
               Get Started
             </Button>
 
