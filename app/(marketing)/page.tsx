@@ -1,6 +1,6 @@
 import BentoGrid, { type BentoItem } from "@/components/sections/BentoGrid";
 import ComparisonTable from "@/components/sections/ComparisonTable";
-import CTASection from "@/components/sections/HomeCTA";
+import CTABand from "@/components/sections/CTABand";
 import FAQSection from "@/components/sections/FAQSection";
 import FeatureGrid from "@/components/sections/FeatureGrid";
 import JsonLd from "@/components/sections/JsonLd";
@@ -8,9 +8,8 @@ import ProductHero from "@/components/sections/ProductHero";
 import StatsBar from "@/components/sections/StatsBar";
 import TrustBadges from "@/components/sections/TrustBadges";
 import TwoColumn from "@/components/sections/TwoColumn";
-import CaseStudy from "@/components/sections/CaseStudy";
 import LogoWall from "@/components/sections/LogoWall";
-import TestimonialsSection from "@/components/sections/Testimonials";
+import Testimonials from "@/components/sections/Testimonials";
 import { CacheVisual, ChannelsVisual, GrowthVisual, RestoreVisual } from "@/components/sections/visuals/bento";
 import {
   MigrationVisual,
@@ -19,7 +18,7 @@ import {
   WordPressSettingsVisual,
 } from "@/components/sections/visuals/split";
 import { HOME_HERO } from "@/content/heroes";
-import { HOME_BENTO, HOME_COMPARE, HOME_OFFER, HOME_SPLITS, homeData } from "@/content/home";
+import { HOME_BENTO, HOME_COMPARE, HOME_CTA, HOME_FAQ, HOME_LOGOS, HOME_OFFER, HOME_SPLITS, HOME_TESTIMONIALS } from "@/content/home";
 import { faqPageSchema, organizationSchema, websiteSchema } from "@/lib/seo/jsonld";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { startingPriceLabel } from "@/lib/pricing";
@@ -94,12 +93,11 @@ export default function Home() {
         rowHeader="Hosting type"
       />
 
-      <CaseStudy data={homeData} />
-      <CTASection data={homeData} />
-      <TestimonialsSection data={homeData} />
-      <JsonLd schema={faqPageSchema(homeData.faqSection.faqs.map((f) => ({ question: f.question, answer: f.answer })))} />
-      <FAQSection data={homeData} />
-      <LogoWall data={homeData} />
+      <Testimonials {...HOME_TESTIMONIALS} />
+      <LogoWall {...HOME_LOGOS} />
+      <JsonLd schema={faqPageSchema(HOME_FAQ.items)} />
+      <FAQSection {...HOME_FAQ} />
+      <CTABand {...HOME_CTA} />
     </>
   );
 }

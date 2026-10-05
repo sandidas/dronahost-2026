@@ -12,6 +12,8 @@ export const FEATURES = {
    * While false, prices render in development only; production shows "Price on request".
    */
   pricesConfirmed: false,
+  /** Newsletter signup endpoint exists and stores consented addresses. */
+  newsletter: false,
   /** Checkout/signup routes exist. While false, plan CTAs go to /contact. */
   checkout: false,
 } as const;

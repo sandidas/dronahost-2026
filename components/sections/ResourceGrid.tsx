@@ -1,108 +1,79 @@
+import Link from "next/link";
 import { useId } from "react";
-import Badge from "@/components/ui/Badge";
-import Card from "@/components/ui/Card";
-import HeadLineText from "@/components/ui/HeadLineText";
-import Section from "@/components/ui/Section";
 import { cn } from "@/utils/cn";
+import SectionHeader from "./SectionHeader";
 
-type ResourcePost = {
-  category?: string;
+export type ResourcePost = {
   title: string;
   description?: string;
+  href: string;
+  category?: string;
+  /** e.g. "6 min read". */
   readTime?: string;
-  button?: string;
-  image?: string;
-  href?: string;
-  publishedAt?: string;
+  /** ISO date (YYYY-MM-DD), shown as "15 January 2026". */
+  date?: string;
 };
 
 type ResourceGridProps = {
-  /** Heading level of the section title so each page keeps exactly one H1. Default "h2". */
-  headingLevel?: "h2" | "h3";
-  tagline?: string;
+  eyebrow?: string;
   title?: string;
-  posts: ResourcePost[];
+  description?: string;
+  /** 1 to 12 posts. */
+  posts: readonly ResourcePost[];
   columns?: 2 | 3;
-  featured?: boolean;
+  headingLevel?: "h2" | "h3";
   className?: string;
 };
 
-const colClass: Record<2 | 3, string> = {
-  2: "grid-cols-1 sm:grid-cols-2",
-  3: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
-};
+const formatDate = (iso: string) =>
+  new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(iso));
 
-export default function ResourceGrid({
-  tagline,
-  title,
-  posts,
-  columns = 3,
-  featured = false,
-  className,
-  headingLevel = "h2",
-}: ResourceGridProps) {
+/**
+ * Blog / resource cards. Each card is an <article> whose title is the (crawlable) link.
+ * No image is required: a typographic header keeps cards consistent and avoids broken
+ * image boxes when a post has no artwork.
+ */
+export default function ResourceGrid({ eyebrow, title, description, posts, columns = 3, headingLevel = "h2", className }: ResourceGridProps) {
   const headingId = useId();
-  const childLevel = headingLevel === "h2" ? "h3" : "h4";
-  const [firstPost, ...restPosts] = posts;
+  const Item = headingLevel === "h2" ? "h3" : "h4";
+  if (posts.length === 0) return null;
 
   return (
-    <Section aria-labelledby={headingId} size="lg" padding="lg" className={cn("bg-white dark:bg-gray-900", className)}>
-      {/* Header */}
-      {(tagline || title) && (
-        <div className="mb-12 space-y-4 text-center">
-          {tagline && <Badge variant="neutral">{tagline}</Badge>}
-          {title && (
-            <HeadLineText as={headingLevel}
-            id={headingId} fontSize="fiveXl" fontWeight="bold" align="center">
-              {title}
-            </HeadLineText>
-          )}
-        </div>
-      )}
-
-      {/* Featured first post */}
-      {featured && firstPost && (
-        <div className="mb-12">
-          <Card
-            variant="resource"
-            post={{
-              category: firstPost.category,
-              title: firstPost.title,
-              description: firstPost.description,
-              readTime: firstPost.readTime,
-              button: firstPost.button ?? "Read article",
-              image: firstPost.image,
-              href: firstPost.href,
-            }}
-            showCategory={true}
-            showDescription={true}
-            showCTA={true}
-            imageClassName="h-72"
-          />
-        </div>
-      )}
-
-      {/* Grid */}
-      <div className={cn("grid gap-8", colClass[columns])}>
-        {(featured ? restPosts : posts).map((post, index) => (
-          <Card
-            key={index}
-            variant="resource"
-            post={{
-              category: post.category,
-              title: post.title,
-              description: post.description,
-              readTime: post.readTime,
-              button: post.button ?? "Read article",
-              image: post.image,
-              href: post.href,
-            }}
-            showCategory={true}
-            showDescription={true}
-            showCTA={true}
-          />
-        ))}
+    <section aria-labelledby={title ? headingId : undefined} className={cn("section-y", className)}>
+      <div className="container-site">
+        {title && <SectionHeader id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} />}
+        <ul className={cn("grid grid-cols-1 gap-5 sm:grid-cols-2", columns === 3 && "lg:grid-cols-3", title && "mt-12 sm:mt-14")}>
+          {posts.map((post) => (
+            <li key={post.href} className="flex">
+              <article className="surface surface-interactive relative flex w-full flex-col overflow-hidden">
+                <div aria-hidden="true" className="relative flex h-28 items-end border-b border-border bg-muted/60 p-5">
+                  <div className="bg-grid absolute inset-0 opacity-60" />
+                  {post.category && (
+                    <span className="relative rounded-full border border-accent/30 bg-accent/12 px-3 py-1 text-[0.6875rem] font-semibold uppercase tracking-wider text-link">
+                      {post.category}
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  <Item className="t-h4 text-foreground">
+                    <Link href={post.href} className="after:absolute after:inset-0 after:content-[''] hover:underline">
+                      {post.title}
+                    </Link>
+                  </Item>
+                  {post.description && <p className="t-small mt-2 flex-1 text-muted-foreground">{post.description}</p>}
+                  {(post.date || post.readTime) && (
+                    <p className="mt-4 text-xs text-subtle-foreground">
+                      {post.date && <time dateTime={post.date}>{formatDate(post.date)}</time>}
+                      {post.date && post.readTime && " · "}
+                      {post.readTime}
+                    </p>
+                  )}
+                </div>
+              </article>
+            </li>
+          ))}
+        </ul>
       </div>
-    </Section>
+    </section>
   );
 }

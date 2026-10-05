@@ -1,157 +1,94 @@
-import Card from "@/components/ui/Card";
-import HeadLineText from "@/components/ui/HeadLineText";
-import Section from "@/components/ui/Section";
 import Image from "next/image";
+import Link from "next/link";
+import { useId } from "react";
+import { cn } from "@/utils/cn";
+import SectionHeader from "./SectionHeader";
 
-type Testimonial = {
-  id: number;
-  rating: number;
-  source: {
-    platform: string;
-    label: string;
-    icon: string;
-  };
-  content: string;
-  author: {
-    name: string;
-    role: string;
-    /** Company name. Required for a testimonial to render publicly. */
-    company?: string;
-    avatar: string;
-    /** Verifiable source (LinkedIn, company site, review URL). Required for public rendering. */
-    sourceUrl?: string;
-  };
+export type TestimonialItem = {
+  quote: string;
+  name: string;
+  role: string;
+  company: string;
+  /** Verifiable source: LinkedIn profile, company site or review page. Required for public rendering. */
+  sourceUrl?: string;
+  /** Optional headshot. Initials are shown when absent. */
+  photo?: { src: string; alt?: string };
 };
 
-const isVerifiable = (t: Testimonial): boolean =>
-  Boolean(t.author.name && t.author.role && t.author.company && t.author.sourceUrl);
-
-type Props = {
-  /** Heading level for the section title so pages keep one H1. Default "h2". */
-  headingLevel?: "h2" | "h3";
-  /** Showcase only: renders unverified sample entries with a visible "Sample data" label. */
+type TestimonialsProps = {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  items: readonly TestimonialItem[];
+  /** Showcase only: render unverified samples with a visible label. */
   showSamples?: boolean;
-  data: {
-    testimonialsSection: {
-      title: string;
-      tabs: {
-        label: string;
-        active: boolean;
-      }[];
-      testimonials: Testimonial[];
-      layout?: {
-        columns?: number;
-      };
-    };
-  };
+  headingLevel?: "h2" | "h3";
+  className?: string;
 };
 
-export default function Testimonials({ data, headingLevel = "h2", showSamples = false }: Props) {
-  const section = data.testimonialsSection;
-  const entries = showSamples ? section.testimonials : section.testimonials.filter(isVerifiable);
+const isVerifiable = (t: TestimonialItem) => Boolean(t.quote && t.name && t.role && t.company && t.sourceUrl);
 
-  // Hide the whole section rather than show vague or unsourced testimonials.
+const initials = (name: string) =>
+  name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((n) => n[0]?.toUpperCase())
+    .join("");
+
+/**
+ * Customer testimonials. A testimonial renders only with a full name, role, company and a
+ * source link; if none qualify the whole section is hidden rather than showing vague
+ * quotes. Photo is optional (initials fallback). Layout copes with 1 to 6 items.
+ */
+export default function Testimonials({ eyebrow, title, description, items, showSamples = false, headingLevel = "h2", className }: TestimonialsProps) {
+  const headingId = useId();
+  const entries = showSamples ? items : items.filter(isVerifiable);
   if (entries.length === 0) return null;
 
-  const columns = section.layout?.columns ?? 3;
-
   return (
-    <Section padding="xl" className="bg-gray-50 dark:bg-gray-900" aria-labelledby="testimonials-heading">
-      <div className="max-w-7xl mx-auto">
-
-        {/* HEADER */}
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-
-          {/* TITLE */}
-          <HeadLineText
-            id="testimonials-heading"
-            as={headingLevel}
-            fontSize="fourXl"
-            fontWeight="bold"
-            align="left"
-            className="max-w-xl"
-          >
-            {section.title}
-          </HeadLineText>
-
-          {/* TABS (STATIC now, no state) */}
-          <div className="flex gap-6 text-sm">
-            {section.tabs.map((tab) => (
-              <span
-                key={tab.label}
-                className={`pb-1 ${
-                  tab.active
-                    ? "text-orange-500 border-b-2 border-orange-500"
-                    : "text-gray-400"
-                }`}
-              >
-                {tab.label}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* GRID */}
-        <div
-          className={`mt-12 grid ${
-            columns === 3
-              ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-              : "grid-cols-1 md:grid-cols-2"
-          }`}
+    <section aria-labelledby={title ? headingId : undefined} className={cn("section-y", className)}>
+      <div className="container-site">
+        {title && <SectionHeader id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} />}
+        <ul
+          className={cn(
+            "grid grid-cols-1 gap-5",
+            title && "mt-12 sm:mt-14",
+            entries.length === 1 ? "mx-auto max-w-2xl" : entries.length === 2 ? "md:grid-cols-2" : "md:grid-cols-2 lg:grid-cols-3",
+          )}
         >
-          {entries.map((item, index) => (
-            <Card
-              key={item.id}
-              variant="grid"
-              index={index}
-              total={entries.length}
-              columns={columns}
-              size="md"
-              align="left"
-              separatorTone="soft"
-            >
-              {/* TOP ROW */}
-              <div className="flex items-center justify-between mb-4">
-
-                {/* STARS */}
-                <div className="flex gap-1 text-orange-500 text-sm">
-                  {"★".repeat(item.rating)}
-                </div>
-
-              </div>
-
-              {/* CONTENT */}
-              <p className="text-sm text-gray-600 leading-relaxed">
-                &ldquo;{item.content}&rdquo;
-              </p>
-
-              {/* AUTHOR */}
-              <div className="mt-6 flex items-center gap-3">
-                <Image
-                  src={item.author.avatar}
-                  alt={item.author.name}
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                />
-
-                <div>
-                  <p className="text-sm font-semibold">
-                    {item.author.name}
-                  </p>
-                  <p className="text-xs text-gray-400">
-                    {item.author.role}
-                    {item.author.company ? `, ${item.author.company}` : ""}
-                  </p>
-                  {!isVerifiable(item) && (
-                    <p className="text-xs font-semibold text-amber-600">Sample data (unverified)</p>
+          {entries.map((t) => (
+            <li key={`${t.name}-${t.company}`} className="flex">
+              <figure className="surface flex w-full flex-col p-6 sm:p-7">
+                <blockquote className="flex-1">
+                  <p className="t-body text-foreground">“{t.quote}”</p>
+                </blockquote>
+                <figcaption className="mt-6 flex items-center gap-3 border-t border-border pt-5">
+                  {t.photo ? (
+                    <Image src={t.photo.src} alt={t.photo.alt ?? t.name} width={44} height={44} className="size-11 rounded-full object-cover" />
+                  ) : (
+                    <span aria-hidden="true" className="flex size-11 shrink-0 items-center justify-center rounded-full border border-accent/30 bg-accent/12 text-sm font-semibold text-link">
+                      {initials(t.name)}
+                    </span>
                   )}
-                </div>
-              </div>
-            </Card>
+                  <span className="min-w-0 text-sm">
+                    <cite className="block font-semibold not-italic text-foreground">{t.name}</cite>
+                    <span className="block text-muted-foreground">
+                      {t.role}, {t.company}
+                    </span>
+                    {t.sourceUrl ? (
+                      <Link href={t.sourceUrl} rel="noopener noreferrer" target="_blank" className="mt-0.5 inline-block text-xs font-semibold text-link underline underline-offset-4">
+                        Verify on {t.sourceUrl.includes("linkedin.com") ? "LinkedIn" : "their site"}
+                      </Link>
+                    ) : (
+                      <span className="mt-0.5 block text-xs font-semibold text-warning">Sample, unverified</span>
+                    )}
+                  </span>
+                </figcaption>
+              </figure>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
-    </Section>
+    </section>
   );
 }

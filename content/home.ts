@@ -1,122 +1,17 @@
 /**
  * Homepage draft copy.
  *
- * TODO: replace with verified data. This is DRAFT copy ported from
- * docs/pages/home.md with every unconfirmed number, guarantee, benchmark,
- * comparison and review score removed. Add figures back only through
- * `content/claims.ts` once the claim is verified.
+ * TODO: replace with verified data. This is DRAFT copy ported from docs/pages/home.md with
+ * every unconfirmed number, guarantee, benchmark, comparison and review score removed.
+ * Add figures back only through `content/claims.ts` once the claim is verified.
  *
  * Voice: calm, specific, no hype (docs/rules/content-writing-rules.md).
- * Hero copy lives in content/heroes.ts. The navbar still lives in data/home.json.
+ * Hero copy lives in content/heroes.ts.
  */
-import base from "@/data/home.json";
 import type { FeatureIconName } from "@/components/ui/FeatureIcon";
-
-const cta = (label: string, link: string, variant: "primary" | "secondary" = "primary") => ({
-  label,
-  variant,
-  link,
-});
-
-/** Hidden by CaseStudy until a customer-approved `sourceUrl` exists. */
-const caseStudy = {
-  tagline: "Case study",
-  title: "",
-  description: "",
-  ctaPrimary: { label: "Read the case study", link: "/blog" },
-  ctaSecondary: { label: "All case studies", link: "/blog" },
-  stats: [] as { value: string; label: string }[],
-  image: { src: "/images/home/caseStudy.svg", alt: "" },
-};
-
-const ctaSection = {
-  tagline: "Get started",
-  title: "Ready to move your site?",
-  buttons: [
-    { ...cta("View plans", "/pricing"), icon: "arrow-right" },
-    cta("Talk to our team", "/contact", "secondary"),
-  ],
-  image: { src: "/images/home/CTA.svg", alt: "" },
-  layout: {"type": "split", "imagePosition": "left", "alignment": "center"},
-  style: {"background": "light", "hasBlur": false, "spacing": "large"},
-};
-
-const faq = {
-  tagline: "Hosting basics",
-  title: "Questions we are asked most",
-  categories: [] as { label: string; active: boolean }[],
-  content: {
-    title: "Not sure what you need?",
-    description:
-      "Tell us about your site and your traffic and we will recommend a plan. If a plan is not the right fit, we will say so.",
-    highlightBox: { text: "Plan details, limits and renewal terms are published on the pricing page." },
-    additionalInfo: [
-      "When you compare hosts, ask each one the same three questions: where the servers are, how backups work, and what renewal costs.",
-      "Our team answers questions before you buy, not only after.",
-    ],
-  },
-  faqs: [
-    {
-      id: 1,
-      question: "What is managed WordPress hosting?",
-      answer:
-        "Managed WordPress hosting means the host looks after the server layer: software updates, caching configuration, security hardening and backups. You manage your content, themes and plugins.",
-      isOpen: false,
-    },
-    {
-      id: 2,
-      question: "Do I need technical skills to use DronaHost?",
-      answer:
-        "No. You can run a site from the dashboard, and our support team can help with migrations and common issues. Developers who want more control can move up to VPS hosting.",
-      isOpen: false,
-    },
-    {
-      id: 3,
-      question: "Can I move my existing website to DronaHost?",
-      answer:
-        "Yes. Share your current host details and we will copy your site across, then let you review it before you point your domain. Your existing site stays live until you switch.",
-      isOpen: false,
-    },
-    {
-      id: 4,
-      question: "How do I choose between WordPress, VPS and cloud hosting?",
-      answer:
-        "Choose managed WordPress hosting if you run WordPress and want the server handled for you. Choose VPS or cloud hosting if you need root access, custom software or more control over resources.",
-      isOpen: false,
-    },
-  ],
-};
-
-/** Empty until real, sourced testimonials exist; the component hides itself. */
-const testimonials = {
-  title: "What customers say",
-  tabs: [] as { label: string; active: boolean }[],
-  testimonials: [] as {
-    id: number;
-    rating: number;
-    source: { platform: string; label: string; icon: string };
-    content: string;
-    author: { name: string; role: string; company?: string; sourceUrl?: string; avatar: string };
-  }[],
-};
-
-/** Empty until customers give written permission; the component hides itself. */
-const trust = {
-  rating: { label: "", value: 0, platform: "", reviews: "" },
-  title: { text: "Businesses that host with DronaHost", highlight: "host with DronaHost" },
-  logos: [] as { name: string; src: string; verified?: boolean }[],
-};
-
-export const homeData = {
-  navbar: base.navbar,
-  caseStudySection: caseStudy,
-  ctaSection,
-  faqSection: faq,
-  testimonialsSection: testimonials,
-  trustSection: trust,
-};
-
-export type HomeData = typeof homeData;
+import type { FaqItem } from "@/components/sections/FAQSection";
+import type { LogoItem } from "@/components/sections/LogoWall";
+import type { TestimonialItem } from "@/components/sections/Testimonials";
 
 /* ── Section copy for the Batch C components ───────────────────────────────── */
 
@@ -302,4 +197,53 @@ export const HOME_COMPARE = {
       ],
     },
   ],
+} as const;
+
+export const HOME_TESTIMONIALS: { eyebrow: string; title: string; items: TestimonialItem[] } = {
+  eyebrow: "Customers",
+  title: "What customers say",
+  // Empty until real, sourced testimonials exist; the component hides itself.
+  items: [],
+};
+
+/** Empty until customers give written permission; the component hides itself. */
+export const HOME_LOGOS: { title: string; logos: LogoItem[] } = { title: "Businesses that host with DronaHost", logos: [] };
+
+export const HOME_FAQ: { eyebrow: string; title: string; aside: { title: string; body: string }; items: FaqItem[] } = {
+  eyebrow: "Hosting basics",
+  title: "Questions we are asked most",
+  aside: {
+    title: "Not sure what you need?",
+    body: "Tell us about your site and your traffic and we will recommend a plan. If a plan is not the right fit, we will say so.",
+  },
+  items: [
+    {
+      question: "What is managed WordPress hosting?",
+      answer:
+        "Managed WordPress hosting means the host looks after the server layer: software updates, caching configuration, security hardening and backups. You manage your content, themes and plugins.",
+    },
+    {
+      question: "Do I need technical skills to use DronaHost?",
+      answer:
+        "No. You can run a site from the dashboard, and our support team can help with migrations and common issues. Developers who want more control can move up to VPS hosting.",
+    },
+    {
+      question: "Can I move my existing website to DronaHost?",
+      answer:
+        "Yes. Share your current host details and we will copy your site across, then let you review it before you point your domain. Your existing site stays live until you switch.",
+    },
+    {
+      question: "How do I choose between WordPress, VPS and cloud hosting?",
+      answer:
+        "Choose managed WordPress hosting if you run WordPress and want the server handled for you. Choose VPS or cloud hosting if you need more control over resources or want to run other software.",
+    },
+  ],
+};
+
+export const HOME_CTA = {
+  eyebrow: "Get started",
+  title: "Ready to move your site?",
+  description: "Pick a plan, or tell us about your site and we will recommend one.",
+  primaryCta: { label: "View plans", href: "/pricing" },
+  secondaryCta: { label: "Talk to our team", href: "/contact" },
 } as const;

@@ -1,75 +1,87 @@
-import HeadLineText from "@/components/ui/HeadLineText";
-import Section from "@/components/ui/Section";
+import Image from "next/image";
+import { useId } from "react";
+import { cn } from "@/utils/cn";
 
-type LogoWallProps = {
-	/** Heading level for the title. Default "h2". */
-	headingLevel?: "h2" | "h3";
-	/** Showcase only: renders unverified sample logos and rating with a visible label. */
-	showSamples?: boolean;
-	data: {
-		trustSection: {
-			rating: {
-				label: string;
-				value: number;
-				platform: string;
-				reviews: string;
-				/** Public profile URL that backs the rating. Without it the rating is hidden. */
-				sourceUrl?: string;
-			};
-			title: {
-				text: string;
-				highlight: string;
-			};
-			logos: {
-				name: string;
-				src: string;
-				/** True only with written permission from the customer. */
-				verified?: boolean;
-			}[];
-		};
-	};
+export type LogoItem = {
+  name: string;
+  /** Logo image (SVG/PNG). Without it the name is shown as a text wordmark. */
+  src?: string;
+  href?: string;
+  /** True only with written permission from the customer. */
+  verified?: boolean;
 };
 
-export default function LogoWall({ data, headingLevel = "h2", showSamples = false }: LogoWallProps) {
-	const { trustSection } = data;
-	const logos = showSamples ? trustSection.logos : trustSection.logos.filter((l) => l.verified);
-	const showRating = showSamples || Boolean(trustSection.rating.sourceUrl);
+export type LogoRating = {
+  score: number;
+  outOf: number;
+  platform: string;
+  count: number;
+  /** Public profile that backs the rating. Without it the rating is hidden. */
+  sourceUrl: string;
+};
 
-	// No verified logos means no section: an empty wall is better than an invented one.
-	if (logos.length === 0) return null;
-	const titleParts = trustSection.title.text.split(trustSection.title.highlight);
+type LogoWallProps = {
+  eyebrow?: string;
+  title?: string;
+  logos: readonly LogoItem[];
+  rating?: LogoRating;
+  /** Showcase only: render unverified logos with a visible label. */
+  showSamples?: boolean;
+  headingLevel?: "h2" | "h3";
+  className?: string;
+};
 
-	return (
-		<Section size="xl" padding="md" className="bg-[#f3f4f6] dark:bg-slate-950" aria-labelledby="logo-wall-heading">
-			<div className="mx-auto max-w-5xl text-center">
-				{showRating && <div className="mb-5 flex flex-wrap items-center justify-center gap-2 text-sm text-slate-600 dark:text-slate-300">
-					<span className="font-semibold text-slate-800 dark:text-slate-100">{trustSection.rating.label}</span>
-					<div className="flex items-center gap-1" aria-label={`${trustSection.rating.value} stars`}>
-						{Array.from({ length: trustSection.rating.value }).map((_, idx) => (
-							<span key={idx} className="inline-flex h-5 w-5 items-center justify-center rounded-sm bg-emerald-500 text-xs text-white">
-								★
-							</span>
-						))}
-					</div>
-					<span>{trustSection.rating.reviews} on</span>
-					<span className="font-semibold text-slate-800 dark:text-slate-100">{trustSection.rating.platform}</span>
-				</div>}
+/**
+ * Customer logo strip. Renders only logos flagged `verified` (written permission); hides
+ * the whole section otherwise. A third-party rating appears only with a source link.
+ * Handles 1 to 12 logos and missing images (text wordmark).
+ */
+export default function LogoWall({ eyebrow, title, logos, rating, showSamples = false, headingLevel = "h2", className }: LogoWallProps) {
+  const headingId = useId();
+  const shown = showSamples ? logos : logos.filter((l) => l.verified);
+  if (shown.length === 0) return null;
+  const Heading = headingLevel;
 
-				<HeadLineText id="logo-wall-heading" as={headingLevel} align="center" fontSize="sixXl" fontWeight="bold" className="text-[#121b39] dark:text-slate-100">
-					{titleParts[0]}
-					<span className="text-orange-500">{trustSection.title.highlight}</span>
-					{titleParts[1]}
-				</HeadLineText>
-
-				<div className="mt-10 grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-5">
-					{logos.map((logo, index) => (
-						<div key={`${logo.name}-${index}`} className="flex items-center justify-center gap-3 text-slate-400 grayscale dark:text-slate-500">
-							<span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-current/20 text-xl">✦</span>
-							<span className="text-4xl font-semibold">{logo.name}</span>
-						</div>
-					))}
-				</div>
-			</div>
-		</Section>
-	);
+  return (
+    <section aria-labelledby={title ? headingId : undefined} className={cn("py-12 sm:py-16", className)}>
+      <div className="container-site text-center">
+        {eyebrow && <p className="t-eyebrow">{eyebrow}</p>}
+        {title && (
+          <Heading id={headingId} className="t-h4 mt-2 text-muted-foreground">
+            {title}
+          </Heading>
+        )}
+        <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+          {shown.map((logo) => {
+            const mark = logo.src ? (
+              <Image src={logo.src} alt={logo.name} width={140} height={40} className="h-8 w-auto opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0 dark:invert" />
+            ) : (
+              <span className="text-xl font-semibold tracking-tight text-muted-foreground">{logo.name}</span>
+            );
+            return (
+              <li key={logo.name} className="flex flex-col items-center gap-1">
+                {logo.href ? (
+                  <a href={logo.href} rel="noopener noreferrer" target="_blank" className="inline-flex min-h-11 items-center">
+                    {mark}
+                  </a>
+                ) : (
+                  mark
+                )}
+                {!logo.verified && <span className="text-[0.6875rem] font-semibold text-warning">Sample, unverified</span>}
+              </li>
+            );
+          })}
+        </ul>
+        {rating && (
+          <p className="t-small mt-8 text-muted-foreground">
+            Rated {rating.score} out of {rating.outOf} from {rating.count.toLocaleString("en-US")} reviews on{" "}
+            <a href={rating.sourceUrl} rel="noopener noreferrer" target="_blank" className="font-semibold text-link underline underline-offset-4">
+              {rating.platform}
+            </a>
+            .
+          </p>
+        )}
+      </div>
+    </section>
+  );
 }

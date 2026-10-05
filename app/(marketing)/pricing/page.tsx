@@ -1,13 +1,17 @@
+import CTABand from "@/components/sections/CTABand";
+import FAQSection from "@/components/sections/FAQSection";
 import CenteredHero from "@/components/sections/CenteredHero";
 import JsonLd from "@/components/sections/JsonLd";
 import PricingExtras from "@/components/sections/PricingExtras";
 import PricingPlans from "@/components/sections/PricingPlans";
 import { isVerified } from "@/content/claims";
+import { PRICING_FAQ } from "@/content/faqs";
 import { PRICING_HERO } from "@/content/heroes";
+import { HOME_CTA } from "@/content/home";
 import { showPrices } from "@/lib/flags";
 import { startingPriceLabel } from "@/lib/pricing";
 import { buildPlanCards, VAT_DISPLAY } from "@/lib/pricing/plans";
-import { breadcrumbSchema, hostingPlansSchema } from "@/lib/seo/jsonld";
+import { breadcrumbSchema, faqPageSchema, hostingPlansSchema } from "@/lib/seo/jsonld";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 import { buildMetadata } from "@/lib/seo/metadata";
 
@@ -32,7 +36,7 @@ export default function PricingPage() {
 
   return (
     <>
-      <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs("/pricing")), ...(schema ? [schema] : [])]} />
+      <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs("/pricing")), faqPageSchema(PRICING_FAQ), ...(schema ? [schema] : [])]} />
       <CenteredHero {...PRICING_HERO} />
       <PricingPlans
         title="Choose your plan"
@@ -44,6 +48,8 @@ export default function PricingPage() {
       >
         <PricingExtras showPrices={prices} />
       </PricingPlans>
+      <FAQSection eyebrow="Billing" title="Pricing questions" items={PRICING_FAQ} />
+      <CTABand {...HOME_CTA} title="Not sure which plan fits?" />
     </>
   );
 }

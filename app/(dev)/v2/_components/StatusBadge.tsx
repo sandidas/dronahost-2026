@@ -1,31 +1,17 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 export type Status = "built" | "needs-work" | "missing" | "pending-review";
 
 const config: Record<Status, { label: string; classes: string }> = {
-  built: {
-    label: "✅ Built",
-    classes: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
-  },
-  "needs-work": {
-    label: "⚠️ Needs work",
-    classes: "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400",
-  },
-  missing: {
-    label: "❌ Missing",
-    classes: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
-  },
-  "pending-review": {
-    label: "🔍 Pending review",
-    classes: "bg-violet-100 text-violet-800 dark:bg-violet-900/30 dark:text-violet-400",
-  },
+  built: { label: "Built", classes: "border-success/30 bg-success-surface text-success" },
+  "needs-work": { label: "Needs work", classes: "border-warning/30 bg-warning-surface text-warning" },
+  missing: { label: "Missing", classes: "border-danger/30 bg-danger-surface text-danger" },
+  "pending-review": { label: "Pending review", classes: "border-accent/30 bg-accent/12 text-link" },
 };
 
 export default function StatusBadge({ status }: { status: Status }) {
   const { label, classes } = config[status];
   return (
-    <span className={cn("inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium", classes)}>
-      {label}
-    </span>
+    <span className={cn("inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold", classes)}>{label}</span>
   );
 }

@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { startingPriceLabel } from "@/lib/pricing";
 import Link from "next/link";
 
 import ShowcaseSection from "./_components/ShowcaseSection";
@@ -11,8 +10,6 @@ import Badge from "@/components/ui/Badge";
 import Section from "@/components/ui/Section";
 import HeadLineText from "@/components/ui/HeadLineText";
 import Card from "@/components/ui/Card";
-import CaseStudySection from "@/components/sections/CaseStudy";
-import CTASection from "@/components/sections/HomeCTA";
 import TwoColumn from "@/components/sections/TwoColumn";
 import FeatureGrid from "@/components/sections/FeatureGrid";
 import BentoGrid from "@/components/sections/BentoGrid";
@@ -24,35 +21,36 @@ import { buildPlanComparison } from "@/lib/pricing/compare";
 import { HOME_BENTO, HOME_COMPARE, HOME_OFFER, HOME_SPLITS } from "@/content/home";
 import { CacheVisual, ChannelsVisual, GrowthVisual, RestoreVisual } from "@/components/sections/visuals/bento";
 import { MigrationVisual, ProtectionVisual, SupportChannelsVisual, WordPressSettingsVisual } from "@/components/sections/visuals/split";
-import ProcessSteps from "@/components/sections/ProcessSteps";
-import NewCTASection from "@/components/sections/CTASection";
-import ResourceGrid from "@/components/sections/ResourceGrid";
-import TestimonialsSection from "@/components/sections/Testimonials";
-import FAQSection from "@/components/sections/FAQSection";
-import LogoWall from "@/components/sections/LogoWall";
 import ProductHero from "@/components/sections/ProductHero";
 import SplitHero from "@/components/sections/SplitHero";
 import CenteredHero from "@/components/sections/CenteredHero";
 import { HOME_HERO, WORDPRESS_HERO, ABOUT_HERO } from "@/content/heroes";
+import CaseStudy from "@/components/sections/CaseStudy";
+import CTABand from "@/components/sections/CTABand";
+import FAQSection from "@/components/sections/FAQSection";
+import LogoWall from "@/components/sections/LogoWall";
+import NewsletterSignup from "@/components/sections/NewsletterSignup";
+import ProcessTimeline from "@/components/sections/ProcessTimeline";
+import ResourceGrid from "@/components/sections/ResourceGrid";
+import StatsBar from "@/components/sections/StatsBar";
+import SupportChannels from "@/components/sections/SupportChannels";
+import Testimonials from "@/components/sections/Testimonials";
+import TrustBadges from "@/components/sections/TrustBadges";
+import TrustSignals from "@/components/sections/TrustSignals";
+import CodeBlock from "@/components/ui/CodeBlock";
+import { CLAIMS } from "@/content/claims";
+import { HOME_CTA, HOME_FAQ } from "@/content/home";
+import { MIGRATION_STEPS } from "@/content/faqs";
+import { SAMPLE_CASE_STUDY, SAMPLE_CODE, SAMPLE_LOGOS, SAMPLE_POSTS, SAMPLE_TESTIMONIALS } from "@/content/placeholders";
+import { TRUST_ITEMS } from "@/content/trust";
 import Header from "@/layouts/header/header";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import CurrencySelector from "@/components/layout/CurrencySelector";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import Footer from "@/layouts/footer/footer";
 import JsonLd from "@/components/sections/JsonLd";
-import TrustBadges from "@/components/sections/TrustBadges";
 import GradientText from "@/components/ui/GradientText";
-import StatsBar from "@/components/sections/StatsBar";
-import { CLAIMS } from "@/content/claims";
 
-import {
-  featureData,
-  caseStudyData,
-  ctaData,
-  testimonialsData,
-  faqData,
-  teamsData,
-} from "@/content/placeholders";
 
 const orgSchema = {
   "@context": "https://schema.org",
@@ -74,29 +72,29 @@ export default function V2ShowcasePage() {
   if (process.env.NODE_ENV !== "development") notFound();
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+    <div className="min-h-screen bg-background">
       {/* ── Fixed top bar ── */}
-      <div className="fixed top-0 inset-x-0 z-50 h-14 border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90 flex items-center justify-between px-6">
+      <div className="fixed top-0 inset-x-0 z-50 h-14 border-b border-border bg-background/90 backdrop-blur flex items-center justify-between px-6">
         {/* Left: title + env badge */}
         <div className="flex items-center gap-3">
-          <span className="font-semibold text-slate-900 dark:text-slate-100 text-sm">
+          <span className="font-semibold text-foreground text-sm">
             DronaHost Component Library
           </span>
-          <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
+          <span className="inline-flex items-center rounded-full bg-warning-surface px-2.5 py-0.5 text-xs font-medium text-warning">
             NODE_ENV: development
           </span>
         </div>
         {/* Right: status legend */}
-        <div className="hidden sm:flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
-          <span>✅ Built</span>
-          <span>⚠️ Needs work</span>
-          <span>❌ Missing</span>
+        <div className="hidden sm:flex items-center gap-4 text-xs text-muted-foreground">
+          <span>Built</span>
+          <span>Needs work</span>
+          <span>Missing</span>
         </div>
       </div>
 
       {/* ── Body: sidebar + main ── */}
       <ShowcaseLayout sidebar={<ShowcaseSidebar />}>
-          <h1 className="mb-8 text-2xl font-bold text-slate-900 dark:text-slate-100">
+          <h1 className="mb-8 text-2xl font-bold text-foreground">
             Component Showcase
           </h1>
 
@@ -108,18 +106,18 @@ export default function V2ShowcasePage() {
             notes="Layout primitive used on every page."
           >
             <div className="space-y-4">
-              <Section size="lg" padding="sm" className="border-2 border-dashed border-slate-300 rounded-lg">
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+              <Section size="lg" padding="sm" className="border-2 border-dashed border-border-strong rounded-lg">
+                <p className="text-sm text-muted-foreground">
                   Default lg size with border-dashed. The inner container is max-w-7xl, centered.
                 </p>
               </Section>
               <Section size="md" padding="sm" variant="surface" className="rounded-lg">
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <p className="text-sm text-muted-foreground">
                   Surface variant — uses the card token background with a bottom border divider.
                 </p>
               </Section>
               <Section size="md" padding="sm" variant="featured" className="rounded-lg">
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <p className="text-sm text-muted-foreground">
                   Featured variant — warm amber/orange gradient card, ideal for pricing banners.
                 </p>
               </Section>
@@ -136,7 +134,7 @@ export default function V2ShowcasePage() {
             <div className="space-y-6">
               {(["brand", "warm", "cool", "aurora"] as const).map((g) => (
                 <div key={g}>
-                  <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                  <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     {g}
                   </p>
                   <p className="font-[family-name:var(--font-heading)] text-4xl font-black">
@@ -147,7 +145,7 @@ export default function V2ShowcasePage() {
                 </div>
               ))}
               <div>
-                <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   brand — inside HeadLineText (hero usage)
                 </p>
                 <HeadLineText as="h2" fontSize="fourXl" align="left">
@@ -167,23 +165,23 @@ export default function V2ShowcasePage() {
           >
             <div className="space-y-4">
               <div>
-                <p className="mb-1 text-xs text-slate-400 uppercase tracking-wide">sixXl</p>
+                <p className="mb-1 text-xs text-muted-foreground uppercase tracking-wide">sixXl</p>
                 <HeadLineText fontSize="sixXl">Managed Hosting</HeadLineText>
               </div>
               <div>
-                <p className="mb-1 text-xs text-slate-400 uppercase tracking-wide">fourXl</p>
+                <p className="mb-1 text-xs text-muted-foreground uppercase tracking-wide">fourXl</p>
                 <HeadLineText fontSize="fourXl">Managed Hosting</HeadLineText>
               </div>
               <div>
-                <p className="mb-1 text-xs text-slate-400 uppercase tracking-wide">twoXl</p>
+                <p className="mb-1 text-xs text-muted-foreground uppercase tracking-wide">twoXl</p>
                 <HeadLineText fontSize="twoXl">Managed Hosting</HeadLineText>
               </div>
               <div>
-                <p className="mb-1 text-xs text-slate-400 uppercase tracking-wide">md</p>
+                <p className="mb-1 text-xs text-muted-foreground uppercase tracking-wide">md</p>
                 <HeadLineText fontSize="md">Managed Hosting</HeadLineText>
               </div>
               <div>
-                <p className="mb-1 text-xs text-slate-400 uppercase tracking-wide">sm</p>
+                <p className="mb-1 text-xs text-muted-foreground uppercase tracking-wide">sm</p>
                 <HeadLineText fontSize="sm">Managed Hosting</HeadLineText>
               </div>
             </div>
@@ -199,10 +197,10 @@ export default function V2ShowcasePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               {gridItems.map((item, i) => (
                 <Card key={i} variant="grid" index={i} total={6} columns={3} size="md">
-                  <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-1">
+                  <h3 className="font-semibold text-foreground mb-1">
                     {item.title}
                   </h3>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">{item.description}</p>
+                  <p className="text-sm text-muted-foreground">{item.description}</p>
                 </Card>
               ))}
             </div>
@@ -215,9 +213,9 @@ export default function V2ShowcasePage() {
             status="built"
             notes="Used in blog/KB context. Renders correctly."
           >
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-muted-foreground">
               ResourceCard renders inside the blog and knowledge base listing pages. Visit{" "}
-              <Link href="/blog" className="text-orange-600 underline hover:text-orange-700 dark:text-orange-400">
+              <Link href="/blog" className="text-link underline">
                 /blog
               </Link>{" "}
               to see it in use.
@@ -231,9 +229,9 @@ export default function V2ShowcasePage() {
             status="built"
             notes="Used in blog/KB context. Renders correctly."
           >
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-muted-foreground">
               ResourceBox renders inside the blog and knowledge base listing pages. Visit{" "}
-              <Link href="/blog" className="text-orange-600 underline hover:text-orange-700 dark:text-orange-400">
+              <Link href="/blog" className="text-link underline">
                 /blog
               </Link>{" "}
               to see it in use.
@@ -249,14 +247,14 @@ export default function V2ShowcasePage() {
           >
             <div className="space-y-6">
               <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Variants</p>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Variants</p>
                 <div className="flex flex-wrap items-center gap-4">
                   <Button href="#" variant="primary">Primary</Button>
                   <Button href="#" variant="secondary">Secondary</Button>
                 </div>
               </div>
               <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Sizes — primary (resize window to see responsive scaling)</p>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Sizes — primary (resize window to see responsive scaling)</p>
                 <div className="flex flex-wrap items-end gap-4">
                   <Button href="#" size="sm">Small</Button>
                   <Button href="#" size="md">Medium</Button>
@@ -265,7 +263,7 @@ export default function V2ShowcasePage() {
                 </div>
               </div>
               <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Sizes — secondary</p>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Sizes — secondary</p>
                 <div className="flex flex-wrap items-end gap-4">
                   <Button href="#" variant="secondary" size="sm">Small</Button>
                   <Button href="#" variant="secondary" size="md">Medium</Button>
@@ -274,14 +272,14 @@ export default function V2ShowcasePage() {
                 </div>
               </div>
               <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Full width</p>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Full width</p>
                 <div className="max-w-sm space-y-3">
                   <Button href="#" fullWidth>Primary full width</Button>
                   <Button href="#" variant="secondary" fullWidth>Secondary full width</Button>
                 </div>
               </div>
               <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">External link</p>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">External link</p>
                 <div className="flex flex-wrap gap-4">
                   <Button href="https://dronahost.com" external>Opens new tab ↗</Button>
                 </div>
@@ -296,9 +294,9 @@ export default function V2ShowcasePage() {
             status="needs-work"
             notes="Embedded in /contact only — not a reusable component."
           >
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-muted-foreground">
               The contact form is embedded directly in the{" "}
-              <a href="/contact" className="text-orange-600 underline hover:text-orange-700 dark:text-orange-400">
+              <a href="/contact" className="text-link underline">
                 /contact
               </a>{" "}
               page and has not yet been extracted into a standalone reusable component. Needs extraction and Zod validation wiring.
@@ -343,7 +341,7 @@ export default function V2ShowcasePage() {
             status="pending-review"
             notes="Batch A rebuild: sticky, tokens only, crawlable hosting mega menu (always in the HTML), keyboard and Escape support, mobile drawer with focus trap. Log in points to /login, which is not built yet."
           >
-            <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+            <div className="border border-border rounded-lg overflow-hidden">
               <Header />
             </div>
           </ShowcaseSection>
@@ -355,7 +353,7 @@ export default function V2ShowcasePage() {
             status="pending-review"
             notes="Batch A rebuild: four unique columns, real routes only. Legal entity, address, email, socials and payment methods stay hidden until set in content/company.ts and content/claims.ts."
           >
-            <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+            <div className="border border-border rounded-lg overflow-hidden">
               <Footer />
             </div>
           </ShowcaseSection>
@@ -492,54 +490,124 @@ export default function V2ShowcasePage() {
             </PricingPlans>
           </ShowcaseSection>
 
-          {/* ── Case Study ── */}
-          <ShowcaseSection
-            id="case-study"
-            title="Case Study"
-            status="needs-work"
-            notes="No real case study. Metrics hardcoded."
-          >
-            <CaseStudySection data={caseStudyData} showSamples />
-          </ShowcaseSection>
 
-          {/* ── CTA Section ── */}
-          <ShowcaseSection
-            id="cta"
-            title="CTA Section"
-            status="built"
-            notes="Structure solid. Needs real copy + final CTA URLs."
-          >
-            <CTASection data={ctaData} />
-          </ShowcaseSection>
-
-          {/* ── Testimonials ── */}
+          {/* ── Social proof (Batch E) ── */}
           <ShowcaseSection
             id="testimonials"
             title="Testimonials"
-            status="needs-work"
-            notes="All placeholder. No LinkedIn links. Critical trust gap."
+            status="pending-review"
+            notes="Renders only with name, role, company and a source link; hidden otherwise. Samples are forced on here and labelled. Photo optional (initials fallback). Replaces the star-rated cards."
           >
-            <TestimonialsSection data={testimonialsData} showSamples />
+            <Testimonials title="What customers say" headingLevel="h3" items={SAMPLE_TESTIMONIALS} showSamples className="!py-0" />
           </ShowcaseSection>
 
-          {/* ── FAQ Section ── */}
+          <ShowcaseSection
+            id="logo-wall"
+            title="LogoWall"
+            status="pending-review"
+            notes="Verified logos only (written permission). Hidden when none. Third-party rating only with a source link. Text wordmark when an image is missing."
+          >
+            <LogoWall title="Businesses that host with DronaHost" headingLevel="h3" logos={SAMPLE_LOGOS} showSamples className="!py-0" />
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="case-study"
+            title="CaseStudy"
+            status="pending-review"
+            notes="Hidden unless it links to a customer-approved published source. Sample forced on here."
+          >
+            <CaseStudy {...SAMPLE_CASE_STUDY} headingLevel="h3" showSamples className="!py-0" />
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="stats-bar"
+            title="StatsBar"
+            status="pending-review"
+            notes="Driven by content/claims.ts. Renders nothing until a claim is verified; each stat can link to its proof page. Sample forced on here."
+          >
+            <StatsBar claims={CLAIMS.slice(0, 4)} className="!py-0" />
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="trust-signals"
+            title="TrustSignals"
+            status="pending-review"
+            notes="Guarantee, SLA, security, data-center locations, DPA and support. Each item shows only when verified in content/trust.ts. Samples forced on here."
+          >
+            <TrustSignals title="Why you can trust us" headingLevel="h3" items={TRUST_ITEMS} showSamples note="Renewal prices are shown next to the signup price on every plan." className="!py-0" />
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="trust-badges"
+            title="TrustBadges"
+            status="pending-review"
+            notes="Accepted payment methods only (never trust marks). Hidden until verified."
+          >
+            <TrustBadges showSamples />
+          </ShowcaseSection>
+
+          {/* ── Content blocks (Batch F) ── */}
           <ShowcaseSection
             id="faq"
-            title="FAQ Section"
-            status="needs-work"
-            notes="Content placeholder. FAQPage JSON-LD not wired."
+            title="FAQSection"
+            status="pending-review"
+            notes="Native <details> accordion: answers are in the initial HTML, work without JavaScript and are keyboard accessible. Pair with FAQPage JSON-LD for the same visible items."
           >
-            <FAQSection data={faqData} />
+            <FAQSection {...HOME_FAQ} headingLevel="h3" openFirst className="!py-0" />
           </ShowcaseSection>
 
-          {/* ── Teams Section ── */}
           <ShowcaseSection
-            id="teams"
-            title="Teams Section"
-            status="needs-work"
-            notes="No real photos. LinkedIn links missing."
+            id="cta-band"
+            title="CTABand"
+            status="pending-review"
+            notes="One primary action, one quieter action. Replaces HomeCTA and CTASection."
           >
-            <LogoWall data={teamsData} showSamples />
+            <CTABand {...HOME_CTA} headingLevel="h3" className="!py-0" />
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="process-timeline"
+            title="ProcessTimeline"
+            status="pending-review"
+            notes="Semantic ordered list. Horizontal from lg, vertical rail on phones. Replaces ProcessSteps / HowItWorks / OurProcess."
+          >
+            <ProcessTimeline title="How moving your site works" headingLevel="h3" steps={MIGRATION_STEPS} className="!py-0" />
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="resource-grid"
+            title="ResourceGrid"
+            status="pending-review"
+            notes="Blog/resource cards with crawlable title links and no required image. Dates formatted unambiguously."
+          >
+            <ResourceGrid title="From the blog" headingLevel="h3" posts={SAMPLE_POSTS} className="!py-0" />
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="code-block"
+            title="CodeBlock"
+            status="pending-review"
+            notes="Real <pre><code> in the initial HTML, keyboard-scrollable, with a copy button as the only client JS."
+          >
+            <div className="max-w-2xl"><CodeBlock title="wp-config.php" language="php" code={SAMPLE_CODE} /></div>
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="newsletter"
+            title="NewsletterSignup"
+            status="pending-review"
+            notes="Off by default (FEATURES.newsletter) because no endpoint stores addresses yet. Zod-validated, labelled, aria-live status, privacy line. Forced on here."
+          >
+            <NewsletterSignup forceEnabled className="!py-0" />
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="support-channels"
+            title="SupportChannels"
+            status="pending-review"
+            notes="WhatsApp / live chat / ticket. A channel shows only when it exists (number set, widget installed); ticket is always real. Samples forced on here."
+          >
+            <SupportChannels title="Reach the team" headingLevel="h3" showSamples className="!py-0" />
           </ShowcaseSection>
 
           {/* ── JsonLd ── */}
@@ -549,37 +617,17 @@ export default function V2ShowcasePage() {
             status="built"
             notes="Outputs script tag. Verify with Rich Results Test."
           >
-            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            <p className="text-sm text-muted-foreground mb-4">
               JsonLd injects a{" "}
-              <code className="rounded bg-slate-100 px-1 py-0.5 text-xs dark:bg-slate-800">
+              <code className="rounded bg-muted px-1 py-0.5 text-xs">
                 {"<script type=\"application/ld+json\">"}
               </code>{" "}
               tag with no visual output. Preview of the schema passed below:
             </p>
-            <pre className="mb-4 overflow-x-auto rounded-lg bg-slate-100 p-4 text-xs text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+            <pre className="mb-4 overflow-x-auto rounded-lg bg-muted p-4 text-xs text-muted-foreground">
               {JSON.stringify(orgSchema, null, 2)}
             </pre>
             <JsonLd schema={orgSchema} />
-          </ShowcaseSection>
-
-          {/* ── Trust Badges ── */}
-          <ShowcaseSection
-            id="trust-badges"
-            title="Trust Badges"
-            status="built"
-            notes="Accepted payment methods only (no endorsement marks). Hidden until methods are verified in content/claims.ts."
-          >
-            <TrustBadges showSamples />
-          </ShowcaseSection>
-
-          {/* ── Uptime / Stats Bar ── */}
-          <ShowcaseSection
-            id="uptime-bar"
-            title="Uptime / Stats Bar"
-            status="built"
-            notes="Driven by content/claims.ts. Renders nothing until a claim is verified. Showcase previews the unverified list with a label."
-          >
-            <StatsBar claims={CLAIMS} />
           </ShowcaseSection>
 
           {/* ── Badge ── */}
@@ -595,59 +643,6 @@ export default function V2ShowcasePage() {
               <Badge variant="success">GDPR Compliant</Badge>
               <Badge variant="neutral">Beta</Badge>
             </div>
-          </ShowcaseSection>
-
-          {/* ── ProcessSteps ── */}
-          <ShowcaseSection
-            id="process-steps"
-            title="ProcessSteps"
-            status="built"
-            notes="alternating and numbered layouts. Replaces HowItWorks + OurProcess."
-          >
-            <ProcessSteps
-              tagline="How it works"
-              title="Up and running in under 10 minutes"
-              layout="numbered"
-              steps={[
-                { step: 1, title: "Choose your plan", description: "Pick the hosting plan that fits your site size and traffic." },
-                { step: 2, title: "Point your domain", description: "Update your nameservers or transfer your domain to us." },
-                { step: 3, title: "Go live", description: "We migrate your site for free and you go live with zero downtime." },
-              ]}
-            />
-          </ShowcaseSection>
-
-          {/* ── CTASection ── */}
-          <ShowcaseSection
-            id="cta-section"
-            title="CTASection"
-            status="built"
-            notes="default and gradient variants. Image left + content right. Replaces 4 CTA components."
-          >
-            <NewCTASection
-              title="Ready to move your WordPress site?"
-              description="We migrate for free. Your site stays live the entire time."
-              tagline="Free migration"
-              cta={[{ label: "Get started", href: "#" }, { label: "Talk to an expert", href: "#", variant: "secondary" }]}
-            />
-          </ShowcaseSection>
-
-          {/* ── ResourceGrid ── */}
-          <ShowcaseSection
-            id="resource-grid"
-            title="ResourceGrid"
-            status="built"
-            notes="2 or 3 column post grid. Optional featured first post. Replaces blog/AllBlogs, FeatureInsight, developmentHub."
-          >
-            <ResourceGrid
-              tagline="From the blog"
-              title="Resources for developers"
-              columns={3}
-              posts={[
-                { title: "Why LiteSpeed beats Apache for WordPress", description: "Benchmark results from 10 production sites.", href: "#", category: "Performance" },
-                { title: "GDPR compliance checklist for SaaS founders", description: "The 12 things you need before you ship in the EU.", href: "#", category: "Compliance" },
-                { title: "Free migration: what actually happens", description: "A behind-the-scenes look at our zero-downtime migration process.", href: "#", category: "Hosting" },
-              ]}
-            />
           </ShowcaseSection>
 
       </ShowcaseLayout>

@@ -59,25 +59,36 @@ const categories: Category[] = [
       { id: "bento-grid", label: "BentoGrid" },
       { id: "two-column", label: "TwoColumn" },
       { id: "comparison-table", label: "ComparisonTable" },
-      { id: "case-study", label: "Case Study" },
-      { id: "cta", label: "CTA" },
       { id: "pricing-plans", label: "PricingPlans" },
+    ],
+  },
+  {
+    label: "Social proof",
+    items: [
       { id: "testimonials", label: "Testimonials" },
-      { id: "faq", label: "FAQ" },
-      { id: "teams", label: "Teams" },
+      { id: "logo-wall", label: "LogoWall" },
+      { id: "case-study", label: "CaseStudy" },
+      { id: "stats-bar", label: "StatsBar" },
+      { id: "trust-signals", label: "TrustSignals" },
+      { id: "trust-badges", label: "TrustBadges" },
+    ],
+  },
+  {
+    label: "Content blocks",
+    items: [
+      { id: "faq", label: "FAQSection" },
+      { id: "cta-band", label: "CTABand" },
+      { id: "process-timeline", label: "ProcessTimeline" },
+      { id: "resource-grid", label: "ResourceGrid" },
+      { id: "code-block", label: "CodeBlock" },
+      { id: "newsletter", label: "NewsletterSignup" },
+      { id: "support-channels", label: "SupportChannels" },
     ],
   },
   {
     label: "SEO",
     items: [
       { id: "json-ld", label: "JsonLd" },
-    ],
-  },
-  {
-    label: "Trust & Conversion",
-    items: [
-      { id: "trust-badges", label: "Trust Badges" },
-      { id: "uptime-bar", label: "Uptime / Stats Bar" },
     ],
   },
 ];
@@ -109,7 +120,7 @@ export default function ShowcaseSidebar() {
     <nav className="sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto py-6 pr-4">
       {categories.map((cat) => (
         <div key={cat.label} className="mb-4">
-          <p className="mb-1 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+          <p className="mb-1 px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             {cat.label}
           </p>
           <ul>
@@ -119,8 +130,8 @@ export default function ShowcaseSidebar() {
                   href={`#${item.id}`}
                   className={`block rounded-md px-3 py-1.5 text-sm transition-colors ${
                     activeId === item.id
-                      ? "bg-orange-50 font-medium text-orange-600 dark:bg-orange-900/20 dark:text-orange-400"
-                      : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
+                      ? "bg-accent/12 font-medium text-link"
+                      : "text-muted-foreground hover:bg-slate-100 dark:text-muted-foreground dark:hover:bg-slate-800"
                   }`}
                 >
                   {item.label}
