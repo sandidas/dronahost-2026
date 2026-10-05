@@ -9,7 +9,12 @@
     "build": "tsx scripts/check-contrast.ts && tsx scripts/generate-llms-txt.ts && next build",
     "generate:llms": "tsx scripts/generate-llms-txt.ts",
     "check:contrast": "tsx scripts/check-contrast.ts",
-    "screenshot": "tsx scripts/screenshot.ts"
+    "screenshot": "tsx scripts/screenshot.ts",
+    "qa:axe": "tsx scripts/qa/axe.ts",
+    "qa:links": "tsx scripts/qa/links.ts",
+    "qa:jsonld": "tsx scripts/qa/jsonld.ts",
+    "qa:entities": "tsx scripts/qa/entities.ts",
+    "qa": "npm run check:contrast && npm run qa:axe && npm run qa:links && npm run qa:jsonld && npm run qa:entities"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -23,6 +28,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

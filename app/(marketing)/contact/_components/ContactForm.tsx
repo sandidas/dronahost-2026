@@ -1,144 +1,145 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
+import { useId, useState } from "react";
+import Button from "@/components/ui/Button";
+import { contactSchema } from "@/lib/contact-schema";
+import { cn } from "@/utils/cn";
 
-type FormState = {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-};
+type Fields = "name" | "email" | "subject" | "message";
+type Errors = Partial<Record<Fields, string>>;
+type Status = "idle" | "loading" | "success" | "error";
 
-export default function ContactForm() {
-  const [form, setForm] = useState<FormState>({ name: "", email: "", subject: "", message: "" });
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const inputClass =
+  "mt-2 block w-full rounded-lg border bg-card px-4 text-base text-foreground placeholder:text-subtle-foreground transition-colors focus-visible:border-accent aria-[invalid=true]:border-danger";
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+/**
+ * Contact form. Client-side Zod validation mirrors the server, errors are tied to fields with
+ * aria-describedby, and the outcome is announced in an aria-live region. The honeypot field
+ * is hidden from people and assistive tech.
+ */
+export default function ContactForm({ defaultPlan }: { defaultPlan?: string }) {
+  const id = useId();
+  const [errors, setErrors] = useState<Errors>({});
+  const [status, setStatus] = useState<Status>("idle");
+  const [serverError, setServerError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form));
+    const parsed = contactSchema.safeParse(data);
+    if (!parsed.success) {
+      const fieldErrors = parsed.error.flatten().fieldErrors;
+      setErrors({
+        name: fieldErrors.name?.[0],
+        email: fieldErrors.email?.[0],
+        subject: fieldErrors.subject?.[0],
+        message: fieldErrors.message?.[0],
       });
-
-      if (res.ok) {
-        setSuccess(true);
-        setForm({ name: "", email: "", subject: "", message: "" });
-      } else {
-        const data = await res.json() as { error?: string };
-        setError(data.error ?? "Something went wrong. Please try again.");
-      }
-    } catch {
-      setError("Network error. Please check your connection and try again.");
-    } finally {
-      setLoading(false);
+      setStatus("idle");
+      form.querySelector<HTMLElement>("[aria-invalid=true], :invalid")?.focus();
+      return;
     }
-  };
+    setErrors({});
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(parsed.data) });
+      if (!res.ok) {
+        const body = (await res.json().catch(() => ({}))) as { error?: string };
+        throw new Error(body.error ?? "Something went wrong. Please try again.");
+      }
+      setStatus("success");
+      form.reset();
+    } catch (err) {
+      setServerError(err instanceof Error ? err.message : "Network error. Please check your connection and try again.");
+      setStatus("error");
+    }
+  }
 
-  if (success) {
+  if (status === "success") {
     return (
-      <div className="rounded-xl border border-green-200 bg-green-50 p-8 text-center dark:border-green-800 dark:bg-green-900/20">
-        <p className="text-lg font-semibold text-green-800 dark:text-green-300">Message sent!</p>
-        <p className="mt-2 text-sm text-green-700 dark:text-green-400">We will get back to you within 24 hours.</p>
-        <button
-          onClick={() => setSuccess(false)}
-          className="mt-4 text-sm text-green-700 underline dark:text-green-400"
-        >
+      <div role="status" className="surface p-8 text-center">
+        <p className="t-h4 text-foreground">Message received</p>
+        <p className="t-small mt-2 text-muted-foreground">Thank you. We have your message and will reply by email.</p>
+        <Button variant="link" className="mt-3" type="button" onClick={() => setStatus("idle")}>
           Send another message
-        </button>
+        </Button>
       </div>
     );
   }
 
+  const field = (name: Fields, label: string, props: React.InputHTMLAttributes<HTMLInputElement> = {}) => (
+    <div>
+      <label htmlFor={`${id}-${name}`} className="text-sm font-semibold text-foreground">
+        {label}
+      </label>
+      <input
+        id={`${id}-${name}`}
+        name={name}
+        required
+        aria-invalid={Boolean(errors[name])}
+        aria-describedby={errors[name] ? `${id}-${name}-err` : undefined}
+        className={cn(inputClass, "h-12 border-border-strong")}
+        {...props}
+      />
+      {errors[name] && (
+        <p id={`${id}-${name}-err`} className="mt-1.5 text-sm text-danger">
+          {errors[name]}
+        </p>
+      )}
+    </div>
+  );
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={onSubmit} noValidate className="space-y-5">
+      {field("name", "Full name", { type: "text", autoComplete: "name", placeholder: "Jane Smith" })}
+      {field("email", "Email address", { type: "email", autoComplete: "email", placeholder: "jane@company.com" })}
+      {field("subject", "Subject", { type: "text", placeholder: "How can we help?" })}
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-          Full Name
-        </label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          required
-          value={form.name}
-          onChange={handleChange}
-          placeholder="John Smith"
-          className="mt-1.5 block w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-          Email Address
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          required
-          value={form.email}
-          onChange={handleChange}
-          placeholder="john@example.com"
-          className="mt-1.5 block w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="subject" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-          Subject
-        </label>
-        <input
-          id="subject"
-          name="subject"
-          type="text"
-          required
-          value={form.subject}
-          onChange={handleChange}
-          placeholder="How can we help?"
-          className="mt-1.5 block w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="message" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+        <label htmlFor={`${id}-message`} className="text-sm font-semibold text-foreground">
           Message
         </label>
         <textarea
-          id="message"
+          id={`${id}-message`}
           name="message"
           required
-          rows={5}
-          value={form.message}
-          onChange={handleChange}
-          placeholder="Tell us about your project or issue..."
-          className="mt-1.5 block w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+          rows={6}
+          aria-invalid={Boolean(errors.message)}
+          aria-describedby={errors.message ? `${id}-message-err` : undefined}
+          placeholder="Tell us about your site and what you need."
+          className={cn(inputClass, "border-border-strong py-3")}
         />
+        {errors.message && (
+          <p id={`${id}-message-err`} className="mt-1.5 text-sm text-danger">
+            {errors.message}
+          </p>
+        )}
       </div>
 
-      {error && (
-        <p className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-900/20 dark:text-red-400">
-          {error}
-        </p>
-      )}
+      {defaultPlan && <input type="hidden" name="plan" value={defaultPlan} />}
+      {/* Honeypot */}
+      <div aria-hidden="true" className="absolute -start-[9999px] h-0 w-0 overflow-hidden">
+        <label>
+          Website
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+        </label>
+      </div>
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full rounded-lg bg-primary px-6 py-3 font-semibold text-white hover:bg-primary/90 disabled:opacity-60 transition-colors"
-      >
-        {loading ? "Sending..." : "Send Message"}
-      </button>
+      <div role="alert" className={cn("text-sm text-danger", status !== "error" && "sr-only")}>
+        {status === "error" ? serverError : ""}
+      </div>
+
+      <Button type="submit" loading={status === "loading"} size="lg" fullWidth>
+        Send message
+      </Button>
+      <p className="text-xs text-subtle-foreground">
+        We use these details only to reply to you. See our{" "}
+        <Link href="/privacy" className="font-semibold underline underline-offset-4">
+          privacy policy
+        </Link>
+        .
+      </p>
     </form>
   );
 }

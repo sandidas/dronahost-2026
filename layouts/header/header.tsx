@@ -9,6 +9,7 @@ import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { ACCOUNT_LINK, HEADER_CTA, PRIMARY_LINKS } from "@/content/navigation";
+import { FEATURES } from "@/lib/flags";
 import { cn } from "@/utils/cn";
 import HostingMegaMenu from "./HostingMegaMenu";
 import MobileMenu from "./MobileMenu";
@@ -95,9 +96,11 @@ export default function Header() {
               <div className="hidden items-center gap-2 lg:flex">
                 <CurrencySelector />
                 <ThemeToggle />
-                <Button href={ACCOUNT_LINK.href} variant="ghost" size="sm" leadingIcon={<LogIn className="size-4" aria-hidden="true" />}>
-                  {ACCOUNT_LINK.label}
-                </Button>
+                {FEATURES.accountArea && (
+                  <Button href={ACCOUNT_LINK.href} variant="ghost" size="sm" leadingIcon={<LogIn className="size-4" aria-hidden="true" />}>
+                    {ACCOUNT_LINK.label}
+                  </Button>
+                )}
                 <Button href={HEADER_CTA.href} size="sm">
                   {HEADER_CTA.label}
                 </Button>

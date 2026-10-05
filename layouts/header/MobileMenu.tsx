@@ -15,6 +15,7 @@ import {
   SERVICE_LINKS,
   type NavLink,
 } from "@/content/navigation";
+import { FEATURES } from "@/lib/flags";
 import { cn } from "@/utils/cn";
 import NavIcon from "./NavIcon";
 
@@ -158,9 +159,11 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
           <Button href={HEADER_CTA.href} fullWidth>
             {HEADER_CTA.label}
           </Button>
-          <Button href={ACCOUNT_LINK.href} variant="secondary" fullWidth leadingIcon={<LogIn className="size-4" aria-hidden="true" />}>
-            {ACCOUNT_LINK.label}
-          </Button>
+          {FEATURES.accountArea && (
+            <Button href={ACCOUNT_LINK.href} variant="secondary" fullWidth leadingIcon={<LogIn className="size-4" aria-hidden="true" />}>
+              {ACCOUNT_LINK.label}
+            </Button>
+          )}
           <div className="flex items-center gap-3">
             <ThemeToggle showLabel className="flex-1" />
             <CurrencySelector />

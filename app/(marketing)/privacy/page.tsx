@@ -24,13 +24,13 @@ export default function PrivacyPage() {
         </HeadLineText>
         <time
           dateTime="2025-01-01"
-          className="mt-2 block text-sm text-slate-500 dark:text-slate-400"
+          className="mt-2 block text-sm text-muted-foreground"
         >
           Last updated: January 1, 2025
         </time>
       </header>
 
-      <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-primary">
+      <div className="article">
         <p>
           DronaHost (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;) operates
           dronahost.com. This Privacy Policy explains how we collect, use,
@@ -98,18 +98,18 @@ export default function PrivacyPage() {
         </p>
       </div>
 
-      <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-slate-500">
+      <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
         <p>
           Related policies:{" "}
-          <Link href="/terms" className="text-primary hover:underline">
+          <Link href="/terms" className="text-link underline underline-offset-4">
             Terms of Service
           </Link>
           {" · "}
-          <Link href="/data-processing" className="text-primary hover:underline">
+          <Link href="/data-processing" className="text-link underline underline-offset-4">
             Data Processing Agreement
           </Link>
           {" · "}
-          <Link href="/contact" className="text-primary hover:underline">
+          <Link href="/contact" className="text-link underline underline-offset-4">
             Contact Us
           </Link>
         </p>

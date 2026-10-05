@@ -24,13 +24,13 @@ export default function RefundPolicyPage() {
         </HeadLineText>
         <time
           dateTime="2025-01-01"
-          className="mt-2 block text-sm text-slate-500 dark:text-slate-400"
+          className="mt-2 block text-sm text-muted-foreground"
         >
           Last updated: January 1, 2025
         </time>
       </header>
 
-      <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-primary">
+      <div className="article">
         <p>
           DronaHost offers a 30-day money-back guarantee on eligible hosting
           plans. If you are not satisfied within the first 30 days, we will
@@ -74,18 +74,18 @@ export default function RefundPolicyPage() {
         </p>
       </div>
 
-      <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-slate-500">
+      <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
         <p>
           Related:{" "}
-          <Link href="/terms" className="text-primary hover:underline">
+          <Link href="/terms" className="text-link underline underline-offset-4">
             Terms of Service
           </Link>
           {" · "}
-          <Link href="/pricing" className="text-primary hover:underline">
+          <Link href="/pricing" className="text-link underline underline-offset-4">
             View Hosting Plans
           </Link>
           {" · "}
-          <Link href="/contact" className="text-primary hover:underline">
+          <Link href="/contact" className="text-link underline underline-offset-4">
             Contact Support
           </Link>
         </p>

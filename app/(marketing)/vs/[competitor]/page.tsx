@@ -9,6 +9,7 @@ import { breadcrumbSchema, articleSchema } from "@/lib/seo/jsonld";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 import { SITE_URL } from "@/lib/seo/config";
 import type { CompetitorData } from "@/data/vs/types";
+import { FEATURES } from "@/lib/flags";
 
 // Import all competitor data statically
 import siteground from "@/data/vs/siteground";
@@ -45,6 +46,7 @@ function isCompetitor(value: string): value is Competitor {
 }
 
 export function generateStaticParams(): { competitor: string }[] {
+  if (!FEATURES.comparisonPages) return [];
   return VALID_COMPETITORS.map((competitor) => ({ competitor }));
 }
 
@@ -76,7 +78,7 @@ export default async function CompetitorPage({
   params: Promise<{ competitor: string }>;
 }) {
   const { competitor } = await params;
-  if (!isCompetitor(competitor)) notFound();
+  if (!FEATURES.comparisonPages || !isCompetitor(competitor)) notFound();
 
   const d = COMPETITOR_DATA[competitor];
 

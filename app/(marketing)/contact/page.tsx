@@ -1,86 +1,68 @@
-import Section from "@/components/ui/Section";
-import HeadLineText from "@/components/ui/HeadLineText";
+import CenteredHero from "@/components/sections/CenteredHero";
 import JsonLd from "@/components/sections/JsonLd";
-import Link from "next/link";
-import { buildMetadata } from "@/lib/seo/metadata";
-import { breadcrumbSchema, localBusinessSchema } from "@/lib/seo/jsonld";
+import SupportChannels from "@/components/sections/SupportChannels";
+import { COMPANY } from "@/content/company";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
+import { breadcrumbSchema } from "@/lib/seo/jsonld";
+import { buildMetadata } from "@/lib/seo/metadata";
 import ContactForm from "./_components/ContactForm";
 
 export const metadata = buildMetadata({
-  title: "Contact DronaHost — Get Support & Sales Help",
-  description: "Reach DronaHost support or sales. Available 24/7 for technical issues, billing, and pre-sales questions for US, UK, and UAE customers.",
+  title: "Contact DronaHost",
+  description: "Ask the DronaHost team about hosting, migrations, web design or SEO. Send a message and we will reply by email.",
   path: "/contact",
 });
 
-export default function ContactPage() {
+export default async function ContactPage({ searchParams }: { searchParams: Promise<{ plan?: string }> }) {
+  const { plan } = await searchParams;
   return (
     <>
-      <JsonLd schema={[
-        breadcrumbSchema(buildBreadcrumbs("/contact")),
-        localBusinessSchema({
-          name: "DronaHost",
-          description: "Managed hosting company serving US, UK, UAE, and EU markets.",
-          url: "https://dronahost.com",
-        }),
-      ]} />
-
-      {/* Hero */}
-      <Section padding="hero" hAlign="center">
-        <HeadLineText as="h1" fontSize="fiveXl" fontWeight="bold" align="center">
-          Get in Touch
-        </HeadLineText>
-        <p className="mt-6 max-w-xl text-lg text-slate-600 dark:text-slate-300 text-center mx-auto">
-          Our team is available 24/7 for technical support, billing, and pre-sales questions. Average first response: under 1 hour.
-        </p>
-      </Section>
-
-      {/* Contact grid */}
-      <Section padding="lg">
-        <div className="grid gap-12 lg:grid-cols-2">
-          {/* Contact details */}
+      <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs("/contact"))]} />
+      <CenteredHero
+        eyebrow="Contact"
+        title="Tell us about"
+        titleAccent="your site"
+        description="Ask about hosting, a migration, a web project or SEO. Send a message and we will reply by email."
+        primaryCta={{ label: "Write to us", href: "#contact-form" }}
+      />
+      <section aria-labelledby="contact-form-heading" className="section-y">
+        <div className="container-site grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Contact Information</h2>
-            <ul className="mt-6 space-y-5">
-              <li>
-                <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Email</p>
-                <p className="mt-1 text-slate-900 dark:text-slate-100">support@dronahost.com</p>
-              </li>
-              <li>
-                <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Response Time</p>
-                <p className="mt-1 text-slate-900 dark:text-slate-100">Under 1 hour for priority plans, under 24 hours for all others</p>
-              </li>
-              <li>
-                <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Availability</p>
-                <p className="mt-1 text-slate-900 dark:text-slate-100">24 hours a day, 7 days a week — including holidays</p>
-              </li>
-              <li>
-                <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Markets Served</p>
-                <p className="mt-1 text-slate-900 dark:text-slate-100">United States · United Kingdom · United Arab Emirates · Europe</p>
-              </li>
-            </ul>
-            <div className="mt-8 space-y-2 text-sm text-slate-500">
-              <p>Looking for something else?</p>
-              <p>
-                <Link href="/pricing" className="text-primary hover:underline">View hosting plans</Link>
-                {" · "}
-                <Link href="/wordpress-hosting" className="text-primary hover:underline">WordPress hosting</Link>
-                {" · "}
-                <Link href="/blog" className="text-primary hover:underline">Read our blog</Link>
-              </p>
-            </div>
+            <h2 className="t-h3 text-foreground">Other ways to reach us</h2>
+            <dl className="mt-6 space-y-5 text-sm">
+              {COMPANY.supportEmail && (
+                <div>
+                  <dt className="font-semibold text-muted-foreground">Email</dt>
+                  <dd className="mt-1">
+                    <a href={`mailto:${COMPANY.supportEmail}`} className="text-link underline underline-offset-4">
+                      {COMPANY.supportEmail}
+                    </a>
+                  </dd>
+                </div>
+              )}
+              <div>
+                <dt className="font-semibold text-muted-foreground">Markets we serve</dt>
+                <dd className="mt-1 text-foreground">United States, United Kingdom, United Arab Emirates and Europe</dd>
+              </div>
+              {COMPANY.address && (
+                <div>
+                  <dt className="font-semibold text-muted-foreground">Address</dt>
+                  <dd className="mt-1 text-foreground">{COMPANY.address}</dd>
+                </div>
+              )}
+            </dl>
           </div>
-
-          {/* Form */}
-          <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Send a Message</h2>
-            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">We will reply to your email within 24 hours.</p>
+          <div id="contact-form" className="scroll-mt-24">
+            <h2 id="contact-form-heading" className="t-h3 text-foreground">
+              Send a message
+            </h2>
             <div className="mt-6">
-              <ContactForm />
+              <ContactForm defaultPlan={plan} />
             </div>
           </div>
         </div>
-      </Section>
+      </section>
+      <SupportChannels className="!pt-0" />
     </>
   );
 }

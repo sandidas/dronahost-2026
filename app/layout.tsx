@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Geist_Mono, Manrope, Sora } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./providers";
-import { Suspense } from "react";
-import LoaderWithText from "@/components/loader/LoaderWithText";
 import { startingPriceLabel } from "@/lib/pricing";
 
 /* ───────────────── FONTS ───────────────── */
@@ -24,10 +22,12 @@ const sora = Sora({
   weight: ["400", "600", "700", "800"],
 });
 
+// Monospace is used only for code samples, so it is not preloaded on every page.
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
+  preload: false,
 });
 
 /* ───────────────── METADATA ───────────────── */
@@ -54,13 +54,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${manrope.variable} ${sora.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang="en" suppressHydrationWarning className={`dark ${manrope.variable} ${sora.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
-          <Suspense fallback={<LoaderWithText text="Loading..." size="lg" fullScreen />}>{children}</Suspense>
+          {children}
         </ThemeProvider>
       </body>
     </html>

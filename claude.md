@@ -474,3 +474,14 @@ See **[docs/rules/coding-rules.md](docs/rules/coding-rules.md)** for the full en
 ## Content & Brand Voice Summary
 
 See **[docs/rules/content-writing-rules.md](docs/rules/content-writing-rules.md)** — full tone guide, terminology list, CTA patterns, error messages, empty states, and SEO content rules.
+
+---
+
+## Design system and QA (added during the v2 polish)
+
+- **Tokens**: `app/styles/tokens.css` (colour, radius, shadow, type, motion; dark default) and `app/styles/buttons.css`. Layers declared directly in `globals.css` get flattened by this build, so layered CSS must live in imported files. Use token utilities (`bg-card`, `text-muted-foreground`, `text-link`, `bg-action`), never raw palette colours. `npm run check:contrast` gates every token pair and runs first in `npm run build`.
+- **Components**: see `docs/components/README.md`. Every section takes `headingLevel`; heroes are `ProductHero`, `SplitHero`, `CenteredHero`. Showcase: `/v2` and `/v2/design-system` (development only; they return 404 in production).
+- **No invented facts**: public facts render only from verified registries (`content/claims.ts`, `content/trust.ts`, `content/company.ts`). Sample data lives only in `content/placeholders.ts`. Prices come only from `data/pricing.json` via `lib/pricing`, and are hidden in production until `FEATURES.pricesConfirmed` (`lib/flags.ts`). The full to-do list is `docs/reference/PLACEHOLDERS.md`.
+- **Copy**: draft copy lives in `content/*.ts`. Follow `docs/rules/content-writing-rules.md`; no unconfirmed numbers, guarantees or competitor claims.
+- **QA**: after `npm run build && npx next start -p 3200`, run `npm run qa` (contrast, axe, links, JSON-LD, raw entities). Lighthouse and screenshot helpers are in `scripts/`; results are in `docs/reference/QA_REPORT.md`.
+- **Gotchas**: do not run `next build` while `next dev` is running in the same folder (intermittent font import-map error; re-run). Do not wrap the root layout children in `Suspense` (it turns 404s into 200s).

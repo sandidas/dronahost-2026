@@ -1,102 +1,75 @@
-import AiAssistance from "./_components/aiAssistance";
-import AllBlogs from "./_components/AllBlogs";
-import Articles from "./_components/articles";
-import HeroSection from "./_components/HeroSection";
-import Cta from "./_components/cta";
-import DevelopmentHub from "./_components/developmentHub";
-import FeatureInsight from "./_components/FeatureInsight";
-import PopularVideos from "./_components/popularVideos";
-import Support from "./_components/support";
-import TrustedPlatform from "./_components/trustedPlatform";
+import CenteredHero from "@/components/sections/CenteredHero";
+import CTABand from "@/components/sections/CTABand";
 import JsonLd from "@/components/sections/JsonLd";
-import blogData from "@/data/blog.json";
-import { buildMetadata } from "@/lib/seo/metadata";
-import { breadcrumbSchema } from "@/lib/seo/jsonld";
-import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
-import { connectToDatabase } from "@/lib/mongodb";
+import ResourceGrid, { type ResourcePost } from "@/components/sections/ResourceGrid";
+import { HOME_CTA } from "@/content/home";
 import { Post } from "@/lib/models/post";
-import { formatDate } from "@/lib/utils";
+import { connectToDatabase } from "@/lib/mongodb";
+import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
+import { SITE_URL } from "@/lib/seo/config";
+import { breadcrumbSchema } from "@/lib/seo/jsonld";
+import { buildMetadata } from "@/lib/seo/metadata";
 
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
-  title: "Hosting & Web Design Blog — Tips & Guides | DronaHost",
-  description: "Practical guides on WordPress hosting, web performance, SEO, and web design for US, UK, and UAE businesses. Written by hosting engineers and designers.",
+  title: "Blog: Hosting, Performance and Web Design | DronaHost",
+  description: "Practical guides on WordPress hosting, web performance, SEO and web design from the DronaHost team.",
   path: "/blog",
 });
 
-type LeanPost = {
-  _id: unknown;
-  slug: string;
-  title: string;
-  category: string;
-  coverImage: string;
-  author: { name: string; bio: string; avatar: string };
-  publishedAt: Date | null;
-  createdAt: Date;
-};
+type LeanPost = { slug: string; title: string; excerpt: string; category: string; publishedAt: Date | null; createdAt: Date };
 
-export default async function BlogPage() {
-  const { insightsSection, mediaHubSection, platformSupportSection, supportHubSection } = blogData;
-
-  // Fetch published DB posts and merge into the static featuredPosts list
-  let dbFeaturedPosts: typeof insightsSection.featuredPosts = [];
+async function loadPosts(): Promise<ResourcePost[]> {
   try {
     await connectToDatabase();
-    const rawPosts = await Post.find(
-      { status: "published", deletedAt: null },
-      { slug: 1, title: 1, category: 1, coverImage: 1, author: 1, publishedAt: 1, createdAt: 1 }
-    )
+    const rows = (await Post.find({ status: "published", deletedAt: null }, { slug: 1, title: 1, excerpt: 1, category: 1, publishedAt: 1, createdAt: 1 })
       .sort({ publishedAt: -1 })
-      .limit(12)
-      .lean() as LeanPost[];
-
-    dbFeaturedPosts = rawPosts.map((p, i) => ({
-      id: 100_000 + i, // avoid collision with static IDs
-      category: p.category,
+      .limit(24)
+      .lean()) as unknown as LeanPost[];
+    return rows.map((p) => ({
       title: p.title,
-      image: p.coverImage,
-      author: p.author.name,
-      date: formatDate(
-        (p.publishedAt ?? p.createdAt).toISOString()
-      ),
-      slug: p.slug,
+      description: p.excerpt,
+      href: `/blog/${p.slug}`,
+      category: p.category,
+      date: (p.publishedAt ?? p.createdAt).toISOString().slice(0, 10),
     }));
   } catch {
-    // DB unreachable — fall back to static posts only
+    // Database unreachable: render the empty state instead of failing the page.
+    return [];
   }
+}
 
-  const mergedInsightsSection = {
-    ...insightsSection,
-    featuredPosts: [...dbFeaturedPosts, ...insightsSection.featuredPosts],
-  };
-
-  const blogSchema: Record<string, unknown> = {
-    "@context": "https://schema.org",
-    "@type": "Blog",
-    name: "DronaHost Blog",
-    url: "https://dronahost.com/blog",
-    description: "Hosting, web performance, SEO, and web design guides.",
-    publisher: { "@type": "Organization", name: "DronaHost" },
-  };
-
+export default async function BlogPage() {
+  const posts = await loadPosts();
   return (
     <>
-      <JsonLd schema={[blogSchema, breadcrumbSchema(buildBreadcrumbs("/blog"))]} />
-      <HeroSection insightsSection={mergedInsightsSection} />
-      <AllBlogs insightsSection={mergedInsightsSection} />
-      <FeatureInsight
-        featuredInsight={insightsSection.featuredInsight}
-        trending={insightsSection.trending}
-        newsletter={insightsSection.newsletter}
+      <JsonLd
+        schema={[
+          { "@context": "https://schema.org", "@type": "Blog", name: "DronaHost Blog", url: `${SITE_URL}/blog`, publisher: { "@type": "Organization", name: "DronaHost" } },
+          breadcrumbSchema(buildBreadcrumbs("/blog")),
+        ]}
       />
-      <Cta ctaBanner={insightsSection.ctaBanner} />
-      <PopularVideos popularVideos={mediaHubSection.popularVideos} />
-      <DevelopmentHub developmentHub={mediaHubSection.developmentHub} />
-      <TrustedPlatform intro={platformSupportSection.intro} features={platformSupportSection.features} />
-      <AiAssistance support={platformSupportSection.support} />
-      <Articles helpCategories={supportHubSection.helpCategories} />
-      <Support supportHighlight={supportHubSection.supportHighlight} />
+      <CenteredHero
+        eyebrow="Blog"
+        title="Practical notes on"
+        titleAccent="hosting and the web"
+        description="Guides on WordPress, performance, security and search, written by the people who run the servers."
+        primaryCta={{ label: "Talk to our team", href: "/contact" }}
+      />
+      {posts.length > 0 ? (
+        <ResourceGrid title="Latest articles" posts={posts} />
+      ) : (
+        <section aria-labelledby="blog-empty" className="section-y">
+          <div className="container-site text-center">
+            <h2 id="blog-empty" className="t-h3 text-foreground">
+              Articles are on the way
+            </h2>
+            <p className="t-body mx-auto mt-3 text-muted-foreground">We are preparing our first guides. In the meantime, ask us anything about your site.</p>
+          </div>
+        </section>
+      )}
+      <CTABand {...HOME_CTA} />
     </>
   );
 }

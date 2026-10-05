@@ -129,22 +129,22 @@ export default async function BlogPostPage({
           id="blog-post-hero"
           size="lg"
           padding="md"
-          className="bg-slate-50 dark:bg-[#0a0d14]"
+          className="bg-muted/50"
         >
           <div className="mx-auto max-w-3xl">
             {/* Breadcrumb */}
-            <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-sm text-slate-500">
-              <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+            <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
+              <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
               <span>/</span>
-              <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
+              <Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link>
               <span>/</span>
-              <span className="text-slate-700 dark:text-slate-300 truncate max-w-50">
+              <span className="text-foreground truncate max-w-50">
                 {post.title}
               </span>
             </nav>
 
             {/* Category */}
-            <span className="mb-4 inline-block rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-orange-600 dark:bg-orange-900/30 dark:text-orange-300">
+            <span className="mb-4 inline-block rounded-full border border-accent/30 bg-accent/12 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-link">
               {post.category}
             </span>
 
@@ -154,7 +154,7 @@ export default async function BlogPostPage({
             </HeadLineText>
 
             {/* Excerpt */}
-            <p className="mt-4 text-lg leading-relaxed text-slate-600 dark:text-slate-300">
+            <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
               {post.excerpt}
             </p>
 
@@ -170,12 +170,12 @@ export default async function BlogPostPage({
                 />
               )}
               <div>
-                <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">
+                <p className="text-sm font-semibold text-foreground">
                   {post.author.name}
                 </p>
                 <time
                   dateTime={publishedDateIso}
-                  className="text-xs text-slate-500 dark:text-slate-400"
+                  className="text-xs text-muted-foreground dark:text-slate-400"
                 >
                   {formatDate(publishedDateIso)}
                 </time>
@@ -199,7 +199,7 @@ export default async function BlogPostPage({
         </div>
 
         {/* ── Body ── */}
-        <Section size="lg" padding="md" className="bg-white dark:bg-black">
+        <Section size="lg" padding="md" >
           <div className="mx-auto max-w-3xl">
             {/* Tags */}
             {post.tags.length > 0 && (
@@ -207,7 +207,7 @@ export default async function BlogPostPage({
                 {post.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-slate-200 px-3 py-1 text-xs text-slate-600 dark:border-slate-700 dark:text-slate-400"
+                    className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground"
                   >
                     #{tag}
                   </span>
@@ -217,17 +217,17 @@ export default async function BlogPostPage({
 
             {/* Content — rendered as HTML from the DB */}
             <div
-              className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-primary prose-img:rounded-xl"
+              className="article"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
 
             {/* Related resources */}
-            <aside className="mt-16 border-t border-slate-100 pt-8 dark:border-slate-800">
+            <aside className="mt-16 border-t border-border pt-8">
               <p className="mb-4 font-semibold">Related resources</p>
               <ul className="space-y-2">
-                <li><Link href="/wordpress-hosting" className="text-primary hover:underline">WordPress Hosting Plans</Link></li>
-                <li><Link href="/pricing" className="text-primary hover:underline">Compare all hosting plans</Link></li>
-                <li><Link href="/blog" className="text-primary hover:underline">More articles</Link></li>
+                <li><Link href="/wordpress-hosting" className="text-link underline underline-offset-4">WordPress Hosting Plans</Link></li>
+                <li><Link href="/pricing" className="text-link underline underline-offset-4">Compare all hosting plans</Link></li>
+                <li><Link href="/blog" className="text-link underline underline-offset-4">More articles</Link></li>
               </ul>
             </aside>
           </div>

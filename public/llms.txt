@@ -1,41 +1,40 @@
-# DronaHost — Managed WordPress & Cloud Hosting
-> Managed hosting for businesses in the US, UK, UAE, and Europe.
-> Fast NVMe SSD servers, 99.9% uptime SLA, free SSL, and 24/7 expert support.
+# DronaHost
+> Managed WordPress, cloud and VPS hosting, plus web design and SEO, for businesses in the United States, United Kingdom, United Arab Emirates and Europe.
 
-## Hosting Products
+## Hosting products
 
-- **WordPress Hosting** — Managed WordPress on LiteSpeed + NVMe SSD. From $0.99/mo. https://dronahost.com/wordpress-hosting
-- **Cloud Hosting** — Auto-scaling cloud with 99.99% SLA and global CDN. From $9.99/mo. https://dronahost.com/cloud-hosting
-- **VPS Hosting** — Full root access, NVMe SSD, scalable resources. From $9.99/mo. https://dronahost.com/vps-hosting
-- **Business Hosting** — Professional email, unlimited databases, priority support. From $3.99/mo. https://dronahost.com/business-hosting
-- **Domain Registration** — .com from $17.99/yr, AI-powered domain search. https://dronahost.com/domains
-- **Pricing Overview** — Compare all plans side by side. https://dronahost.com/pricing
+- **Managed WordPress hosting**: LiteSpeed servers with built-in caching, a staging area for testing updates, and a team that moves your existing site across. https://dronahost.com/wordpress-hosting
+- **Cloud hosting**: Flexible cloud hosting for sites and applications whose traffic changes over time and that need to grow without migrating. https://dronahost.com/cloud-hosting
+- **VPS hosting**: Virtual private servers for applications, stores and teams that need dedicated resources and more control than shared hosting. https://dronahost.com/vps-hosting
+- **Business hosting**: Business hosting that sets up your website and business email together, with help from the team. https://dronahost.com/business-hosting
+- **Domain registration**: Register a domain name or transfer one you own, with help from the DronaHost team. https://dronahost.com/domains
+- **Pricing**: Plan comparison with the renewal price shown beside the signup price. https://dronahost.com/pricing
 
 ## Services
 
-- **Web Design** — Custom mobile-first websites for US, UK, UAE markets. https://dronahost.com/web-design
-- **SEO Services** — Technical SEO, content strategy, link building. https://dronahost.com/seo-services
-- **Growth Services** — CRM integrations, marketing automation, conversion optimisation. https://dronahost.com/growth-services
+- **Web design and development**: WordPress, React and Next.js websites scoped around what your business needs the site to do. https://dronahost.com/web-design
+- **Growth services**: Support for sites that are ready to grow: integrations, conversion work and ongoing improvement. https://dronahost.com/growth-services
+- **SEO services**: Technical SEO, content strategy and link building on a monthly retainer. https://dronahost.com/seo-services
 
-## Regional Hosting
+## Regional hosting
 
-- **USA Hosting** — Servers in New York & Los Angeles, CCPA compliant. https://dronahost.com/hosting/us
-- **UK Hosting** — London data centre, ICO registered, UK GDPR compliant. https://dronahost.com/hosting/uk
-- **EU Hosting** — Frankfurt & Amsterdam, full GDPR compliance, DPA included. https://dronahost.com/hosting/eu
-- **UAE Hosting** — Dubai data centre, sub-15ms latency for GCC. https://dronahost.com/hosting/uae
+- **Hosting for United States audiences**: https://dronahost.com/hosting/us
+- **Hosting for United Kingdom audiences**: https://dronahost.com/hosting/uk
+- **Hosting for European Union audiences**: https://dronahost.com/hosting/eu
+- **Hosting for United Arab Emirates audiences**: https://dronahost.com/hosting/uae
 
 ## Company
 
-- **About DronaHost** — https://dronahost.com/about
-- **Contact** — 24/7 support, sales@dronahost.com. https://dronahost.com/contact
-- **Blog** — Hosting guides, web design tips, SEO tutorials. https://dronahost.com/blog
+- **About DronaHost**: https://dronahost.com/about
+- **Contact**: https://dronahost.com/contact
+- **Blog**: Hosting, performance and web design guides. https://dronahost.com/blog
 
-## Legal & Compliance
+## Legal and compliance
 
-- Privacy Policy: https://dronahost.com/privacy
-- Terms of Service: https://dronahost.com/terms
-- Refund Policy (30-day money-back): https://dronahost.com/refund-policy
-- Service Level Agreement: https://dronahost.com/sla
-- Security & Data Protection: https://dronahost.com/security
-- GDPR Data Processing Agreement: https://dronahost.com/data-processing
+- Privacy policy: https://dronahost.com/privacy
+- Terms of service: https://dronahost.com/terms
+- Refund policy: https://dronahost.com/refund-policy
+- Service level agreement: https://dronahost.com/sla
+- Security: https://dronahost.com/security
+- Data processing: https://dronahost.com/data-processing
 

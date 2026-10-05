@@ -22,14 +22,6 @@ const STATIC_PAGES: MetadataRoute.Sitemap = [
   { url: `${SITE_URL}/hosting/uk`, priority: 0.6, changeFrequency: "monthly" },
   { url: `${SITE_URL}/hosting/eu`, priority: 0.6, changeFrequency: "monthly" },
   { url: `${SITE_URL}/hosting/uae`, priority: 0.6, changeFrequency: "monthly" },
-  // Comparison
-  { url: `${SITE_URL}/vs/siteground`, priority: 0.6, changeFrequency: "monthly" },
-  { url: `${SITE_URL}/vs/kinsta`, priority: 0.6, changeFrequency: "monthly" },
-  { url: `${SITE_URL}/vs/wp-engine`, priority: 0.6, changeFrequency: "monthly" },
-  { url: `${SITE_URL}/vs/bluehost`, priority: 0.6, changeFrequency: "monthly" },
-  { url: `${SITE_URL}/vs/hostinger`, priority: 0.6, changeFrequency: "monthly" },
-  { url: `${SITE_URL}/vs/a2-hosting`, priority: 0.6, changeFrequency: "monthly" },
-  { url: `${SITE_URL}/vs/cloudways`, priority: 0.6, changeFrequency: "monthly" },
   // Legal
   { url: `${SITE_URL}/privacy`, priority: 0.3, changeFrequency: "yearly" },
   { url: `${SITE_URL}/terms`, priority: 0.3, changeFrequency: "yearly" },

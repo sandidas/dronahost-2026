@@ -1,46 +1,32 @@
 import CenteredHero from "@/components/sections/CenteredHero";
-import { ABOUT_HERO } from "@/content/heroes";
-import Expertise from "@/components/sections/Expertise";
-import OurPartners from "@/components/sections/OurPartners";
-import OurProcess from "@/components/sections/OurProcess";
+import CTABand from "@/components/sections/CTABand";
+import FeatureGrid from "@/components/sections/FeatureGrid";
 import JsonLd from "@/components/sections/JsonLd";
-import Link from "next/link";
-import { buildMetadata } from "@/lib/seo/metadata";
-import { breadcrumbSchema, organizationSchema } from "@/lib/seo/jsonld";
+import ProcessTimeline from "@/components/sections/ProcessTimeline";
+import TrustSignals from "@/components/sections/TrustSignals";
+import { ABOUT_HERO } from "@/content/heroes";
+import { HOME_CTA } from "@/content/home";
+import { ABOUT_HOW_WE_WORK, ABOUT_WHAT_WE_DO } from "@/content/pages";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
-import data from "@/data/Experience&Growth.json";
+import { breadcrumbSchema, organizationSchema } from "@/lib/seo/jsonld";
+import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
-  title: "About DronaHost — Hosting Experts Since 2020",
-  description: "DronaHost is a managed hosting company serving businesses in the US, UK, UAE, and EU. Learn about our mission, team, and values.",
+  title: "About DronaHost: Hosting and Web Team",
+  description:
+    "DronaHost is a hosting and web team based in India, working with businesses in the United States, United Kingdom, United Arab Emirates and Europe.",
   path: "/about",
 });
 
 export default function AboutPage() {
   return (
     <>
-      <JsonLd schema={[
-        breadcrumbSchema(buildBreadcrumbs("/about")),
-        organizationSchema(),
-      ]} />
-
+      <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs("/about")), organizationSchema()]} />
       <CenteredHero {...ABOUT_HERO} />
-      <Expertise data={data.experienceGrowthPage.expertise} />
-      <OurPartners data={data.experienceGrowthPage.partners} />
-      <OurProcess data={data.experienceGrowthPage.process} />
-
-      <section className="py-8 border-t border-slate-100 dark:border-slate-800">
-        <div className="mx-auto max-w-7xl px-6">
-          <p className="text-sm text-slate-500">
-            Learn more:{" "}
-            <Link href="/contact" className="text-primary hover:underline">Contact Us</Link>
-            {" · "}
-            <Link href="/wordpress-hosting" className="text-primary hover:underline">Our Hosting Plans</Link>
-            {" · "}
-            <Link href="/growth-services" className="text-primary hover:underline">Growth Services</Link>
-          </p>
-        </div>
-      </section>
+      <FeatureGrid {...ABOUT_WHAT_WE_DO} columns={4} />
+      <ProcessTimeline {...ABOUT_HOW_WE_WORK} />
+      <TrustSignals eyebrow="Transparency" title="What you can check for yourself" />
+      <CTABand {...HOME_CTA} />
     </>
   );
 }

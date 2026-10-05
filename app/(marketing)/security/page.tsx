@@ -24,13 +24,13 @@ export default function SecurityPage() {
         </HeadLineText>
         <time
           dateTime="2025-01-01"
-          className="mt-2 block text-sm text-slate-500 dark:text-slate-400"
+          className="mt-2 block text-sm text-muted-foreground"
         >
           Last updated: January 1, 2025
         </time>
       </header>
 
-      <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-primary">
+      <div className="article">
         <p>
           Security is a core part of DronaHost&apos;s infrastructure. This page
           describes the technical and organisational measures we use to protect
@@ -92,18 +92,18 @@ export default function SecurityPage() {
         </p>
       </div>
 
-      <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-slate-500">
+      <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
         <p>
           Related:{" "}
-          <Link href="/privacy" className="text-primary hover:underline">
+          <Link href="/privacy" className="text-link underline underline-offset-4">
             Privacy Policy
           </Link>
           {" · "}
-          <Link href="/data-processing" className="text-primary hover:underline">
+          <Link href="/data-processing" className="text-link underline underline-offset-4">
             Data Processing Agreement
           </Link>
           {" · "}
-          <Link href="/sla" className="text-primary hover:underline">
+          <Link href="/sla" className="text-link underline underline-offset-4">
             SLA
           </Link>
         </p>

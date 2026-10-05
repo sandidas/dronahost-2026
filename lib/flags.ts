@@ -12,6 +12,10 @@ export const FEATURES = {
    * While false, prices render in development only; production shows "Price on request".
    */
   pricesConfirmed: false,
+  /** Competitor comparison pages (/vs/*). Off until every claim about DronaHost and each competitor is verified. */
+  comparisonPages: false,
+  /** The customer account area (/login) exists. While false, no "Log in" link is shown. */
+  accountArea: false,
   /** Newsletter signup endpoint exists and stores consented addresses. */
   newsletter: false,
   /** Checkout/signup routes exist. While false, plan CTAs go to /contact. */

@@ -26,13 +26,13 @@ export default function DataProcessingPage() {
         </HeadLineText>
         <time
           dateTime="2025-01-01"
-          className="mt-2 block text-sm text-slate-500 dark:text-slate-400"
+          className="mt-2 block text-sm text-muted-foreground"
         >
           Last updated: January 1, 2025
         </time>
       </header>
 
-      <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-primary">
+      <div className="article">
         <p>
           This Data Processing Agreement (&quot;DPA&quot;) forms part of the
           agreement between DronaHost and you (the &quot;Controller&quot;) for
@@ -76,7 +76,7 @@ export default function DataProcessingPage() {
         <p>
           DronaHost implements the technical and organisational security measures
           described in our{" "}
-          <Link href="/security" className="text-primary hover:underline">
+          <Link href="/security" className="text-link underline underline-offset-4">
             Security Policy
           </Link>
           , including encryption at rest and in transit, access controls, and
@@ -97,28 +97,24 @@ export default function DataProcessingPage() {
           request a countersigned version via legal@dronahost.com.
         </p>
         <p>
-          <a
-            href="/documents/dronahost-dpa.pdf"
-            download
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-800 transition-colors"
-          >
-            Download DPA (PDF)
-          </a>
+          <Link href="/contact" className="btn btn-secondary">
+            Request the DPA
+          </Link>
         </p>
       </div>
 
-      <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-slate-500">
+      <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
         <p>
           Related:{" "}
-          <Link href="/privacy" className="text-primary hover:underline">
+          <Link href="/privacy" className="text-link underline underline-offset-4">
             Privacy Policy
           </Link>
           {" · "}
-          <Link href="/security" className="text-primary hover:underline">
+          <Link href="/security" className="text-link underline underline-offset-4">
             Security Policy
           </Link>
           {" · "}
-          <Link href="/contact" className="text-primary hover:underline">
+          <Link href="/contact" className="text-link underline underline-offset-4">
             Contact Legal
           </Link>
         </p>

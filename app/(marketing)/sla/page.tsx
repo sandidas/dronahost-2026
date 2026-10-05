@@ -24,13 +24,13 @@ export default function SlaPage() {
         </HeadLineText>
         <time
           dateTime="2025-01-01"
-          className="mt-2 block text-sm text-slate-500 dark:text-slate-400"
+          className="mt-2 block text-sm text-muted-foreground"
         >
           Last updated: January 1, 2025
         </time>
       </header>
 
-      <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-primary">
+      <div className="article">
         <p>
           This Service Level Agreement (&quot;SLA&quot;) describes the uptime
           commitments DronaHost makes to customers and the remedies available
@@ -100,18 +100,18 @@ export default function SlaPage() {
         </p>
       </div>
 
-      <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-slate-500">
+      <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
         <p>
           Related:{" "}
-          <Link href="/terms" className="text-primary hover:underline">
+          <Link href="/terms" className="text-link underline underline-offset-4">
             Terms of Service
           </Link>
           {" · "}
-          <Link href="/security" className="text-primary hover:underline">
+          <Link href="/security" className="text-link underline underline-offset-4">
             Security Policy
           </Link>
           {" · "}
-          <Link href="/contact" className="text-primary hover:underline">
+          <Link href="/contact" className="text-link underline underline-offset-4">
             Open a Ticket
           </Link>
         </p>

@@ -24,13 +24,13 @@ export default function TermsPage() {
         </HeadLineText>
         <time
           dateTime="2025-01-01"
-          className="mt-2 block text-sm text-slate-500 dark:text-slate-400"
+          className="mt-2 block text-sm text-muted-foreground"
         >
           Last updated: January 1, 2025
         </time>
       </header>
 
-      <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-primary">
+      <div className="article">
         <p>
           These Terms of Service (&quot;Terms&quot;) govern your access to and
           use of DronaHost services. By using our services, you agree to these
@@ -64,7 +64,7 @@ export default function TermsPage() {
         <h2>Service Level Agreement</h2>
         <p>
           Our uptime commitments are detailed in our{" "}
-          <Link href="/sla" className="text-primary hover:underline">
+          <Link href="/sla" className="text-link underline underline-offset-4">
             Service Level Agreement
           </Link>
           . Credits for downtime are the sole remedy for service outages.
@@ -92,18 +92,18 @@ export default function TermsPage() {
         </p>
       </div>
 
-      <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-slate-500">
+      <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
         <p>
           Related policies:{" "}
-          <Link href="/privacy" className="text-primary hover:underline">
+          <Link href="/privacy" className="text-link underline underline-offset-4">
             Privacy Policy
           </Link>
           {" · "}
-          <Link href="/refund-policy" className="text-primary hover:underline">
+          <Link href="/refund-policy" className="text-link underline underline-offset-4">
             Refund Policy
           </Link>
           {" · "}
-          <Link href="/sla" className="text-primary hover:underline">
+          <Link href="/sla" className="text-link underline underline-offset-4">
             SLA
           </Link>
         </p>
