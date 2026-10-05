@@ -1,46 +1,49 @@
-import IncludedEveryPlan from "./_components/IncludedEveryPlan";
-import WhyBetter from "./_components/WhyBetter";
-import GlobalReach from "./_components/GlobalReach";
-import WebHostingHeroSection from "./_components/WebHostingHeroSection";
-import PricingSection from "./_components/WebHostingPrice";
+import CenteredHero from "@/components/sections/CenteredHero";
 import JsonLd from "@/components/sections/JsonLd";
-import webHostingPlanData from "@/data/webHostingPlan.json";
-import { buildMetadata } from "@/lib/seo/metadata";
-import { breadcrumbSchema } from "@/lib/seo/jsonld";
+import PricingExtras from "@/components/sections/PricingExtras";
+import PricingPlans from "@/components/sections/PricingPlans";
+import { isVerified } from "@/content/claims";
+import { PRICING_HERO } from "@/content/heroes";
+import { showPrices } from "@/lib/flags";
+import { startingPriceLabel } from "@/lib/pricing";
+import { buildPlanCards, VAT_DISPLAY } from "@/lib/pricing/plans";
+import { breadcrumbSchema, hostingPlansSchema } from "@/lib/seo/jsonld";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
+import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
-  title: "Web Hosting Pricing — Plans from $0.99/mo | DronaHost",
-  description: "Compare DronaHost web hosting plans: Starter from $0.99/mo, Premium from $2.49/mo, Business from $3.99/mo. All include free SSL, domain, and 30-day money-back.",
+  title: "Pricing: Managed WordPress and Cloud Hosting Plans | DronaHost",
+  description: `Compare DronaHost managed hosting plans, with the renewal price shown beside the signup price${startingPriceLabel() ? `. Plans from ${startingPriceLabel()}` : ""}.`,
   path: "/pricing",
 });
 
-export default function WebHostingPage() {
-	const { hero, plans, includedFeatures, comparison, globalReach } = webHostingPlanData.webHostingPlanPage;
+export default function PricingPage() {
+  const plans = buildPlanCards();
+  const prices = showPrices();
+  const schema = hostingPlansSchema(
+    plans.map((p) => ({
+      id: p.id,
+      name: p.name,
+      description: p.description,
+      custom: p.custom,
+      annualAmount: p.annual ? Number(p.annual.replace(/[^0-9.]/g, "")) : null,
+    })),
+  );
 
-	const pricingJsonLd: Record<string, unknown> = {
-		"@context": "https://schema.org",
-		"@graph": plans.map((plan: { name: string; price: string }) => ({
-			"@type": "Product",
-			name: `DronaHost ${plan.name} Hosting`,
-			offers: {
-				"@type": "Offer",
-				price: plan.price.replace(/[^0-9.]/g, ""),
-				priceCurrency: "USD",
-				availability: "https://schema.org/InStock",
-			},
-		})),
-	};
-
-	return (
-		<>
-			<JsonLd schema={[pricingJsonLd, breadcrumbSchema(buildBreadcrumbs("/pricing"))]} />
-			<WebHostingHeroSection heroData={hero} />
-			<PricingSection plans={plans} />
-			<IncludedEveryPlan includedFeatures={includedFeatures} />
-			<WhyBetter comparison={comparison} />
-			<GlobalReach globalReach={globalReach} />
-			 
-		</>
-	);
+  return (
+    <>
+      <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs("/pricing")), ...(schema ? [schema] : [])]} />
+      <CenteredHero {...PRICING_HERO} />
+      <PricingPlans
+        title="Choose your plan"
+        description="Every plan is managed. Compare resources below, or open the full feature table."
+        plans={plans}
+        showPrices={prices}
+        vatDisplay={VAT_DISPLAY}
+        guaranteeNote={isVerified("money-back") ? "30-day money-back guarantee." : null}
+      >
+        <PricingExtras showPrices={prices} />
+      </PricingPlans>
+    </>
+  );
 }

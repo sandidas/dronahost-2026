@@ -53,3 +53,12 @@ export const SEO_HERO: HeroCopy = {
   primaryCta: { label: "Talk to our team", href: "/contact" },
   secondaryCta: { label: "See web design", href: "/web-design" },
 };
+
+export const PRICING_HERO: HeroCopy = {
+  eyebrow: "Pricing",
+  title: "Plans for every stage of",
+  titleAccent: "your site",
+  description:
+    "Choose a managed hosting plan. Prices are listed in US dollars, with the renewal price shown next to the signup price.",
+  primaryCta: { label: "Talk to our team", href: "/contact" },
+};

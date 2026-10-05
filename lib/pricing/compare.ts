@@ -34,7 +34,7 @@ const CAPABILITY_ROWS: { label: string; key: keyof Plan["capabilities"] }[] = [
  * Custom-priced plans (null prices) show "Custom pricing".
  */
 export function buildPlanComparison(includeEnterprise = false) {
-  const plans = pricing.plans.filter((p) => includeEnterprise || !("customPricing" in p && p.customPricing));
+  const plans = pricing.plans.filter((p) => includeEnterprise || p.pricing.annual[DEFAULT_CURRENCY] != null);
   const columns: ComparisonColumn[] = plans.map((p) => {
     const annual = p.pricing.annual[DEFAULT_CURRENCY];
     return {

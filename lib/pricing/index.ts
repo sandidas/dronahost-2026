@@ -1,5 +1,5 @@
 import pricing from "@/data/pricing.json";
-import { FEATURES } from "@/lib/flags";
+import { FEATURES, showPrices } from "@/lib/flags";
 
 export type CurrencyCode = keyof typeof pricing.currencies;
 export type BillingCycle = "monthly" | "annual";
@@ -36,6 +36,7 @@ export function startingPrice(cycle: BillingCycle = "annual", currency: Currency
 
 /** "$9.99/mo" built from data/pricing.json; empty string when no price is published. */
 export function startingPriceLabel(cycle: BillingCycle = "annual"): string {
+  if (!showPrices()) return "";
   const amount = startingPrice(cycle);
   return amount === null ? "" : `${formatPrice(amount)}/mo`;
 }

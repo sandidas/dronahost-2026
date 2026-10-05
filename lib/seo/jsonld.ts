@@ -1,3 +1,5 @@
+import { showPrices } from "@/lib/flags";
+import { COMPANY } from "@/content/company";
 import { SITE_URL, SITE_NAME, LOGO_URL } from "./config";
 
 export type JsonLdScript = Record<string, unknown>;
@@ -14,10 +16,8 @@ export function organizationSchema(): JsonLdScript {
       width: 112,
       height: 112,
     },
-    sameAs: [
-      "https://twitter.com/dronahost",
-      "https://www.linkedin.com/company/dronahost",
-    ],
+    // Only real, owned profiles from content/company.ts (the previous guessed URLs were removed).
+    ...(COMPANY.socials.length > 0 ? { sameAs: COMPANY.socials.map((s) => s.href) } : {}),
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer support",
@@ -245,5 +245,34 @@ export function articleSchema(input: {
         url: LOGO_URL,
       },
     },
+  };
+}
+
+/**
+ * Product + Offer graph for hosting plans, built from data/pricing.json.
+ * Returns null while prices are hidden (FEATURES.pricesConfirmed off in production) so
+ * unconfirmed prices never reach structured data.
+ */
+export function hostingPlansSchema(
+  plans: { id: string; name: string; description: string; custom: boolean; annualAmount: number | null }[],
+): JsonLdScript | null {
+  if (!showPrices()) return null;
+  const priced = plans.filter((p) => !p.custom && p.annualAmount != null);
+  if (priced.length === 0) return null;
+  return {
+    "@context": "https://schema.org",
+    "@graph": priced.map((p) => ({
+      "@type": "Product",
+      name: `DronaHost ${p.name} hosting`,
+      description: p.description,
+      brand: { "@type": "Brand", name: SITE_NAME },
+      offers: {
+        "@type": "Offer",
+        url: `${SITE_URL}/pricing#${p.id}`,
+        price: String(p.annualAmount),
+        priceCurrency: "USD",
+        availability: "https://schema.org/InStock",
+      },
+    })),
   };
 }

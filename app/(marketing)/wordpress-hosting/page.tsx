@@ -1,64 +1,71 @@
-import PricingCards from "@/components/sections/PricingCards";
-import CTA from "./_components/cta";
-import EnterpriseSection from "./_components/EnterpriseHosting";
-import FeatureSection from "./_components/FeatureSection";
-import HeadlessSolutions from "./_components/HeadlessSolutions";
-import SplitHero from "@/components/sections/SplitHero";
-import { WORDPRESS_HERO } from "@/content/heroes";
-import { startingPriceLabel } from "@/lib/pricing";
-import HostingPro from "./_components/HostingPro";
-import HostingProComparison from "./_components/HostingProComparison";
-import HowItWorks from "./_components/HowItWorks";
-import IntegratedPartner from "./_components/IntegratedPartner";
-import PartnerProgram from "./_components/PartnerProgram";
-import Performance from "./_components/Performance";
-import ResourceInsights from "./_components/ResourceInsights";
-import ReviewFeedback from "./_components/ReviewFeedback";
-import SupportingTeam from "./_components/SupportingTeam";
-import TechStack from "./_components/TechStack";
-import Testimonials from "./_components/testimonials";
+import FeatureGrid from "@/components/sections/FeatureGrid";
 import JsonLd from "@/components/sections/JsonLd";
-import data from "@/data/hostingLandingPage.json";
-import { buildMetadata } from "@/lib/seo/metadata";
-import { breadcrumbSchema, serviceSchema } from "@/lib/seo/jsonld";
+import PricingExtras from "@/components/sections/PricingExtras";
+import PricingPlans from "@/components/sections/PricingPlans";
+import SplitHero from "@/components/sections/SplitHero";
+import TwoColumn from "@/components/sections/TwoColumn";
+import { MigrationVisual, WordPressSettingsVisual } from "@/components/sections/visuals/split";
+import { isVerified } from "@/content/claims";
+import { WORDPRESS_HERO } from "@/content/heroes";
+import { HOME_SPLITS } from "@/content/home";
+import { WORDPRESS_FEATURES, WORDPRESS_PRICING } from "@/content/wordpress";
+import { showPrices } from "@/lib/flags";
+import { startingPriceLabel } from "@/lib/pricing";
+import { buildPlanCards, VAT_DISPLAY } from "@/lib/pricing/plans";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
+import { breadcrumbSchema, serviceSchema } from "@/lib/seo/jsonld";
+import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
-  title: "WordPress Hosting Plans — Fast & Managed | DronaHost",
+  title: "Managed WordPress Hosting | DronaHost",
   description: `Managed WordPress hosting on LiteSpeed servers, with free migration support and a staging area for safe updates${startingPriceLabel() ? `. Plans from ${startingPriceLabel()}` : ""}.`,
   path: "/wordpress-hosting",
 });
 
-export default function WebHostingPage() {
-	return (
-		<>
-			<JsonLd schema={[
-				breadcrumbSchema(buildBreadcrumbs("/wordpress-hosting")),
-				serviceSchema({
-					name: "WordPress Hosting",
-					description: "Managed WordPress hosting on LiteSpeed servers with NVMe storage, free SSL, and daily backups.",
-					url: "https://dronahost.com/wordpress-hosting",
-				}),
-			]} />
-			<SplitHero {...WORDPRESS_HERO} />
-			<EnterpriseSection data={data.hostingLandingPage.enterpriseSection} />
-			<Testimonials data={data.hostingLandingPage.testimonials} />
-			<SupportingTeam data={data.hostingLandingPage.publishingSupport} />
-			<CTA data={data.headlessSection.testimonial} />
-			<HeadlessSolutions data={data.headlessSection.solutions} />
-			<TechStack data={data.headlessSection.features} />
-			<ResourceInsights data={data.resourcesReviewsPartner.resources} />
-			<ReviewFeedback data={data.resourcesReviewsPartner.reviews} />
-			<HowItWorks data={data.resourcesReviewsPartner.howItWorks} />
-			<PartnerProgram data={data.resourcesReviewsPartner.partnerProgram} />
-			<HostingPro data={data.resourcesReviewsPartner.partnerMatchForm} />
-			<FeatureSection data={data.resourcesReviewsPartner.featureComparisonSection} />
-			<HostingProComparison data={data.resourcesReviewsPartner.featureComparisonSection} />
-			<PricingCards data={data.resourcesReviewsPartner.pricingPlansSection} />
-			<IntegratedPartner data={data.resourcesReviewsPartner.pricingPlansSection} />
-			<Performance data={data.resourcesReviewsPartner.pricingPlansSection} />
-			</>
-	);
+const [wpSplit, migrationSplit] = HOME_SPLITS;
+
+export default function WordPressHostingPage() {
+  const prices = showPrices();
+  return (
+    <>
+      <JsonLd
+        schema={[
+          breadcrumbSchema(buildBreadcrumbs("/wordpress-hosting")),
+          serviceSchema({
+            name: "Managed WordPress hosting",
+            description: "Managed WordPress hosting on LiteSpeed servers with staging environments and migration support.",
+            url: "https://dronahost.com/wordpress-hosting",
+          }),
+        ]}
+      />
+      <SplitHero {...WORDPRESS_HERO} />
+      <FeatureGrid {...WORDPRESS_FEATURES} columns={3} />
+      <TwoColumn
+        eyebrow={wpSplit.eyebrow}
+        title={wpSplit.title}
+        description={wpSplit.description}
+        features={wpSplit.features}
+        cta={wpSplit.cta}
+        visual={<WordPressSettingsVisual />}
+      />
+      <TwoColumn
+        eyebrow={migrationSplit.eyebrow}
+        title={migrationSplit.title}
+        description={migrationSplit.description}
+        features={migrationSplit.features}
+        cta={migrationSplit.cta}
+        visual={<MigrationVisual />}
+        visualPosition="left"
+      />
+      <PricingPlans
+        {...WORDPRESS_PRICING}
+        plans={buildPlanCards()}
+        showPrices={prices}
+        vatDisplay={VAT_DISPLAY}
+        guaranteeNote={isVerified("money-back") ? "30-day money-back guarantee." : null}
+      >
+        <PricingExtras showPrices={prices} />
+      </PricingPlans>
+    </>
+  );
 }
-
-

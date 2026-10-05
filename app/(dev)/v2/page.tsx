@@ -16,6 +16,9 @@ import CTASection from "@/components/sections/HomeCTA";
 import TwoColumn from "@/components/sections/TwoColumn";
 import FeatureGrid from "@/components/sections/FeatureGrid";
 import BentoGrid from "@/components/sections/BentoGrid";
+import PricingPlans from "@/components/sections/PricingPlans";
+import PricingExtras from "@/components/sections/PricingExtras";
+import { buildPlanCards, VAT_DISPLAY } from "@/lib/pricing/plans";
 import ComparisonTable from "@/components/sections/ComparisonTable";
 import { buildPlanComparison } from "@/lib/pricing/compare";
 import { HOME_BENTO, HOME_COMPARE, HOME_OFFER, HOME_SPLITS } from "@/content/home";
@@ -24,7 +27,6 @@ import { MigrationVisual, ProtectionVisual, SupportChannelsVisual, WordPressSett
 import ProcessSteps from "@/components/sections/ProcessSteps";
 import NewCTASection from "@/components/sections/CTASection";
 import ResourceGrid from "@/components/sections/ResourceGrid";
-import PricingJourney from "@/components/sections/PricingJourney";
 import TestimonialsSection from "@/components/sections/Testimonials";
 import FAQSection from "@/components/sections/FAQSection";
 import LogoWall from "@/components/sections/LogoWall";
@@ -47,7 +49,6 @@ import {
   featureData,
   caseStudyData,
   ctaData,
-  pricingJourneyData,
   testimonialsData,
   faqData,
   teamsData,
@@ -472,6 +473,25 @@ export default function V2ShowcasePage() {
             </div>
           </ShowcaseSection>
 
+          <ShowcaseSection
+            id="pricing-plans"
+            title="PricingPlans"
+            status="pending-review"
+            notes="Billing toggle (only because pricing.json offers monthly and annual), highlighted plan, renewal line under the price, 'Price on request' when prices are hidden, add-ons, and a native <details> full feature table. Prices are draft and hidden in production until FEATURES.pricesConfirmed."
+          >
+            <PricingPlans
+              title="Choose your plan"
+              headingLevel="h3"
+              plans={buildPlanCards()}
+              showPrices
+              vatDisplay={VAT_DISPLAY}
+              guaranteeNote="30-day money-back guarantee. (sample: shown only when verified)"
+              className="!py-0"
+            >
+              <PricingExtras showPrices />
+            </PricingPlans>
+          </ShowcaseSection>
+
           {/* ── Case Study ── */}
           <ShowcaseSection
             id="case-study"
@@ -490,16 +510,6 @@ export default function V2ShowcasePage() {
             notes="Structure solid. Needs real copy + final CTA URLs."
           >
             <CTASection data={ctaData} />
-          </ShowcaseSection>
-
-          {/* ── Pricing Journey ── */}
-          <ShowcaseSection
-            id="pricing-journey"
-            title="Pricing Journey"
-            status="needs-work"
-            notes="Slider not keyboard accessible. No ARIA labels."
-          >
-            <PricingJourney data={pricingJourneyData} />
           </ShowcaseSection>
 
           {/* ── Testimonials ── */}
