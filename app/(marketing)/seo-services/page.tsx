@@ -1,4 +1,5 @@
-import HeroSection from "@/components/sections/ExperienceHeroSection";
+import CenteredHero from "@/components/sections/CenteredHero";
+import { SEO_HERO } from "@/content/heroes";
 import Expertise from "@/components/sections/Expertise";
 import Section from "@/components/ui/Section";
 import HeadLineText from "@/components/ui/HeadLineText";
@@ -26,9 +27,7 @@ export default function SeoServicesPage() {
           url: "https://dronahost.com/seo-services",
         }),
       ]} />
-
-      <h1 className="sr-only">SEO Services — Rank Higher on Google</h1>
-      <HeroSection data={data.experienceGrowthPage.hero} />
+      <CenteredHero {...SEO_HERO} />
       <Expertise data={data.experienceGrowthPage.expertise} />
 
       <Section padding="lg">

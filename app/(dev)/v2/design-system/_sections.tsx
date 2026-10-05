@@ -175,7 +175,7 @@ export function ContrastSection({ results }: { results: PairResult[] }) {
 }
 
 const TYPE_SCALE = [
-  { cls: "t-display", name: "Display", spec: "clamp 40 to 72px, lh 1.04, tracking -0.035em, Sora 600", sample: "Managed hosting, built calmly" },
+  { cls: "t-display", name: "Display", spec: "clamp 36 to 64px, lh 1.04, tracking -0.035em, Sora 600", sample: "Managed hosting, built calmly" },
   { cls: "t-h1", name: "H1", spec: "clamp 32 to 56px, lh 1.08, -0.03em", sample: "WordPress hosting for teams that ship" },
   { cls: "t-h2", name: "H2", spec: "clamp 28 to 44px, lh 1.12, -0.025em", sample: "Performance you can inspect" },
   { cls: "t-h3", name: "H3", spec: "clamp 20 to 28px, lh 1.25, -0.015em", sample: "Daily backups with 30-day retention" },

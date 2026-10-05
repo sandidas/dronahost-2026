@@ -50,16 +50,11 @@ const categories: Category[] = [
     ],
   },
   {
-    label: "Banners",
-    items: [
-      { id: "home-hero-banner",       label: "HomeHeroBanner"      },
-      { id: "inner-page-hero-banner", label: "InnerPageHeroBanner" },
-    ],
-  },
-  {
     label: "Home Sections",
     items: [
-      { id: "hero", label: "Hero" },
+      { id: "product-hero", label: "ProductHero" },
+      { id: "split-hero", label: "SplitHero" },
+      { id: "centered-hero", label: "CenteredHero" },
       { id: "features", label: "Features" },
       { id: "services", label: "Services" },
       { id: "case-study", label: "Case Study" },

@@ -7,7 +7,7 @@
  * `content/claims.ts` once the claim is verified.
  *
  * Voice: calm, specific, no hype (docs/rules/content-writing-rules.md).
- * The navbar still lives in data/home.json because the header imports it.
+ * Hero copy lives in content/heroes.ts. The navbar still lives in data/home.json.
  */
 import base from "@/data/home.json";
 
@@ -18,35 +18,6 @@ const cta = (label: string, link: string, variant: "primary" | "secondary" = "pr
 });
 
 const check = (text: string) => ({ text, icon: "check" });
-
-const hero = {
-  title1: "Managed WordPress and cloud hosting ",
-  title2: "for growing businesses",
-  description:
-    "DronaHost runs managed WordPress, VPS and cloud hosting on LiteSpeed servers. We migrate your existing site, and you can reach the team by ticket, live chat or WhatsApp.",
-  background: { src: "/images/home/Background.svg", alt: "" },
-  buttons: [cta("View plans", "/pricing"), cta("Talk to our team", "/contact", "secondary")],
-  // Member counts are unverified, so the social-proof row is omitted until confirmed.
-  heroImage: { src: "/images/home/ManWithLaptop.svg", alt: "Person working on a laptop" },
-  floatingCards: [
-    {
-      title: "LiteSpeed servers",
-      description: "Server-level caching configured for WordPress.",
-      position: "top-left",
-    },
-    {
-      title: "Human support",
-      description: "Ticket, live chat or WhatsApp, whichever suits you.",
-      position: "middle-left",
-    },
-    {
-      title: "Free migration",
-      description: "We move your existing site across for you.",
-      position: "bottom-left",
-    },
-  ],
-  decorations: { backgroundBlur: true, gradientOverlay: true, curvedLines: true },
-};
 
 const features = {
   tagline: "Why DronaHost",
@@ -288,7 +259,6 @@ const trust = {
 
 export const homeData = {
   navbar: base.navbar,
-  heroSection: hero,
   featuresSection: features,
   servicesSection: services,
   caseStudySection: caseStudy,

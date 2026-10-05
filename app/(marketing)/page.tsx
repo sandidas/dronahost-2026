@@ -2,7 +2,8 @@ import CaseStudy from "@/components/sections/CaseStudy";
 import CTASection from "@/components/sections/HomeCTA";
 import FAQSection from "@/components/sections/FAQSection";
 import FeatureSection from "@/components/sections/HomeFeatureSection";
-import HeroSection from "@/components/sections/HomeHero";
+import ProductHero from "@/components/sections/ProductHero";
+import { HOME_HERO } from "@/content/heroes";
 import TwoColumn from "@/components/sections/TwoColumn";
 import FeatureGrid from "@/components/sections/FeatureGrid";
 import LogoWall from "@/components/sections/LogoWall";
@@ -25,7 +26,7 @@ export default function Home() {
   return (
     <>
       <JsonLd schema={[organizationSchema(), websiteSchema()]} />
-      <HeroSection data={homeData} />
+      <ProductHero {...HOME_HERO} />
       <TrustBadges />
       <StatsBar />
       <FeatureSection data={homeData} />

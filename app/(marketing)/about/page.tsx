@@ -1,4 +1,5 @@
-import HeroSection from "@/components/sections/ExperienceHeroSection";
+import CenteredHero from "@/components/sections/CenteredHero";
+import { ABOUT_HERO } from "@/content/heroes";
 import Expertise from "@/components/sections/Expertise";
 import OurPartners from "@/components/sections/OurPartners";
 import OurProcess from "@/components/sections/OurProcess";
@@ -23,8 +24,7 @@ export default function AboutPage() {
         organizationSchema(),
       ]} />
 
-      <h1 className="sr-only">About DronaHost</h1>
-      <HeroSection data={data.experienceGrowthPage.hero} />
+      <CenteredHero {...ABOUT_HERO} />
       <Expertise data={data.experienceGrowthPage.expertise} />
       <OurPartners data={data.experienceGrowthPage.partners} />
       <OurProcess data={data.experienceGrowthPage.process} />

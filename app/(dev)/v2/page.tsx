@@ -11,11 +11,9 @@ import Badge from "@/components/ui/Badge";
 import Section from "@/components/ui/Section";
 import HeadLineText from "@/components/ui/HeadLineText";
 import Card from "@/components/ui/Card";
-import HeroSection from "@/components/sections/HomeHeroSection";
 import FeatureSection from "@/components/sections/HomeFeatureSection";
 import CaseStudySection from "@/components/sections/CaseStudy";
 import CTASection from "@/components/sections/HomeCTA";
-import PageHero from "@/components/sections/PageHero";
 import TwoColumn from "@/components/sections/TwoColumn";
 import FeatureGrid from "@/components/sections/FeatureGrid";
 import ProcessSteps from "@/components/sections/ProcessSteps";
@@ -25,6 +23,10 @@ import PricingJourney from "@/components/sections/PricingJourney";
 import TestimonialsSection from "@/components/sections/Testimonials";
 import FAQSection from "@/components/sections/FAQSection";
 import LogoWall from "@/components/sections/LogoWall";
+import ProductHero from "@/components/sections/ProductHero";
+import SplitHero from "@/components/sections/SplitHero";
+import CenteredHero from "@/components/sections/CenteredHero";
+import { HOME_HERO, WORDPRESS_HERO, ABOUT_HERO } from "@/content/heroes";
 import Header from "@/layouts/header/header";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import CurrencySelector from "@/components/layout/CurrencySelector";
@@ -35,15 +37,8 @@ import TrustBadges from "@/components/sections/TrustBadges";
 import GradientText from "@/components/ui/GradientText";
 import StatsBar from "@/components/sections/StatsBar";
 import { CLAIMS } from "@/content/claims";
-import HomeHeroBanner from "@/components/sections/HomeHeroBanner";
-import InnerPageHeroBanner from "@/components/sections/InnerPageHeroBanner";
-import HeroServicesCard from "@/components/sections/HeroServicesCard";
-import HeroPerformanceCard from "@/components/sections/HeroPerformanceCard";
-import HeroDashboardCard from "@/components/sections/HeroDashboardCard";
-import HeroTrustCards from "@/components/sections/HeroTrustCards";
 
 import {
-  heroData,
   featureData,
   caseStudyData,
   ctaData,
@@ -359,17 +354,37 @@ export default function V2ShowcasePage() {
             </div>
           </ShowcaseSection>
 
-          {/* ── Hero Section ── */}
+          {/* ── Heroes (Batch B) ── */}
           <ShowcaseSection
-            id="hero"
-            title="Hero Section"
-            status="needs-work"
-            notes="Floating card icons placeholder. Copy lorem ipsum in JSON."
+            id="product-hero"
+            title="ProductHero"
+            status="pending-review"
+            notes="Hero 1 of 3. Display headline, one primary action, verified highlights, dashboard mockup. Used on the homepage. Replaces HomeHero, HomeHeroSection, HomeHeroBanner and its video variant."
           >
-            <div className="overflow-hidden rounded-lg">
-              <div className="transform scale-75 origin-top-left w-[133%]">
-                <HeroSection data={heroData} />
-              </div>
+            <div className="overflow-hidden rounded-lg border border-border">
+              <ProductHero {...HOME_HERO} headingLevel="h2" />
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="split-hero"
+            title="SplitHero"
+            status="pending-review"
+            notes="Hero 2 of 3. Text beside a UI mockup (staging workflow). Used on /wordpress-hosting. Replaces InnerPageHeroBanner and the per-page split heroes."
+          >
+            <div className="overflow-hidden rounded-lg border border-border">
+              <SplitHero {...WORDPRESS_HERO} headingLevel="h2" />
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="centered-hero"
+            title="CenteredHero"
+            status="pending-review"
+            notes="Hero 3 of 3. Minimal, text only. Used on /about and /seo-services. Replaces PageHero and ExperienceHeroSection."
+          >
+            <div className="overflow-hidden rounded-lg border border-border">
+              <CenteredHero {...ABOUT_HERO} headingLevel="h2" />
             </div>
           </ShowcaseSection>
 
@@ -518,23 +533,6 @@ export default function V2ShowcasePage() {
             </div>
           </ShowcaseSection>
 
-          {/* ── PageHero ── */}
-          <ShowcaseSection
-            id="page-hero"
-            title="PageHero"
-            status="built"
-            notes="Centered and split layouts. gradient/plain backgrounds. Used on all non-home pages."
-          >
-            <PageHero
-              tagline="WordPress Hosting"
-              title="High-performance hosting built for WordPress"
-              description="LiteSpeed servers and NVMe storage, tuned for WordPress."
-              cta={[{ label: "Get started", href: "#" }, { label: "View plans", href: "#", variant: "secondary" }]}
-              layout="centered"
-              background="gradient"
-            />
-          </ShowcaseSection>
-
           {/* ── TwoColumn ── */}
           <ShowcaseSection
             id="two-column"
@@ -624,81 +622,6 @@ export default function V2ShowcasePage() {
                 { title: "Free migration: what actually happens", description: "A behind-the-scenes look at our zero-downtime migration process.", href: "#", category: "Hosting" },
               ]}
             />
-          </ShowcaseSection>
-
-          {/* ── Hero right-panel card options ── */}
-          <ShowcaseSection
-            id="hero-card-options"
-            title="Hero Panel Cards"
-            status="pending-review"
-            notes="Three options. Dashboard: always-dark luxury card with gradient border, typewriter domain, live visitor counter. Services: cycling action list (SiteGround style). Performance: Lighthouse score rings. Currently HomeHeroBanner uses HeroDashboardCard."
-          >
-            <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 xl:grid-cols-4">
-              <div className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Option A — Trust cards (currently active)</p>
-                <HeroTrustCards />
-              </div>
-              <div className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Option B — Dashboard</p>
-                <HeroDashboardCard />
-              </div>
-              <div className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Option C — Services list</p>
-                <HeroServicesCard />
-              </div>
-              <div className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Option D — Lighthouse scores</p>
-                <HeroPerformanceCard />
-              </div>
-            </div>
-          </ShowcaseSection>
-
-          {/* ── HomeHeroBanner ── */}
-          <ShowcaseSection
-            id="home-hero-banner"
-            title="HomeHeroBanner"
-            status="pending-review"
-            notes="Single component, responds to page dark mode. YouTube bg lazy-loaded client-side (SSR = empty container + overlay only). Title: text-7xl xl. Two overlay divs toggle via block/hidden dark:block. Awaiting approval."
-          >
-            <div className="space-y-2">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Light mode</p>
-              <div className="overflow-hidden rounded-lg">
-                <HomeHeroBanner youtubeVideoId="RzVvThhjAKw" />
-              </div>
-              <p className="mt-6 text-xs font-semibold uppercase tracking-wide text-slate-400">Dark mode</p>
-              <div className="dark overflow-hidden rounded-lg">
-                <HomeHeroBanner youtubeVideoId="RzVvThhjAKw" />
-              </div>
-            </div>
-          </ShowcaseSection>
-
-          {/* ── InnerPageHeroBanner ── */}
-          <ShowcaseSection
-            id="inner-page-hero-banner"
-            title="InnerPageHeroBanner"
-            status="pending-review"
-            notes="Inner page hero (WordPress Hosting, VPS, etc.). Light bg with blobs, eyebrow badge, H1 with optional accent, CTAs, feature chips, right: browser-chrome tech stack card. All content via props. Awaiting approval before use on real pages."
-          >
-            <div className="overflow-hidden rounded-lg">
-              <InnerPageHeroBanner
-                tagline="WordPress Hosting"
-                title="High-performance hosting"
-                titleAccent="built for WordPress"
-                description="LiteSpeed servers and NVMe storage, tuned for WordPress. Managed updates, daily backups, and one-click staging — so you focus on your site."
-                cta={[
-                  { label: `Get started — ${startingPriceLabel()}`, href: "/hosting/wordpress" },
-                  { label: "View all plans", href: "/hosting/wordpress#plans", variant: "secondary" },
-                ]}
-                features={[
-                  "Free SSL certificates",
-                  "Daily off-site backups",
-                  "One-click staging",
-                  "Free migration",
-                  "LiteSpeed cache",
-                  "Published uptime SLA",
-                ]}
-              />
-            </div>
           </ShowcaseSection>
 
       </ShowcaseLayout>

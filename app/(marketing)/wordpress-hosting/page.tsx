@@ -3,7 +3,9 @@ import CTA from "./_components/cta";
 import EnterpriseSection from "./_components/EnterpriseHosting";
 import FeatureSection from "./_components/FeatureSection";
 import HeadlessSolutions from "./_components/HeadlessSolutions";
-import HeroSection from "./_components/HeroSection";
+import SplitHero from "@/components/sections/SplitHero";
+import { WORDPRESS_HERO } from "@/content/heroes";
+import { startingPriceLabel } from "@/lib/pricing";
 import HostingPro from "./_components/HostingPro";
 import HostingProComparison from "./_components/HostingProComparison";
 import HowItWorks from "./_components/HowItWorks";
@@ -23,7 +25,7 @@ import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 
 export const metadata = buildMetadata({
   title: "WordPress Hosting Plans — Fast & Managed | DronaHost",
-  description: "Managed WordPress hosting on LiteSpeed with NVMe storage. Free migration, SSL, and daily backups. Plans from $0.99/mo with a 30-day money-back guarantee.",
+  description: `Managed WordPress hosting on LiteSpeed servers, with free migration support and a staging area for safe updates${startingPriceLabel() ? `. Plans from ${startingPriceLabel()}` : ""}.`,
   path: "/wordpress-hosting",
 });
 
@@ -38,7 +40,7 @@ export default function WebHostingPage() {
 					url: "https://dronahost.com/wordpress-hosting",
 				}),
 			]} />
-			<HeroSection data={data.hostingLandingPage.hero} />
+			<SplitHero {...WORDPRESS_HERO} />
 			<EnterpriseSection data={data.hostingLandingPage.enterpriseSection} />
 			<Testimonials data={data.hostingLandingPage.testimonials} />
 			<SupportingTeam data={data.hostingLandingPage.publishingSupport} />
