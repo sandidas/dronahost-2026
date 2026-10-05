@@ -1,10 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { ReactNode } from "react";
 
 const STORAGE_KEY = "v2-sidebar-collapsed";
+const EVENT = "v2-sidebar-change";
+
+const subscribe = (notify: () => void) => {
+  window.addEventListener(EVENT, notify);
+  return () => window.removeEventListener(EVENT, notify);
+};
 
 export default function ShowcaseLayout({
   sidebar,
@@ -13,20 +19,14 @@ export default function ShowcaseLayout({
   sidebar: ReactNode;
   children: ReactNode;
 }) {
-  const [collapsed, setCollapsed] = useState(false);
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    setCollapsed(localStorage.getItem(STORAGE_KEY) === "true");
-    setReady(true);
-  }, []);
+  // Sidebar state lives in localStorage; reading it through useSyncExternalStore avoids
+  // setting state inside an effect and keeps server and first client render identical.
+  const collapsed = useSyncExternalStore(subscribe, () => localStorage.getItem(STORAGE_KEY) === "true", () => false);
+  const ready = useSyncExternalStore(subscribe, () => true, () => false);
 
   function toggle() {
-    setCollapsed((prev) => {
-      const next = !prev;
-      localStorage.setItem(STORAGE_KEY, String(next));
-      return next;
-    });
+    localStorage.setItem(STORAGE_KEY, String(!collapsed));
+    window.dispatchEvent(new Event(EVENT));
   }
 
   return (
