@@ -41,8 +41,8 @@
   --muted: #e3f1f2;
   --muted-foreground: #3f5b70;
   --subtle-foreground: #52697c;
-  --border: #cde0e3;
-  --border-strong: #a9c4ca;
+  --border: #c3d9dd;
+  --border-strong: #9fbbc2;
   --ring: #027280;
 
   /* Action (orange): fill + text */
@@ -82,14 +82,14 @@
 
   --background: #07131f;
   --foreground: #f1fafa;
-  --card: #0b1b2b;
+  --card: #0d2033;
   --card-foreground: #f1fafa;
-  --surface-raised: #10263a;
-  --muted: #0d2033;
+  --surface-raised: #112a40;
+  --muted: #0a1a2a;
   --muted-foreground: #a9bbc9;
   --subtle-foreground: #8fa5b6;
-  --border: rgb(255 255 255 / 0.08);
-  --border-strong: rgb(255 255 255 / 0.16);
+  --border: rgb(255 255 255 / 0.11);
+  --border-strong: rgb(255 255 255 / 0.2);
   --ring: #05a2c6;
 
   --action: #fe5504;
@@ -108,12 +108,12 @@
   --danger: #ff8a80;
   --danger-surface: #30130f;
 
-  --inverse-surface: #0b1b2b;
+  --inverse-surface: #0d2033;
   --inverse-foreground: #f1fafa;
   --inverse-muted: #a9bbc9;
 
   --shadow-rgb: 0 0 0;
-  --inner-highlight: rgb(255 255 255 / 0.06);
+  --inner-highlight: rgb(255 255 255 / 0.1);
   --glow-orange: rgb(254 85 4 / 0.12);
   --glow-teal: rgb(5 162 198 / 0.14);
   --grid-line: rgb(255 255 255 / 0.05);
@@ -210,6 +210,13 @@
 }
 
 /* ── Base ── */
+@layer base {
+  * {
+    box-sizing: border-box;
+    border-color: var(--border);
+  }
+}
+
 html {
   background: var(--background);
   scroll-padding-top: 5rem;

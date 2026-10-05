@@ -37,7 +37,8 @@ type HeroSectionProps = {
 
       buttons: ButtonItem[];
 
-      members: {
+      /** Optional. Omit until the customer count is verified. */
+      members?: {
         countText: string;
         avatars: string[];
       };
@@ -121,10 +122,11 @@ const HomeHero: React.FC<HeroSectionProps> = ({ data }) => {
             ))}
           </div>
 
-          {/* Social proof avatars */}
+          {/* Social proof avatars: rendered only once a verified count exists */}
+          {heroSection.members?.countText && (
           <div className="member-row" role="group" aria-label="Trusted by our customers">
             <div className="members">
-              {heroSection.members.avatars.map((avatar, index) => (
+              {(heroSection.members?.avatars ?? []).map((avatar, index) => (
                 <NextImage
                   key={index}
                   src={avatar}
@@ -137,9 +139,10 @@ const HomeHero: React.FC<HeroSectionProps> = ({ data }) => {
               ))}
             </div>
             <span className="text-slate-700 dark:text-slate-200">
-              {heroSection.members.countText}
+              {heroSection.members?.countText}
             </span>
           </div>
+          )}
         </div>
 
         {/* RIGHT — hero image + floating cards */}

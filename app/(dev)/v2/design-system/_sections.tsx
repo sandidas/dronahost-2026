@@ -112,8 +112,8 @@ export function ColorSection({ tokens }: { tokens: Tokens }) {
               <div>
                 <SpecLabel>Borders</SpecLabel>
                 <ul className="grid gap-3 sm:grid-cols-2">
-                  <Swatch name="border" hex={theme === "dark" ? "white 8%" : "#cde0e3"} />
-                  <Swatch name="border-strong" hex={theme === "dark" ? "white 16%" : "#a9c4ca"} />
+                  <Swatch name="border" hex={theme === "dark" ? "white 11%" : "#c3d9dd"} />
+                  <Swatch name="border-strong" hex={theme === "dark" ? "white 20%" : "#9fbbc2"} />
                 </ul>
               </div>
             </div>
