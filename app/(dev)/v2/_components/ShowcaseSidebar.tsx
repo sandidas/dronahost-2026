@@ -43,7 +43,9 @@ const categories: Category[] = [
   {
     label: "Navigation",
     items: [
+      { id: "announcement-bar", label: "Announcement Bar" },
       { id: "header", label: "Header" },
+      { id: "theme-currency", label: "Theme and Currency" },
       { id: "footer", label: "Footer" },
     ],
   },

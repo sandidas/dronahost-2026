@@ -1,283 +1,170 @@
 "use client";
 
-import { cn } from "@/utils/cn";
-import { useTheme } from "next-themes";
-import Logo from "@/components/ui/Logo";
+import { ChevronDown, LogIn, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-
-type NavItem = {
-  label: string;
-  hasDropdown: boolean;
-};
+import CurrencySelector from "@/components/layout/CurrencySelector";
+import Button from "@/components/ui/Button";
+import Logo from "@/components/ui/Logo";
+import ThemeToggle from "@/components/ui/ThemeToggle";
+import {
+  ACCOUNT_LINK,
+  HEADER_CTA,
+  HOSTING_LINKS,
+  PRIMARY_LINKS,
+  SERVICE_LINKS,
+  type NavLink,
+} from "@/content/navigation";
+import { cn } from "@/utils/cn";
+import NavIcon from "./NavIcon";
 
 type MobileMenuProps = {
   open: boolean;
   onClose: () => void;
-  navbar: {
-    menu: NavItem[];
-    cta: { label: string; link: string };
-  };
-  navLinks: Record<string, string>;
 };
 
-/* Hosting links duplicated here to keep MobileMenu self-contained */
-const mobileHostingLinks = [
-  { title: "Web Hosting", href: "/wordpress-hosting" },
-  { title: "Hosting for WordPress", href: "/wordpress-hosting" },
-  { title: "Cloud Hosting", href: "/cloud-hosting" },
-  { title: "VPS Hosting", href: "/vps-hosting" },
-  { title: "Domains", href: "/domains" },
-  { title: "Agency Program", href: "/agency" },
-  { title: "Reseller Hosting", href: "/reseller-hosting" },
-  { title: "Affiliate Program", href: "/affiliate" },
-];
+const rowClass =
+  "flex min-h-12 w-full items-center justify-between rounded-lg px-3 text-base font-semibold text-foreground transition-colors hover:bg-muted";
 
-function MobileAccordion({
-  item,
-  onClose,
-}: {
-  item: NavItem;
-  onClose: () => void;
-}) {
-  const [isOpen, setIsOpen] = useState(false);
-  const contentId = `accordion-${item.label.replace(/\s+/g, "-").toLowerCase()}`;
-
+function LinkGroup({ title, links, onClose }: { title: string; links: readonly NavLink[]; onClose: () => void }) {
   return (
     <div>
-      <button
-        onClick={() => setIsOpen((prev) => !prev)}
-        aria-expanded={isOpen}
-        aria-controls={contentId}
-        className="flex w-full items-center justify-between rounded-lg px-3 py-3 text-left text-[15px] font-semibold text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800/60 transition"
-      >
-        {item.label}
-        <svg
-          viewBox="0 0 20 20"
-          className={cn("h-4 w-4 transition-transform", isOpen && "rotate-180")}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          aria-hidden="true"
-        >
-          <path d="M5 7.5 10 12.5 15 7.5" />
-        </svg>
-      </button>
-
-      {isOpen && (
-        <div id={contentId} className="ml-3 mt-1 space-y-1 border-l border-slate-200 pl-3 dark:border-slate-700">
-          {mobileHostingLinks.map((link) => (
-            <Link
-              key={link.title}
-              href={link.href}
-              onClick={onClose}
-              className="block rounded-lg px-3 py-2 text-[14px] text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/60 dark:hover:text-slate-100 transition"
-            >
-              {link.title}
+      <p className="t-eyebrow px-3 pb-1 pt-3">{title}</p>
+      <ul>
+        {links.map((l) => (
+          <li key={l.href}>
+            <Link href={l.href} onClick={onClose} className="flex min-h-12 items-center gap-3 rounded-lg px-3 text-[0.9375rem] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
+              <NavIcon name={l.icon} className="size-5 text-link" />
+              {l.label}
             </Link>
-          ))}
-        </div>
-      )}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
-export default function MobileMenu({
-  open,
-  onClose,
-  navbar,
-  navLinks,
-}: MobileMenuProps) {
-  const { theme, setTheme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
+/**
+ * Mobile navigation drawer. The panel is always in the DOM (inert and translated
+ * off-screen while closed) so its links stay in the initial HTML. Traps focus while open,
+ * closes on Escape or backdrop tap, and restores focus to the opener.
+ */
+export default function MobileMenu({ open, onClose }: MobileMenuProps) {
+  const [hostingOpen, setHostingOpen] = useState(false);
+  const closeRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  const previousFocusRef = useRef<Element | null>(null);
+  const openerRef = useRef<Element | null>(null);
 
-  /* Focus close button when drawer opens; restore focus when it closes */
   useEffect(() => {
     if (open) {
-      previousFocusRef.current = document.activeElement;
-      closeButtonRef.current?.focus();
+      openerRef.current = document.activeElement;
+      closeRef.current?.focus();
+      document.body.style.overflow = "hidden";
     } else {
-      (previousFocusRef.current as HTMLElement | null)?.focus();
+      document.body.style.overflow = "";
+      (openerRef.current as HTMLElement | null)?.focus?.();
     }
-  }, [open]);
-
-  /* Lock body scroll while open */
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [open]);
 
-  /* Escape key closes */
   useEffect(() => {
     if (!open) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
-  useEffect(() => { setMounted(true); }, []);
-
-  /* Focus trap */
-  const handlePanelKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key !== "Tab") return;
-    const panel = panelRef.current;
-    if (!panel) return;
-    const focusable = Array.from(
-      panel.querySelectorAll<HTMLElement>(
-        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
-      )
-    );
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
+  const trapFocus = (e: React.KeyboardEvent) => {
+    if (e.key !== "Tab" || !panelRef.current) return;
+    const items = panelRef.current.querySelectorAll<HTMLElement>("a[href], button:not([disabled]), select");
+    const first = items[0];
+    const last = items[items.length - 1];
     if (e.shiftKey && document.activeElement === first) {
       e.preventDefault();
-      last.focus();
+      last?.focus();
     } else if (!e.shiftKey && document.activeElement === last) {
       e.preventDefault();
-      first.focus();
+      first?.focus();
     }
   };
 
   return (
     <>
-      {/* Backdrop */}
       <div
         aria-hidden="true"
         onClick={onClose}
         className={cn(
-          "fixed inset-0 z-[998] bg-black/40 backdrop-blur-sm lg:hidden transition-opacity duration-300",
-          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-200 lg:hidden",
+          open ? "opacity-100" : "pointer-events-none opacity-0",
         )}
       />
-
-      {/* Drawer panel */}
       <div
         ref={panelRef}
         id="mobile-menu"
         role="dialog"
         aria-modal="true"
-        aria-label="Mobile navigation"
-        aria-hidden={!open}
-        onKeyDown={handlePanelKeyDown}
+        aria-label="Navigation menu"
+        inert={!open || undefined}
+        onKeyDown={trapFocus}
         className={cn(
-          "fixed top-0 right-0 z-[999] h-full w-80 bg-white dark:bg-slate-950 shadow-2xl flex flex-col lg:hidden transition-transform duration-300 ease-in-out",
-          open ? "translate-x-0" : "translate-x-full"
+          "fixed inset-y-0 end-0 z-[60] flex w-[min(22rem,100vw)] flex-col border-s border-border-strong bg-card shadow-xl transition-transform duration-200 ease-out lg:hidden",
+          open ? "translate-x-0" : "translate-x-full rtl:-translate-x-full",
         )}
       >
-        {/* Top bar */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-700">
-          <Link href="/" onClick={onClose} className="flex items-center">
+        <div className="flex h-[4.5rem] shrink-0 items-center justify-between border-b border-border px-4">
+          <Link href="/" onClick={onClose} aria-label="DronaHost home" className="flex items-center">
             <Logo size="sm" />
           </Link>
           <button
-            ref={closeButtonRef}
+            ref={closeRef}
+            type="button"
             onClick={onClose}
             aria-label="Close navigation menu"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 text-slate-600 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800 transition"
+            className="btn btn-secondary size-11 !min-h-11 !px-0"
           >
-            <svg
-              viewBox="0 0 24 24"
-              className="h-4 w-4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              aria-hidden="true"
-            >
-              <path d="M18 6 6 18M6 6l12 12" />
-            </svg>
+            <X className="size-5" aria-hidden="true" />
           </button>
         </div>
 
-        {/* Scrollable nav */}
-        <nav
-          aria-label="Mobile navigation links"
-          className="flex-1 overflow-y-auto px-4 py-4 space-y-1"
-        >
-          {navbar.menu.map((item) =>
-            item.hasDropdown && item.label === "Web Hosting" ? (
-              <MobileAccordion key={item.label} item={item} onClose={onClose} />
-            ) : (
-              <Link
-                key={item.label}
-                href={navLinks[item.label] ?? "/"}
-                onClick={onClose}
-                className="block rounded-lg px-3 py-3 text-[15px] font-semibold text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800/60 transition"
-              >
-                {item.label}
-              </Link>
-            )
-          )}
-
-          <div className="my-4 border-t border-slate-200 dark:border-slate-700" />
-
-          <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">
-            Help
-          </p>
-          <Link
-            href="/contact"
-            onClick={onClose}
-            className="block rounded-lg px-3 py-3 text-[15px] font-semibold text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800/60 transition"
+        <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-3 py-3">
+          <button
+            type="button"
+            onClick={() => setHostingOpen((v) => !v)}
+            aria-expanded={hostingOpen}
+            aria-controls="mobile-hosting"
+            className={rowClass}
           >
-            Contact Us
-          </Link>
-          <Link
-            href="/blog"
-            onClick={onClose}
-            className="block rounded-lg px-3 py-3 text-[15px] font-semibold text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800/60 transition"
-          >
-            Blog
-          </Link>
+            Hosting
+            <ChevronDown className={cn("size-5 transition-transform", hostingOpen && "rotate-180")} aria-hidden="true" />
+          </button>
+          <div id="mobile-hosting" hidden={!hostingOpen} className="mb-2 ms-3 border-s border-border ps-2">
+            <LinkGroup title="Hosting" links={HOSTING_LINKS} onClose={onClose} />
+            <LinkGroup title="Web services" links={SERVICE_LINKS} onClose={onClose} />
+          </div>
+          <ul>
+            {PRIMARY_LINKS.map((l) => (
+              <li key={l.href}>
+                <Link href={l.href} onClick={onClose} className={rowClass}>
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </nav>
 
-        {/* Bottom bar */}
-        <div className="border-t border-slate-200 dark:border-slate-700 px-5 py-4 space-y-3">
-          <Link
-            href={navbar.cta.link}
-            onClick={onClose}
-            className="flex w-full items-center justify-center gap-2 rounded-full border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800 transition"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              className="h-4 w-4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              aria-hidden="true"
-            >
-              <circle cx="12" cy="8" r="3.2" />
-              <path d="M5.5 19c1-3.2 3.6-4.8 6.5-4.8s5.5 1.6 6.5 4.8" />
-            </svg>
-            {navbar.cta.label}
-          </Link>
-
-          <button
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            aria-label="Toggle colour theme"
-            className="flex w-full items-center justify-center gap-2 rounded-full border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800 transition"
-          >
-            {mounted ? (
-              resolvedTheme === "dark" ? (
-                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-                  <circle cx="12" cy="12" r="4"/>
-                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-                </svg>
-              ) : (
-                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                </svg>
-              )
-            ) : (
-              <span className="h-4 w-4" aria-hidden="true" />
-            )}
-            {mounted ? (resolvedTheme === "dark" ? "Light mode" : "Dark mode") : "Toggle theme"}
-          </button>
+        <div className="shrink-0 space-y-3 border-t border-border bg-muted p-4">
+          <Button href={HEADER_CTA.href} fullWidth>
+            {HEADER_CTA.label}
+          </Button>
+          <Button href={ACCOUNT_LINK.href} variant="secondary" fullWidth leadingIcon={<LogIn className="size-4" aria-hidden="true" />}>
+            {ACCOUNT_LINK.label}
+          </Button>
+          <div className="flex items-center gap-3">
+            <ThemeToggle showLabel className="flex-1" />
+            <CurrencySelector />
+          </div>
         </div>
       </div>
     </>

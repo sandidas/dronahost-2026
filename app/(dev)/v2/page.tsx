@@ -26,6 +26,9 @@ import TestimonialsSection from "@/components/sections/Testimonials";
 import FAQSection from "@/components/sections/FAQSection";
 import LogoWall from "@/components/sections/LogoWall";
 import Header from "@/layouts/header/header";
+import AnnouncementBar from "@/components/layout/AnnouncementBar";
+import CurrencySelector from "@/components/layout/CurrencySelector";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 import Footer from "@/layouts/footer/footer";
 import JsonLd from "@/components/sections/JsonLd";
 import TrustBadges from "@/components/sections/TrustBadges";
@@ -301,12 +304,43 @@ export default function V2ShowcasePage() {
             </p>
           </ShowcaseSection>
 
+          {/* ── Announcement bar ── */}
+          <ShowcaseSection
+            id="announcement-bar"
+            title="Announcement Bar"
+            status="pending-review"
+            notes="Reads content/announcement.ts and renders nothing while disabled. The sample below is forced on for review only. Dismissal is remembered per message id."
+          >
+            <div className="overflow-hidden rounded-lg border border-border">
+              <AnnouncementBar
+                forceEnabled
+                id="showcase"
+                message="Sample notice: scheduled maintenance details would appear here."
+                link={{ label: "Read the status update", href: "#announcement-bar" }}
+              />
+            </div>
+          </ShowcaseSection>
+
+          {/* ── Theme toggle + currency selector ── */}
+          <ShowcaseSection
+            id="theme-currency"
+            title="Theme Toggle and Currency Selector"
+            status="pending-review"
+            notes="Theme toggle switches dark (default) and light. The currency selector is behind FEATURES.currencySelector (off, USD only) and is forced on here for review."
+          >
+            <div className="flex flex-wrap items-center gap-4">
+              <ThemeToggle />
+              <ThemeToggle showLabel className="max-w-48" />
+              <CurrencySelector forceEnabled />
+            </div>
+          </ShowcaseSection>
+
           {/* ── Header ── */}
           <ShowcaseSection
             id="header"
             title="Header"
-            status="needs-work"
-            notes="Mobile hamburger ✅ fixed. Mega menu keyboard nav ✅ fixed. Footer: partner logos placeholder, social links unset."
+            status="pending-review"
+            notes="Batch A rebuild: sticky, tokens only, crawlable hosting mega menu (always in the HTML), keyboard and Escape support, mobile drawer with focus trap. Log in points to /login, which is not built yet."
           >
             <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
               <Header />
@@ -317,8 +351,8 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="footer"
             title="Footer"
-            status="needs-work"
-            notes="Partner logos placeholder. Social links unset."
+            status="pending-review"
+            notes="Batch A rebuild: four unique columns, real routes only. Legal entity, address, email, socials and payment methods stay hidden until set in content/company.ts and content/claims.ts."
           >
             <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
               <Footer />
