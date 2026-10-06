@@ -22,7 +22,7 @@ The lowercase wordmark is a deliberate stylistic choice — approachable and mod
 
 The logo is a **two-color wordmark only** — there is no standalone icon or symbol.
 
-- `drona` — rendered in **Brand Orange** (`#FE5403`; TODO(decision #2): the official hex is undecided, `#FE5403` here vs `#FE5504` in the Brand Assets page and `tokens.css`. Define it once in `app/styles/tokens.css`.)
+- `drona` — rendered in **Brand Orange**: the value inside the official logo SVG, defined once in `app/styles/tokens.css` (decision #2). Do not write the orange hex anywhere else.
 - `host` — rendered in **Brand Teal** (`#05A2C6`)
 - A small orange directional accent appears at the base of the `t` in `host`
 
@@ -66,7 +66,7 @@ Below these sizes the rounded letterforms compress and legibility degrades.
 |---|---|
 | White `#FFFFFF` | Primary — always acceptable |
 | Light grey `#F5F5F5`–`#EEEEEE` | Acceptable |
-| Dark backgrounds | TODO(decision #4): undecided. This row says reverse the wordmark to all-white; the Brand Assets page says do not reverse or recolour, and the current design shows the orange and teal logo on dark navy. Do not change the logo on dark until the owner picks one. |
+| Dark navy backgrounds | Use the original orange and teal wordmark on dark navy (decision #4). Do not reverse it to all-white and do not recolour it. |
 | Brand Orange or Brand Teal solid fill | Do not place the logo on its own brand colors |
 | Busy photography | Do not use — the wordmark is a logotype, not a stamp |
 

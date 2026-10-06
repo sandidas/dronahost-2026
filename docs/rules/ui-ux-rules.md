@@ -40,10 +40,7 @@
 
 **Direction:** Ultra-premium minimal luxury. Think Apple × Linear × Vercel — but warmer and more human. Clean layouts with deliberate breathing room. Every element earns its place.
 
-**Both dark and light modes are first-class.** Light is the HTML default; dark activates via the `.dark` class (toggled by `useTheme`). Light must feel equally editorial and refined. The indigo, orange, and teal accents stay consistent across both modes; only surfaces, text, and shadow strengths shift.
-
-> TODO(decision #3): default theme. This section says light is the default; the current design system is dark by default.
-> TODO(decision #1): indigo is not in the official brand palette; the accent set above may change.
+**Both dark and light modes are first-class.** Dark is the default theme (decision #3): the server renders `.dark` on `<html>`, and on a first visit the visitor's system preference is respected (a system that prefers light gets light). A stored choice wins afterwards. Light must feel equally editorial and refined. The navy, orange and teal palette stays consistent across both modes; only surfaces, text, and shadow strengths shift.
 
 **Visual pillars:**
 
@@ -60,19 +57,17 @@
 
 ### 2.1 Brand Color Palette
 
-DronaHost uses three core colors with distinct, non-interchangeable roles:
+DronaHost uses navy, orange and teal, with distinct, non-interchangeable roles. **Indigo is removed (decision #1).**
 
-> TODO(decision #1): whether Brand Indigo stays. TODO(decision #2): which orange hex is official (`#FE5403` here vs
-> `#FE5504` in the Brand Assets page and `tokens.css`). Hex values below are left unchanged until both are decided.
-> Long term, hex values live only in `app/styles/tokens.css`, enforced by `scripts/check-contrast.ts`.
+Hex values live only in `app/styles/tokens.css`, enforced by `scripts/check-contrast.ts`. The orange is the value inside the official logo SVG, defined once in `tokens.css` (decision #2). Do not write brand hex values in rules, components or content.
 
-| Name | Hex | RGB | Role |
-|---|---|---|---|
-| **Brand Indigo** | `#4F46E5` | `79, 70, 229` | Primary UI color — nav, primary buttons, rings, headings, trust signals |
-| **Brand Orange** | `#FE5403` | `254, 84, 3` | Action / CTA accent — "drona" in logo, hero CTAs, key highlights |
-| **Brand Teal** | `#05A2C6` | `5, 162, 198` | Secondary / info accent — "host" in logo, info states, secondary links |
+| Name | Role |
+|---|---|
+| **Navy family** | Surfaces, headings, trust UI, primary text |
+| **Brand Orange** | The single primary action (buttons, hero CTA) and "drona" in the logo |
+| **Brand Teal** | Links, data, info states, secondary accents, and "host" in the logo |
 
-The logo is the anchor: orange for "drona", teal for "host". Indigo is the dominant UI interaction color — not in the wordmark but signals premium trust (consistent with Linear, Notion, Vercel). Never substitute with visually similar alternatives.
+The logo is the anchor: orange for "drona", teal for "host". Never substitute visually similar alternatives.
 
 ### 2.2 Supporting Neutrals
 
@@ -97,12 +92,12 @@ The logo is the anchor: orange for "drona", teal for "host". Indigo is the domin
 
 | Combination | Contrast ratio | WCAG AA (4.5:1) |
 |---|---|---|
-| Brand Orange on White (and white on orange), measured for `#FE5504` | 3.22:1 | Fails at normal text. Passes only as large text (see definition below) or for icons and borders |
+| Brand Orange on White (and white on orange) | 3.22:1 | Fails at normal text. Passes only as large text (see definition below) or for icons and borders |
 | Near-Black `#111827` on White | ~18:1 | Passes |
 | White on Brand Teal `#05A2C6` | 3.00:1 | Fails at normal text. Meets the 3:1 large-text minimum with no margin; do not rely on it |
 | White on Near-Black `#111827` | ~18:1 | Passes |
 
-(TODO(decision #2): ratios were measured for `#FE5504`; re-measure once the official orange is chosen.)
+(Ratios are measured for the orange currently in `tokens.css`. Re-run `scripts/check-contrast.ts` whenever that token changes.)
 
 **Large text (WCAG):** 24px regular, or 18.66px bold (14pt bold). "18px+" is not enough.
 
@@ -110,7 +105,7 @@ The logo is the anchor: orange for "drona", teal for "host". Indigo is the domin
 
 ### 2.5 CSS Custom Properties
 
-> **SUPERSEDED by `app/styles/tokens.css`.** That file is the single source for colour, radius, shadow, type and motion tokens, and `scripts/check-contrast.ts` enforces it in CI. Do not add or copy tokens from this section.
+> **SUPERSEDED by `app/styles/tokens.css`.** That file is the single source for colour, radius, shadow, type and motion tokens, and `scripts/check-contrast.ts` enforces it in CI. Do not add or copy tokens from this section. It still contains indigo values, which were removed from the brand (decision #1).
 
 > Note: the token block below predates `app/styles/tokens.css`, which is the single source of truth for colour, radius, shadow, type and motion.
 
@@ -342,7 +337,7 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{
             __html: `(function(){try{
               var t=localStorage.getItem('dronahost-theme');
-              var s=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+              var s=window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'; /* dark is the default */
               if((t||s)==='dark') document.documentElement.classList.add('dark');
             }catch(e){}}())`,
           }}
@@ -484,24 +479,20 @@ export default function RootLayout({ children }) {
 ### 01 · Button
 
 ```tsx
-// variants: 'primary' | 'secondary' | 'ghost' | 'danger' | 'orange'
+// variants: 'primary' | 'secondary' | 'ghost' | 'link' (primary is the single orange action)
 // sizes: 'sm' | 'md' | 'lg'
 ```
 
 | Variant | Background | Border | Text | Hover |
 |---|---|---|---|---|
-| primary | `--gradient-accent` (flat fill, see note) | none | `--text-on-accent` | translateY(-1px) + brightness + `--shadow-glow` |
-| secondary | transparent | `1px solid --border-accent` | `--accent-primary` | `--accent-soft` fill |
-| ghost | transparent | none | `--text-secondary` | `color: --text-primary` |
-| danger | `--error-soft` | `1px solid --error` | `--error` | `--error` fill + white text |
-| orange | `--gradient-orange` (flat fill, see note) | none | `#ffffff` (TODO(decision #2): orange fills need a label that passes 4.5:1; see §2.4) | translateY(-1px) + brightness + `--shadow-glow-orange` |
+| primary | Orange action fill (`--action-fill`, flat) | none | Navy label (`--on-action`; white on orange fails contrast) | translateY(-1px) + brightness + soft shadow |
+| secondary | Surface (navy family) | `1px` hairline (`--border-strong`) | `--foreground` | Teal border + faint teal fill |
+| ghost | transparent | none | `--foreground` | faint foreground fill |
+| link | transparent | none | `--link` (teal) | thicker underline |
 
-> TODO(decision #1): the `primary` (indigo) variant depends on whether indigo stays.
-> Fills are flat colours with a 1px inner top highlight, not gradients (a gradient reads as busy, not calm). Where this
-> table says `--gradient-accent` or `--gradient-orange`, use the flat equivalent. Hover is a 1px lift plus a small
-> brightness change; active is `scale(0.98)`. There is no hover scale.
+Fills are flat colours with a 1px inner top highlight, not gradients (a gradient reads as busy, not calm). Hover is a 1px lift plus a small brightness change; active is `scale(0.98)`. There is no hover scale. Colours come from `tokens.css`; the names above are roles, not token names.
 
-`orange` is the hero CTA variant (logo-native). Use `primary` (indigo) for UI actions and form submits. Never use both on the same above-fold section.
+One primary (orange) action per section, and at most one above the fold. Use `primary` for the main action and form submits.
 
 All: `--font-body`, `font-weight: 500`, `letter-spacing: 0.01em`, `border-radius: --radius-full`, `transition` on colour, shadow and transform only (never `all`)
 
@@ -595,13 +586,13 @@ type Theme = "dark" | "light";
 const KEY = "dronahost-theme";
 
 export function useTheme() {
-  const [theme, setTheme] = useState<Theme>("light");
+  const [theme, setTheme] = useState<Theme>("dark"); // dark is the default (decision #3)
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
     const saved = localStorage.getItem(KEY) as Theme | null;
-    const sys: Theme = window.matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light";
+    const sys: Theme = window.matchMedia("(prefers-color-scheme:light)").matches ? "light" : "dark"; // first visit respects the system
     const resolved = saved ?? sys;
     setTheme(resolved);
     document.documentElement.classList.toggle("dark", resolved === "dark");
@@ -954,7 +945,7 @@ const orgSchema = {
 
 - HTTPS canonical enforced in metadata
 - Consistent NAP (Name, Address, Phone) format across all pages
-- Renewal wording on pricing pages: TODO(decision #5). Do not use "No price increase on renewal" until the owner picks the real policy; `pricing.json` currently says renewal equals the signup price.
+- Renewal price equals the signup price (decision #5). Pricing pages say so plainly, next to the price, as a verified claim (`renewal-price-same` in `claims.ts`, which must link to the page that publishes the term): "Renews at the same price. No price increase." Never hide renewal pricing or put it in a tooltip.
 - Money-back guarantee badge on hosting pages, only if the guarantee is verified in `claims.ts`
 - Real phone and email from `claims.ts`, never hidden. TODO(decision #6): values unconfirmed.
 - Cookie consent banner for EU/UK visitors
@@ -996,7 +987,7 @@ dronahost/
 │   ├── layout.tsx              ← fonts, theme init, global metadata, org JSON-LD
 │   ├── sitemap.ts
 │   ├── robots.ts
-│   └── [locale]/               ← i18n from day one (en-us, en-gb, en-ae, de-de …); TODO(decision #8): start with one English site and add locales only when content differs
+│   └── [locale]/               ← i18n from day one; only en-us is live (decision #8). en-gb, en-ae and others are Phase 2.
 │       ├── page.tsx
 │       ├── (marketing)/
 │       │   ├── wordpress-hosting/page.tsx
@@ -1106,7 +1097,7 @@ dronahost/
 - `dark:text-gray-300` — use `text-[var(--muted-foreground)]` (auto-switches, no `dark:` override needed)
 - `bg-white dark:bg-gray-900` — use `bg-[var(--card)]`
 - `border-black/5 dark:border-white/10` — use `border` (global token) or `color-mix` separator patterns (§18.5)
-- `style={{ color: '#4F46E5' }}` — always `style={{ color: 'var(--primary)' }}`
+- `style={{ color: '#...' }}` (any hard-coded hex) — always a token, for example `style={{ color: 'var(--foreground)' }}`
 - Tailwind palette colors (`gray-*`, `neutral-*`, `orange-*`) for surfaces, text, or borders — use design token variables
 - Fixed `h-*` heights on image containers — use `aspect-video`, `aspect-square`, or `aspect-[n/n]`
 - Fixed `px` widths on layout containers or section wrappers
@@ -1141,7 +1132,9 @@ dronahost/
 
 ## 16. Quick Reference
 
-### Implemented CSS tokens (`globals.css` — source of truth)
+### Implemented CSS tokens
+
+> **SUPERSEDED by `app/styles/tokens.css`.** The table below predates it and still lists indigo rows that were removed from the brand (decision #1).
 
 | Variable | Tailwind usage | Light | Dark |
 |---|---|---|---|
@@ -1152,10 +1145,8 @@ dronahost/
 | `--muted` | `bg-[var(--muted)]` | `oklch(0.95 0.006 75)` | `oklch(0.21 0.01 75)` |
 | `--muted-foreground` | `text-[var(--muted-foreground)]` | `oklch(0.52 0.012 75)` | `oklch(0.56 0.01 75)` |
 | `--border` | `border` (global default) | `oklch(0.9 0.008 75)` | `oklch(0.27 0.01 75)` |
-| `--primary` | `text-primary`, `bg-primary/N` | indigo `oklch(0.511 0.237 282.4)` | `oklch(0.668 0.175 282.9)` (brighter) |
 | `--accent` | `text-accent`, `bg-accent/N` | orange `oklch(0.648 0.22 38.17)` | `oklch(0.72 0.185 44)` (brighter) |
 | `--secondary` | `text-secondary` | teal `oklch(0.62 0.13 220)` | same |
-| `--ring` | `ring-*` utilities | indigo (same as `--primary`) | same |
 
 > `bg-primary/N`, `text-accent/N`, `border-primary/N` opacity modifiers work because `--color-primary`, `--color-accent`, `--color-foreground`, `--color-background` are registered in the `@theme` block. All other variables must use `var(--*)` arbitrary syntax.
 
@@ -1179,7 +1170,7 @@ dronahost/
 
 | Item | Value |
 |---|---|
-| Theme class | none = light, `.dark` on `<html>` = dark (TODO(decision #3): default theme) |
+| Theme class | `.dark` on `<html>` = dark (the default, decision #3); no class = light |
 | Theme storage key | `localStorage: 'dronahost-theme'` |
 | Framework | Next.js 16 App Router + TypeScript |
 | Styling | Tailwind CSS v4 + CSS custom properties |
@@ -1333,7 +1324,7 @@ Every surface color, text color, border, and shadow must reference a CSS custom 
 <div className="bg-[var(--card)] text-foreground border">
 ```
 
-Light mode is the `:root` default (TODO(decision #3): default theme). Dark mode activates by adding `.dark` to `<html>`. Toggle via `classList.toggle("dark", isDark)` — never `data-theme` attributes.
+Dark is the default theme (decision #3): the server renders `.dark` on `<html>`, and the first-visit system preference is respected. Light mode is the absence of `.dark`. Toggle via `classList.toggle("dark", isDark)` — never `data-theme` attributes.
 
 ### 18.2 Surface Hierarchy
 
@@ -1353,18 +1344,15 @@ Light mode is the `:root` default (TODO(decision #3): default theme). Dark mode 
 |---|---|---|
 | Headings, key UI text | `var(--foreground)` | `text-foreground` |
 | Body copy, labels, descriptions | `var(--muted-foreground)` | `text-[var(--muted-foreground)]` |
-| Text on primary (indigo) buttons | `var(--primary-foreground)` | `text-primary-foreground` |
-| Text on orange CTA buttons | white (TODO(decision #2): white on orange is 3.22:1 and fails for button text; see §2.4) | `text-white` |
+| Text on orange action buttons | navy label from `--on-action` (white on orange is 3.22:1 and fails; see §2.4) | `text-(--on-action)` |
 
 ### 18.4 Brand Colour Usage in Both Modes
 
-> **SUPERSEDED by `app/styles/tokens.css`.** The `--primary` / `--accent` mapping below clashes with the newer token names. Read the live token names from `tokens.css`.
+> **SUPERSEDED by `app/styles/tokens.css`.** The `--primary` / `--accent` mapping below clashes with the newer token names and still lists indigo, which was removed from the brand (decision #1). Read the live token names from `tokens.css`.
 
-> TODO(decision #1): this table maps `--primary` to indigo and `--accent` to orange, which clashes with the newer `tokens.css` names. Left unchanged until indigo is decided.
 
 | Colour | Variable | Tailwind token works? | Usage |
 |---|---|---|---|
-| Brand Indigo | `var(--primary)` | `text-primary`, `bg-primary/N`, `border-primary/N` ✅ | Buttons, links, rings, active nav |
 | Brand Orange | `var(--accent)` | `text-accent`, `bg-accent/N`, `border-accent/N` ✅ | Hero CTA, badges, highlights |
 | Brand Teal | `var(--secondary)` | `text-secondary` ✅ | Info accents, secondary links |
 
@@ -1376,8 +1364,6 @@ The variable auto-shifts value between light and dark — never hardcode either 
 bg-accent/10       // 10% orange fill — category badges
 text-accent        // full orange text
 text-accent/80     // 80% orange — read-time, secondary accents
-border-primary/30  // 30% indigo border on hover
-bg-primary/10      // 10% indigo fill — highlight backgrounds
 ```
 
 ### 18.5 Separator and Border Patterns
@@ -1403,7 +1389,7 @@ bg-primary/10      // 10% indigo fill — highlight backgrounds
 Use coloured glows for all interactive hover states:
 
 ```tsx
-// Primary UI hover glow (indigo)
+// Primary UI hover glow (teal or navy family; no indigo)
 "motion-safe:hover:[box-shadow:0_8px_32px_-4px_color-mix(in_oklch,var(--primary)_20%,transparent)]"
 
 // CTA / featured card hover glow (orange)
@@ -1422,7 +1408,7 @@ Before marking any component `approved` in `/v2`:
 - [ ] Focus rings visible in dark mode
 - [ ] Hover shadows visible in dark mode (coloured glow, not neutral)
 - [ ] No hardcoded hex/rgb/oklch in `className` or `style={}`
-- [ ] Brand colours use variables — not Tailwind palette (`indigo-600`, `orange-500`, etc.)
+- [ ] Brand colours use variables — not Tailwind palette (`orange-500`, `teal-500`, `slate-*`, etc.)
 
 ### 18.8 Theme Flash Prevention
 
@@ -1433,7 +1419,7 @@ The inline script in `app/layout.tsx` must run before React hydrates. Never rely
 <script dangerouslySetInnerHTML={{ __html: `(function(){
   try {
     var t = localStorage.getItem('dronahost-theme');
-    var s = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+    var s = window.matchMedia('(prefers-color-scheme:light)').matches ? 'light' : 'dark'; // dark is the default
     if ((t || s) === 'dark') document.documentElement.classList.add('dark');
   } catch(e) {}
 }())` }} />
@@ -1445,7 +1431,7 @@ The inline script in `app/layout.tsx` must run before React hydrates. Never rely
 - `bg-white dark:bg-gray-900` — use `bg-[var(--card)]`
 - `text-gray-600 dark:text-gray-300` — use `text-[var(--muted-foreground)]`
 - `border-black/5 dark:border-white/10` — use `border` or `color-mix` patterns (§18.5)
-- `style={{ color: '#4F46E5' }}` — always `style={{ color: 'var(--primary)' }}`
+- `style={{ color: '#...' }}` (any hard-coded hex) — always a token, for example `style={{ color: 'var(--foreground)' }}`
 - A component that looks identical in light and dark — this is a bug, not a design choice
 - `data-theme` attribute — always `.dark` class on `<html>`
 - `localStorage` access outside `useEffect` — causes SSR crash

@@ -31,6 +31,21 @@ Copy never contains a number, guarantee, SLA, location or certification that is 
 `content/claims.ts` with `status: "verified"`. Unverified claims render nothing. Prices come only from
 `data/pricing.json`; these rules must never contain a real price.
 
+**Terms-page rule:** a verified claim must link to the page where its terms are published (refund policy, terms, SLA).
+Each claim in `claims.ts` carries a `termsPage` path, and `claimsMissingTermsPage()` lists verified claims without one.
+
+Status on 2026-10-06 (owner-confirmed the same day; terms pages to be linked):
+
+| Verified claim | `termsPage` | Gap |
+|---|---|---|
+| `money-back` (30-day money-back guarantee) | `/refund-policy` | Page exists and states the 30-day policy, but it is an unreviewed draft (legal review pending) |
+| `support-24-7` (24/7 support) | none | No published page states the support hours or channels |
+| `free-migration` (free migration) | none | `/migration` is a request form; no page publishes what "free" covers |
+| `renewal-price-same` (renewal equals signup price) | none | Neither `/terms` nor `/refund-policy` states it |
+
+Still unverified (never rendered): `uptime-sla` (`/sla` exists and is the intended terms page), `ttfb`, `first-reply`,
+`founded`, `free-ssl`, `cloudflare-cdn`. Customer counts have no entry yet. They stay hidden until evidence is on file.
+
 ---
 
 ## Table of Contents
@@ -128,7 +143,7 @@ All right-hand examples are `[EXAMPLE, NOT VERIFIED]`. Render real values from `
 | "Blazing fast servers" | "[EXAMPLE, NOT VERIFIED: LiteSpeed + NVMe storage. Average TTFB: 200ms from London, Frankfurt, and New York.]" |
 | "World-class support" | "[EXAMPLE, NOT VERIFIED: Average first response: 18 minutes, 24/7 across US, UK, and UAE business hours.]" |
 | "Amazing uptime" | "[EXAMPLE, NOT VERIFIED: 99.95% uptime SLA with automatic service credits if we miss it.]" |
-| "Affordable pricing" | "[EXAMPLE, NOT VERIFIED: WordPress hosting from $5/month.]" Renewal wording: TODO(decision #5), do not write "no price hike" until the policy is chosen. |
+| "Affordable pricing" | "[EXAMPLE, NOT VERIFIED: WordPress hosting from $5/month.]" Add "Renews at the same price" only while the `renewal-price-same` claim is verified. |
 | "Easy to use" | "[EXAMPLE, NOT VERIFIED: One-click WordPress install. Live in under 4 minutes.]" |
 | "Secure hosting" | "[EXAMPLE, NOT VERIFIED: Daily backups, free SSL, DDoS protection via Cloudflare, malware scanning included.]" |
 
@@ -225,8 +240,7 @@ Use these terms exactly and consistently across all copy, UI, metadata, and blog
 
 ### Regions and locations
 
-Naming guidance only. Which regions have their own servers or pages is TODO(decision #8). Never state a server
-location that is not in `claims.ts`.
+Naming guidance only. Regional pages are Phase 2 (decision #8). Never state a server location that is not in `claims.ts`.
 
 | Preferred | Do not use |
 |---|---|
@@ -263,7 +277,7 @@ One `<h1>` per page. Every other heading follows a strict nesting order. Never s
 |---|---|
 | WordPress Hosting | "Managed WordPress Hosting Built for Performance" |
 | VPS Hosting | "VPS Hosting with Full Root Access and NVMe Storage" |
-| WordPress Hosting UK | "WordPress Hosting on UK Servers — GDPR-Ready" (only if UK servers and GDPR claims are verified; page existence is TODO(decision #8)) |
+| WordPress Hosting UK (Phase 2, no regional pages yet) | "WordPress Hosting on UK Servers — GDPR-Ready" (only if UK servers and GDPR claims are verified) |
 | Blog post | "How to Migrate WordPress to a New Host Without Downtime" |
 | About | "A Small Team That Runs Your Hosting" |
 | Contact | "Talk to the Team" (short is fine for utility pages) |
@@ -352,10 +366,10 @@ Fake urgency destroys trust with buyers everywhere. Only use urgency copy when:
 - There is a genuine scarcity (last X spots — only if this is literally true)
 
 Acceptable:
-> "[EXAMPLE, NOT VERIFIED: Introductory price — $5/month until 31 July 2026. Renews at $7/month.]"
+> "[EXAMPLE, NOT VERIFIED: Offer ends 31 July 2026.]"
 
-TODO(decision #5): renewal policy. This example shows a renewal increase; `pricing.json` currently says renewal equals the
-signup price. Do not use either wording until the owner chooses one policy.
+Renewal price equals the signup price (decision #5). Never write an introductory price that "renews at" a higher
+price, and never imply one.
 
 Not acceptable:
 > "Hurry! Limited time offer!" (no deadline, no specifics)
@@ -549,7 +563,7 @@ Rules:
 |---|---|
 | Homepage | "Managed WordPress & VPS Hosting" |
 | WordPress Hosting | "Managed WordPress Hosting — LiteSpeed + NVMe" |
-| WordPress Hosting UK | "WordPress Hosting on UK Servers — GDPR-Ready" (only if verified; TODO(decision #8)) |
+| WordPress Hosting UK (Phase 2) | "WordPress Hosting on UK Servers — GDPR-Ready" (only if verified) |
 | VPS Hosting | "VPS Hosting with Root Access and NVMe" |
 | Pricing | "Hosting Plans & Pricing" |
 | Contact | "Contact the Team" |
@@ -592,7 +606,7 @@ Match the page content to what the searcher actually wants. Mismatched intent ra
 | "siteground alternative" | Commercial investigation | `/vs/siteground` comparison page |
 | "how to migrate wordpress without downtime" | Informational | Blog post / KB article |
 | "buy wordpress hosting" | Transactional | Pricing page / plan selection page |
-| "gdpr compliant hosting europe" | Commercial investigation | Regional page, TODO(decision #8) |
+| "gdpr compliant hosting europe" | Commercial investigation | Regional page (Phase 2) |
 | "dronahost review" | Navigational | About page + Trustpilot/G2 citation |
 
 **Rule:** Never put a transactional keyword on an informational page or vice versa. Google is very good at detecting this mismatch and will not rank the page.
@@ -680,7 +694,7 @@ Every page links to at least 3 related pages. Internal links:
 - Plan internal links before writing, not after
 
 TODO(decision #7): the URLs below are the paths used in these rules and may differ from the live URL map.
-TODO(decision #8): regional pages (`/hosting/uk`, `/hosting/us`) may be dropped.
+Regional pages (`/hosting/uk`, `/hosting/us`) are Phase 2 (decision #8) and do not exist yet.
 
 | Page | Must link to |
 |---|---|

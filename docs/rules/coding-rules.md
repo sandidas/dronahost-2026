@@ -6,6 +6,7 @@
 > **Claims rule:** copy never contains a number, guarantee, SLA, location or certification that is not rendered from
 > `content/claims.ts` with `status: "verified"`. Unverified claims render nothing.
 > **Pricing rule:** prices come only from `data/pricing.json`. These rules must not contain real prices or plan names.
+> **Terms-page rule:** a verified claim must link to the page where its terms are published (refund policy, terms, SLA). Each claim has a `termsPage` path; `claimsMissingTermsPage()` in `content/claims.ts` lists the gaps. Components that render a verified claim should link to its `termsPage` once the page exists.
 
 ---
 
@@ -392,7 +393,7 @@ export default Post;
 ## 11. Tailwind + shadcn
 
 - Always use the `cn()` utility (`clsx` + `tailwind-merge`) for conditional class names — never string concatenation
-- Use design tokens (CSS variables) for brand colors — never hardcode hex values in Tailwind classes (`bg-[#FE5403]` is banned; use a token utility such as `bg-action`. TODO(decision #2): the official orange hex is undecided; the hex lives only in `app/styles/tokens.css`)
+- Use design tokens (CSS variables) for brand colors — never hardcode hex values in Tailwind classes (`bg-[#FE5403]` is banned; use a token utility such as `bg-action`. The orange is the value inside the official logo SVG, defined once in `app/styles/tokens.css`)
 - **Dark mode — Tailwind v4**: the project uses `@custom-variant dark (&:where(.dark, .dark *))` in `globals.css`. Use `dark:` prefix classes as normal; toggle dark by adding/removing the `dark` class on `<html>` — never via `data-theme` attribute
 - Extract repeated class strings into `cva` variants, not copy-pasted strings
 - Do not add inline `style` attributes for values that can be expressed as Tailwind classes
@@ -453,9 +454,10 @@ i18n is built from day one. Every routing and linking decision must be locale-aw
 
 ### URL structure
 
-TODO(decision #8): regions. Start with one English site, USD default and a currency selector. Add `/en-gb` and similar
-only when the content genuinely differs (data location, legal text, testimonials). The structure below is the target
-shape, not a commitment to ship every locale.
+Decided (decision #8): one English site, USD default, a currency selector, and no regional pages yet. `en-us` is the only
+live locale. Add `/en-gb`, `/en-ae` and others in **Phase 2**, only when the content genuinely differs (data location,
+legal text, testimonials). The structure below is the Phase 2 target shape. (The code supports the variants behind
+`FEATURES.localeVariants`, which stays off.)
 
 ```
 /wordpress-hosting              — en-US default (no prefix, canonical)
@@ -470,7 +472,7 @@ Route file: `app/[locale]/(marketing)/wordpress-hosting/page.tsx`
 
 - Never hardcode locale-less paths in `<Link href>` when inside a locale segment — always prefix with the current locale
 - Use `next-intl` helpers (`useTranslations`, `getTranslations`) for all user-facing strings once the i18n layer is wired
-- Phase 1 locales: `en-US` (default), `en-GB`, `en-AE` — implement routing for these first
+- Phase 1 locale: `en-US` only. `en-GB` and `en-AE` routing exists behind a flag and stays off until their content differs (Phase 2)
 - Phase 2 locales: `de-DE`, `fr-FR`, `nl-NL`, `ar-AE` — do not block on these; plan the locale segment now
 - Every page must include hreflang alternates in its `buildMetadata()` call once locales are live
 - Default currency is USD. Offer GBP, EUR, AED and INR through a selector or locale. Never show a currency without its symbol and billing period.

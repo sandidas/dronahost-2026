@@ -122,7 +122,7 @@ export const metadata = buildMetadata({
 });
 ```
 
-TODO(decision #8): the `en-gb` and `en-ae` entries apply only once those locales exist with genuinely different content.
+The `en-gb` and `en-ae` entries are **Phase 2**: they apply only once those locales exist with genuinely different content (decision #8). Until then emit no hreflang.
 
 ### Dynamic pages
 
@@ -460,7 +460,7 @@ export function personSchema(person: {
 | `/vps-hosting` | Same as WordPress hosting |
 | `/cloud-hosting` | Same as VPS |
 | `/business-hosting` | Same as VPS |
-| `/hosting/[region]` | `Product` + `Offer` + `BreadcrumbList` + `FAQPage` |
+| `/hosting/[region]` (Phase 2, not live) | `Product` + `Offer` + `BreadcrumbList` (`FAQPage` optional) |
 | `/pricing` | `BreadcrumbList` |
 | `/web-design` | `Service` + `BreadcrumbList` + `FAQPage` |
 | `/seo-services` | `Service` + `BreadcrumbList` + `FAQPage` |
@@ -501,10 +501,10 @@ const STATIC_PAGES: MetadataRoute.Sitemap = [
   { url: `${SITE_URL}/seo-services` },
   { url: `${SITE_URL}/growth-services` },
   { url: `${SITE_URL}/pricing` },
-  { url: `${SITE_URL}/hosting/us` },
-  { url: `${SITE_URL}/hosting/uk` },
-  { url: `${SITE_URL}/hosting/eu` },
-  { url: `${SITE_URL}/hosting/uae` },
+  { url: `${SITE_URL}/hosting/us` }, // Phase 2, not live
+  { url: `${SITE_URL}/hosting/uk` }, // Phase 2, not live
+  { url: `${SITE_URL}/hosting/eu` }, // Phase 2, not live
+  { url: `${SITE_URL}/hosting/uae` }, // Phase 2, not live
   { url: `${SITE_URL}/blog` },
   { url: `${SITE_URL}/about` },
   { url: `${SITE_URL}/contact` },
@@ -587,7 +587,10 @@ await fetch("https://api.indexnow.org/indexnow", {
 
 ## 4. International SEO
 
-### Hreflang — every localized page
+**Current scope (decision #8):** one English site, USD default, a currency selector, no regional pages, no hreflang. The
+rest of this section is **Phase 2**: it applies only when a second locale or a regional page genuinely exists.
+
+### Phase 2: Hreflang — every localized page
 
 ```ts
 hreflang: [
@@ -604,9 +607,9 @@ hreflang: [
 
 `x-default` is mandatory. Always points to the base non-prefixed URL.
 
-### URL structure
+### Phase 2: URL structure
 
-TODO(decision #8): start with one English site, USD default and a currency selector. Add `/en-gb` and similar only when the content genuinely differs (data location, legal, testimonials).
+Start with one English site, USD default and a currency selector (decision #8). Add `/en-gb` and similar only when the content genuinely differs (data location, legal, testimonials).
 
 ```
 /wordpress-hosting              — en-US default (canonical)
@@ -617,9 +620,9 @@ TODO(decision #8): start with one English site, USD default and a currency selec
 
 Do not use query strings for locale (`?lang=en-gb`) — path segments are the only reliable hreflang approach.
 
-### Regional pages — SEO requirements
+### Phase 2: Regional pages — SEO requirements
 
-TODO(decision #8): `/hosting/uk` (regional landing page) and `/en-gb/...` (locale) both serve UK visitors. Whether regional pages exist at all is undecided.
+Regional landing pages (`/hosting/uk` and similar) are not built (decision #8). If they are added later, avoid serving the same visitors from both a regional page and a locale (`/en-gb/...`).
 
 Each `/hosting/[region]` page must have:
 
@@ -930,7 +933,7 @@ website design, and SEO services.
 - https://dronahost.com/sla : Uptime SLA & Service Credits
 - https://dronahost.com/security : Security & Data Protection
 
-## Regional pages (TODO(decision #8): may not exist)
+## Regional pages (Phase 2, not live)
 
 - https://dronahost.com/hosting/us : US Datacenter Hosting
 - https://dronahost.com/hosting/uk : UK Datacenter Hosting (GDPR)
@@ -1281,12 +1284,12 @@ Track citation rate (cited / not cited) per tool per month. If declining, run a 
 - [ ] FAQ section targeting PAA questions for this comparison
 - [ ] Factual only — no defamatory claims
 
-### Regional landing pages
+### Regional landing pages (Phase 2, not live)
 
 - [ ] Region-specific `<h1>` with location keyword
 - [ ] Hreflang tags pointing to all locale-prefixed equivalents
 - [ ] `x-default` hreflang present
-- [ ] Region currency in all pricing (default USD; TODO(decision #8))
+- [ ] Region currency in all pricing (default USD)
 - [ ] GDPR / data residency callout (EU + UK mandatory)
 - [ ] TTFB / latency callout with named cities
 - [ ] Local testimonial if available
