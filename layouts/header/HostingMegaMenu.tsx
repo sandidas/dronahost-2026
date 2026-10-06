@@ -59,7 +59,7 @@ export default function HostingMegaMenu({
 }: HostingMegaMenuProps) {
   return (
     <div id={id} hidden={!open} className="absolute inset-x-0 top-full z-50">
-      <div className="mx-auto max-w-7xl px-4 pt-2 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-(--container-max) px-4 pt-2 sm:px-6 lg:px-8">
         <div className="surface surface-raised grid gap-2 p-4 shadow-lg lg:grid-cols-[1.15fr_1fr_0.9fr] lg:gap-6 lg:p-6">
           <nav aria-label="Hosting">
             <p className="t-eyebrow px-3 pb-2">Hosting</p>

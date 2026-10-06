@@ -25,7 +25,7 @@ export default function Footer() {
       <h2 id="footer-heading" className="sr-only">
         DronaHost site footer
       </h2>
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-(--container-max) px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-[1.2fr_2.8fr]">
           <div>
             <Link href="/" aria-label="DronaHost home" className="inline-block">

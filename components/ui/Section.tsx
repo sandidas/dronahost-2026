@@ -8,7 +8,7 @@ const sizeClass = {
   xs: "max-w-2xl", // ~672px  — narrow prose, modals, auth pages
   sm: "max-w-3xl", // ~768px  — blog posts
   md: "max-w-5xl", // ~1024px — standard content pages
-  lg: "max-w-7xl", // ~1280px — DEFAULT, works for most sections
+  lg: "max-w-7xl", // ~1280px
   xl: "max-w-[90rem]", // ~1440px — wide dashboards, marketing heroes
   "2xl": "max-w-screen-2xl", // ~1536px — ultra-wide layouts
   full: "w-full", // no inner container — children fill edge-to-edge
@@ -147,12 +147,12 @@ interface SectionProps {
    * | `"xs"`  | 672px   | Narrow prose, modals, auth pages    |
    * | `"sm"`  | 768px   | Blog posts                          |
    * | `"md"`  | 1024px  | Standard content pages              |
-   * | `"lg"`  | 1280px  | **Default** — most sections         |
+   * | `"lg"`  | 1280px  | Most sections                       |
    * | `"xl"`  | 1440px  | Wide dashboards, marketing heroes   |
-   * | `"2xl"` | 1536px  | Ultra-wide layouts                  |
+   * | `"2xl"` | 1536px  | **Default** — site width            |
    * | `"full"`| —       | No inner container, edge-to-edge    |
    *
-   * @default "lg"
+   * @default "2xl"
    */
   size?: keyof typeof sizeClass;
 
@@ -434,7 +434,7 @@ interface SectionProps {
 
 const Section = ({
   as: Tag = "section",
-  size = "2xl", // max-w-7xl inner container
+  size = "2xl", // 1536px, matches --container-max
   height = "auto", // no forced height — driven by content
   align = "center", // vertical centering when height is set
   hAlign = "left", // horizontal: left-aligned by default

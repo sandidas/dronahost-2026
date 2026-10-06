@@ -52,7 +52,7 @@ export default function Header() {
         className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md"
       >
         <div ref={rootRef} className="relative" onMouseLeave={closeMega}>
-          <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto flex h-[4.5rem] max-w-(--container-max) items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
             <Link href="/" aria-label="DronaHost home" className="flex shrink-0 items-center rounded-lg">
               <Logo size="md" priority />
             </Link>
