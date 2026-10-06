@@ -112,6 +112,7 @@ export const FOOTER_COLUMNS: readonly { title: string; links: readonly NavLink[]
       { label: "Refund policy", href: "/refund-policy" },
       { label: "Data processing", href: "/data-processing" },
       { label: "Privacy policy", href: "/privacy" },
+      { label: "Cookie policy", href: "/cookie-policy" },
       { label: "Terms of service", href: "/terms" },
     ],
   },

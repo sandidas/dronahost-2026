@@ -89,6 +89,10 @@ export default function PrivacyPage() {
             Terms of Service
           </Link>
           {" · "}
+          <Link href="/cookie-policy" className="text-link underline underline-offset-4">
+            Cookie Policy
+          </Link>
+          {" · "}
           <Link href="/data-processing" className="text-link underline underline-offset-4">
             Data Processing Agreement
           </Link>

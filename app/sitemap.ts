@@ -26,6 +26,7 @@ const STATIC_PAGES: MetadataRoute.Sitemap = [
   { url: `${SITE_URL}/hosting/uae`, priority: 0.6, changeFrequency: "monthly" },
   // Legal
   { url: `${SITE_URL}/privacy`, priority: 0.3, changeFrequency: "yearly" },
+  { url: `${SITE_URL}/cookie-policy`, priority: 0.3, changeFrequency: "yearly" },
   { url: `${SITE_URL}/terms`, priority: 0.3, changeFrequency: "yearly" },
   { url: `${SITE_URL}/refund-policy`, priority: 0.3, changeFrequency: "yearly" },
   { url: `${SITE_URL}/sla`, priority: 0.3, changeFrequency: "yearly" },

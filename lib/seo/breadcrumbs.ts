@@ -20,6 +20,7 @@ const LABEL_MAP: Record<string, string> = {
   "uae": "UAE",
   "vs": "Compare",
   "privacy": "Privacy policy",
+  "cookie-policy": "Cookie policy",
   "terms": "Terms of service",
   "refund-policy": "Refund policy",
   "sla": "Service level agreement",

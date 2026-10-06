@@ -1,4 +1,5 @@
 import pricing from "@/data/pricing.json";
+import { readConsent } from "@/lib/consent";
 import { DEFAULT_CURRENCY, type CurrencyCode } from "@/lib/pricing";
 
 export const CURRENCY_COOKIE = "dh_currency";
@@ -20,6 +21,11 @@ export function readCurrencyCookie(): CurrencyCode {
 }
 
 export function writeCurrencyCookie(code: CurrencyCode) {
+  // A preference cookie: set only when the visitor allowed preference cookies.
+  if (!readConsent()?.preferences) {
+    window.dispatchEvent(new Event(CURRENCY_EVENT));
+    return;
+  }
   document.cookie = `${CURRENCY_COOKIE}=${code}; path=/; max-age=31536000; samesite=lax`;
   window.dispatchEvent(new Event(CURRENCY_EVENT));
 }

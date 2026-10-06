@@ -39,3 +39,11 @@ test.describe("cookie consent", () => {
     expect(requests.some((u) => u.includes("googletagmanager.com"))).toBe(false);
   });
 });
+
+test("cookie policy lists the consent cookie and reopens the settings dialog", async ({ page }) => {
+  await page.goto("/cookie-policy");
+  await expect(page.getByRole("heading", { level: 1, name: "Cookie Policy" })).toBeVisible();
+  await expect(page.getByRole("cell", { name: "Remembers your cookie choices and a random ID" })).toBeVisible();
+  await page.getByRole("main").getByRole("button", { name: "Cookie settings" }).click();
+  await expect(page.getByRole("dialog", { name: "Cookie preferences" })).toBeVisible();
+});
