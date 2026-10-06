@@ -55,7 +55,7 @@ export function RestoreVisual() {
 export function ChannelsVisual() {
   return (
     <div className="flex w-full max-w-xs flex-wrap justify-center gap-2.5">
-      {["Ticket", "Live chat", "WhatsApp"].map((label) => (
+      {["Ticket", "Follow-up", "Resolved"].map((label) => (
         <span key={label} className="inline-flex h-10 items-center rounded-full border border-border bg-card px-5 text-sm font-semibold text-foreground shadow-sm">
           {label}
         </span>

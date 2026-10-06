@@ -46,16 +46,20 @@ export default function HeroContent({
       </Heading>
       <p className={cn("t-lead mt-5", centered && "mx-auto")}>{description}</p>
 
+      {(primaryCta || secondaryCta) && (
       <div className={cn("mt-8 flex flex-wrap items-center gap-3", centered && "justify-center")}>
-        <Button href={primaryCta.href} size="lg">
-          {primaryCta.label}
-        </Button>
+        {primaryCta && (
+          <Button href={primaryCta.href} size="lg">
+            {primaryCta.label}
+          </Button>
+        )}
         {secondaryCta && (
           <Button href={secondaryCta.href} variant="secondary" size="lg">
             {secondaryCta.label}
           </Button>
         )}
       </div>
+      )}
 
       {note && <p className="t-small mt-4 text-muted-foreground">{note}</p>}
 

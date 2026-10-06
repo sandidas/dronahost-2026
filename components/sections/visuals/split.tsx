@@ -109,7 +109,7 @@ export function SupportChannelsVisual() {
     <VisualFrame>
       <div className="mx-auto max-w-md space-y-4">
         <div className="flex flex-wrap gap-2">
-          {["Ticket", "Live chat", "WhatsApp"].map((label, i) => (
+          {["Ticket", "Follow-up", "Resolved"].map((label, i) => (
             <span
               key={label}
               className={cn(

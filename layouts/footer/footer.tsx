@@ -72,14 +72,14 @@ export default function Footer() {
 
         <div className="mt-14 flex flex-col gap-4 border-t border-border pt-6 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
           <div className="space-y-1">
-            <p>
-              &copy; {new Date().getFullYear()} {COMPANY.legalName ?? COMPANY.brandName}. All rights reserved.
+            <p className="flex flex-wrap items-center gap-x-5 gap-y-1">
+              <span>
+                &copy; {new Date().getFullYear()} {COMPANY.legalName ?? COMPANY.brandName}. All rights reserved.
+              </span>
+              <CookieSettingsButton className="min-h-9 text-sm underline underline-offset-4 hover:text-foreground" />
             </p>
             {legalLine && <p className="text-xs text-subtle-foreground">{legalLine}</p>}
             {COMPANY.address && <p className="text-xs text-subtle-foreground">{COMPANY.address}</p>}
-            <p>
-              <CookieSettingsButton className="min-h-9 text-sm underline underline-offset-4 hover:text-foreground" />
-            </p>
           </div>
           <LanguageSwitcher />
           {payments.length > 0 && (

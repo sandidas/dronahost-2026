@@ -114,7 +114,6 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
         title="Practical notes on"
         titleAccent="hosting and the web"
         description="Guides on WordPress, performance, security and search, written by the people who run the servers."
-        primaryCta={{ label: "Talk to our team", href: "/contact" }}
       />
       <Suspense fallback={<BlogListSkeleton />}>
         <BlogList page={page} category={category} />

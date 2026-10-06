@@ -159,7 +159,7 @@
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    border: 2px solid var(--accent);
+    border: 2px solid var(--action);
     opacity: 0;
     pointer-events: none;
     animation: pulse-once 1100ms var(--ease-out) 1300ms 1;

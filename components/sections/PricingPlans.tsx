@@ -71,7 +71,7 @@ function PlanCard({
           plan.highlight && "plan-glow surface-raised !border-accent/60 shadow-lg ring-1 ring-accent/30",
         )}
       >
-        <div className="min-h-6">
+        <div className="flex h-7 items-start">
           {plan.badge && (
             <span
               className={cn(

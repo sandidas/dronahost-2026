@@ -48,7 +48,7 @@ export const HOME_BENTO = {
     },
     {
       title: "Support you can reach",
-      description: "Open a ticket, start a live chat or message us on WhatsApp. You talk to the team that runs your server.",
+      description: "Open a ticket and you talk to the team that runs your server.",
       visual: "channels",
       span: "twoThirds",
       href: "/contact",
@@ -143,10 +143,10 @@ export const HOME_SPLITS = [
   {
     visual: "support",
     eyebrow: "Support",
-    title: "Real people, through the channel you prefer",
-    description: "Open a ticket, start a live chat or message us on WhatsApp. You reach the team that runs your server.",
+    title: "Real people, ready when you need them",
+    description: "Open a ticket and you reach the team that runs your server.",
     features: [
-      "Ticket, live chat and WhatsApp",
+      "Tickets answered by the team that runs your server",
       "Plain-English answers with clear next steps",
       "Escalation to engineers when a problem needs one",
     ],

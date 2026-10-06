@@ -30,7 +30,7 @@ export const ABOUT_HOW_WE_WORK: { eyebrow: string; title: string; steps: Timelin
     { title: "We listen first", description: "You tell us about the site, the audience and what is not working." },
     { title: "We recommend", description: "A specific plan or scope, including when hosting is not the answer." },
     { title: "We do the work", description: "Migrations, builds and fixes, with updates you can follow." },
-    { title: "We stay reachable", description: "Support by ticket, live chat or WhatsApp once you are live." },
+    { title: "We stay reachable", description: "Open a ticket and reach the team once you are live." },
   ],
 };
 

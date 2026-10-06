@@ -1,6 +1,5 @@
 import CenteredHero from "@/components/sections/CenteredHero";
 import JsonLd from "@/components/sections/JsonLd";
-import SupportChannels from "@/components/sections/SupportChannels";
 import { COMPANY } from "@/content/company";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 import { breadcrumbSchema } from "@/lib/seo/jsonld";
@@ -26,12 +25,14 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
         title="Tell us about"
         titleAccent="your site"
         description="Ask about hosting, a migration, a web project or SEO. Send a message and we will reply by email."
-        primaryCta={{ label: "Write to us", href: "#contact-form" }}
       />
       <section aria-labelledby="contact-form-heading" className="section-y">
         <div className="container-site grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
-          <div>
+          <div className="lg:sticky lg:top-28 lg:self-start">
             <h2 className="t-h3 text-foreground">Other ways to reach us</h2>
+            <p className="t-body mt-4 text-muted-foreground">
+              Tell us about your site and your traffic and we will recommend a plan. If a plan is not the right fit, we will say so.
+            </p>
             <dl className="mt-6 space-y-5 text-sm">
               {COMPANY.supportEmail && (
                 <div>
@@ -59,13 +60,12 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
             <h2 id="contact-form-heading" className="t-h3 text-foreground">
               Send a message
             </h2>
-            <div className="mt-6">
+            <div className="surface mt-6 p-6 sm:p-8">
               <ContactForm defaultPlan={plan} />
             </div>
           </div>
         </div>
       </section>
-      <SupportChannels className="!pt-0" />
     </>
   );
 }

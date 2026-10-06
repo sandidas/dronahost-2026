@@ -88,3 +88,11 @@ Not localized yet: page copy (`content/*.ts`), JSON-LD URLs (they point at the d
 - Removed the unused `components/loader/*` set (infinite spinners and pulses).
 - `/v2/design-system` Motion section: live demos with a reduced-motion toggle.
 - Tests: `tests/e2e/motion.spec.ts` (no horizontal scroll at 390/820/1440, JS disabled, reduced motion, CLS per page). The axe script now scans the settled page.
+
+## UX review fixes (browser review at 1440 and 390)
+- Section rhythm tightened: `--section-y` is now 48px (mobile) to 76px (wide) per side, so stacked sections sit 96-152px apart instead of up to 288px.
+- Footer: copyright and Cookie settings share one row.
+- Hero `primaryCta` is optional; the contact, blog and pricing heroes drop their CTA because the page already holds the action.
+- Contact page: sticky intro column, form in a card, redundant ticket card removed.
+- Copy: removed WhatsApp and live chat mentions (neither is live); support visuals now show Ticket, Follow-up, Resolved. Pricing hero no longer says prices are listed while they are hidden.
+- Hero mockup "Go live" button uses the orange action colour; pricing badge slot has a fixed height so card prices align.

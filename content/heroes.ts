@@ -14,13 +14,13 @@ export const HOME_HERO: HeroCopy = {
   title: "Managed WordPress hosting for",
   titleAccent: "growing businesses",
   description:
-    "DronaHost runs managed WordPress, cloud and VPS hosting on LiteSpeed servers. We migrate your existing site, and you can reach the team by ticket, live chat or WhatsApp.",
+    "DronaHost runs managed WordPress, cloud and VPS hosting on LiteSpeed servers. We migrate your existing site, and you can reach the team by ticket.",
   primaryCta: { label: "View plans", href: "/pricing" },
   secondaryCta: { label: "Talk to our team", href: "/contact" },
   highlights: [
     "LiteSpeed servers with server-level caching",
     "Free migration from your current host",
-    "Support by ticket, live chat and WhatsApp",
+    "Support from the team that runs your server",
   ],
 };
 
@@ -59,6 +59,5 @@ export const PRICING_HERO: HeroCopy = {
   title: "Plans for every stage of",
   titleAccent: "your site",
   description:
-    "Choose a managed hosting plan. Prices are listed in US dollars, with the renewal price shown next to the signup price.",
-  primaryCta: { label: "Talk to our team", href: "/contact" },
+    "Choose a managed hosting plan and compare what each one includes. Not sure which fits? Ask the team and we will recommend one.",
 };

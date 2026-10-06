@@ -13,7 +13,8 @@ export type HeroBaseProps = {
   /** Answer-first summary under the headline. */
   description: string;
   /** The single primary action (orange). */
-  primaryCta: HeroCta;
+  /** Optional: text-led pages that already put the action on the page (a form, a plan grid) omit it. */
+  primaryCta?: HeroCta;
   /** Optional quieter action. */
   secondaryCta?: HeroCta;
   /** Short supporting facts under the actions. Only verified, specific statements. */

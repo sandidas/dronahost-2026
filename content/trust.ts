@@ -67,7 +67,7 @@ export const TRUST_ITEMS: readonly TrustItem[] = [
     id: "support",
     icon: "life-buoy",
     title: "Support by people",
-    description: "Reach the team by ticket, live chat or WhatsApp.",
+    description: "Open a ticket and reach the team that runs your server.",
     href: "/contact",
     linkLabel: "Contact support",
     verified: false,

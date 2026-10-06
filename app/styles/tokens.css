@@ -158,7 +158,7 @@
 
   --container-max: 96rem; /* 1536px (max-w-screen-2xl); single source for the site width */
   --gutter: clamp(1rem, 4vw, 2rem);
-  --section-y: clamp(4rem, 3rem + 5vw, 9rem); /* 64px mobile → 144px wide */
+  --section-y: clamp(3rem, 2rem + 3.4vw, 4.75rem); /* 48px mobile → 76px wide per side, so two stacked sections sit 96-152px apart */
 }
 
 /* ── Tailwind bridge: utilities read the CSS variables above ── */

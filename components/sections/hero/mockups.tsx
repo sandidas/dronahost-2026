@@ -144,7 +144,7 @@ export function StagingFlowMockup({ className }: { className?: string }) {
 
           <div className="flex items-center justify-between gap-3 border-t border-border pt-4">
             <Bar className="w-24" />
-            <span className="go-live relative inline-flex h-9 items-center rounded-lg bg-accent px-4 text-sm font-semibold text-accent-foreground">Go live</span>
+            <span className="go-live relative inline-flex h-9 items-center rounded-lg bg-(--action-fill) px-4 text-sm font-semibold text-(--on-action)">Go live</span>
           </div>
         </div>
       </div>
