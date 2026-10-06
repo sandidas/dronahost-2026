@@ -69,3 +69,10 @@ Known trade-off: a `loading.tsx` file wraps the whole route segment in Suspense,
 - **Phase 2:** to add Arabic (`ar-ae`, `dir: "rtl"`) or an EU language, add the entry to `LOCALES`, create `messages/<locale>.json`, translate the content in `content/*.ts` and list it in `LIVE_LOCALES`. Logical CSS properties are already used, so RTL layout should hold.
 
 Not localized yet: page copy (`content/*.ts`), JSON-LD URLs (they point at the default locale), prices and currency (USD only), dates (en-US).
+
+## Batch G completion: remaining primitives
+- `Tabs` (ARIA tabs, keyboard, RTL-aware), `Tooltip` (WCAG 1.4.13), `Toast` (`ToastProvider` + `useToast`, not mounted site-wide yet).
+- `WhatsAppButton`: rendered by the marketing layout only when `COMPANY.whatsappNumber` is set (currently null, so hidden).
+- Branded 500: shared `ErrorState`, with a `(marketing)/error.tsx` boundary that keeps header and footer.
+- `TextSkeleton` / `CardGridSkeleton` for in-page Suspense fallbacks (no route-level `loading.tsx`).
+- Showcase entries in `/v2`.

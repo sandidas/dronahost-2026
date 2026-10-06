@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
+import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import StickyMobileCTA from "@/components/layout/StickyMobileCTA";
 import Footer from "@/layouts/footer/footer";
 import Header from "@/layouts/header/header";
@@ -22,6 +23,7 @@ export default async function ClientEndLayout({
       </main>
       <Footer />
       <StickyMobileCTA />
+      <WhatsAppButton />
     </>
   );
 }

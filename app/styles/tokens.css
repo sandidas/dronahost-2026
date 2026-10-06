@@ -543,7 +543,11 @@ body {
       transform: translateY(8px);
     }
   }
+  .toast {
+    animation: dialog-in var(--dur) var(--ease-out);
+  }
   @media (prefers-reduced-motion: reduce) {
+    .toast,
     .sticky-cta,
     .dialog[open] {
       transition: none;

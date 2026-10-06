@@ -32,6 +32,9 @@ import DomainSearch from "@/components/sections/DomainSearch";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import EmptyState from "@/components/ui/EmptyState";
 import DialogDemo from "./_components/DialogDemo";
+import { TabsDemo, ToastDemo, TooltipDemo } from "./_components/OverlayDemos";
+import { CardGridSkeleton, TextSkeleton } from "@/components/ui/LoadingStates";
+import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import { Newspaper } from "lucide-react";
 
 import CenteredHero from "@/components/sections/CenteredHero";
@@ -648,8 +651,32 @@ export default function V2ShowcasePage() {
             <EmptyState icon={Newspaper} title="Articles are on the way" body="We are preparing our first guides. In the meantime, ask us anything about your site." action={{ label: "Talk to our team", href: "/contact" }} />
           </ShowcaseSection>
 
-          <ShowcaseSection id="dialog" title="Dialog" status="built" notes="Modal on the native dialog element: focus trap, Escape, inert background and focus return come from the browser. CSS-only fade, disabled under prefers-reduced-motion. Tabs, tooltip and toast are not built: nothing needs them yet.">
+          <ShowcaseSection id="dialog" title="Dialog" status="built" notes="Modal on the native dialog element: focus trap, Escape, inert background and focus return come from the browser. CSS-only fade, disabled under prefers-reduced-motion.">
             <DialogDemo />
+          </ShowcaseSection>
+
+          <ShowcaseSection id="tabs" title="Tabs" status="built" notes="WAI-ARIA tabs: roving tabindex, arrow keys, Home and End, RTL-aware. All panels stay in the HTML, hidden, so content remains crawlable.">
+            <TabsDemo />
+          </ShowcaseSection>
+
+          <ShowcaseSection id="tooltip" title="Tooltip" status="built" notes="Hover and keyboard focus, stays open under the pointer, Escape dismisses (WCAG 1.4.13). Supplementary hints only; never essential information.">
+            <TooltipDemo />
+          </ShowcaseSection>
+
+          <ShowcaseSection id="toast" title="Toast" status="built" notes="Polite live region (assertive for errors), auto-dismiss after 6s, at most three at once. Not mounted site-wide yet: wrap a page or layout in ToastProvider when a feature needs it.">
+            <ToastDemo />
+          </ShowcaseSection>
+
+          <ShowcaseSection id="loading-states" title="Loading states" status="built" notes="TextSkeleton and CardGridSkeleton reserve space to avoid layout shift. Use them as in-page Suspense fallbacks; route-level loading.tsx is avoided because it turns 404s into 200s.">
+            <div className="space-y-8">
+              <TextSkeleton lines={3} />
+              <CardGridSkeleton count={3} />
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection id="whatsapp" title="WhatsApp button" status="needs-verification" notes="Floating link, rendered by the marketing layout only when a number is set in content/company.ts. Plain wa.me link, no third-party script. The sample below uses a placeholder number." verify={["A real WhatsApp number answered by the team","Which hours it is monitored"]}>
+            <WhatsAppButton number="+1 555 0100" />
+            <p className="text-sm text-muted-foreground">Placeholder number shown bottom-right on this page only.</p>
           </ShowcaseSection>
 
           <ShowcaseSection id="cookie-consent" title="Cookie consent" status="needs-verification" notes="Live on every page: Reject all and Accept all are the same size and style, a preferences dialog (loaded on demand), and a footer Cookie settings link. Decisions are stored in a first-party cookie and logged server-side without IP or user agent. Clear the dh_consent cookie to see the banner again." verify={["Privacy policy and a cookie policy must list dh_consent, the theme setting and Cloudflare Turnstile","Consent log retention period (the log is append-only today)"]}>
