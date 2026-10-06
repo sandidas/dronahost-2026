@@ -1,6 +1,11 @@
 # DronaHost — Coding Rules
 
 > Enforced on every PR. No exceptions without explicit written justification in a code comment.
+>
+> **Examples are not facts.** Every number, price, plan name and SLA in a sample below is `[EXAMPLE, NOT VERIFIED]`.
+> **Claims rule:** copy never contains a number, guarantee, SLA, location or certification that is not rendered from
+> `content/claims.ts` with `status: "verified"`. Unverified claims render nothing.
+> **Pricing rule:** prices come only from `data/pricing.json`. These rules must not contain real prices or plan names.
 
 ---
 
@@ -29,7 +34,7 @@ const data = ResponseSchema.parse(await fetch(...).then(r => r.json()));
 - `"use client"` is allowed only in leaf components that require browser APIs, hooks, or event handlers
 - Never fetch data inside a Client Component when a Server Component works
 - Use `next/dynamic` with `{ ssr: false }` only for genuinely client-only widgets (e.g., map libraries, canvas)
-- All indexable content (hero text, pricing, FAQs, blog posts) must render in HTML — AI crawlers and Googlebot do not execute JS reliably
+- All indexable content (hero text, pricing, FAQs, blog posts) must render in the server HTML, so crawlers and visitors without JavaScript can read it
 
 ```ts
 // BAD — page.tsx
@@ -42,6 +47,13 @@ export default function Page() {
   return <main><DomainSearchWidget /></main>;
 }
 ```
+
+### Next.js 16 notes
+
+- `params` and `searchParams` are async: type them as `Promise<...>` and `await` them (see the samples in §3).
+- `middleware.ts` is now `proxy.ts`.
+- `next lint` was removed: run ESLint (or Biome) directly in scripts and CI.
+- Pin the framework version and track the latest patch release.
 
 ---
 
@@ -56,8 +68,8 @@ Required fields:
 
 | Field | Requirement |
 |---|---|
-| `title` | 50–60 chars, keyword-first, unique |
-| `description` | 140–160 chars, includes CTA, unique |
+| `title` | Keyword-first, unique, 60 chars or fewer including the suffix (guideline; the helper appends the brand suffix, so write titles without it) |
+| `description` | Unique, 160 chars or fewer, ends with a next step (guideline). The linter fails only on missing, duplicate or over-length values. |
 | `openGraph` | title, description, url, siteName, images [1200×630], locale, type |
 | `twitter` | card: "summary_large_image", title, description, images |
 | `alternates.canonical` | absolute URL |
@@ -70,18 +82,19 @@ import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
   title: "Managed WordPress Hosting — LiteSpeed + NVMe",
-  description: "LiteSpeed + NVMe with 200ms TTFB. Free migration, daily backups, 99.95% uptime SLA. From $5/month.",
+  description: "[EXAMPLE, NOT VERIFIED] LiteSpeed + NVMe with 200ms TTFB. Free migration, daily backups, 99.95% uptime SLA. From $5/month.",
   path: "/wordpress-hosting",
 });
 
 // Dynamic page — export generateMetadata
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const post = await getPost(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = await getPost(slug);
   if (!post) return {};
   return buildMetadata({
     title: post.title,
     description: post.excerpt,
-    path: `/blog/${post.slug}`,
+    path: `/blog/${slug}`,
     type: "article",
     publishedTime: post.publishedAt?.toISOString(),
   });
@@ -94,13 +107,13 @@ Place via inline `<script type="application/ld+json">` inside a Server Component
 
 | Page type | Required schema |
 |---|---|
-| Homepage | `Organization` + `WebSite` + `SearchAction` |
-| Hosting plan | `Product` + `Offer` + `AggregateRating` |
+| Homepage | `Organization` + `WebSite` in one `@graph` with stable `@id` (no `SearchAction`; see `seo-rules.md` §2) |
+| Hosting plan | `Product` + `Offer` (`AggregateRating` only with real, visible, linked reviews) |
 | Blog post | `BlogPosting` (author, datePublished, dateModified, image) |
 | All non-home | `BreadcrumbList` |
-| FAQ section | `FAQPage` |
+| FAQ section | `FAQPage` (optional; must match the visible text) |
 | Service page | `Service` with `areaServed` |
-| Contact | `LocalBusiness` / `Organization` with `contactPoint` |
+| Contact | `Organization` with `contactPoint` (not `LocalBusiness`) |
 | Case study | `Article` with `mentions` |
 
 ### HTML rules
@@ -113,14 +126,14 @@ Place via inline `<script type="application/ld+json">` inside a Server Component
 
 ### Sitemap & robots
 
-- `app/sitemap.ts` — dynamic, includes all published posts and hreflang alternates
+- `app/sitemap.ts` — dynamic, includes all published posts (from WordPress, see §10a) and hreflang alternates
 - `app/robots.ts` — block `/api/*`, `/admin/*`, `/account/*`, `/checkout/*`
 
 ---
 
 ## 4. Code Readability
 
-- **File length**: hard cap 300 lines; split into smaller modules if exceeded
+- **File length**: hard cap 300 lines; split into smaller modules if exceeded. Enforced with the ESLint `max-lines` rule, not by review alone.
 - **Function length**: aim for ≤ 40 lines; extract helpers rather than growing functions
 - **Naming**: files `kebab-case.ts`, components `PascalCase`, hooks `useCamelCase`, constants `SCREAMING_SNAKE_CASE`
 - **One component per file** — named export preferred over default export
@@ -140,7 +153,8 @@ export function getCurrencyForCountry(countryCode: string): CurrencyCode { ... }
 ## 5. Reusable Components
 
 - All components used on 2+ pages belong in `components/ui/` (primitives) or `components/sections/` (page sections)
-- Page-level `_components/` is only for interactive widgets used on exactly one page (domain search, blog filter, comparison tables)
+- Page-level `_components/` is only for interactive widgets used on exactly one page (domain search, blog filter)
+- **Bespoke sections:** a section used on exactly one page lives in `components/sections/bespoke/`. It is built to the same standards and approved in `/v2` before use, like any other component.
 - Every component must have typed props — no implicit `any`, no untyped `children`
 - Use `React.ComponentPropsWithoutRef<"div">` or similar to forward HTML attributes cleanly
 - **Never edit files inside `node_modules/` or shadcn source files** — extend via wrapper components or `cva` variants
@@ -187,22 +201,14 @@ Every component added to `/v2` must demonstrate:
 | Edge cases | Long text, empty content, loading state, error state where relevant |
 
 ```tsx
-// app/(dev)/v2/page.tsx — example entry for a new component
+// app/(dev)/v2/page.tsx — example entry for a new component ([EXAMPLE, NOT VERIFIED]: plan data comes from pricing.json)
 <Section heading="PricingCard" status="needs-verification">
   <PricingCard
-    name="Starter"
-    price="$5"
-    period="month"
-    features={["10 GB NVMe", "Free SSL", "Daily backups"]}
-    cta="Start Starter Plan"
+    plan={plans[0]}   {/* from data/pricing.json; never typed inline */}
   />
   <PricingCard
-    name="Business"
-    price="$15"
-    period="month"
-    features={["50 GB NVMe", "Free SSL", "Priority support"]}
+    plan={plans[1]}
     highlighted
-    cta="Start Business Plan"
   />
 </Section>
 ```
@@ -259,12 +265,16 @@ if (!Array.isArray(data)) throw new Error("Expected array from API");
 for (const item of data) { ... }
 ```
 
-2. **Enforce a hard cap** on user-supplied array lengths to prevent memory exhaustion:
+2. **Enforce a hard cap** on user-supplied array lengths to prevent memory exhaustion. For API and user input, **reject** an oversize payload with a 4xx; do not silently truncate it with `.slice(0, MAX)`:
 
 ```ts
 const MAX_ITEMS = 100;
-const safeItems = items.slice(0, MAX_ITEMS);
+if (items.length > MAX_ITEMS) {
+  return NextResponse.json({ error: "Too many items" }, { status: 413 });
+}
 ```
+
+`.slice()` is acceptable only for display lists you build yourself (for example "show the first 6 related posts").
 
 3. Use `for...of` over `.forEach` for async-friendly iteration.
 
@@ -279,18 +289,34 @@ const safeItems = items.slice(0, MAX_ITEMS);
 
 ### DB / service calls
 
-Wrap every database and external API call in try/catch with typed error logging:
+Wrap every external API call (WordPress, WHMCS, email) in try/catch with typed error logging through the logger, not `console.error`:
 
 ```ts
 try {
-  const result = await PostModel.findOne({ slug }).lean();
+  const result = await getPost(slug); // validated with Zod, see §10a
   if (!result) notFound(); // Next.js 404
+  return result;
+} catch (err) {
+  logger.error("post.fetch_failed", { slug, err });
+  throw new Error("Post fetch failed");
+}
+```
+
+Obsolete MongoDB version of the same rule (kept until §10 is removed; do not copy):
+
+```ts
+// OBSOLETE, to be removed
+try {
+  const result = await PostModel.findOne({ slug }).lean();
+  if (!result) notFound();
   return result;
 } catch (err) {
   console.error("[post] Failed to fetch:", slug, err);
   throw new Error("Post fetch failed");
 }
 ```
+
+In production, errors go to a logger or error-monitoring service. `console.error` is for local development only. Never log secrets, tokens or personal data.
 
 ### Route handler shape
 
@@ -310,7 +336,7 @@ export async function POST(req: Request) {
     }
     // ... handler logic
   } catch (err) {
-    console.error("[POST /api/orders]", err);
+    logger.error("api.orders.post_failed", { err });
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
@@ -319,6 +345,11 @@ export async function POST(req: Request) {
 ---
 
 ## 10. Mongoose Rules
+
+> **OBSOLETE, TO BE REMOVED.** The blog moves to headless WordPress and the site becomes front-end only (see §10a).
+> This section, the EU Atlas cluster rule, `MONGODB_URI`, the soft-delete rules and any code that reads MongoDB for
+> posts, sitemaps or `llms.txt` are obsolete. Do not delete them yet; do not extend them. Form submissions and the
+> consent log currently still use MongoDB until their replacement is decided.
 
 - Always call `.lean()` on read queries — returns plain objects, ~2× faster, no Mongoose overhead
 - Never expose raw Mongoose queries to Client Components — Server Components and Route Handlers only
@@ -343,10 +374,25 @@ export default Post;
 
 ---
 
+## 10a. WordPress Data-Layer Rules
+
+- Fetch WordPress only in Server Components or Route Handlers. Validate every response with Zod.
+- Render WordPress HTML only after server-side sanitisation (for example `sanitize-html`). Never use raw
+  `dangerouslySetInnerHTML` on `content.rendered`: it is an XSS risk.
+- Use ISR with tags: `revalidateTag("post:<slug>")` triggered by a WordPress webhook. Verify the webhook with a shared secret.
+- If WordPress is down, serve the last cached page. Never show an error page for content that was cached.
+- Draft preview uses Next.js Draft Mode, protected by a secret.
+- WordPress lives on a separate subdomain (for example `cms.<domain>`), `noindex`, no public theme, `wp-admin`
+  restricted by IP or SSO, minimal plugins. Send `X-Robots-Tag: noindex` on the CMS domain so it never competes with the site.
+- Content model: author, reviewer, category, `primaryKeyword`, `searchIntent`, `reviewedOn`, `relatedProduct` (links to a
+  product page), and SEO fields. A post without an author or a reviewed date cannot be published.
+
+---
+
 ## 11. Tailwind + shadcn
 
 - Always use the `cn()` utility (`clsx` + `tailwind-merge`) for conditional class names — never string concatenation
-- Use design tokens (CSS variables) for brand colors — never hardcode hex values in Tailwind classes (`bg-[#FE5403]` is banned; use `bg-brand-orange`)
+- Use design tokens (CSS variables) for brand colors — never hardcode hex values in Tailwind classes (`bg-[#FE5403]` is banned; use a token utility such as `bg-action`. TODO(decision #2): the official orange hex is undecided; the hex lives only in `app/styles/tokens.css`)
 - **Dark mode — Tailwind v4**: the project uses `@custom-variant dark (&:where(.dark, .dark *))` in `globals.css`. Use `dark:` prefix classes as normal; toggle dark by adding/removing the `dark` class on `<html>` — never via `data-theme` attribute
 - Extract repeated class strings into `cva` variants, not copy-pasted strings
 - Do not add inline `style` attributes for values that can be expressed as Tailwind classes
@@ -367,19 +413,33 @@ export default Post;
 - All secrets in `.env.local` — never committed (only `.env.example` is committed)
 - Never access `process.env.X` directly in components or pages — always go through a typed config module:
 
+- Validate the environment with Zod once, at startup, in a single typed module. Do not scatter `?? ""` fallbacks:
+
 ```ts
 // lib/env.ts — single source of truth for all env vars
-export const env = {
-  SITE_URL: process.env.NEXT_PUBLIC_SITE_URL ?? "https://dronahost.com",
-  MONGODB_URI: process.env.MONGODB_URI ?? "",
-  // add vars here as they are introduced
-} as const;
+import { z } from "zod";
+
+const EnvSchema = z.object({
+  NEXT_PUBLIC_SITE_URL: z.string().url(),
+  WORDPRESS_API_URL: z.string().url().optional(),
+  // MONGODB_URI is obsolete (see §10); add vars here as they are introduced
+});
+
+export const env = EnvSchema.parse(process.env); // throws at startup with a clear message
 ```
 
 - `NEXT_PUBLIC_` prefix: only for values that are safe to expose to the browser. All other vars stay server-side.
-- If a required var is missing at runtime, fail loudly during startup — do not silently fall back to a wrong value for a secret:
+- If a required var is missing, fail loudly during startup. Never silently fall back to a wrong value for a secret.
+- `NEXT_PUBLIC_` prefix: only for values that are safe to expose to the browser. All other vars stay server-side.
+
+Obsolete MongoDB env handling (kept until §10 is removed; do not copy):
 
 ```ts
+// OBSOLETE, to be removed
+export const env = {
+  SITE_URL: process.env.NEXT_PUBLIC_SITE_URL ?? "https://dronahost.com",
+  MONGODB_URI: process.env.MONGODB_URI ?? "",
+} as const;
 if (!env.MONGODB_URI) throw new Error("MONGODB_URI is not set");
 ```
 
@@ -392,6 +452,10 @@ if (!env.MONGODB_URI) throw new Error("MONGODB_URI is not set");
 i18n is built from day one. Every routing and linking decision must be locale-aware.
 
 ### URL structure
+
+TODO(decision #8): regions. Start with one English site, USD default and a currency selector. Add `/en-gb` and similar
+only when the content genuinely differs (data location, legal text, testimonials). The structure below is the target
+shape, not a commitment to ship every locale.
 
 ```
 /wordpress-hosting              — en-US default (no prefix, canonical)
@@ -409,7 +473,9 @@ Route file: `app/[locale]/(marketing)/wordpress-hosting/page.tsx`
 - Phase 1 locales: `en-US` (default), `en-GB`, `en-AE` — implement routing for these first
 - Phase 2 locales: `de-DE`, `fr-FR`, `nl-NL`, `ar-AE` — do not block on these; plan the locale segment now
 - Every page must include hreflang alternates in its `buildMetadata()` call once locales are live
-- Currency display follows the detected locale — never hardcode `$` symbols in components; use the pricing context
+- Default currency is USD. Offer GBP, EUR, AED and INR through a selector or locale. Never show a currency without its symbol and billing period.
+- Do not choose the currency from the visitor's IP in the page render. That makes pages dynamic and lets crawlers see only one currency. Render USD in the static HTML and read an explicit selector choice (a cookie) on the client.
+- Never hardcode `$` symbols in components; format through the pricing helper
 
 ```ts
 // BAD — hardcoded locale-less link inside a [locale] page
@@ -466,10 +532,10 @@ export async function sendMessage(formData: FormData) {
 ## 15. What NOT to do
 
 - Do NOT use client-side rendering for indexable content
-- Do NOT build static or one-off components embedded in individual pages — all UI must be global components in `components/`
+- Do NOT build static or one-off components embedded in individual pages — all UI lives in `components/` (a single-use section goes in `components/sections/bespoke/`, see §5)
 - Do NOT add reusable UI to page-level `_components/` folders — if a component is used on 2+ pages, it belongs in `components/sections/` or `components/ui/`
 - Do NOT use a new component on real pages before it has been reviewed and approved in `/v2` (see §6)
-- Do NOT add npm packages without discussing first
+- Do NOT add npm packages without discussing first. Pre-approved, no discussion needed: `zod`, `next-intl`, `class-variance-authority`, `clsx`, `tailwind-merge`, `lucide-react`.
 - Do NOT create new page routes without confirming URL structure (SEO + i18n implications)
 - Do NOT use special characters (`&`, `+`, etc.) in folder/route names — use hyphenated slugs
 - Do NOT disable TypeScript errors with `@ts-ignore` — fix the type
@@ -478,9 +544,10 @@ export async function sendMessage(formData: FormData) {
 - Do NOT use `<a href>` for internal links — always `next/link` with locale awareness
 - Do NOT fetch data in client components when a Server Component works
 - Do NOT commit `.env*` files (except `.env.example`)
-- Do NOT ship without Lighthouse 95+ on changed pages
-- Do NOT write Indian-English marketing copy ("Don't fret!", "Kindly", "blazing fast")
-- Do NOT display prices in INR by default — auto-detect and show USD/GBP/EUR/AED
+- Do NOT ship a changed page that misses these targets: median of 3 mobile Lighthouse runs with Performance ≥ 90, Accessibility ≥ 95, SEO ≥ 95, Best Practices ≥ 95, and field data LCP < 2.5s, INP < 200ms, CLS < 0.1
+- Do NOT use phrases from the content rules' "Phrases to avoid" list ("Don't fret!", "Kindly", "blazing fast")
+- Do NOT show a price without its currency symbol and billing period. Default currency is USD; GBP, EUR, AED and INR come from a selector or locale.
+- Do NOT put a number, guarantee, SLA, location or certification in copy unless it renders from `claims.ts` with `status: "verified"`
 - Do NOT use emojis in marketing copy (OK selectively in blog posts)
 - Do NOT use stock photos as testimonials
 - Do NOT make performance/uptime claims without data to back them

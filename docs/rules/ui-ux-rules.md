@@ -2,6 +2,13 @@
 
 > Single source of truth for all visual, interaction, and content decisions.
 > Logo-only specs (clear space, print sizes, file formats) live in `docs/rules/brand-identity.md`.
+> **Motion:** `docs/reference/MOTION_AND_LUXURY_BRIEF.md` wins over §8 for anything about motion and finishing.
+> **Examples are not facts.** Every number, price, SLA, location, phone number and email shown in a sample below is
+> `[EXAMPLE, NOT VERIFIED]`. Real values come only from `content/claims.ts` (status `verified`) and
+> `data/pricing.json`. Copy never contains a number, guarantee, SLA, location or certification that is not rendered
+> from `claims.ts` with `status: "verified"`.
+> **Audience:** educated small-business owners, freelancers and agencies worldwide who read English as a first or
+> second language. They are smart but not necessarily technical. They compare providers carefully and distrust hype.
 
 ---
 
@@ -35,6 +42,9 @@
 
 **Both dark and light modes are first-class.** Light is the HTML default; dark activates via the `.dark` class (toggled by `useTheme`). Light must feel equally editorial and refined. The indigo, orange, and teal accents stay consistent across both modes; only surfaces, text, and shadow strengths shift.
 
+> TODO(decision #3): default theme. This section says light is the default; the current design system is dark by default.
+> TODO(decision #1): indigo is not in the official brand palette; the accent set above may change.
+
 **Visual pillars:**
 
 - Whitespace as a luxury signal
@@ -51,6 +61,10 @@
 ### 2.1 Brand Color Palette
 
 DronaHost uses three core colors with distinct, non-interchangeable roles:
+
+> TODO(decision #1): whether Brand Indigo stays. TODO(decision #2): which orange hex is official (`#FE5403` here vs
+> `#FE5504` in the Brand Assets page and `tokens.css`). Hex values below are left unchanged until both are decided.
+> Long term, hex values live only in `app/styles/tokens.css`, enforced by `scripts/check-contrast.ts`.
 
 | Name | Hex | RGB | Role |
 |---|---|---|---|
@@ -83,15 +97,22 @@ The logo is the anchor: orange for "drona", teal for "host". Indigo is the domin
 
 | Combination | Contrast ratio | WCAG AA (4.5:1) |
 |---|---|---|
-| Brand Orange `#FE5403` on White | ~3.7:1 | Fails at normal text — use for large text (18px+) or icons only |
-| Brand Orange bold 18px+ on White | ~3.7:1 | Passes (WCAG AA Large) |
+| Brand Orange on White (and white on orange), measured for `#FE5504` | 3.22:1 | Fails at normal text. Passes only as large text (see definition below) or for icons and borders |
 | Near-Black `#111827` on White | ~18:1 | Passes |
-| White on Brand Teal `#05A2C6` | ~3.2:1 | Fails at normal text — use bold 18px+ only |
+| White on Brand Teal `#05A2C6` | 3.00:1 | Fails at normal text. Meets the 3:1 large-text minimum with no margin; do not rely on it |
 | White on Near-Black `#111827` | ~18:1 | Passes |
 
-**Rule:** Never use Brand Orange or Brand Teal for body-size text on white. Use them for display text (≥24px bold), buttons, borders, and decorative elements only.
+(TODO(decision #2): ratios were measured for `#FE5504`; re-measure once the official orange is chosen.)
+
+**Large text (WCAG):** 24px regular, or 18.66px bold (14pt bold). "18px+" is not enough.
+
+**Rule:** Never use Brand Orange or Brand Teal for body-size text on white. Use them for large display text, borders and decorative elements only. Orange buttons need a label that passes 4.5:1, so check the pair with the contrast script.
 
 ### 2.5 CSS Custom Properties
+
+> **SUPERSEDED by `app/styles/tokens.css`.** That file is the single source for colour, radius, shadow, type and motion tokens, and `scripts/check-contrast.ts` enforces it in CI. Do not add or copy tokens from this section.
+
+> Note: the token block below predates `app/styles/tokens.css`, which is the single source of truth for colour, radius, shadow, type and motion.
 
 All components reference only CSS variables. **Hardcoded hex values are forbidden.**
 Theme is controlled via the `.dark` class on `<html>` (Tailwind v4). Toggle via `classList.toggle("dark", isDark)` — never use `data-theme` attributes.
@@ -242,6 +263,8 @@ Theme is controlled via the `.dark` class on `<html>` (Tailwind v4). Toggle via 
 
 ### 2.6 Tailwind Brand Tokens
 
+> **SUPERSEDED by `app/styles/tokens.css`.** Tailwind v4 reads tokens from `@theme` in CSS, so a `tailwind.config.ts` token map is out of date and contradicts `coding-rules.md` §11. Use the token utilities defined from `tokens.css` (`bg-card`, `text-muted-foreground`, `bg-action`) and never raw palette classes.
+
 ```ts
 // tailwind.config.ts
 colors: {
@@ -274,7 +297,7 @@ Use `brand-indigo` as the dominant UI color, `brand-orange` for CTAs and hero bu
 | Body copy | [Manrope](https://fonts.google.com/specimen/Manrope) Regular (400) / Medium (500) | system-ui, sans-serif |
 | Code / technical | [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) | monospace |
 
-Load via `next/font/google` as variable fonts with `display: swap`. Latin subset only by default; add Arabic subset for UAE locale pages.
+Load via `next/font/google` as variable fonts with `display: swap`. Latin subset only by default. Sora and Manrope have no Arabic or Devanagari glyphs, so an Arabic or Hindi subset is not possible for them. For Arabic or Hindi pages, load a separate family (for example IBM Plex Sans Arabic, Noto Sans Devanagari) on those pages only, and keep it out of the Latin pages.
 
 ### 3.2 Type Scale
 
@@ -467,15 +490,20 @@ export default function RootLayout({ children }) {
 
 | Variant | Background | Border | Text | Hover |
 |---|---|---|---|---|
-| primary | `--gradient-accent` | none | `--text-on-accent` | scale(1.02) + `--shadow-glow` |
+| primary | `--gradient-accent` (flat fill, see note) | none | `--text-on-accent` | translateY(-1px) + brightness + `--shadow-glow` |
 | secondary | transparent | `1px solid --border-accent` | `--accent-primary` | `--accent-soft` fill |
 | ghost | transparent | none | `--text-secondary` | `color: --text-primary` |
 | danger | `--error-soft` | `1px solid --error` | `--error` | `--error` fill + white text |
-| orange | `--gradient-orange` | none | `#ffffff` | scale(1.02) + `--shadow-glow-orange` |
+| orange | `--gradient-orange` (flat fill, see note) | none | `#ffffff` (TODO(decision #2): orange fills need a label that passes 4.5:1; see §2.4) | translateY(-1px) + brightness + `--shadow-glow-orange` |
+
+> TODO(decision #1): the `primary` (indigo) variant depends on whether indigo stays.
+> Fills are flat colours with a 1px inner top highlight, not gradients (a gradient reads as busy, not calm). Where this
+> table says `--gradient-accent` or `--gradient-orange`, use the flat equivalent. Hover is a 1px lift plus a small
+> brightness change; active is `scale(0.98)`. There is no hover scale.
 
 `orange` is the hero CTA variant (logo-native). Use `primary` (indigo) for UI actions and form submits. Never use both on the same above-fold section.
 
-All: `--font-body`, `font-weight: 500`, `letter-spacing: 0.01em`, `border-radius: --radius-full`, `transition: all 180ms ease`
+All: `--font-body`, `font-weight: 500`, `letter-spacing: 0.01em`, `border-radius: --radius-full`, `transition` on colour, shadow and transform only (never `all`)
 
 ---
 
@@ -606,7 +634,7 @@ export function useTheme() {
 ### 08 · Testimonial Card
 
 - Avatar: 40×40px circle, `object-fit: cover`, `border: 2px solid var(--border-accent)`
-- Stars: 5 yellow SVG stars, filled to rating value
+- Stars: show a rating only when it comes from a real review platform and the card links to it. Otherwise show no stars. Star colour uses a token, never a hard-coded yellow.
 - Quote: `--text-lg`, `--leading-relaxed`, italic, `--text-secondary`
 - Name: `--font-display`, `font-weight: 600`, `--text-primary`
 - Role/company: `--text-sm`, `--text-muted`
@@ -618,7 +646,7 @@ export function useTheme() {
 
 - Number: `--font-display`, `--text-5xl`, `font-weight: 800`, `--accent-primary` or `--orange`
 - Label: `--text-sm`, `--text-muted`, `--tracking-wide`, ALL CAPS
-- Animation: CountUp eased over 1500ms, triggered by `IntersectionObserver`
+- Animation: count up only for numbers that are `verified` in `claims.ts`; the final value is in the server HTML (see the motion brief for timing)
 
 ---
 
@@ -667,7 +695,7 @@ export function useTheme() {
   );
   background-size: 200% 100%;
   border-radius: var(--radius-sm);
-  animation: shimmer 1.5s infinite;
+  animation: shimmer 1s ease-in-out 2; /* two passes at most (about 2s), then static */
 }
 @keyframes shimmer {
   0%   { background-position: -200% 0; }
@@ -682,9 +710,9 @@ export function useTheme() {
 - Each item: `--bg-secondary`, `border: 1px solid var(--border-subtle)`, `--radius-lg`
 - Trigger: `--font-display`, `--text-lg`, `font-weight: 600`, chevron rotates 180° when open
 - Content: `--font-body`, `--text-base`, `--leading-relaxed`, `--text-secondary`
-- Animation: `max-height` transition `300ms ease`
+- Animation: native `<details>` with `::details-content` block-size transition where supported; browsers without support open instantly. Never remove the answer from the HTML.
 - ARIA: `aria-expanded`, `aria-controls` — keyboard navigable
-- Always include `FAQPage` JSON-LD schema when an accordion FAQ is present
+- `FAQPage` JSON-LD is optional (rich results are limited to government and health sites). If used, it must match the visible text.
 
 ---
 
@@ -711,8 +739,9 @@ export function useTheme() {
 - Required for EU/UK visitors (GDPR)
 - Position: bottom of viewport, slide-up on first visit
 - Background: `--bg-elevated`, `--border-default`, `--shadow-lg`
-- Two buttons: "Accept All" (primary variant), "Manage Preferences" (ghost variant)
-- Store consent in `localStorage: 'dronahost-cookie-consent'`
+- Buttons: "Reject non-essential" and "Accept all" at the **same size, style and visual weight**, plus "Manage preferences". A ghost-only "Manage" next to a filled "Accept" is not compliant for the EU and UK.
+- Record the decision with a timestamp and a policy version, and block every non-essential script until consent is given
+- Storage location is an implementation detail (first-party cookie or storage); it is not fixed by this rule
 
 ---
 
@@ -741,17 +770,18 @@ export function useTheme() {
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-exit: cubic-bezier(0.4, 0, 1, 1);
-  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1); /* sparingly */
 }
 ```
 
 **Rules:**
 
-- Hero entrance: H1 (0ms) → subtitle (80ms) → CTAs (160ms) → trust bar (240ms) — staggered fade-up
-- Cards: `translateY(-3px)` + glow on hover — `200ms --ease-standard`
-- Buttons: `scale(1.02)` hover, `scale(0.97)` active — `150ms ease`
-- Scroll reveals: `IntersectionObserver` — `opacity 0→1` + `translateY(24px→0)` — `--duration-enter --ease-enter`
-- CountUp stats: 1500ms eased, fires on first viewport entry
+- **No entrance animation above the fold.** The H1 is usually the LCP element, so animating it delays LCP.
+- Cards (interactive only): `translateY(-3px)` + glow on hover, only where hover exists — `200ms --ease-standard`
+- Buttons: hover is a 1px lift plus a brightness change; active is `scale(0.98)` — `150ms`. No hover scale.
+- Scroll reveals: `IntersectionObserver`, once — `opacity 0→1` + `translateY(14px→0)` — 700ms `ease-out`, at most 6 staggered items
+- No bounce easing. Do not define or use `--ease-bounce`.
+- Flat fills with a hairline highlight, not gradient fills, on buttons
+- CountUp stats: only for verified numbers, fires once on first viewport entry (timing in the motion brief)
 - Modal: `opacity + scale(0.97→1)` enter, reverse on exit
 - Always include:
 
@@ -770,12 +800,12 @@ export function useTheme() {
 
 | Do | Don't |
 |---|---|
-| Specific numbers: "200ms TTFB from London" | Vague claims: "blazing fast" |
+| Specific, verified numbers: "[EXAMPLE, NOT VERIFIED: 200ms TTFB from London]" | Vague claims: "blazing fast" |
 | Professional, calm confidence | Exclamation-heavy hype |
 | Outcome-led: "Your site loads in under 1s" | Feature-led: "We have NVMe storage!" |
 | "please" | "Kindly" |
 | "dedicated support" | "one-to-one support" |
-| Honest about team size and origin | Fake Western identity |
+| State where the company is based and who runs it | Implying a location or identity you do not have |
 
 **By channel:**
 
@@ -784,7 +814,7 @@ export function useTheme() {
 - Error messages: helpful, non-blaming, actionable
 - Blog posts: conversational, technically credible — light emoji OK
 
-**Banned patterns:** "Don't fret!", "Do the needful", "blazing fast", "world-class", "cutting-edge", "state-of-the-art", "revolutionary", "Click here", ALL CAPS emphasis, excessive exclamation marks.
+**Phrases to avoid:** "Don't fret!", "Do the needful", "blazing fast", "world-class", "cutting-edge", "state-of-the-art", "revolutionary", "Click here", ALL CAPS emphasis, excessive exclamation marks.
 
 ---
 
@@ -801,9 +831,9 @@ export const metadata: Metadata = {
     default: "DronaHost — Premium Web Hosting, Domains & Website Design",
     template: "%s | DronaHost",
   },
-  description: "DronaHost offers premium WordPress hosting, cloud hosting, managed VPS, domain registration, and professional website design & SEO. Serving USA, UK, UAE and Europe.",
+  description: "[EXAMPLE, NOT VERIFIED] DronaHost offers WordPress hosting, cloud hosting, managed VPS, domain registration, and website design & SEO for businesses worldwide.",
   authors: [{ name: "DronaHost Team", url: "https://dronahost.com/about" }],
-  creator: "Alphabet Force",
+  creator: "Alphabet Force", // TODO(decision #6): legal entity name is unconfirmed
   publisher: "DronaHost",
   robots: {
     index: true,
@@ -816,15 +846,15 @@ export const metadata: Metadata = {
     url: "https://dronahost.com",
     siteName: "DronaHost",
     title: "DronaHost — Premium Web Hosting & Website Design",
-    description: "Enterprise-grade hosting with premium support. WordPress, Cloud, VPS, Domains, Design & SEO.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "DronaHost — Premium Web Hosting" }],
+    description: "[EXAMPLE, NOT VERIFIED] Managed WordPress, cloud and VPS hosting, domains, web design and SEO from one team.",
+    images: [{ url: "/og/home.jpg", width: 1200, height: 630, alt: "DronaHost" }],
   },
   twitter: {
     card: "summary_large_image",
     site: "@dronahost",
     title: "DronaHost — Premium Web Hosting",
-    description: "Enterprise-grade hosting. WordPress, Cloud, VPS & more.",
-    images: ["/og-image.png"],
+    description: "[EXAMPLE, NOT VERIFIED] Managed WordPress, cloud and VPS hosting.",
+    images: ["/og/home.jpg"],
   },
   alternates: { canonical: "https://dronahost.com" },
   verification: { google: "YOUR_GOOGLE_VERIFICATION_TOKEN" },
@@ -832,6 +862,8 @@ export const metadata: Metadata = {
 ```
 
 ### JSON-LD (inline `<script>` in Server Components — never `next/script`)
+
+> The single Organization and WebSite `@graph` is defined in `seo-rules.md` §2. The sample below is illustrative only; do not keep a second definition in code.
 
 ```tsx
 const orgSchema = {
@@ -845,13 +877,13 @@ const orgSchema = {
       logo: { "@type": "ImageObject", url: "https://dronahost.com/logo.png", width: 200, height: 60 },
       contactPoint: {
         "@type": "ContactPoint",
-        telephone: "+1-206-201-2431",
+        telephone: "+1-206-201-2431", // [EXAMPLE, NOT VERIFIED] TODO(decision #6): phone is unconfirmed
         contactType: "customer service",
-        email: "sales@dronahost.com",
+        email: "sales@dronahost.com", // [EXAMPLE, NOT VERIFIED] TODO(decision #6): hello@ vs sales@
         availableLanguage: ["English"],
         areaServed: ["US", "GB", "AE", "EU"],
       },
-      sameAs: ["https://twitter.com/dronahost", "https://www.linkedin.com/company/dronahost"],
+      sameAs: ["https://x.com/dronahost", "https://www.linkedin.com/company/dronahost"], // [EXAMPLE, NOT VERIFIED] use only real, owned profiles
     },
     {
       "@type": "WebSite",
@@ -875,11 +907,11 @@ const orgSchema = {
 
 | Page type | Required schema |
 |---|---|
-| Homepage | `Organization` + `WebSite` + `SearchAction` |
-| Hosting plan | `Product` + `Offer` + `AggregateRating` |
+| Homepage | `Organization` + `WebSite` in one `@graph` with stable `@id` (no `SearchAction`) |
+| Hosting plan | `Product` + `Offer` (`AggregateRating` only with real, visible, linked reviews) |
 | Blog post | `Article` + `BreadcrumbList` + `Person` (author) |
-| FAQ section | `FAQPage` — always pair with Accordion |
-| Contact | `LocalBusiness` |
+| FAQ section | `FAQPage` is optional; if used it must match the visible Accordion text |
+| Contact | `Organization` with `contactPoint` (not `LocalBusiness`) |
 | Service page | `Service` with `areaServed` |
 
 ### Core Web Vitals Checklist
@@ -899,9 +931,9 @@ const orgSchema = {
 
 ### Experience — show real-world proof
 
-- Genuine testimonials: name + company + country + star rating (no anonymous reviews)
+- Genuine testimonials: name + company + country (no anonymous reviews). No star rating unless it comes from a real review platform and links to it.
 - Case studies: real client, specific metrics, before/after
-- Live uptime % widget (real API — never hardcoded)
+- Live uptime % widget (real API, never hardcoded), and only with a public status page behind it
 - Team About page: names, photos, roles, LinkedIn, years of experience
 
 ### Expertise — demonstrate domain knowledge
@@ -913,18 +945,18 @@ const orgSchema = {
 
 ### Authoritativeness — build external trust signals
 
-- Footer: "Operated by Alphabet Force, India — Founded [year]"
+- Footer: legal entity, country and founding year, rendered from `claims.ts` once verified. TODO(decision #6): the entity name ("Alphabet Force") and the founding year (2022 vs 2019) are unconfirmed.
 - Partner / technology logos: WordPress, cPanel, Cloudflare, LiteSpeed
-- Client count / countries served (real numbers only)
+- Client count / countries served (real numbers only, from `claims.ts`)
 - Privacy Policy, Terms, Refund Policy linked in footer on every page
 
 ### Trustworthiness — technical + content trust
 
 - HTTPS canonical enforced in metadata
 - Consistent NAP (Name, Address, Phone) format across all pages
-- "No price increase on renewal" — on all pricing pages — use this exact phrase
-- Money-back guarantee badge (30 days) on all hosting pages
-- Real phone (+1-206-201-2431) and email (sales@dronahost.com) — never hidden
+- Renewal wording on pricing pages: TODO(decision #5). Do not use "No price increase on renewal" until the owner picks the real policy; `pricing.json` currently says renewal equals the signup price.
+- Money-back guarantee badge on hosting pages, only if the guarantee is verified in `claims.ts`
+- Real phone and email from `claims.ts`, never hidden. TODO(decision #6): values unconfirmed.
 - Cookie consent banner for EU/UK visitors
 - SSL badge + DDoS protection mention on hosting pages
 
@@ -934,11 +966,15 @@ const orgSchema = {
 
 Every page is built for one primary user intent.
 
+TODO(decision #7): the paths in this table and in §13 conflict with the sitemap URLs in `seo-rules.md`
+(`/managed-vps` vs `/vps-hosting`, `/wordpress-website-design` vs `/web-design`, `/contact-us` vs `/contact`). Do not
+change any URL until the owner supplies the live URL map.
+
 | Page | Intent | Key CTA |
 |---|---|---|
 | Homepage | Navigational + Commercial | → Service pages |
-| /wordpress-hosting | Commercial Investigation | "Order Now" |
-| /managed-vps | Commercial Investigation | "Get Started" / Live Chat |
+| /wordpress-hosting | Commercial Investigation | "See WordPress hosting plans" |
+| /managed-vps | Commercial Investigation | "See VPS hosting plans" / "Talk to the team" |
 | /wordpress-website-design | Commercial Investigation | "Request Consultation" |
 | /about | Navigational + Trust | No hard CTA |
 | /blog/* | Informational | Newsletter / soft CTA |
@@ -960,7 +996,7 @@ dronahost/
 │   ├── layout.tsx              ← fonts, theme init, global metadata, org JSON-LD
 │   ├── sitemap.ts
 │   ├── robots.ts
-│   └── [locale]/               ← i18n from day one (en-us, en-gb, en-ae, de-de …)
+│   └── [locale]/               ← i18n from day one (en-us, en-gb, en-ae, de-de …); TODO(decision #8): start with one English site and add locales only when content differs
 │       ├── page.tsx
 │       ├── (marketing)/
 │       │   ├── wordpress-hosting/page.tsx
@@ -993,13 +1029,13 @@ dronahost/
 │   ├── useScrollProgress.ts
 │   └── useIntersectionObserver.ts
 ├── lib/
-│   ├── models/                 ← Mongoose schemas
+│   ├── models/                 ← Mongoose schemas (obsolete, to be removed: data moves to WordPress)
 │   ├── services/               ← Third-party API wrappers
 │   ├── seo/                    ← Metadata helpers
 │   ├── i18n/                   ← Translation helpers
-│   ├── pricing/                ← Currency conversion
+│   ├── pricing/                ← Price formatting from data/pricing.json (USD default)
 │   ├── compliance/             ← GDPR, CCPA helpers
-│   ├── mongodb.ts
+│   ├── mongodb.ts              ← (obsolete, to be removed)
 │   └── utils.ts
 ├── messages/                   ← Translation JSON files per locale
 └── styles/
@@ -1047,7 +1083,7 @@ dronahost/
 - One `<h1>` per page, logical heading hierarchy
 - Descriptive `alt` on all meaningful images
 - OG image (1200×630px) for every public-facing page
-- `FAQPage` schema on all FAQ sections
+- `FAQPage` schema on FAQ sections is optional; if present it must match the visible text
 - `Article` schema with author on all blog posts
 
 ---
@@ -1059,7 +1095,7 @@ dronahost/
 - Hardcode any hex, rgb, or hsl color — CSS variables only
 - Use Inter, Roboto, Arial, system-ui, DM Sans, or Geist as heading/body fonts — use Sora + Manrope
 - Purple-to-pink gradients, rainbow, or neon glow aesthetics
-- Pure `#FFFFFF` in light mode — use `var(--background)`
+- Pure `#FFFFFF` as the light-mode **page** background — use `var(--background)`. Cards and logo backgrounds may be white.
 - Pure `#000000` in dark mode — use `var(--background)` (dark value)
 - Clip art, stock photo grids, or generic SaaS illustration packs
 - Looping / auto-playing animations — only on interaction or scroll entry
@@ -1098,7 +1134,7 @@ dronahost/
 - Missing canonical tag
 - Blocking CSS or JS in `robots.txt`
 - AI-generated thin content
-- Missing `FAQPage` schema when an accordion FAQ is present
+- `FAQPage` schema that does not match the visible FAQ text
 - Missing `Article` schema with author on blog posts
 
 ---
@@ -1143,12 +1179,12 @@ dronahost/
 
 | Item | Value |
 |---|---|
-| Theme class | none = light, `.dark` on `<html>` = dark |
+| Theme class | none = light, `.dark` on `<html>` = dark (TODO(decision #3): default theme) |
 | Theme storage key | `localStorage: 'dronahost-theme'` |
 | Framework | Next.js 16 App Router + TypeScript |
 | Styling | Tailwind CSS v4 + CSS custom properties |
-| Phone | +1-206-201-2431 |
-| Email | sales@dronahost.com |
+| Phone | [EXAMPLE, NOT VERIFIED] TODO(decision #6): use `claims.ts` |
+| Email | [EXAMPLE, NOT VERIFIED] TODO(decision #6): use `claims.ts` |
 
 ---
 
@@ -1297,7 +1333,7 @@ Every surface color, text color, border, and shadow must reference a CSS custom 
 <div className="bg-[var(--card)] text-foreground border">
 ```
 
-Light mode is the `:root` default. Dark mode activates by adding `.dark` to `<html>`. Toggle via `classList.toggle("dark", isDark)` — never `data-theme` attributes.
+Light mode is the `:root` default (TODO(decision #3): default theme). Dark mode activates by adding `.dark` to `<html>`. Toggle via `classList.toggle("dark", isDark)` — never `data-theme` attributes.
 
 ### 18.2 Surface Hierarchy
 
@@ -1318,9 +1354,13 @@ Light mode is the `:root` default. Dark mode activates by adding `.dark` to `<ht
 | Headings, key UI text | `var(--foreground)` | `text-foreground` |
 | Body copy, labels, descriptions | `var(--muted-foreground)` | `text-[var(--muted-foreground)]` |
 | Text on primary (indigo) buttons | `var(--primary-foreground)` | `text-primary-foreground` |
-| Text on orange CTA buttons | white | `text-white` |
+| Text on orange CTA buttons | white (TODO(decision #2): white on orange is 3.22:1 and fails for button text; see §2.4) | `text-white` |
 
 ### 18.4 Brand Colour Usage in Both Modes
+
+> **SUPERSEDED by `app/styles/tokens.css`.** The `--primary` / `--accent` mapping below clashes with the newer token names. Read the live token names from `tokens.css`.
+
+> TODO(decision #1): this table maps `--primary` to indigo and `--accent` to orange, which clashes with the newer `tokens.css` names. Left unchanged until indigo is decided.
 
 | Colour | Variable | Tailwind token works? | Usage |
 |---|---|---|---|
@@ -1422,7 +1462,7 @@ The inline script in `app/layout.tsx` must run before React hydrates. Never rely
 - [ ] Every colour references a CSS variable — no hardcoded hex, rgb, or oklch (§2.5, §18.1)
 - [ ] Component verified visually in **both light and dark mode** (§18.7)
 - [ ] No Tailwind palette colors (`gray-*`, `neutral-*`, `orange-*`) for surfaces, text, or borders (§18.9)
-- [ ] Hover: `translateY(-3px)`, `duration-200`, coloured glow shadow (§7.02, §18.6)
+- [ ] Interactive card hover: `translateY(-3px)`, `duration-200`, coloured glow shadow, hover devices only (§7.02, §18.6)
 - [ ] Transitions wrapped with `motion-reduce:transition-none` or `motion-safe:hover:` guard (§8)
 - [ ] All interactive elements have visible `focus-visible` ring (§14)
 - [ ] Touch targets ≥ 44×44px (§17.3)
@@ -1451,22 +1491,22 @@ The inline script in `app/layout.tsx` must run before React hydrates. Never rely
 ### SEO (`docs/rules/seo-rules.md`)
 
 - [ ] `buildMetadata()` helper used — never inline metadata object
-- [ ] `title` 50–60 chars, unique, keyword-first
-- [ ] `description` 140–160 chars, includes CTA, unique
+- [ ] `title` unique, keyword-first, 60 chars or fewer including the suffix (guideline)
+- [ ] `description` unique, 160 chars or fewer, ends with a next step (guideline)
 - [ ] `alternates.canonical` absolute URL set
 - [ ] `hreflang` alternates for all active locales
 - [ ] One `<h1>` per page, logical H1 → H2 → H3 hierarchy
 - [ ] JSON-LD schema correct for page type (see CLAUDE.md schema table)
 - [ ] OG image (1200×630px) set in metadata
-- [ ] Lighthouse 95+ on Performance, SEO, Accessibility, Best Practices on changed pages
+- [ ] Lighthouse (median of 3 mobile runs): Performance ≥ 90, Accessibility ≥ 95, SEO ≥ 95, Best Practices ≥ 95
 - [ ] No client-side-only rendering for indexable content
 
 ### Content (`docs/rules/content-writing-rules.md`)
 
 - [ ] No banned phrases: "Don't fret!", "blazing fast", "world-class", "cutting-edge", "Kindly"
-- [ ] No Indian-English patterns or non-Western copywriting voice
-- [ ] All performance/uptime claims backed by real data — no invented stats
-- [ ] Prices show currency symbol and period: `$5.99/month`, `£5.99/month + VAT`
+- [ ] No phrases from the "Phrases to avoid" list; plain international English at roughly grade 8-10
+- [ ] All performance/uptime claims backed by real data in `claims.ts` — no invented stats
+- [ ] Prices come from `data/pricing.json` and show currency symbol and period (format only, for example `{{symbol}}{{amount}}/month`)
 - [ ] CTA copy is action-led — not "Click here", "Learn more", or "Submit"
 
 ### Performance (CLAUDE.md)

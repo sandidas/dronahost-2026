@@ -4,6 +4,33 @@
 > For visual design tokens and component patterns, see `docs/rules/ui-ux-rules.md`.
 > For logo and wordmark usage, see `docs/rules/brand-identity.md`.
 
+> **Examples in this file are not facts.** Every number, price, SLA, location, certification and date shown in an
+> example is marked `[EXAMPLE, NOT VERIFIED]` or is a placeholder. Never copy one into live copy. Real values
+> come only from `content/claims.ts` (status `verified`) and `data/pricing.json`.
+
+---
+
+## Audience and reading level
+
+**Audience:** educated small-business owners, freelancers and agencies worldwide who read English as a first or
+second language. They are smart but not necessarily technical. They compare providers carefully and distrust hype.
+
+- Reading level: roughly grade 8-10. Average sentence under 20 words. No idioms or slang that does not translate
+  ("hit the ground running", "ballpark").
+- Lead with the business outcome in plain words. Put the technical term second, in the same sentence or in a short
+  "How it works" line. Example: "Your site stays online while we update it (LiteSpeed server, NVMe storage)."
+- Write dates unambiguously ("6 October 2026"). Show units with their symbol. Show the currency symbol and the
+  billing period on every price.
+- US English by default. `en-GB` variants only when that locale exists.
+- Default currency is USD. Offer GBP, EUR, AED and INR through a selector or locale. Never show a currency without
+  its symbol and billing period.
+
+## Claims discipline
+
+Copy never contains a number, guarantee, SLA, location or certification that is not rendered from
+`content/claims.ts` with `status: "verified"`. Unverified claims render nothing. Prices come only from
+`data/pricing.json`; these rules must never contain a real price.
+
 ---
 
 ## Table of Contents
@@ -26,16 +53,16 @@
 
 | Attribute | What it means in practice |
 |---|---|
-| **Confident** | State facts, not hopes. "99.95% uptime SLA with automatic service credits" — not "we try our best." |
+| **Confident** | State verified facts, not hopes. "[EXAMPLE, NOT VERIFIED: 99.95% uptime SLA with automatic service credits]" — not "we try our best." |
 | **Specific** | Numbers, locations, benchmarks. Never a vague adjective where a metric can stand. |
 | **Calm** | No urgency that isn't real. No exclamation marks in marketing copy. No countdown timers without a genuine deadline. |
-| **Honest** | Indian team, Western professionalism. We do not hide where we are from. We do not pretend to be bigger than we are. Being a focused team is a feature — buyers are tired of faceless giants. |
-| **Technical** | We talk LiteSpeed, NVMe, TTFB, LCP, LiteSpeed ESI, Nginx, cPanel because our buyers care. Use the correct term, not the dumbed-down one. |
+| **Honest** | State where the company is based and who runs it. Do not imply a location you do not have. Do not pretend to be bigger than we are. Being a focused team is a feature. |
+| **Technical, second** | Lead with the outcome in plain words, then give the technical term in the same sentence or a short "How it works" line (LiteSpeed, NVMe, TTFB, cPanel). The reader is a business owner, not a sysadmin. |
 
 ### Reference points (read their copy)
 
 **Write like:** Fathom Analytics, Kinsta, Cloudways, Basecamp, Bunny.net
-**Never write like:** Hostinger, GoDaddy, any local Indian reseller site
+**Never write like:** Hostinger, GoDaddy, or any reseller site built on hype and pressure
 
 ### The spectrum
 
@@ -51,9 +78,10 @@ TOO FORMAL ←————————————————→ TOO CASUAL
 
 ---
 
-### Prohibited patterns (Indian English / salesy)
+### Phrases to avoid
 
-These patterns read as unprofessional to Western B2B buyers. Never use them.
+These phrases cost clarity and credibility with readers worldwide, including readers who use English as a second
+language. Do not use them.
 
 | Prohibited | Replace with |
 |---|---|
@@ -71,12 +99,12 @@ These patterns read as unprofessional to Western B2B buyers. Never use them.
 | "Next-generation" | Name what is actually new |
 | "Revolutionary" | Remove — your work speaks for itself |
 | "Game-changing" | Remove |
-| "99.99% uptime" (uncredited) | "99.95% uptime SLA with automatic service credits" |
+| An uptime figure with no SLA behind it | A figure from `claims.ts` with its SLA terms, only when verified |
 | "One-to-one support" | "Dedicated support" |
 | "We provide best services" | State the specific service and outcome |
 | Multiple exclamation marks!! | One at most, only in celebration moments |
 
-### Prohibited patterns (generic SaaS)
+### Phrases to avoid (generic SaaS)
 
 These are worn out and trusted by nobody.
 
@@ -93,14 +121,16 @@ These are worn out and trusted by nobody.
 
 ### Replace adjectives with specifics
 
+All right-hand examples are `[EXAMPLE, NOT VERIFIED]`. Render real values from `claims.ts` and `pricing.json` only.
+
 | Do not write | Write instead |
 |---|---|
-| "Blazing fast servers" | "LiteSpeed + NVMe storage. Average TTFB: 200ms from London, Frankfurt, and New York." |
-| "World-class support" | "Average first response: 18 minutes, 24/7 across US, UK, and UAE business hours." |
-| "Amazing uptime" | "99.95% uptime SLA with automatic service credits if we miss it." |
-| "Affordable pricing" | "WordPress hosting from $5/month. No price hike at renewal." |
-| "Easy to use" | "One-click WordPress install. Live in under 4 minutes." |
-| "Secure hosting" | "Daily backups, free SSL, DDoS protection via Cloudflare, malware scanning included." |
+| "Blazing fast servers" | "[EXAMPLE, NOT VERIFIED: LiteSpeed + NVMe storage. Average TTFB: 200ms from London, Frankfurt, and New York.]" |
+| "World-class support" | "[EXAMPLE, NOT VERIFIED: Average first response: 18 minutes, 24/7 across US, UK, and UAE business hours.]" |
+| "Amazing uptime" | "[EXAMPLE, NOT VERIFIED: 99.95% uptime SLA with automatic service credits if we miss it.]" |
+| "Affordable pricing" | "[EXAMPLE, NOT VERIFIED: WordPress hosting from $5/month.]" Renewal wording: TODO(decision #5), do not write "no price hike" until the policy is chosen. |
+| "Easy to use" | "[EXAMPLE, NOT VERIFIED: One-click WordPress install. Live in under 4 minutes.]" |
+| "Secure hosting" | "[EXAMPLE, NOT VERIFIED: Daily backups, free SSL, DDoS protection via Cloudflare, malware scanning included.]" |
 
 ### Voice across contexts
 
@@ -189,11 +219,14 @@ Use these terms exactly and consistently across all copy, UI, metadata, and blog
 |---|---|
 | support ticket | help request, case |
 | live chat | chat support, instant chat |
-| average first response: 18 minutes | fast response, quick support |
-| 24/7 support | round-the-clock (old-fashioned), always-on |
+| average first response: [EXAMPLE, NOT VERIFIED: 18 minutes] | fast response, quick support |
+| 24/7 support (only if staffed 24/7 and verified) | round-the-clock (old-fashioned), always-on |
 | dedicated support | one-to-one support, personal support |
 
 ### Regions and locations
+
+Naming guidance only. Which regions have their own servers or pages is TODO(decision #8). Never state a server
+location that is not in `claims.ts`.
 
 | Preferred | Do not use |
 |---|---|
@@ -222,24 +255,24 @@ One `<h1>` per page. Every other heading follows a strict nesting order. Never s
 
 - Exactly one `<h1>` per page
 - Must contain the primary keyword
-- 40–70 characters
+- Aim for 70 characters or fewer (guideline). The linter fails only on missing, duplicate or over-length values.
 - States the outcome or topic — not the brand name
 - Never the same as the `<title>` tag (different copy for each)
 
-| Page | Example H1 |
+| Page | Example H1 `[EXAMPLE, NOT VERIFIED]` |
 |---|---|
 | WordPress Hosting | "Managed WordPress Hosting Built for Performance" |
 | VPS Hosting | "VPS Hosting with Full Root Access and NVMe Storage" |
-| WordPress Hosting UK | "WordPress Hosting on UK Servers — GDPR-Ready" |
+| WordPress Hosting UK | "WordPress Hosting on UK Servers — GDPR-Ready" (only if UK servers and GDPR claims are verified; page existence is TODO(decision #8)) |
 | Blog post | "How to Migrate WordPress to a New Host Without Downtime" |
-| About | "We Build Hosting Infrastructure for Western Businesses" |
-| Contact | "Talk to the Team" |
+| About | "A Small Team That Runs Your Hosting" |
+| Contact | "Talk to the Team" (short is fine for utility pages) |
 
 ### H2 rules
 
 - Introduce a new major section
 - Should make sense read out of context (a user scanning headings should understand the page)
-- 30–60 characters
+- Aim for 60 characters or fewer (guideline)
 - Can contain secondary keywords naturally
 - Written as noun phrases or questions — not fragments
 
@@ -247,7 +280,7 @@ Good H2 examples:
 - "Why LiteSpeed Outperforms Apache for WordPress"
 - "What Is Included in Every Plan"
 - "How Our Staging Environment Works"
-- "Frequently Asked Questions"
+- "Frequently Asked Questions" (short, but acceptable for a standard FAQ section)
 
 Bad H2 examples:
 - "Features" (too vague — what features?)
@@ -280,11 +313,11 @@ Every CTA tells the user exactly what will happen next. No generic verbs.
 |---|---|
 | "Click here" | "Start your WordPress hosting" |
 | "Learn more" | "See what's included" / "Read the full comparison" |
-| "Get started" | "Start hosting from $5/month" |
+| "Get started" | "Start hosting from [EXAMPLE, NOT VERIFIED: $5/month]" |
 | "Submit" | "Send your message" |
 | "Sign up" | "Create your account" |
 | "Buy now" | "Choose your plan" |
-| "Try it" | "Try free for 30 days" |
+| "Try it" | "30-day money-back guarantee" (only if verified; a money-back guarantee is not a free trial, so never write "try free") |
 | "Contact us" | "Talk to the team" / "Ask us anything" |
 | "Download" | "Download the PDF" / "Download the case study" |
 
@@ -314,12 +347,15 @@ Supporting action. Uses ghost/outline button style. Reduces friction for buyers 
 
 ### Urgency — only when real
 
-Fake urgency destroys trust with Western B2B buyers. Only use urgency copy when:
+Fake urgency destroys trust with buyers everywhere. Only use urgency copy when:
 - There is a genuine deadline (a sale ending on a specific date — name the date)
 - There is a genuine scarcity (last X spots — only if this is literally true)
 
 Acceptable:
-> "Introductory price — $5/month until 31 July 2026. Renews at $7/month."
+> "[EXAMPLE, NOT VERIFIED: Introductory price — $5/month until 31 July 2026. Renews at $7/month.]"
+
+TODO(decision #5): renewal policy. This example shows a renewal increase; `pricing.json` currently says renewal equals the
+signup price. Do not use either wording until the owner chooses one policy.
 
 Not acceptable:
 > "Hurry! Limited time offer!" (no deadline, no specifics)
@@ -329,15 +365,15 @@ Not acceptable:
 Every plan CTA benefits from a trust line immediately beneath it:
 
 ```
-[Start WordPress Hosting — $5/month]
-30-day money-back guarantee. No questions asked.
+[Start WordPress Hosting — {{price from pricing.json}}]
+[EXAMPLE, NOT VERIFIED: 30-day money-back guarantee. No questions asked.]
 ```
 
 ### Pricing CTAs — include the price
 
 If the price is visible on the page, include it in the CTA. This reduces hesitation.
 
-✅ "Start Business Hosting — £12/month"
+✅ "Start [plan name] — {{price from pricing.json}}" (plan names and prices come from `pricing.json`, never from this file)
 ❌ "Get Started"
 
 ---
@@ -402,15 +438,15 @@ Short, specific, placed inline next to the field.
 |---|---|
 | Domain check failed | "We could not check availability right now. Try again in a moment." |
 | Domain registration failed | "We could not register that domain. Your card has not been charged. Contact support and we will sort this out." |
-| Hosting provisioning delayed | "Your hosting is taking a little longer than usual to set up. We will email you at [email] when it is ready — usually within 10 minutes." |
-| Hosting provisioning failed | "Your hosting could not be provisioned. You have not been charged. Our team has been notified and will contact you within 2 hours." |
+| Hosting provisioning delayed | "Your hosting is taking a little longer than usual to set up. We will email you at [email] when it is ready — usually within [EXAMPLE, NOT VERIFIED: 10 minutes]." |
+| Hosting provisioning failed | "Your hosting could not be provisioned. You have not been charged. Our team has been notified and will contact you within [EXAMPLE, NOT VERIFIED: 2 hours]." |
 
 ### Contact form errors
 
 | Situation | Message |
 |---|---|
-| Submit failed | "Your message could not be sent right now. Please email us directly at hello@dronahost.com or try again." |
-| Submit success | "Message received. We will get back to you within 24 hours." |
+| Submit failed | "Your message could not be sent right now. Please email us directly at {{support email from claims.ts}} or try again. (TODO(decision #6): the support address is unconfirmed.)" |
+| Submit success | "Message received. We will get back to you within [EXAMPLE, NOT VERIFIED: 24 hours]." |
 
 ### Tone rules for errors
 
@@ -447,14 +483,14 @@ Search for a domain to get started. We include WHOIS privacy free on every regis
 **No hosting accounts yet:**
 ```
 No hosting accounts yet.
-Pick a plan and your site will be live in under 4 minutes.
+Pick a plan and we will set up your hosting. [EXAMPLE, NOT VERIFIED: live in under 4 minutes.]
 [See hosting plans]
 ```
 
 **No support tickets:**
 ```
 No tickets yet.
-When you open a support request, it will appear here. Our average first response is 18 minutes.
+When you open a support request, it will appear here. [EXAMPLE, NOT VERIFIED: Our average first response is 18 minutes.]
 [Open a support ticket]
 ```
 
@@ -495,26 +531,33 @@ Try a different search term, or browse all articles in the knowledge base.
 ### Title tag format
 
 ```
-Primary Keyword — DronaHost
+Primary Keyword
 ```
 
 Rules:
-- 50–60 characters (Google truncates beyond ~60)
-- Keyword first, brand name last
-- Separator: em dash (—) not pipe (|) not hyphen (-)
-- Never duplicate titles across pages
+- Titles are written **without** the brand suffix. `buildMetadata()` appends it once (see `seo-rules.md`), so titles
+  never contain "DronaHost" as a suffix. This avoids "— DronaHost — DronaHost".
+- Keep the title at 60 characters or fewer including the suffix. Google truncates by pixel width, not characters, so
+  this is a guideline. The linter fails only on a missing, duplicate or over-length title.
+- Keyword first
+- The suffix and its separator are defined in one place only (the metadata helper and the layout title template).
+  The current layout template uses a pipe while this file used an em dash; align the code to a single choice in a
+  separate code change.
 - Every page has a unique `title` in `generateMetadata()`
 
-| Page | Title |
+| Page | Title (suffix added by the helper) `[EXAMPLE, NOT VERIFIED]` |
 |---|---|
-| Homepage | "Managed WordPress & VPS Hosting — DronaHost" |
-| WordPress Hosting | "Managed WordPress Hosting — LiteSpeed + NVMe — DronaHost" |
-| WordPress Hosting UK | "WordPress Hosting on UK Servers — GDPR-Ready — DronaHost" |
-| VPS Hosting | "VPS Hosting with Root Access and NVMe — DronaHost" |
-| Pricing | "Hosting Plans & Pricing — DronaHost" |
-| Contact | "Contact DronaHost — Talk to the Team" |
-| Blog post | "[Post Title] — DronaHost Blog" (keyword-first post title) |
-| `/vs/siteground` | "DronaHost vs SiteGround — Honest Comparison 2026" |
+| Homepage | "Managed WordPress & VPS Hosting" |
+| WordPress Hosting | "Managed WordPress Hosting — LiteSpeed + NVMe" |
+| WordPress Hosting UK | "WordPress Hosting on UK Servers — GDPR-Ready" (only if verified; TODO(decision #8)) |
+| VPS Hosting | "VPS Hosting with Root Access and NVMe" |
+| Pricing | "Hosting Plans & Pricing" |
+| Contact | "Contact the Team" |
+| Blog post | "[Post Title]" (keyword-first post title) |
+| `/vs/siteground` | "DronaHost vs SiteGround — Honest Comparison" (a year is allowed only when set from `reviewedOn`, see below) |
+
+**Years in titles and copy:** allowed only on pages reviewed on a schedule (comparisons, annual reports). The year
+comes from the page's `reviewedOn` field, never typed by hand.
 
 ### Meta description format
 
@@ -523,17 +566,20 @@ Rules:
 ```
 
 Rules:
-- 140–160 characters (Google shows up to ~160)
+- 160 characters or fewer (guideline; Google truncates by pixel width)
 - Every page has a unique description
 - Include the primary keyword naturally — do not force it
 - End with a clear next step (not "Click here")
 - Never copy the title into the description
 
-| Page | Description |
+| Page | Description `[EXAMPLE, NOT VERIFIED]` |
 |---|---|
 | WordPress Hosting | "LiteSpeed + NVMe hosting with 200ms average TTFB. Free migration, daily backups, and 99.95% uptime SLA. Start from $5/month." |
 | WordPress Hosting UK | "WordPress hosting on UK servers with GDPR-compliant infrastructure. LiteSpeed, free SSL, daily backups. From £5/month + VAT." |
 | VPS Hosting | "Fully managed VPS with root access, NVMe SSD, and 99.95% uptime SLA. Deploy in minutes. Cloudflare DDoS protection included." |
+
+Every number, price and SLA in these samples is `[EXAMPLE, NOT VERIFIED]`. Real descriptions use values from
+`claims.ts` and `pricing.json` only.
 | `/vs/siteground` | "How DronaHost compares to SiteGround on speed, price, support response time, and renewal pricing. Honest numbers, no spin." |
 
 ### Keyword intent matching
@@ -546,7 +592,7 @@ Match the page content to what the searcher actually wants. Mismatched intent ra
 | "siteground alternative" | Commercial investigation | `/vs/siteground` comparison page |
 | "how to migrate wordpress without downtime" | Informational | Blog post / KB article |
 | "buy wordpress hosting" | Transactional | Pricing page / plan selection page |
-| "gdpr compliant hosting europe" | Commercial investigation | `/hosting/eu` regional page |
+| "gdpr compliant hosting europe" | Commercial investigation | Regional page, TODO(decision #8) |
 | "dronahost review" | Navigational | About page + Trustpilot/G2 citation |
 
 **Rule:** Never put a transactional keyword on an informational page or vice versa. Google is very good at detecting this mismatch and will not rank the page.
@@ -563,10 +609,10 @@ Match the page content to what the searcher actually wants. Mismatched intent ra
 - "web design agency small business uk"
 - "affordable website redesign services"
 
-**Do not target (too competitive or wrong market):**
+**Do not target (too competitive or wrong intent):**
 - "best web hosting" — Hostinger and Bluehost own this with annual SEO budgets we cannot match
 - "web hosting" — same reason
-- "cheap hosting india" — wrong market
+- "cheap hosting india" — price-only intent that does not convert (India is not excluded as an audience)
 - "free web hosting" — wrong intent; does not convert
 
 ### Keyword density and placement
@@ -576,29 +622,23 @@ Match the page content to what the searcher actually wants. Mismatched intent ra
 - Use semantic variants (Google understands synonyms): "WordPress hosting" and "WordPress host" and "managed WordPress" are all valid
 - Keyword in the image `alt` attribute when it is genuinely descriptive of the image
 
-### Content length by page type
+### Content length
 
-| Page type | Minimum word count |
-|---|---|
-| Hosting plan / product page | 800 words |
-| Regional landing page (`/hosting/[region]`) | 1,000 words |
-| Competitor comparison (`/vs/[competitor]`) | 1,200 words |
-| Blog post (informational) | 1,500 words |
-| Blog post (technical tutorial) | 2,000 words |
-| Legal pages (privacy, terms, SLA) | No minimum — complete coverage matters more |
-| Contact page | No minimum |
+Cover the search intent completely. Word counts are planning guides, not pass/fail. Padding to reach a number is
+worse than a short, complete page. Keep one check: a page under 300 words is flagged as potentially thin and needs a
+reason (utility page, legal page, contact page).
 
 ### FAQ sections (required on product and service pages)
 
 Every plan/product page must have a FAQ section. FAQs:
-- Boost SEO (FAQ schema markup)
+- Help users and AI answers (FAQ schema is optional and must match the visible text)
 - Capture long-tail informational queries
 - Are quoted verbatim by AI tools (ChatGPT, Perplexity, Claude, Gemini)
 
 **FAQ writing rules:**
 - Questions written as a real buyer would ask them (conversational, first-person)
-- Answers in clean declarative prose — one or two short paragraphs maximum
-- Each answer starts by restating the key fact (AI tools grab the first sentence)
+- Answers in clean declarative prose, 40-80 words
+- Answer the question in the first sentence (AI tools grab the first sentence)
 - No links inside FAQ answers (they do not render in AI citations)
 
 Good FAQ questions:
@@ -626,11 +666,11 @@ Google rewards pages that demonstrate Experience, Expertise, Authoritativeness, 
 ### AI discoverability (ChatGPT, Perplexity, Claude, Gemini)
 
 AI tools increasingly cite specific pages in answers. To be cited:
-- All SEO-critical content must be server-rendered HTML — AI crawlers rarely execute JavaScript
+- All SEO-critical content must be server-rendered HTML
 - FAQ answers in declarative prose (not bullet lists — AI reads prose better)
 - Factual, specific headings: "How much does WordPress hosting cost at DronaHost?" not "Pricing"
 - Comparison tables with real numbers: DronaHost vs SiteGround, vs Kinsta, vs WP Engine
-- Maintain `/public/llms.txt` and `/public/llms-full.txt` (see `/scripts/generate-llms-txt.ts`)
+- `/public/llms.txt` and `/public/llms-full.txt` are an optional extra (see `/scripts/generate-llms-txt.ts`); no major AI provider has confirmed using them
 
 ### Internal linking rules
 
@@ -639,10 +679,13 @@ Every page links to at least 3 related pages. Internal links:
 - Link to the most relevant destination (not always the homepage)
 - Plan internal links before writing, not after
 
+TODO(decision #7): the URLs below are the paths used in these rules and may differ from the live URL map.
+TODO(decision #8): regional pages (`/hosting/uk`, `/hosting/us`) may be dropped.
+
 | Page | Must link to |
 |---|---|
-| `/wordpress-hosting` | `/pricing`, `/hosting/uk`, `/blog` (relevant post), `/vs/siteground` |
-| `/vps-hosting` | `/pricing`, `/hosting/us`, `/security`, `/contact` |
+| `/wordpress-hosting` | `/pricing`, a regional page (if it exists), `/blog` (relevant post), a comparison page (if it exists) |
+| `/vps-hosting` | `/pricing`, `/security`, `/contact` |
 | Blog posts | Relevant product page, `/pricing`, 1–2 other relevant blog posts |
 | `/vs/[competitor]` | `/pricing`, the relevant plan page, `/contact` |
 
@@ -654,7 +697,9 @@ All testimonials and case study copy must be:
 - **Permission-granted** — written consent from the person quoted
 - Never paraphrased without approval — use the exact words given
 
-What a good testimonial includes:
+- No star ratings unless they come from a real review platform and link to it.
+
+What a good testimonial includes (this sample is invented, `[EXAMPLE, NOT VERIFIED]`, never publish it):
 ```
 "We moved from [Competitor] to DronaHost in January and our TTFB dropped from 800ms to 190ms.
 PageSpeed went from 54 to 91. That is not a rounding error — our conversion rate went up 12%."
@@ -668,4 +713,4 @@ What a bad testimonial looks like (do not publish):
 — John S.
 ```
 
-Western buyers reverse-image-search headshots and check LinkedIn. Every social proof element must survive that scrutiny.
+Buyers reverse-image-search headshots and check LinkedIn. Every social proof element must survive that scrutiny.

@@ -8,8 +8,10 @@ The live v1 site at dronahost.com is a reference for **services offered only** �
 
 ## Target Markets (CRITICAL — shapes everything)
 
-**Primary markets:** USA, United Kingdom, United Arab Emirates, European Union (Germany, Netherlands, France, Ireland)
-**NOT a priority:** India (despite company being based there)
+**Audience:** educated small-business owners, freelancers and agencies worldwide who read English as a first or second language. They are smart but not necessarily technical. They compare providers carefully and distrust hype. Write plain international English (US English by default, roughly grade 8-10, no idioms that do not translate).
+
+**Compliance and currency priority markets:** USA, United Kingdom, United Arab Emirates, European Union (Germany, Netherlands, France, Ireland)
+**Everyone else is welcome.** India and the rest of the world are served too; INR is offered through the currency selector.
 
 This shapes: pricing currency, server locations, copywriting voice, compliance requirements, support hours, payment methods, trust signals.
 
@@ -36,7 +38,7 @@ This shapes: pricing currency, server locations, copywriting voice, compliance r
 
 ## Top Priorities (in strict order)
 
-1. **Trust signals for Western buyers** — the #1 conversion barrier
+1. **Trust signals for international buyers** — the #1 conversion barrier
 2. **SEO** — rank in US/UK/EU Google; be citable by AI tools (ChatGPT, Perplexity, Claude, Gemini)
 3. **Performance** — Core Web Vitals all green; LCP < 2s, INP < 200ms, CLS < 0.1
 4. **GDPR + compliance** — non-negotiable for EU/UK traffic
@@ -50,7 +52,7 @@ This shapes: pricing currency, server locations, copywriting voice, compliance r
 
 See **[docs/rules/content-writing-rules.md](docs/rules/content-writing-rules.md)** for the full enforced rule set, covering:
 
-- Tone of voice and prohibited patterns (Indian English, generic SaaS buzzwords)
+- Tone of voice and phrases to avoid (clarity and credibility, generic SaaS buzzwords)
 - Consistent terminology (product names, technical terms, pricing language)
 - Heading hierarchy rules (H1–H4 with examples per page type)
 - CTA copy patterns (what to write, what to avoid, urgency rules)
@@ -60,7 +62,7 @@ See **[docs/rules/content-writing-rules.md](docs/rules/content-writing-rules.md)
 
 ---
 
-## Trust Signals (NON-NEGOTIABLE for Western B2B conversion)
+## Trust Signals (NON-NEGOTIABLE for international B2B conversion)
 
 Every page should reinforce trust. Required elements across the site:
 
@@ -88,12 +90,12 @@ Every page should reinforce trust. Required elements across the site:
 - `/refund-policy` — 30-day money-back guarantee with clear terms
 - `/data-processing` — GDPR DPA download (PDF)
 - `/privacy` — GDPR + CCPA compliant
-- `/terms` — written for Western jurisdictions
+- `/terms` — written for the jurisdictions we sell into (US, UK, EU, UAE)
 
 ### What to avoid
 
-- Stock photos of obvious non-Western people presented as "our team"
-- Fake testimonials (Western buyers reverse-image-search and LinkedIn-check)
+- Stock photos presented as "our team"
+- Fake testimonials (buyers reverse-image-search and LinkedIn-check)
 - US phone number that isn't actually answered by a native English speaker
 - Claims without proof ("we've served 50,000+ customers" needs evidence)
 
@@ -107,7 +109,7 @@ Every page should reinforce trust. Required elements across the site:
 - **GBP (£)** — UK users
 - **EUR (€)** — EU users
 - **AED (د.إ)** — UAE users
-- **INR** — only for explicit India selection (de-prioritized)
+- **INR** — offered through the currency selector or a locale, never forced
 
 ### Detection
 
@@ -310,9 +312,9 @@ See also **[docs/rules/content-writing-rules.md §7](docs/rules/content-writing-
 - Fonts: `next/font` with `display: swap`, subset to Latin only (add Arabic subset for UAE pages)
 - Third-party scripts: `next/script` with `strategy="lazyOnload"` for non-critical
 
-### CDN + Edge (critical for Western performance)
+### CDN + Edge (critical for global performance)
 
-- **Cloudflare in front of the VPS** — non-negotiable for Western global latency
+- **Cloudflare in front of the VPS** — non-negotiable for global latency
 - Cache HTML at edge with short TTL + revalidation
 - Cache static assets at edge with long TTL + immutable
 - Use Cloudflare's geo-routing for currency detection
@@ -380,13 +382,13 @@ See also **[docs/rules/content-writing-rules.md §7](docs/rules/content-writing-
 - Index fields used in queries (`slug`, `status`, `publishedAt`, `region`, `userId`)
 - Never expose Mongoose queries to client — Server Components or Route Handlers only
 - Use Zod schemas to validate ALL incoming data before DB writes
-- Soft-delete pattern (`deletedAt` field) — never hard-delete user/order/payment data (required for tax/audit in Western jurisdictions)
+- Soft-delete pattern (`deletedAt` field) — never hard-delete user/order/payment data (required for tax/audit in the jurisdictions we sell into)
 - **EU user data on EU-region MongoDB cluster** (GDPR data residency)
 - Use MongoDB Atlas with region-specific clusters (confirmed — chosen for GDPR compliance simplicity)
 
 ---
 
-## API Integration Guide (Western-Market Specific)
+## API Integration Guide (Market-Specific)
 
 All integrations wrapped in `/lib/services/[service].ts`. Each service exports typed functions, handles errors, logs failures.
 
@@ -398,7 +400,7 @@ All integrations wrapped in `/lib/services/[service].ts`. Each service exports t
 - Support region-specific TLDs: `.co.uk`, `.de`, `.fr`, `.nl`, `.eu`, `.ae`, `.us`, `.co`
 - Include ICANN fee in displayed price (US legal requirement)
 - Store registrations in `domains` collection linked to user
-- WHOIS privacy enabled by default (Western buyers expect it free)
+- WHOIS privacy enabled by default (buyers expect it free)
 
 ### Hosting Control Panel (WHMCS/cPanel/Plesk)
 
@@ -423,7 +425,7 @@ All integrations wrapped in `/lib/services/[service].ts`. Each service exports t
 - Defer widget until user idle or scrolls past hero
 - **Business hours indicator**: show "Online" only during actual covered hours across US/UK/UAE timezones
 
-## Security Rules (Western target = high-value target)
+## Security Rules (hosting companies are high-value targets)
 
 - All secrets in `.env.local`, never committed — `.gitignore` rules
 - Validate ALL user input with Zod before processing
@@ -434,7 +436,7 @@ All integrations wrapped in `/lib/services/[service].ts`. Each service exports t
 - Sanitize all user-generated content (DOMPurify for rich text)
 - Log auth failures, payment events, admin actions to separate audit collection (required for PCI-DSS if applicable)
 - Never log secrets, tokens, passwords — even in errors
-- Stripe: use Radar for fraud detection; expect higher attempt rates on Western cards
+- Stripe: use Radar for fraud detection; expect higher attempt rates on US, UK and EU cards
 - Plan for DDoS protection (Cloudflare) — hosting companies are targeted
 
 ## Coding Rules
@@ -462,7 +464,7 @@ See **[docs/rules/coding-rules.md](docs/rules/coding-rules.md)** for the full en
 - Show full metadata + JSON-LD for any new page
 - Flag Core Web Vitals regressions
 - Flag GDPR/compliance implications for any feature touching user data
-- Flag copywriting that sounds non-Western
+- Flag copywriting that uses a phrase from the content rules' "Phrases to avoid" list or misses the reading-level rule
 - **Pricing changes:** Always update `data/pricing.json` first — never suggest hardcoded prices in components or copy. Show the JSON diff alongside any component change.
 - **Any component that renders a price:** Verify it imports from `data/pricing.json`, not a hardcoded value. Flag and fix if not.
 - **New plan pages or pricing sections:** Confirm `data/pricing.json` has the plan before writing any component or copy.
