@@ -485,3 +485,6 @@ See **[docs/rules/content-writing-rules.md](docs/rules/content-writing-rules.md)
 - **Copy**: draft copy lives in `content/*.ts`. Follow `docs/rules/content-writing-rules.md`; no unconfirmed numbers, guarantees or competitor claims.
 - **QA**: after `npm run build && npx next start -p 3200`, run `npm run qa` (contrast, axe, links, JSON-LD, raw entities). Lighthouse and screenshot helpers are in `scripts/`; results are in `docs/reference/QA_REPORT.md`.
 - **Gotchas**: do not run `next build` while `next dev` is running in the same folder (intermittent font import-map error; re-run). Do not wrap the root layout children in `Suspense` (it turns 404s into 200s).
+
+- **Locale routing**: next-intl with `as-needed` prefixes (English unprefixed). Use `Link` from `@/i18n/link`, never `next/link`, for internal links. Variants (`/en-gb`, `/en-ae`) stay off until `FEATURES.localeVariants`. See the "Locale routing" entry in `docs/components/CHANGELOG.md`.
+

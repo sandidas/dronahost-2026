@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/link";
 import Button from "@/components/ui/Button";
 import {
   HELP_PANEL,

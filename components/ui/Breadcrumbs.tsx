@@ -1,5 +1,5 @@
 import { ChevronRight } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/link";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 import { SITE_URL } from "@/lib/seo/config";
 import { cn } from "@/utils/cn";

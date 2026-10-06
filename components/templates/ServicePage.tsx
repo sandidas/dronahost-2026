@@ -13,8 +13,8 @@ import { breadcrumbSchema, faqPageSchema, serviceSchema } from "@/lib/seo/jsonld
 import { buildMetadata } from "@/lib/seo/metadata";
 
 /** Metadata for a service page, built from its content entry. */
-export const serviceMetadata = (c: ServiceContent) =>
-  buildMetadata({ title: c.metaTitle, description: c.metaDescription, path: `/${c.slug}` });
+export const serviceMetadata = (c: ServiceContent, locale?: string) =>
+  buildMetadata({ title: c.metaTitle, description: c.metaDescription, path: `/${c.slug}`, locale });
 
 type ServicePageProps = {
   content: ServiceContent;

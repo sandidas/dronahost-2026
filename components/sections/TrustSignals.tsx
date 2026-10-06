@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/link";
 import { useId } from "react";
 import FeatureIcon from "@/components/ui/FeatureIcon";
 import { TRUST_ITEMS, type TrustItem } from "@/content/trust";

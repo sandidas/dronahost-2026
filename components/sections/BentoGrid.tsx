@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/link";
 import { useId, type ReactNode } from "react";
 import FeatureIcon, { type FeatureIconName } from "@/components/ui/FeatureIcon";
 import Surface from "@/components/ui/Surface";

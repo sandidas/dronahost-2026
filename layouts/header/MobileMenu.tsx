@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDown, LogIn, X } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/link";
 import { useEffect, useRef, useState } from "react";
 import CurrencySelector from "@/components/layout/CurrencySelector";
 import Button from "@/components/ui/Button";

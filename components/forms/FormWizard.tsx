@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/link";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { z } from "zod";
 import Turnstile from "@/components/forms/Turnstile";

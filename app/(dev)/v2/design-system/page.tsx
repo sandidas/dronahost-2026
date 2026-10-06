@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/i18n/link";
 import { evaluate, parseTokens } from "@/lib/design/contrast";
 import { DsSection } from "./_panes";
 import {

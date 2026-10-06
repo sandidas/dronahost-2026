@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/link";
 import { useId, type ReactNode } from "react";
 import Button from "@/components/ui/Button";
 import { cn } from "@/utils/cn";

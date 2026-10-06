@@ -1,5 +1,5 @@
 import { Check, Minus } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/link";
 import { Fragment, useId } from "react";
 import { cn } from "@/utils/cn";
 import SectionHeader from "./SectionHeader";

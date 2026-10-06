@@ -1,0 +1,23 @@
+{
+  "common": {
+    "skipToContent": "Skip to main content",
+    "talkToTeam": "Talk to our team",
+    "language": "Language"
+  },
+  "consent": {
+    "title": "Your privacy choices",
+    "body": "We use necessary cookies to run the site. With your permission we also use optional cookies for preferences, analytics and marketing. You can change this at any time.",
+    "rejectAll": "Reject all",
+    "acceptAll": "Accept all",
+    "manage": "Manage preferences",
+    "settings": "Cookie settings",
+    "privacy": "Privacy policy",
+    "cookiePolicy": "Cookie policy"
+  },
+  "notFound": {
+    "title": "This page could not be found",
+    "body": "The link may be out of date, or the page may have moved.",
+    "home": "Go to the homepage",
+    "contact": "Contact the team"
+  }
+}

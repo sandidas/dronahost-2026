@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
+
+const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
+  // One 404 page for the whole app: the root layout lives in a dynamic [locale] segment.
+  experimental: { globalNotFound: true },
   async headers() {
     return [
       {
@@ -24,4 +29,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

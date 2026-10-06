@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { Link } from "@/i18n/link";
+import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
 import CookieSettingsButton from "@/components/consent/CookieSettingsButton";
 import Logo from "@/components/ui/Logo";
 import { ACCEPTED_PAYMENT_METHODS } from "@/content/claims";
@@ -80,6 +81,7 @@ export default function Footer() {
               <CookieSettingsButton className="min-h-9 text-sm underline underline-offset-4 hover:text-foreground" />
             </p>
           </div>
+          <LanguageSwitcher />
           {payments.length > 0 && (
             <p>
               Accepted payment methods: {payments.map((p) => p.label).join(", ")}

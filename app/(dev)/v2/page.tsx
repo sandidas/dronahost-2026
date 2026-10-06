@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import { Link } from "@/i18n/link";
 
 import ShowcaseSection from "./_components/ShowcaseSection";
 import ShowcaseSidebar from "./_components/ShowcaseSidebar";
@@ -314,10 +314,10 @@ export default function V2ShowcasePage() {
           >
             <p className="text-sm text-muted-foreground">
               The contact form is embedded directly in the{" "}
-              <a href="/contact" className="text-link underline">
+              <Link href="/contact" className="text-link underline">
                 /contact
-              </a>{" "}
-              page and has not yet been extracted into a standalone reusable component. Needs extraction and Zod validation wiring.
+              </Link>{" "}
+              page and is not a standalone reusable component yet.
             </p>
           </ShowcaseSection>
 

@@ -56,3 +56,16 @@ Branch `polish/design-system`. Each batch is one commit.
 Not built (nothing needs them yet): tabs, tooltip, toast, floating WhatsApp button (needs a verified number), locale routing (`/[locale]`).
 
 Known trade-off: a `loading.tsx` file wraps the whole route segment in Suspense, which turns `notFound()` into a 200 response. The blog therefore uses an in-page Suspense for its list and has no `loading.tsx`.
+
+## Locale routing (next-intl)
+
+- **URLs:** English is the default and has no prefix, so every existing URL is unchanged. Variants live at `/en-gb/...` and `/en-ae/...` (lowercase segments; `lang`, hreflang and `og:locale` use `en-GB`, `en-AE`).
+- **Off by default:** `FEATURES.localeVariants` (lib/flags.ts) is false, so the variants return 404, are not in the sitemap and have no hreflang. Turn it on once their content, currency and regional claims are confirmed. With it on, canonical, hreflang, sitemap alternates and a footer language switcher appear automatically (verified with `E2E_VARIANTS=1 npm run test:e2e` against a build with the flag on).
+- **No cookie, no redirect:** `localeDetection` and `localeCookie` are off. Visitors stay on the URL they asked for; switching language is an explicit link. No extra cookie to disclose.
+- **Structure:** `app/[locale]/` is the root layout (`<html lang dir>` per locale, via `components/layout/RootDocument.tsx`); `app/(dev)` has its own root layout for `/v2`. `proxy.ts` does the locale routing and sends non-live locale-like paths to the 404 page. Config lives in `lib/i18n/config.ts`, routing in `i18n/`, UI strings in `messages/<locale>.json` (skip link, consent banner, 404, language switcher; the en-GB and en-AE files are copies of en-US for now).
+- **Use `Link` from `@/i18n/link`** (a client module, which keeps pages statically generated) and `usePathname`/`useRouter` from `@/i18n/navigation`. Do not import `next/link` for internal links.
+- **Metadata:** pages export `generateMetadata` and pass `locale` to `buildMetadata`, which sets canonical, hreflang and `og:locale`.
+- **404:** `experimental.globalNotFound` plus `app/global-not-found.tsx` serve unmatched URLs as a real, server-rendered 404. A `notFound()` thrown inside a page (for example an unknown blog slug) returns 404 but its HTML body is rendered by the browser, because the root layout sits in a dynamic segment; visitors with JavaScript see the full branded page.
+- **Phase 2:** to add Arabic (`ar-ae`, `dir: "rtl"`) or an EU language, add the entry to `LOCALES`, create `messages/<locale>.json`, translate the content in `content/*.ts` and list it in `LIVE_LOCALES`. Logical CSS properties are already used, so RTL layout should hold.
+
+Not localized yet: page copy (`content/*.ts`), JSON-LD URLs (they point at the default locale), prices and currency (USD only), dates (en-US).

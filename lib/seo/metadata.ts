@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { DEFAULT_LOCALE, LIVE_LOCALES, LOCALES, isLocale, localePath, type Locale } from "@/lib/i18n/config";
 import { SITE_URL, SITE_NAME } from "./config";
 
 type BuildMetadataInput = {
@@ -10,13 +11,28 @@ type BuildMetadataInput = {
   noFollow?: boolean;
   type?: "website" | "article";
   hreflang?: Record<string, string>;
+  /** Route locale (from the [locale] param). Sets the canonical, hreflang and og:locale. Default: en-us. */
+  locale?: string;
 };
+
+/** Prefixes a path (optionally with ?query) for a locale and makes it absolute. */
+function localizedUrl(path: string, locale: Locale): string {
+  const [pathname = "/", query] = path.split("?");
+  return `${SITE_URL}${localePath(pathname, locale)}${query ? `?${query}` : ""}`;
+}
 
 export function buildMetadata(input: BuildMetadataInput): Metadata {
   const normalizedPath = input.path.endsWith("/") && input.path !== "/"
     ? input.path.slice(0, -1)
     : input.path;
-  const canonicalUrl = `${SITE_URL}${normalizedPath}`;
+  const locale: Locale = input.locale && isLocale(input.locale) ? input.locale : DEFAULT_LOCALE;
+  const canonicalUrl = localizedUrl(normalizedPath, locale);
+  // hreflang only when more than one locale is live; each page links to every live version and x-default.
+  const alternates =
+    input.hreflang ??
+    (LIVE_LOCALES.length > 1
+      ? { ...Object.fromEntries(LIVE_LOCALES.map((l) => [LOCALES[l].tag, localizedUrl(normalizedPath, l)])), "x-default": localizedUrl(normalizedPath, DEFAULT_LOCALE) }
+      : undefined);
   const ogImage = input.ogImage ?? `${SITE_URL}/images/og/default.jpg`;
   const noIndex = input.noIndex ?? false;
   const noFollow = input.noFollow ?? noIndex;
@@ -27,14 +43,14 @@ export function buildMetadata(input: BuildMetadataInput): Metadata {
     metadataBase: new URL(SITE_URL),
     alternates: {
       canonical: canonicalUrl,
-      ...(input.hreflang ? { languages: input.hreflang } : {}),
+      ...(alternates ? { languages: alternates } : {}),
     },
     openGraph: {
       title: input.title,
       description: input.description,
       url: canonicalUrl,
       siteName: SITE_NAME,
-      locale: "en_US",
+      locale: LOCALES[locale].ogLocale,
       type: input.type ?? "website",
       images: [
         {

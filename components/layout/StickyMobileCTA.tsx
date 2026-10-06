@@ -1,6 +1,7 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { usePathname } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
 
@@ -11,7 +12,8 @@ const HIDDEN_ON = ["/contact", "/consultation", "/migration"];
  * the footer is in view or the page already is a form. Slides in with a CSS transition that
  * is removed under prefers-reduced-motion. Takes no space in the layout (fixed).
  */
-export default function StickyMobileCTA({ label = "Talk to our team", href = "/contact" }: { label?: string; href?: string }) {
+export default function StickyMobileCTA({ label, href = "/contact" }: { label?: string; href?: string }) {
+  const t = useTranslations("common");
   const pathname = usePathname();
   const [pastHero, setPastHero] = useState(false);
   const [footerVisible, setFooterVisible] = useState(false);
@@ -40,7 +42,7 @@ export default function StickyMobileCTA({ label = "Talk to our team", href = "/c
       data-shown={shown}
     >
       <Button href={href} fullWidth>
-        {label}
+        {label ?? t("talkToTeam")}
       </Button>
     </div>
   );

@@ -20,6 +20,8 @@ export const FEATURES = {
   newsletter: false,
   /** WHMCS domain search. Needs WHMCS_API_URL, WHMCS_API_IDENTIFIER and WHMCS_API_SECRET. */
   domainSearch: false,
+  /** English locale variants (/en-gb, /en-ae) are public. Off until their content and regional claims are confirmed. */
+  localeVariants: false,
   /** Checkout/signup routes exist. While false, plan CTAs go to /contact. */
   checkout: false,
 } as const;

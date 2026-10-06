@@ -1,6 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/link";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import { useEffect, useId, useState, useSyncExternalStore } from "react";
 import Button from "@/components/ui/Button";
@@ -29,6 +30,7 @@ export default function CookieConsent() {
   const [dialogMounted, setDialogMounted] = useState(false);
   const [draft, setDraft] = useState<ConsentChoices>(REJECT_ALL);
   const descId = useId();
+  const t = useTranslations("consent");
 
   useEffect(() => {
     const open = () => {
@@ -52,26 +54,26 @@ export default function CookieConsent() {
       {showBanner && (
         <section aria-label="Cookie consent" aria-describedby={descId} className="fixed inset-x-0 bottom-0 z-50 p-3 sm:p-4">
           <div className="surface surface-raised mx-auto max-w-4xl p-5 sm:p-6">
-            <p className="t-h4 text-foreground">Your privacy choices</p>
+            <p className="t-h4 text-foreground">{t("title")}</p>
             <p id={descId} className="t-small mt-2 text-muted-foreground">
-              We use necessary cookies to run the site. With your permission we also use optional cookies for preferences, analytics and marketing. You can change this at any time.{" "}
+              {t("body")}{" "}
               <Link href="/privacy" className="font-semibold text-foreground underline underline-offset-4">
-                Privacy policy
+                {t("privacy")}
               </Link>
               {" · "}
               <Link href="/cookie-policy" className="font-semibold text-foreground underline underline-offset-4">
-                Cookie policy
+                {t("cookiePolicy")}
               </Link>
             </p>
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button type="button" variant="secondary" onClick={() => decide(REJECT_ALL)} className="sm:min-w-40">
-                Reject all
+                {t("rejectAll")}
               </Button>
               <Button type="button" variant="secondary" onClick={() => decide(ACCEPT_ALL)} className="sm:min-w-40">
-                Accept all
+                {t("acceptAll")}
               </Button>
               <Button type="button" variant="link" onClick={() => window.dispatchEvent(new Event(OPEN_SETTINGS_EVENT))} className="sm:ms-auto">
-                Manage preferences
+                {t("manage")}
               </Button>
             </div>
           </div>

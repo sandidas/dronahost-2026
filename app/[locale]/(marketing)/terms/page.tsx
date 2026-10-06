@@ -1,0 +1,101 @@
+import LegalPage from "@/components/legal/LegalPage";
+import JsonLd from "@/components/sections/JsonLd";
+import { Link } from "@/i18n/link";
+import { buildMetadata } from "@/lib/seo/metadata";
+import { breadcrumbSchema } from "@/lib/seo/jsonld";
+import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  return buildMetadata({ locale,
+    title: "Terms of Service — DronaHost",
+    description:
+      "DronaHost Terms of Service. The legal agreement governing your use of DronaHost hosting services.",
+    path: "/terms",
+  });
+}
+
+export default function TermsPage() {
+  return (
+    <>
+      <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs("/terms"))]} />
+      <LegalPage title="Terms of Service" path="/terms" updated="2025-01-01">
+        <p>
+          These Terms of Service (&quot;Terms&quot;) govern your access to and
+          use of DronaHost services. By using our services, you agree to these
+          Terms.
+        </p>
+
+        <h2>Acceptable Use</h2>
+        <p>
+          You may use our services only for lawful purposes. You may not use our
+          services to distribute malware, conduct phishing attacks, send
+          unsolicited email (spam), host illegal content, or violate the rights
+          of others.
+        </p>
+
+        <h2>Account Responsibilities</h2>
+        <p>
+          You are responsible for maintaining the confidentiality of your
+          account credentials. You are responsible for all activity that occurs
+          under your account. Notify us immediately at security@dronahost.com of
+          any unauthorised use.
+        </p>
+
+        <h2>Payment and Billing</h2>
+        <p>
+          Services are billed in advance on a monthly or annual basis. All fees
+          are exclusive of taxes. Failure to pay may result in service
+          suspension. We reserve the right to change pricing with 30 days
+          advance notice.
+        </p>
+
+        <h2>Service Level Agreement</h2>
+        <p>
+          Our uptime commitments are detailed in our{" "}
+          <Link href="/sla" className="text-link underline underline-offset-4">
+            Service Level Agreement
+          </Link>
+          . Credits for downtime are the sole remedy for service outages.
+        </p>
+
+        <h2>Termination</h2>
+        <p>
+          Either party may terminate these Terms at any time. We may suspend or
+          terminate your account immediately for violations of these Terms. Upon
+          termination, your right to use the services ceases immediately.
+        </p>
+
+        <h2>Limitation of Liability</h2>
+        <p>
+          To the maximum extent permitted by law, DronaHost shall not be liable
+          for indirect, incidental, special, consequential, or punitive damages.
+          Our total liability shall not exceed the amounts paid by you in the 12
+          months preceding the claim.
+        </p>
+
+        <h2>Governing Law</h2>
+        <p>
+          These Terms are governed by the laws of England and Wales for UK/EU
+          customers, and the laws of Delaware, USA for US customers.
+        </p>
+        <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
+        <p>
+          Related policies:{" "}
+          <Link href="/privacy" className="text-link underline underline-offset-4">
+            Privacy Policy
+          </Link>
+          {" · "}
+          <Link href="/refund-policy" className="text-link underline underline-offset-4">
+            Refund Policy
+          </Link>
+          {" · "}
+          <Link href="/sla" className="text-link underline underline-offset-4">
+            SLA
+          </Link>
+        </p>
+      </footer>
+      </LegalPage>
+    </>
+  );
+}

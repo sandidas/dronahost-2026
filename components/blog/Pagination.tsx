@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/link";
 import { cn } from "@/utils/cn";
 
 type PaginationProps = { page: number; totalPages: number; basePath: string; params?: Record<string, string | undefined> };

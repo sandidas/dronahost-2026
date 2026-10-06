@@ -1,7 +1,7 @@
 import { cn } from "@/utils/cn";
 import { BarChart3, Code, Database, Globe, Layout, ShoppingCart } from "lucide-react";
 import NextImage from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/link";
 import { type ReactNode } from "react";
 import HeadLineText from "@/components/ui/HeadLineText";
 

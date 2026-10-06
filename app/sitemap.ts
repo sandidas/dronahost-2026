@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { DEFAULT_LOCALE, LIVE_LOCALES, LOCALES, localePath } from "@/lib/i18n/config";
 import { SITE_URL } from "@/lib/seo/config";
 
 // ─── Static pages ─────────────────────────────────────────────────────────────
@@ -52,5 +53,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // DB unreachable at build time — sitemap still valid without blog entries
   }
 
-  return [...STATIC_PAGES, ...blogEntries];
+  // One entry per live locale; with several live locales each entry lists every version (hreflang).
+  const toLocale = (url: string, locale: (typeof LIVE_LOCALES)[number]) => `${SITE_URL}${localePath(url.slice(SITE_URL.length) || "/", locale)}`;
+  return [...STATIC_PAGES, ...blogEntries].flatMap((entry) =>
+    LIVE_LOCALES.map((locale) => ({
+      ...entry,
+      url: toLocale(entry.url, locale),
+      ...(LIVE_LOCALES.length > 1 && {
+        alternates: { languages: { ...Object.fromEntries(LIVE_LOCALES.map((l) => [LOCALES[l].tag, toLocale(entry.url, l)])), "x-default": toLocale(entry.url, DEFAULT_LOCALE) } },
+      }),
+    })),
+  );
 }

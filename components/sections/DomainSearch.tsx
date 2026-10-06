@@ -2,6 +2,7 @@
 
 import { Search } from "lucide-react";
 import { useId, useRef, useState } from "react";
+import { Link } from "@/i18n/link";
 import Button from "@/components/ui/Button";
 import { track } from "@/lib/analytics/track";
 import { normalizeDomain } from "@/lib/whmcs/domain";
@@ -78,9 +79,9 @@ export default function DomainSearch() {
             {result.status === "available" ? (
               <>
                 {result.domain} is available.{" "}
-                <a href={`/contact?plan=domain-${encodeURIComponent(result.domain)}`} className="text-link underline underline-offset-4">
+                <Link href={`/contact?plan=domain-${encodeURIComponent(result.domain)}`} className="text-link underline underline-offset-4">
                   Ask us to register it
-                </a>
+                </Link>
               </>
             ) : (
               <>{result.domain} is already registered. Try another name.</>

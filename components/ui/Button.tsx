@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/link";
 import { cn } from "@/utils/cn";
 
 type Variant = "primary" | "secondary" | "ghost" | "link";

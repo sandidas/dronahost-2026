@@ -1,8 +1,8 @@
 "use client";
 
 import { ChevronDown, LogIn, Menu } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link } from "@/i18n/link";
+import { usePathname } from "@/i18n/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import CurrencySelector from "@/components/layout/CurrencySelector";
 import Button from "@/components/ui/Button";

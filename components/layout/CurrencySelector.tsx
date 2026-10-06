@@ -1,7 +1,7 @@
 "use client";
 
 import { Globe } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { useSyncExternalStore } from "react";
 import { FEATURES } from "@/lib/flags";
 import { DEFAULT_CURRENCY, type CurrencyCode } from "@/lib/pricing";

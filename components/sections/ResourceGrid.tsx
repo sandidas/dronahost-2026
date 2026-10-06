@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/link";
 import { useId } from "react";
 import { cn } from "@/utils/cn";
 import SectionHeader from "./SectionHeader";
