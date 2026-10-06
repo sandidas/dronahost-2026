@@ -4,6 +4,7 @@ import { Check } from "lucide-react";
 import { useId, useState, type ReactNode } from "react";
 import Button from "@/components/ui/Button";
 import { reveal } from "@/lib/motion";
+import { renewalLine } from "@/lib/pricing/renewal";
 import { cn } from "@/utils/cn";
 import SectionHeader from "./SectionHeader";
 import type { PlanCardData } from "@/lib/pricing/plans";
@@ -21,6 +22,8 @@ type PricingPlansProps = {
   vatDisplay?: string | null;
   /** Only pass when the guarantee is verified in content/claims.ts. */
   guaranteeNote?: string | null;
+  /** True only when the renewal-price-same claim may render (verified and terms page published). The renewal price itself always shows. */
+  renewalPromise?: boolean;
   /** Billing periods actually offered. The toggle renders only when both are. */
   cycles?: readonly Cycle[];
   defaultCycle?: Cycle;
@@ -46,6 +49,7 @@ function PlanCard({
   showPrices,
   vat,
   guaranteeNote,
+  renewalPromise = false,
   headingLevel,
 }: {
   index?: number;
@@ -54,6 +58,7 @@ function PlanCard({
   showPrices: boolean;
   vat?: string | null;
   guaranteeNote?: string | null;
+  renewalPromise?: boolean;
   headingLevel: "h3" | "h4";
 }) {
   const Heading = headingLevel;
@@ -107,11 +112,7 @@ function PlanCard({
                   {c === "annual" ? (
                     <>
                       {plan.annualTotal ? `${plan.annualTotal} billed annually. ` : "Billed annually. "}
-                      {plan.renewal && (
-                        <>
-                          Renews at {plan.renewal}/month{plan.renewalSame ? " — same price, no increase" : ""}
-                        </>
-                      )}
+                      {renewalLine(plan.renewal, { promiseVisible: renewalPromise, sameAsSignup: plan.renewalSame })}
                     </>
                   ) : (
                     "Billed monthly."
@@ -162,6 +163,7 @@ export default function PricingPlans({
   showPrices,
   vatDisplay,
   guaranteeNote,
+  renewalPromise,
   cycles = ["annual", "monthly"],
   defaultCycle = "annual",
   headingLevel = "h2",
@@ -222,6 +224,7 @@ export default function PricingPlans({
                 showPrices={showPrices}
                 vat={vatDisplay}
                 guaranteeNote={guaranteeNote}
+                renewalPromise={renewalPromise}
                 headingLevel={cardHeading}
               />
             ))}

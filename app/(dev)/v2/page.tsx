@@ -454,6 +454,7 @@ export default function V2ShowcasePage() {
               showPrices
               vatDisplay={VAT_DISPLAY}
               guaranteeNote="30-day money-back guarantee. (sample: shown only when verified)"
+              renewalPromise
               className="!py-0"
             >
               <PricingExtras showPrices />

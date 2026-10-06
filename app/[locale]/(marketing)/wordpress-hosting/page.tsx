@@ -72,6 +72,7 @@ export default function WordPressHostingPage() {
         showPrices={prices}
         vatDisplay={VAT_DISPLAY}
         guaranteeNote={isVerified("money-back") ? "30-day money-back guarantee." : null}
+        renewalPromise={isVerified("renewal-price-same")}
       >
         <PricingExtras showPrices={prices} />
       </PricingPlans>
