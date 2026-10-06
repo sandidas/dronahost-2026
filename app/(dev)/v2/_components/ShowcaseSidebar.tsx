@@ -86,6 +86,20 @@ const categories: Category[] = [
     ],
   },
   {
+    label: "Launch features",
+    items: [
+      { id: "breadcrumbs", label: "Breadcrumbs" },
+      { id: "empty-state", label: "EmptyState" },
+      { id: "dialog", label: "Dialog" },
+      { id: "cookie-consent", label: "Cookie consent" },
+      { id: "sticky-cta", label: "Sticky mobile CTA" },
+      { id: "legal-page", label: "LegalPage" },
+      { id: "blog-set", label: "Blog set" },
+      { id: "form-wizard", label: "Multi-step forms" },
+      { id: "domain-search", label: "Domain search" },
+    ],
+  },
+  {
     label: "SEO",
     items: [
       { id: "json-ld", label: "JsonLd" },

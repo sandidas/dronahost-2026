@@ -1,4 +1,5 @@
 import { Newspaper } from "lucide-react";
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import CategoryFilter from "@/components/blog/CategoryFilter";
 import Pagination from "@/components/blog/Pagination";
@@ -7,6 +8,7 @@ import CTABand from "@/components/sections/CTABand";
 import JsonLd from "@/components/sections/JsonLd";
 import ResourceGrid from "@/components/sections/ResourceGrid";
 import EmptyState from "@/components/ui/EmptyState";
+import { Skeleton } from "@/components/ui/skeleton";
 import { HOME_CTA } from "@/content/home";
 import { BlogUnavailableError, listCategories, listPosts, type BlogCategory, type BlogPage } from "@/lib/blog";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
@@ -33,11 +35,7 @@ export async function generateMetadata({ searchParams }: { searchParams: SearchP
   });
 }
 
-export default async function BlogIndexPage({ searchParams }: { searchParams: SearchParams }) {
-  const sp = await searchParams;
-  const page = toPage(sp.page);
-  const category = safeSlug(sp.category);
-
+async function BlogList({ page, category }: { page: number; category?: string }) {
   let data: BlogPage = { posts: [], page, totalPages: 1 };
   let categories: BlogCategory[] = [];
   let unavailable = false;
@@ -59,19 +57,6 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
 
   return (
     <>
-      <JsonLd
-        schema={[
-          { "@context": "https://schema.org", "@type": "Blog", name: "DronaHost Blog", url: `${SITE_URL}/blog`, publisher: { "@type": "Organization", name: "DronaHost" } },
-          breadcrumbSchema(buildBreadcrumbs("/blog")),
-        ]}
-      />
-      <CenteredHero
-        eyebrow="Blog"
-        title="Practical notes on"
-        titleAccent="hosting and the web"
-        description="Guides on WordPress, performance, security and search, written by the people who run the servers."
-        primaryCta={{ label: "Talk to our team", href: "/contact" }}
-      />
       <div className="container-site">
         <CategoryFilter categories={categories} active={category} />
       </div>
@@ -93,6 +78,45 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Se
           </div>
         </section>
       )}
+    </>
+  );
+}
+
+function BlogListSkeleton() {
+  return (
+    <div className="container-site section-y" role="status" aria-label="Loading articles">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <Skeleton key={i} className="h-56 rounded-2xl" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default async function BlogIndexPage({ searchParams }: { searchParams: SearchParams }) {
+  const sp = await searchParams;
+  const page = toPage(sp.page);
+  const category = safeSlug(sp.category);
+
+  return (
+    <>
+      <JsonLd
+        schema={[
+          { "@context": "https://schema.org", "@type": "Blog", name: "DronaHost Blog", url: `${SITE_URL}/blog`, publisher: { "@type": "Organization", name: "DronaHost" } },
+          breadcrumbSchema(buildBreadcrumbs("/blog")),
+        ]}
+      />
+      <CenteredHero
+        eyebrow="Blog"
+        title="Practical notes on"
+        titleAccent="hosting and the web"
+        description="Guides on WordPress, performance, security and search, written by the people who run the servers."
+        primaryCta={{ label: "Talk to our team", href: "/contact" }}
+      />
+      <Suspense fallback={<BlogListSkeleton />}>
+        <BlogList page={page} category={category} />
+      </Suspense>
       <CTABand {...HOME_CTA} />
     </>
   );

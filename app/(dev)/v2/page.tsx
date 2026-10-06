@@ -23,6 +23,17 @@ import { CacheVisual, ChannelsVisual, GrowthVisual, RestoreVisual } from "@/comp
 import { MigrationVisual, ProtectionVisual, SupportChannelsVisual, WordPressSettingsVisual } from "@/components/sections/visuals/split";
 import ProductHero from "@/components/sections/ProductHero";
 import SplitHero from "@/components/sections/SplitHero";
+import ArticleToc from "@/components/blog/ArticleToc";
+import AuthorBox from "@/components/blog/AuthorBox";
+import CategoryFilter from "@/components/blog/CategoryFilter";
+import Pagination from "@/components/blog/Pagination";
+import MigrationForm from "@/components/forms/MigrationForm";
+import DomainSearch from "@/components/sections/DomainSearch";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
+import EmptyState from "@/components/ui/EmptyState";
+import DialogDemo from "./_components/DialogDemo";
+import { Newspaper } from "lucide-react";
+
 import CenteredHero from "@/components/sections/CenteredHero";
 import { HOME_HERO, WORDPRESS_HERO, ABOUT_HERO } from "@/content/heroes";
 import CaseStudy from "@/components/sections/CaseStudy";
@@ -626,6 +637,52 @@ export default function V2ShowcasePage() {
             verify={["WhatsApp number (hidden until set)", "Live chat: is a widget installed and staffed?", "Ticket system exists"]}
           >
             <SupportChannels title="Reach the team" headingLevel="h3" showSamples className="!py-0" />
+          </ShowcaseSection>
+
+          {/* ── Batch G ── */}
+          <ShowcaseSection id="breadcrumbs" title="Breadcrumbs" status="built" notes="Visible trail built from the same source as the BreadcrumbList JSON-LD. Current page is plain text with aria-current. Used on service, legal, blog, form and region pages.">
+            <Breadcrumbs path="/hosting/uk" />
+          </ShowcaseSection>
+
+          <ShowcaseSection id="empty-state" title="EmptyState" status="built" notes="What is missing, why, and one next step. Replaces the inline empty messages on the blog.">
+            <EmptyState icon={Newspaper} title="Articles are on the way" body="We are preparing our first guides. In the meantime, ask us anything about your site." action={{ label: "Talk to our team", href: "/contact" }} />
+          </ShowcaseSection>
+
+          <ShowcaseSection id="dialog" title="Dialog" status="built" notes="Modal on the native dialog element: focus trap, Escape, inert background and focus return come from the browser. CSS-only fade, disabled under prefers-reduced-motion. Tabs, tooltip and toast are not built: nothing needs them yet.">
+            <DialogDemo />
+          </ShowcaseSection>
+
+          <ShowcaseSection id="cookie-consent" title="Cookie consent" status="needs-verification" notes="Live on every page: Reject all and Accept all are the same size and style, a preferences dialog (loaded on demand), and a footer Cookie settings link. Decisions are stored in a first-party cookie and logged server-side without IP or user agent. Clear the dh_consent cookie to see the banner again." verify={["Privacy policy and a cookie policy must list dh_consent, the theme setting and Cloudflare Turnstile","Consent log retention period (the log is append-only today)"]}>
+            <p className="text-sm text-muted-foreground">Clear the <code>dh_consent</code> cookie and reload to see the banner. Optional scripts (GA4) load only after analytics consent; Plausible is cookieless.</p>
+          </ShowcaseSection>
+
+          <ShowcaseSection id="sticky-cta" title="Sticky mobile CTA" status="built" notes="Phones only. Appears after the first screen, hides near the footer and on form pages. CSS transform transition, none under reduced motion. Resize the window below 768px and scroll to see it.">
+            <p className="text-sm text-muted-foreground">Rendered by the marketing layout.</p>
+          </ShowcaseSection>
+
+          <ShowcaseSection id="legal-page" title="LegalPage" status="needs-verification" notes="Shared layout for policy pages: breadcrumbs, one H1, spelled-out last-updated date, sticky on-this-page list and the .article body. Applied to all six legal pages. Their text was not changed." verify={["Legal pages still carry unverified commitments (SLA percentages, refund period, mailboxes, DPO) and 2025 dates"]}>
+            <p className="text-sm text-muted-foreground">
+              See <Link href="/terms" className="text-link underline">/terms</Link>.
+            </p>
+          </ShowcaseSection>
+
+          <ShowcaseSection id="blog-set" title="Blog set" status="needs-verification" notes="Article layout with sticky table of contents, author box (only with a real bio), related posts, category filter and pagination, all server-rendered links. Content comes from headless WordPress (WORDPRESS_API_URL), sanitized with an allow-list. Falls back to the legacy MongoDB posts while WordPress is not configured." verify={["WordPress site URL, author bios and categories (none exist yet)"]}>
+            <div className="space-y-8">
+              <CategoryFilter categories={[{ name: "Performance", slug: "performance", count: 8 }, { name: "Security", slug: "security", count: 4 }]} active="performance" />
+              <div className="max-w-xs">
+                <ArticleToc items={[{ id: "a", text: "First section", level: 2 }, { id: "b", text: "A subsection", level: 3 }, { id: "c", text: "Second section", level: 2 }]} />
+              </div>
+              <AuthorBox author={{ name: "Sample Author", bio: "Sample bio. Shown only when the CMS has a real one.", avatar: null }} />
+              <Pagination page={2} totalPages={5} basePath="/blog" />
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection id="form-wizard" title="Multi-step forms" status="needs-verification" notes="Migration and consultation forms: per-step Zod validation shared with the server, focus moves to the step heading, answers survive a reload (this tab only), honeypot, timing check and Cloudflare Turnstile when keys are set. Stored in MongoDB with a retention date and emailed through Amazon SES when configured." verify={["Retention period for stored requests (default 730 days)","SES sender identity and recipient addresses","Turnstile site and secret keys"]}>
+            <MigrationForm />
+          </ShowcaseSection>
+
+          <ShowcaseSection id="domain-search" title="Domain search" status="needs-work" notes="UI and /api/domains/search are built on the WHMCS DomainWhois action. Off until FEATURES.domainSearch is true and WHMCS credentials are set. Shows availability only; registering goes through the contact form until checkout exists.">
+            <DomainSearch />
           </ShowcaseSection>
 
           {/* ── JsonLd ── */}

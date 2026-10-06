@@ -14,7 +14,8 @@
     "qa:links": "tsx scripts/qa/links.ts",
     "qa:jsonld": "tsx scripts/qa/jsonld.ts",
     "qa:entities": "tsx scripts/qa/entities.ts",
-    "qa": "npm run check:contrast && npm run qa:axe && npm run qa:links && npm run qa:jsonld && npm run qa:entities"
+    "qa": "npm run check:contrast && npm run qa:axe && npm run qa:links && npm run qa:jsonld && npm run qa:entities",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.1146.0",
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

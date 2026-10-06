@@ -12,7 +12,7 @@ const stripTags = (s: string) => sanitizeHtml(s, { allowedTags: [], allowedAttri
 export function prepareArticle(raw: string): { html: string; toc: TocItem[] } {
   const clean = sanitizeHtml(raw, {
     allowedTags: ["h2", "h3", "h4", "p", "br", "hr", "a", "ul", "ol", "li", "strong", "em", "b", "i", "code", "pre", "blockquote", "img", "figure", "figcaption", "table", "thead", "tbody", "tr", "th", "td", "sup", "sub"],
-    allowedAttributes: { a: ["href", "title"], img: ["src", "alt", "width", "height", "title"], th: ["scope"] },
+    allowedAttributes: { a: ["href", "title", "rel"], img: ["src", "alt", "width", "height", "title"], th: ["scope"] },
     allowedSchemes: ["https", "mailto"],
     allowedSchemesByTag: { img: ["https"] },
     transformTags: {

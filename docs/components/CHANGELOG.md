@@ -42,3 +42,17 @@ Branch `polish/design-system`. Each batch is one commit.
 - Fixed: soft 404s (root `Suspense` removed; dev routes return a real 404), contact form that discarded messages (now stored in MongoDB with a honeypot and rate limit), dead `/login` link (flagged), dead DPA PDF link, guessed `sameAs` social URLs in Organization schema.
 - Competitor comparison pages (`/vs/*`) gated off (unverified claims); regional pages made claim-free.
 - QA scripts: `npm run qa` (contrast, axe, links, JSON-LD, raw entities).
+
+## Batch G: launch features
+
+- **Primitives:** `Breadcrumbs` (shares its source with the JSON-LD), `EmptyState`, `Dialog` (native `<dialog>`), `Skeleton` loading blocks, `global-error.tsx`.
+- **Layouts:** `LegalPage` (breadcrumbs, last-updated date, on-this-page list) applied to all six policy pages; `StickyMobileCTA` (phones only, CSS transition, reduced-motion safe).
+- **Consent and analytics:** `CookieConsent` (Reject all and Accept all identical; preferences dialog loaded on demand), `CookieSettingsButton` in the footer, `/api/consent` log, Plausible (cookieless) plus GA4 only after analytics consent. Env: `NEXT_PUBLIC_PLAUSIBLE_DOMAIN`, `NEXT_PUBLIC_GA_ID`.
+- **Forms:** `FormWizard` with `MigrationForm` and `ConsultationForm` at `/migration` and `/consultation`; Zod schemas in `lib/forms/schemas.ts`; honeypot, timing check, in-memory rate limit and Cloudflare Turnstile (`NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`); stored with a TTL (`FORM_RETENTION_DAYS`, default 730); team email through Amazon SES (`AWS_REGION`, `SES_FROM`, `SES_TO`). The contact form uses the same guards.
+- **Blog:** source switches on `WORDPRESS_API_URL` (headless WordPress REST) and falls back to the legacy MongoDB posts. HTML is sanitized with an allow-list (`sanitize-html`). New: `ArticleLayout`, `ArticleToc`, `AuthorBox` (only with a real bio), related posts, `CategoryFilter`, `Pagination`.
+- **Domains:** `DomainSearch` and `/api/domains/search` on the WHMCS `DomainWhois` action, behind `FEATURES.domainSearch` (off).
+- **Tests and CI:** Playwright e2e (`npm run test:e2e`, 18 tests: consent, forms, blog with a WordPress mock, keyboard, 404s), `.github/workflows/ci.yml` (types, lint, contrast, build, e2e, axe, links, JSON-LD, entities) and `lighthouserc.json` budgets.
+
+Not built (nothing needs them yet): tabs, tooltip, toast, floating WhatsApp button (needs a verified number), locale routing (`/[locale]`).
+
+Known trade-off: a `loading.tsx` file wraps the whole route segment in Suspense, which turns `notFound()` into a 200 response. The blog therefore uses an in-page Suspense for its list and has no `loading.tsx`.

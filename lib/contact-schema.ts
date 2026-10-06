@@ -8,7 +8,7 @@ export const contactSchema = z.object({
   message: z.string().trim().min(10, "Write at least 10 characters so we can help.").max(5000, "Keep your message under 5,000 characters."),
   plan: z.string().trim().max(40).optional(),
   /** Honeypot: real visitors never fill this in. */
-  website: z.string().max(0).optional(),
+  website: z.string().max(200).optional(),
   startedAt: z.coerce.number().int().positive().optional(),
   turnstileToken: z.string().max(4096).optional(),
 });

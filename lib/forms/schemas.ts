@@ -10,7 +10,7 @@ const base = {
   company: optional(160),
   consent: z.literal("on", { message: "Tick the box so we can contact you about this request." }),
   /** Honeypot: real visitors never fill this in. */
-  website: z.string().max(0).optional(),
+  website: z.string().max(200).optional(),
   /** Epoch ms when the form was first shown. A submit under ~3 seconds is treated as a bot. */
   startedAt: z.coerce.number().int().positive(),
   turnstileToken: z.string().max(4096).optional(),
