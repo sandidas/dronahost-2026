@@ -22,7 +22,10 @@ export default async function RootDocument({ locale, children }: { locale: Local
           <a href="#main-content" className="skip-link">
             {t("skipToContent")}
           </a>
-          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          {/* Dark is the fallback (server-rendered `.dark`, no-JS, unknown preference). With enableSystem, defaultTheme must be
+            "system" for a light-preferring system to get light; next-themes only reads the system when the theme is "system".
+            The toggle stores an explicit choice, which then wins. The script runs before first paint, so there is no flash. */}
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}
             <CookieConsent />
             <RevealObserver />
