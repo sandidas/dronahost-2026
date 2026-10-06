@@ -32,9 +32,13 @@ Copy never contains a number, guarantee, SLA, location or certification that is 
 `data/pricing.json`; these rules must never contain a real price.
 
 **Terms-page rule:** a verified claim must link to the page where its terms are published (refund policy, terms, SLA).
-Each claim in `claims.ts` carries a `termsPage` path, and `claimsMissingTermsPage()` lists verified claims without one.
+A claim **renders only when `status` is `"verified"` AND its `termsPage` is a published, reviewed route**
+(`termsPageStatus: "published"`; the derived `verified` flag means exactly this). Each claim in `claims.ts` carries a
+`termsPage` path and a `termsPageStatus`. `claimsMissingTermsPage()` and `claimsWithDraftTermsPage()` list what blocks each
+claim, and `claimHiddenReason()` says why one is hidden. Measured numbers (`kind: "stat"`) render in `StatsBar` with
+count-up; policy and feature claims (`kind: "assurance"`) render in the static `AssuranceStrip` with a link to their terms page.
 
-Status on 2026-10-06 (owner-confirmed the same day; terms pages to be linked):
+Status on 2026-10-06 (owner-confirmed the same day). **None of these renders today**, because no terms page is published:
 
 | Verified claim | `termsPage` | Gap |
 |---|---|---|

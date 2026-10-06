@@ -20,9 +20,10 @@ open decision affects them; do not choose for the owner.
 - **Decision #2 detail:** the official logo SVG (`public/logo/dronaHost-logo.svg`) contains three near-identical orange
   fills (`#FE5403`, `#FE5404`, `#FE5504`). `tokens.css` currently uses `#fe5504`. Pick one value when `tokens.css` is next
   touched; the rules intentionally state no hex.
-- **Decision #3 detail:** the rules now say dark is the default and the first-visit system preference is respected. The
-  current code sets `defaultTheme="dark"` with `enableSystem={false}`, so a visitor whose system prefers light still gets
-  dark. Aligning the code is a separate change.
+- **Decision #3 detail:** implemented. `ThemeProvider` uses `defaultTheme="system"` with `enableSystem` (next-themes reads the
+  system only when the theme is "system", so `defaultTheme="dark"` would ignore it). The server renders `.dark`, which is
+  the fallback with no JavaScript. A system that prefers light gets light, and the toggle stores an explicit choice that wins.
+  `tests/e2e/theme.spec.ts` covers it, including a no-flash check.
 - **Decision #8 detail:** locale routing for `en-gb` and `en-ae` exists in code behind `FEATURES.localeVariants`, which
   stays off. Only `en-us` is live.
 - **Claims confirmed 2026-10-06:** 30-day money-back guarantee, 24/7 support, free migration, renewal price equals signup
