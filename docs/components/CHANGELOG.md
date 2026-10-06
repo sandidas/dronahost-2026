@@ -114,3 +114,12 @@ Not localized yet: page copy (`content/*.ts`), JSON-LD URLs (they point at the d
 - `npm run check:pages` validates `content/pages/*.json` and fails on layout-signature collisions. `tests/fixtures/home.page.json` is the home spec from the design doc; `tests/e2e/content-system.spec.ts` covers schemas, resolvers, gating and signatures.
 - `ResponsibilitySplit` now needs at least two items per column (a single bullet read as an afterthought); the registry gates items with the resolve context and passes plain items on.
 - Dev preview `/v2/page-system-preview` (modes `today` and `all`). The home page is still not built and no existing page changed.
+
+## Home page Phase 3: `/` built from `content/pages/home.json`
+- `app/[locale]/(marketing)/page.tsx` validates the spec at build time and renders it through the section registry. Metadata comes from the spec; structured data is Organization and WebSite (no SearchAction).
+- Hero: the lead and the three ticks depend on the capability claims (servers, backups, migration). Until they are confirmed, a neutral fallback lead shows and no ticks. A hero accent phrase is supported in the schema.
+- Because nothing is verified yet, the page today is the hero, the support card, the FAQ (three questions) and the closing CTA. Router, assurance strip, answer, responsibility split, moving, platform, plans, proof and policies appear as their claims are verified and their terms pages published, with no code change.
+- `npm run lint:content` (banned phrases, unclaimed numbers, reading level, links, WhatsApp or live chat mentions while neither exists) joins `check:pages` in CI.
+- A single support channel now shows as one centred card instead of a full-width bar.
+- Home e2e: one h1, only confirmed content, no empty sections, FAQ answers in the HTML without JavaScript, structured data and metadata.
+

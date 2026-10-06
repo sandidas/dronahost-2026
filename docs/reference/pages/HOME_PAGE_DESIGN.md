@@ -1,6 +1,6 @@
 # DronaHost home page: research, concept and build spec
 
-Status: draft for owner review. Nothing here is built. Components marked NEW must pass /v2 review first.
+Status: Phases 1 to 3 built (PathRouter, ResponsibilitySplit, AnswerBlock, the page system, and `/` from `content/pages/home.json`). Sections whose claims are not yet verified and published stay hidden; see `docs/content-system.md`. Copy in `home.json` differs from this draft where an unconfirmed capability had to be gated.
 Rules that apply: `docs/rules/*` (updated), `content/claims.ts` (claim gating), `POLISH_BRIEF.md`, `MOTION_AND_LUXURY_BRIEF.md`.
 
 ---

@@ -1,7 +1,7 @@
 # Page system (Phase 2): schemas, resolvers, registry
 
 Pages are described as JSON and rendered from the same design-system components. JSON holds content and structure, never
-layout logic. Nothing here builds a real route yet: the home page is Phase 3 and `content/pages/` does not exist yet.
+layout logic. The home page (`/`) is the first page built this way, from `content/pages/home.json`.
 
 ```
 lib/content/
@@ -18,7 +18,8 @@ lib/content/
   published-pages.ts     which policy pages are reviewed and published (empty today)
   reviews.ts             verified customer reviews (empty today)
 scripts/validate-pages.ts   npm run check:pages: validates content/pages/*.json and layout signatures
-tests/fixtures/home.page.json   the home page spec from docs/reference/pages/HOME_PAGE_DESIGN.md
+content/pages/home.json   the home page spec (source of the / route), from docs/reference/pages/HOME_PAGE_DESIGN.md
+lib/content/lint.ts, scripts/lint-content.ts   npm run lint:content
 ```
 
 ## Rules the schemas enforce
@@ -41,6 +42,13 @@ tests/fixtures/home.page.json   the home page spec from docs/reference/pages/HOM
 
 A section that fails its conditions is dropped before rendering, and a renderer that has nothing to show returns null, so a
 page never has an empty gap. Everything a page may depend on is looked up through one `ResolveContext`, which tests can replace.
+
+## Content lint
+`npm run lint:content` fails on: banned phrases and CTA labels, exclamation marks, raw HTML, numbers in copy that should come from
+`claims.ts` or `pricing.json` (digits with a unit, currency amounts, "24/7"), sentences over 28 words, a reading grade above 11,
+fewer than three internal links, claim refs missing from `claims.ts`, duplicate titles or descriptions across pages, and any
+mention of WhatsApp or live chat while `content/company.ts` has neither. It also prints which referenced claims are not rendering.
+CI runs `check:pages` and `lint:content` in the static job.
 
 ## Layout signature
 A page's signature is its hero as `Type:variant` plus the next four section types. Two pages with the same signature fail

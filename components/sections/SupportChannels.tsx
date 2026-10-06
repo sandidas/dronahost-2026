@@ -60,7 +60,7 @@ export default function SupportChannels({ eyebrow, title, description, showSampl
     <section aria-labelledby={title ? headingId : undefined} className={cn("section-y", className)}>
       <div className="container-site">
         {title && <SectionHeader id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} />}
-        <ul className={cn("grid gap-4", channels.length > 1 && "sm:grid-cols-2", channels.length > 2 && "lg:grid-cols-3", title && "mt-12 sm:mt-14")}>
+        <ul className={cn("grid gap-4", channels.length === 1 && "mx-auto max-w-2xl", channels.length > 1 && "sm:grid-cols-2", channels.length > 2 && "lg:grid-cols-3", title && "mt-12 sm:mt-14")}>
           {channels.map((c, i) => (
             <li key={c.id} className="surface flex flex-col p-6" {...reveal(i)}>
               <span aria-hidden="true" className="mb-4 inline-flex size-11 items-center justify-center rounded-xl border border-accent/25 bg-accent/12 text-link">
