@@ -1,6 +1,5 @@
 # DronaHost
 > Managed WordPress, cloud and VPS hosting, plus web design and SEO, for businesses in the United States, United Kingdom, United Arab Emirates and Europe.
-> Money-back guarantee: 30-day. Support: 24/7. Site migration: Free. At renewal: Same price.
 
 ## Hosting products
 
