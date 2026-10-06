@@ -34,7 +34,6 @@ import EmptyState from "@/components/ui/EmptyState";
 import DialogDemo from "./_components/DialogDemo";
 import { TabsDemo, ToastDemo, TooltipDemo } from "./_components/OverlayDemos";
 import { CardGridSkeleton, TextSkeleton } from "@/components/ui/LoadingStates";
-import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import { Newspaper } from "lucide-react";
 
 import CenteredHero from "@/components/sections/CenteredHero";
@@ -672,11 +671,6 @@ export default function V2ShowcasePage() {
               <TextSkeleton lines={3} />
               <CardGridSkeleton count={3} />
             </div>
-          </ShowcaseSection>
-
-          <ShowcaseSection id="whatsapp" title="WhatsApp button" status="needs-verification" notes="Floating link, rendered by the marketing layout only when a number is set in content/company.ts. Plain wa.me link, no third-party script. The sample below uses a placeholder number." verify={["A real WhatsApp number answered by the team","Which hours it is monitored"]}>
-            <WhatsAppButton number="+1 555 0100" />
-            <p className="text-sm text-muted-foreground">Placeholder number shown bottom-right on this page only.</p>
           </ShowcaseSection>
 
           <ShowcaseSection id="cookie-consent" title="Cookie consent" status="needs-verification" notes="Live on every page: Reject all and Accept all are the same size and style, a preferences dialog (loaded on demand), and a footer Cookie settings link. Decisions are stored in a first-party cookie and logged server-side without IP or user agent. Clear the dh_consent cookie to see the banner again." verify={["Privacy policy and a cookie policy must list dh_consent, the theme setting and Cloudflare Turnstile","Consent log retention period (the log is append-only today)"]}>
