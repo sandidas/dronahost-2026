@@ -18,6 +18,8 @@ type ResponsibilitySplitProps = {
   keepLabel?: string;
   /** Short transparency line under the columns. */
   note?: string;
+  /** Fewest items each column needs for the section to show. Default 2: a column with a single bullet reads as an afterthought. */
+  minItems?: number;
   /** Showcase only: show gated items too, with a visible label. */
   showSamples?: boolean;
   headingLevel?: "h2" | "h3";
@@ -27,7 +29,7 @@ type ResponsibilitySplitProps = {
 /**
  * "What we look after, and what stays with you." Removes the "what am I buying" confusion with two plain lists side by
  * side. Bespoke to the home page. Items tied to a capability `claim` are left out until that claim renders, and if either
- * column ends up empty the section is omitted: half a promise is worse than none.
+ * column ends up with fewer than `minItems` (default 2) the section is omitted: half a promise is worse than none.
  */
 export default function ResponsibilitySplit({
   eyebrow,
@@ -38,6 +40,7 @@ export default function ResponsibilitySplit({
   lookAfterLabel = "We look after",
   keepLabel = "You keep",
   note,
+  minItems = 2,
   showSamples = false,
   headingLevel = "h2",
   className,
@@ -46,7 +49,7 @@ export default function ResponsibilitySplit({
   const Column = headingLevel === "h2" ? "h3" : "h4";
   const left = visibleItems(weLookAfter, { showAll: showSamples });
   const right = visibleItems(youKeep, { showAll: showSamples });
-  if (left.length === 0 || right.length === 0) return null;
+  if (left.length < minItems || right.length < minItems) return null;
 
   return (
     <section aria-labelledby={headingId} className={cn("section-y", className)}>

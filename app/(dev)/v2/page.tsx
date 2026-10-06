@@ -638,7 +638,7 @@ export default function V2ShowcasePage() {
             id="responsibility-split"
             title="ResponsibilitySplit (bespoke)"
             status="needs-verification"
-            notes="Home page only. Two plain lists: what we look after, and what stays with the customer. Items tied to a capability claim are left out until it renders; if either column is empty the section is omitted."
+            notes="Home page only. Two plain lists: what we look after, and what stays with the customer. Items tied to a capability claim are left out until it renders; if either column has fewer than two items the section is omitted."
             verify={["We look after the servers (managed-server-care)", "Automatic backups (backups)", "Migration process, including that the old site stays live until you switch (migration-process)"]}
           >
             <div className="space-y-12">
@@ -661,7 +661,7 @@ export default function V2ShowcasePage() {
                 <ResponsibilitySplit title="What we look after, and what stays with you" weLookAfter={SAMPLE_SPLIT_UNEVEN_LEFT} youKeep={SAMPLE_SPLIT_UNEVEN_RIGHT} headingLevel="h3" className="!py-0" />
               </div>
               <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">As it ships today (claims not verified): the left column keeps only items with no claim</p>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">As it ships today (claims not verified): the left column keeps one item, below the minimum of two, so the section is omitted and nothing renders below this line</p>
                 <ResponsibilitySplit title="What we look after, and what stays with you" weLookAfter={SAMPLE_SPLIT_LOOK_AFTER} youKeep={SAMPLE_SPLIT_KEEP} headingLevel="h3" className="!py-0" />
               </div>
             </div>
