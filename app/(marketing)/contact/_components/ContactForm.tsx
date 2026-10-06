@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useId, useState } from "react";
+import { useCallback, useId, useRef, useState } from "react";
+import Turnstile from "@/components/forms/Turnstile";
+import { track } from "@/lib/analytics/track";
 import Button from "@/components/ui/Button";
 import { contactSchema } from "@/lib/contact-schema";
 import { cn } from "@/utils/cn";
@@ -23,6 +25,9 @@ export default function ContactForm({ defaultPlan }: { defaultPlan?: string }) {
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>("idle");
   const [serverError, setServerError] = useState("");
+  const startedAt = useRef(0);
+  const [token, setToken] = useState("");
+  const onToken = useCallback((t: string) => setToken(t), []);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -44,11 +49,12 @@ export default function ContactForm({ defaultPlan }: { defaultPlan?: string }) {
     setErrors({});
     setStatus("loading");
     try {
-      const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(parsed.data) });
+      const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...parsed.data, startedAt: startedAt.current || Date.now() - 10_000, turnstileToken: token || undefined }) });
       if (!res.ok) {
         const body = (await res.json().catch(() => ({}))) as { error?: string };
         throw new Error(body.error ?? "Something went wrong. Please try again.");
       }
+      track("contact_submit");
       setStatus("success");
       form.reset();
     } catch (err) {
@@ -92,7 +98,7 @@ export default function ContactForm({ defaultPlan }: { defaultPlan?: string }) {
   );
 
   return (
-    <form onSubmit={onSubmit} noValidate className="space-y-5">
+    <form onSubmit={onSubmit} onFocus={() => { startedAt.current ||= Date.now(); }} noValidate className="space-y-5">
       {field("name", "Full name", { type: "text", autoComplete: "name", placeholder: "Jane Smith" })}
       {field("email", "Email address", { type: "email", autoComplete: "email", placeholder: "jane@company.com" })}
       {field("subject", "Subject", { type: "text", placeholder: "How can we help?" })}
@@ -125,6 +131,8 @@ export default function ContactForm({ defaultPlan }: { defaultPlan?: string }) {
           <input type="text" name="website" tabIndex={-1} autoComplete="off" />
         </label>
       </div>
+
+      <Turnstile onToken={onToken} />
 
       <div role="alert" className={cn("text-sm text-danger", status !== "error" && "sr-only")}>
         {status === "error" ? serverError : ""}

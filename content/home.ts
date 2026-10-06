@@ -121,7 +121,7 @@ export const HOME_SPLITS = [
       "Your current host stays live until you switch",
     ],
     cta: [
-      { label: "Start a migration", href: "/contact" },
+      { label: "Start a migration", href: "/migration" },
       { label: "View plans", href: "/pricing" },
     ],
   },

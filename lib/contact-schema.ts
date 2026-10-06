@@ -9,6 +9,8 @@ export const contactSchema = z.object({
   plan: z.string().trim().max(40).optional(),
   /** Honeypot: real visitors never fill this in. */
   website: z.string().max(0).optional(),
+  startedAt: z.coerce.number().int().positive().optional(),
+  turnstileToken: z.string().max(4096).optional(),
 });
 
 export type ContactInput = z.infer<typeof contactSchema>;

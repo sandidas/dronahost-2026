@@ -16,6 +16,8 @@ const STATIC_PAGES: MetadataRoute.Sitemap = [
   { url: `${SITE_URL}/growth-services`, priority: 0.7, changeFrequency: "monthly" },
   { url: `${SITE_URL}/about`, priority: 0.7, changeFrequency: "monthly" },
   { url: `${SITE_URL}/contact`, priority: 0.7, changeFrequency: "yearly" },
+  { url: `${SITE_URL}/migration`, priority: 0.6, changeFrequency: "yearly" },
+  { url: `${SITE_URL}/consultation`, priority: 0.6, changeFrequency: "yearly" },
   { url: `${SITE_URL}/blog`, priority: 0.7, changeFrequency: "daily" },
   // Regional
   { url: `${SITE_URL}/hosting/us`, priority: 0.6, changeFrequency: "monthly" },

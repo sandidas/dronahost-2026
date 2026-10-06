@@ -17,6 +17,7 @@
     "qa": "npm run check:contrast && npm run qa:axe && npm run qa:links && npm run qa:jsonld && npm run qa:entities"
   },
   "dependencies": {
+    "@aws-sdk/client-sesv2": "^3.1146.0",
     "clsx": "^2.1.1",
     "lucide-react": "^1.8.0",
     "mongoose": "^9.4.1",
