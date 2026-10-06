@@ -72,7 +72,7 @@ Not localized yet: page copy (`content/*.ts`), JSON-LD URLs (they point at the d
 
 ## Batch G completion: remaining primitives
 - `Tabs` (ARIA tabs, keyboard, RTL-aware), `Tooltip` (WCAG 1.4.13), `Toast` (`ToastProvider` + `useToast`, not mounted site-wide yet).
-- `WhatsAppButton`: rendered by the marketing layout only when `COMPANY.whatsappNumber` is set (currently null, so hidden).
+- `WhatsAppButton` is built but parked: not mounted in any layout and not in the showcase (owner decision: no WhatsApp for now). To enable it, set `COMPANY.whatsappNumber` and add it back to the marketing layout.
 - Branded 500: shared `ErrorState`, with a `(marketing)/error.tsx` boundary that keeps header and footer.
 - `TextSkeleton` / `CardGridSkeleton` for in-page Suspense fallbacks (no route-level `loading.tsx`).
 - Showcase entries in `/v2`.
