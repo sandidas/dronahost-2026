@@ -1,5 +1,4 @@
-import Section from "@/components/ui/Section";
-import HeadLineText from "@/components/ui/HeadLineText";
+import LegalPage from "@/components/legal/LegalPage";
 import JsonLd from "@/components/sections/JsonLd";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -15,22 +14,9 @@ export const metadata = buildMetadata({
 
 export default function TermsPage() {
   return (
-    <Section as="article" size="sm" padding="lg">
+    <>
       <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs("/terms"))]} />
-
-      <header className="mb-8">
-        <HeadLineText as="h1" fontSize="fiveXl" fontWeight="bold" align="left">
-          Terms of Service
-        </HeadLineText>
-        <time
-          dateTime="2025-01-01"
-          className="mt-2 block text-sm text-muted-foreground"
-        >
-          Last updated: January 1, 2025
-        </time>
-      </header>
-
-      <div className="article">
+      <LegalPage title="Terms of Service" path="/terms" updated="2025-01-01">
         <p>
           These Terms of Service (&quot;Terms&quot;) govern your access to and
           use of DronaHost services. By using our services, you agree to these
@@ -90,9 +76,7 @@ export default function TermsPage() {
           These Terms are governed by the laws of England and Wales for UK/EU
           customers, and the laws of Delaware, USA for US customers.
         </p>
-      </div>
-
-      <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
+        <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
         <p>
           Related policies:{" "}
           <Link href="/privacy" className="text-link underline underline-offset-4">
@@ -108,6 +92,7 @@ export default function TermsPage() {
           </Link>
         </p>
       </footer>
-    </Section>
+      </LegalPage>
+    </>
   );
 }

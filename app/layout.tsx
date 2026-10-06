@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist_Mono, Manrope, Sora } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./providers";
+import Analytics from "@/components/analytics/Analytics";
+import CookieConsent from "@/components/consent/CookieConsent";
 import { startingPriceLabel } from "@/lib/pricing";
 
 /* ───────────────── FONTS ───────────────── */
@@ -61,7 +63,9 @@ export default function RootLayout({
         </a>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
           {children}
+          <CookieConsent />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );

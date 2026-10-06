@@ -1,4 +1,5 @@
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
+import StickyMobileCTA from "@/components/layout/StickyMobileCTA";
 import Footer from "@/layouts/footer/footer";
 import Header from "@/layouts/header/header";
 
@@ -15,6 +16,7 @@ export default function ClientEndLayout({
         {children}
       </main>
       <Footer />
+      <StickyMobileCTA />
     </>
   );
 }

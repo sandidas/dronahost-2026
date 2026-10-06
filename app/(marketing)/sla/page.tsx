@@ -1,5 +1,4 @@
-import Section from "@/components/ui/Section";
-import HeadLineText from "@/components/ui/HeadLineText";
+import LegalPage from "@/components/legal/LegalPage";
 import JsonLd from "@/components/sections/JsonLd";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -15,22 +14,9 @@ export const metadata = buildMetadata({
 
 export default function SlaPage() {
   return (
-    <Section as="article" size="sm" padding="lg">
+    <>
       <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs("/sla"))]} />
-
-      <header className="mb-8">
-        <HeadLineText as="h1" fontSize="fiveXl" fontWeight="bold" align="left">
-          Service Level Agreement
-        </HeadLineText>
-        <time
-          dateTime="2025-01-01"
-          className="mt-2 block text-sm text-muted-foreground"
-        >
-          Last updated: January 1, 2025
-        </time>
-      </header>
-
-      <div className="article">
+      <LegalPage title="Service Level Agreement" path="/sla" updated="2025-01-01">
         <p>
           This Service Level Agreement (&quot;SLA&quot;) describes the uptime
           commitments DronaHost makes to customers and the remedies available
@@ -98,9 +84,7 @@ export default function SlaPage() {
           announced at least 72 hours in advance via email and our status page
           at status.dronahost.com.
         </p>
-      </div>
-
-      <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
+        <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
         <p>
           Related:{" "}
           <Link href="/terms" className="text-link underline underline-offset-4">
@@ -116,6 +100,7 @@ export default function SlaPage() {
           </Link>
         </p>
       </footer>
-    </Section>
+      </LegalPage>
+    </>
   );
 }

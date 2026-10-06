@@ -1,3 +1,4 @@
+import Reveal from "@/components/ui/Reveal";
 import { cn } from "@/utils/cn";
 
 type SectionHeaderProps = {
@@ -23,12 +24,12 @@ export default function SectionHeader({
 }: SectionHeaderProps) {
   const Heading = headingLevel;
   return (
-    <div className={cn("max-w-3xl", align === "center" && "mx-auto text-center", className)}>
+    <Reveal className={cn("max-w-3xl", align === "center" && "mx-auto text-center", className)}>
       {eyebrow && <p className="t-eyebrow">{eyebrow}</p>}
       <Heading id={id} className={cn("t-h2 text-foreground", eyebrow && "mt-3")}>
         {title}
       </Heading>
       {description && <p className={cn("t-lead mt-4", align === "center" && "mx-auto")}>{description}</p>}
-    </div>
+    </Reveal>
   );
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CookieSettingsButton from "@/components/consent/CookieSettingsButton";
 import Logo from "@/components/ui/Logo";
 import { ACCEPTED_PAYMENT_METHODS } from "@/content/claims";
 import { COMPANY } from "@/content/company";
@@ -75,6 +76,9 @@ export default function Footer() {
             </p>
             {legalLine && <p className="text-xs text-subtle-foreground">{legalLine}</p>}
             {COMPANY.address && <p className="text-xs text-subtle-foreground">{COMPANY.address}</p>}
+            <p>
+              <CookieSettingsButton className="min-h-9 text-sm underline underline-offset-4 hover:text-foreground" />
+            </p>
           </div>
           {payments.length > 0 && (
             <p>

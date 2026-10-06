@@ -2,6 +2,7 @@ import CenteredHero from "@/components/sections/CenteredHero";
 import CTABand from "@/components/sections/CTABand";
 import FAQSection from "@/components/sections/FAQSection";
 import FeatureGrid from "@/components/sections/FeatureGrid";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import JsonLd from "@/components/sections/JsonLd";
 import SplitHero from "@/components/sections/SplitHero";
 import { HOME_CTA } from "@/content/home";
@@ -33,6 +34,9 @@ export default function ServicePage({ content, heroVariant = "centered" }: Servi
           faqPageSchema(content.faq),
         ]}
       />
+      <div className="container-site pt-6">
+        <Breadcrumbs path={`/${content.slug}`} />
+      </div>
       <Hero {...content.hero} />
       <FeatureGrid {...content.features} columns={4} />
       <FAQSection eyebrow="FAQ" title={`Questions about ${content.schemaName.toLowerCase()}`} items={content.faq} />

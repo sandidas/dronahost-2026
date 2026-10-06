@@ -19,6 +19,14 @@ const LABEL_MAP: Record<string, string> = {
   "eu": "Europe",
   "uae": "UAE",
   "vs": "Compare",
+  "privacy": "Privacy policy",
+  "terms": "Terms of service",
+  "refund-policy": "Refund policy",
+  "sla": "Service level agreement",
+  "security": "Security",
+  "data-processing": "Data processing",
+  "migration": "Website migration",
+  "consultation": "Book a consultation",
   "experience-growth": "Experience & Growth",
 };
 

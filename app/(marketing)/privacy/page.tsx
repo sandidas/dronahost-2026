@@ -1,5 +1,4 @@
-import Section from "@/components/ui/Section";
-import HeadLineText from "@/components/ui/HeadLineText";
+import LegalPage from "@/components/legal/LegalPage";
 import JsonLd from "@/components/sections/JsonLd";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -15,22 +14,9 @@ export const metadata = buildMetadata({
 
 export default function PrivacyPage() {
   return (
-    <Section as="article" size="sm" padding="lg">
+    <>
       <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs("/privacy"))]} />
-
-      <header className="mb-8">
-        <HeadLineText as="h1" fontSize="fiveXl" fontWeight="bold" align="left">
-          Privacy Policy
-        </HeadLineText>
-        <time
-          dateTime="2025-01-01"
-          className="mt-2 block text-sm text-muted-foreground"
-        >
-          Last updated: January 1, 2025
-        </time>
-      </header>
-
-      <div className="article">
+      <LegalPage title="Privacy Policy" path="/privacy" updated="2025-01-01">
         <p>
           DronaHost (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;) operates
           dronahost.com. This Privacy Policy explains how we collect, use,
@@ -96,9 +82,7 @@ export default function PrivacyPage() {
           privacy@dronahost.com or write to DronaHost, Data Protection Officer,
           [Address].
         </p>
-      </div>
-
-      <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
+        <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
         <p>
           Related policies:{" "}
           <Link href="/terms" className="text-link underline underline-offset-4">
@@ -114,6 +98,7 @@ export default function PrivacyPage() {
           </Link>
         </p>
       </footer>
-    </Section>
+      </LegalPage>
+    </>
   );
 }

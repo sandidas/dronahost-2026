@@ -1,5 +1,4 @@
-import Section from "@/components/ui/Section";
-import HeadLineText from "@/components/ui/HeadLineText";
+import LegalPage from "@/components/legal/LegalPage";
 import JsonLd from "@/components/sections/JsonLd";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -15,22 +14,9 @@ export const metadata = buildMetadata({
 
 export default function SecurityPage() {
   return (
-    <Section as="article" size="sm" padding="lg">
+    <>
       <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs("/security"))]} />
-
-      <header className="mb-8">
-        <HeadLineText as="h1" fontSize="fiveXl" fontWeight="bold" align="left">
-          Security &amp; Data Protection
-        </HeadLineText>
-        <time
-          dateTime="2025-01-01"
-          className="mt-2 block text-sm text-muted-foreground"
-        >
-          Last updated: January 1, 2025
-        </time>
-      </header>
-
-      <div className="article">
+      <LegalPage title="Security &amp; Data Protection" path="/security" updated="2025-01-01">
         <p>
           Security is a core part of DronaHost&apos;s infrastructure. This page
           describes the technical and organizational measures we use to protect
@@ -90,9 +76,7 @@ export default function SecurityPage() {
           issues to security@dronahost.com. We commit to acknowledging reports
           within 48 hours and providing updates on remediation progress.
         </p>
-      </div>
-
-      <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
+        <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
         <p>
           Related:{" "}
           <Link href="/privacy" className="text-link underline underline-offset-4">
@@ -108,6 +92,7 @@ export default function SecurityPage() {
           </Link>
         </p>
       </footer>
-    </Section>
+      </LegalPage>
+    </>
   );
 }

@@ -1,5 +1,4 @@
-import Section from "@/components/ui/Section";
-import HeadLineText from "@/components/ui/HeadLineText";
+import LegalPage from "@/components/legal/LegalPage";
 import JsonLd from "@/components/sections/JsonLd";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -15,22 +14,9 @@ export const metadata = buildMetadata({
 
 export default function RefundPolicyPage() {
   return (
-    <Section as="article" size="sm" padding="lg">
+    <>
       <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs("/refund-policy"))]} />
-
-      <header className="mb-8">
-        <HeadLineText as="h1" fontSize="fiveXl" fontWeight="bold" align="left">
-          30-Day Money-Back Guarantee
-        </HeadLineText>
-        <time
-          dateTime="2025-01-01"
-          className="mt-2 block text-sm text-muted-foreground"
-        >
-          Last updated: January 1, 2025
-        </time>
-      </header>
-
-      <div className="article">
+      <LegalPage title="30-Day Money-Back Guarantee" path="/refund-policy" updated="2025-01-01">
         <p>
           DronaHost offers a 30-day money-back guarantee on eligible hosting
           plans. If you are not satisfied within the first 30 days, we will
@@ -72,9 +58,7 @@ export default function RefundPolicyPage() {
           protection legislation. The 30-day guarantee is in addition to — and
           does not affect — any statutory rights you may have.
         </p>
-      </div>
-
-      <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
+        <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
         <p>
           Related:{" "}
           <Link href="/terms" className="text-link underline underline-offset-4">
@@ -90,6 +74,7 @@ export default function RefundPolicyPage() {
           </Link>
         </p>
       </footer>
-    </Section>
+      </LegalPage>
+    </>
   );
 }

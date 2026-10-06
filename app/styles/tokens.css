@@ -524,3 +524,30 @@ body {
     scroll-behavior: auto;
   }
 }
+
+/* ── Sticky mobile CTA and dialog: CSS-only transitions ── */
+@layer components {
+  .sticky-cta {
+    transform: translateY(100%);
+    transition: transform var(--dur) var(--ease-out);
+  }
+  .sticky-cta[data-shown="true"] {
+    transform: translateY(0);
+  }
+  .dialog[open] {
+    animation: dialog-in var(--dur) var(--ease-out);
+  }
+  @keyframes dialog-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sticky-cta,
+    .dialog[open] {
+      transition: none;
+      animation: none;
+    }
+  }
+}

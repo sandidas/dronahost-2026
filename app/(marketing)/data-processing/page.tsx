@@ -1,5 +1,4 @@
-import Section from "@/components/ui/Section";
-import HeadLineText from "@/components/ui/HeadLineText";
+import LegalPage from "@/components/legal/LegalPage";
 import JsonLd from "@/components/sections/JsonLd";
 import Link from "next/link";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -15,24 +14,9 @@ export const metadata = buildMetadata({
 
 export default function DataProcessingPage() {
   return (
-    <Section as="article" size="sm" padding="lg">
-      <JsonLd
-        schema={[breadcrumbSchema(buildBreadcrumbs("/data-processing"))]}
-      />
-
-      <header className="mb-8">
-        <HeadLineText as="h1" fontSize="fiveXl" fontWeight="bold" align="left">
-          Data Processing Agreement
-        </HeadLineText>
-        <time
-          dateTime="2025-01-01"
-          className="mt-2 block text-sm text-muted-foreground"
-        >
-          Last updated: January 1, 2025
-        </time>
-      </header>
-
-      <div className="article">
+    <>
+      <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs("/data-processing"))]} />
+      <LegalPage title="Data Processing Agreement" path="/data-processing" updated="2025-01-01">
         <p>
           This Data Processing Agreement (&quot;DPA&quot;) forms part of the
           agreement between DronaHost and you (the &quot;Controller&quot;) for
@@ -101,9 +85,7 @@ export default function DataProcessingPage() {
             Request the DPA
           </Link>
         </p>
-      </div>
-
-      <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
+        <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
         <p>
           Related:{" "}
           <Link href="/privacy" className="text-link underline underline-offset-4">
@@ -119,6 +101,7 @@ export default function DataProcessingPage() {
           </Link>
         </p>
       </footer>
-    </Section>
+      </LegalPage>
+    </>
   );
 }
