@@ -44,7 +44,10 @@ import LogoWall from "@/components/sections/LogoWall";
 import NewsletterSignup from "@/components/sections/NewsletterSignup";
 import ProcessTimeline from "@/components/sections/ProcessTimeline";
 import ResourceGrid from "@/components/sections/ResourceGrid";
+import AnswerBlock, { wordCount } from "@/components/sections/AnswerBlock";
 import AssuranceStrip, { SAMPLE_ASSURANCES } from "@/components/sections/AssuranceStrip";
+import PathRouter from "@/components/sections/bespoke/PathRouter";
+import ResponsibilitySplit from "@/components/sections/bespoke/ResponsibilitySplit";
 import StatsBar from "@/components/sections/StatsBar";
 import SupportChannels from "@/components/sections/SupportChannels";
 import Testimonials from "@/components/sections/Testimonials";
@@ -54,7 +57,20 @@ import CodeBlock from "@/components/ui/CodeBlock";
 import { CLAIMS } from "@/content/claims";
 import { HOME_CTA, HOME_FAQ } from "@/content/home";
 import { MIGRATION_STEPS } from "@/content/faqs";
-import { SAMPLE_CASE_STUDY, SAMPLE_CODE, SAMPLE_LOGOS, SAMPLE_POSTS, SAMPLE_TESTIMONIALS } from "@/content/placeholders";
+import {
+  SAMPLE_ANSWER,
+  SAMPLE_CASE_STUDY,
+  SAMPLE_CODE,
+  SAMPLE_LOGOS,
+  SAMPLE_PATHS,
+  SAMPLE_PATHS_LONG,
+  SAMPLE_POSTS,
+  SAMPLE_SPLIT_KEEP,
+  SAMPLE_SPLIT_LOOK_AFTER,
+  SAMPLE_SPLIT_UNEVEN_LEFT,
+  SAMPLE_SPLIT_UNEVEN_RIGHT,
+  SAMPLE_TESTIMONIALS,
+} from "@/content/placeholders";
 import { TRUST_ITEMS } from "@/content/trust";
 import Header from "@/layouts/header/header";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
@@ -591,6 +607,77 @@ export default function V2ShowcasePage() {
             verify={["WhatsApp number (hidden until set)", "Live chat: is a widget installed and staffed?", "Ticket system exists"]}
           >
             <SupportChannels title="Reach the team" headingLevel="h3" showSamples className="!py-0" />
+          </ShowcaseSection>
+
+          {/* ── Home page (Phase 1: new components) ── */}
+          <ShowcaseSection
+            id="path-router"
+            title="PathRouter (bespoke)"
+            status="needs-verification"
+            notes="Home page only. Routes a visitor by situation to a product page: four large cards, each a single link target. A path whose claim is not rendering is left out; with fewer than two paths left the section is omitted. Samples are forced on in the first block."
+            verify={["Website design is sold as described (website-design-service)", "What Business Hosting includes (business-hosting-scope)", "What Managed VPS includes (managed-vps-scope)"]}
+          >
+            <div className="space-y-12">
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Default, samples forced on</p>
+                <PathRouter eyebrow="Start here" title="Where are you starting from?" description="Pick the line that sounds like you and we will point you to the right place." paths={SAMPLE_PATHS} showSamples headingLevel="h3" className="!py-0" />
+              </div>
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Edge case: two paths, very long text</p>
+                <PathRouter title="Where are you starting from?" paths={SAMPLE_PATHS_LONG} headingLevel="h3" className="!py-0" />
+              </div>
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">As it ships today (no claim verified): renders nothing below this line</p>
+                <PathRouter title="Where are you starting from?" paths={SAMPLE_PATHS} headingLevel="h3" className="!py-0" />
+                <p className="text-sm text-muted-foreground">Only one path has no claim, so the router is omitted. Nothing is rendered above this sentence.</p>
+              </div>
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="responsibility-split"
+            title="ResponsibilitySplit (bespoke)"
+            status="needs-verification"
+            notes="Home page only. Two plain lists: what we look after, and what stays with the customer. Items tied to a capability claim are left out until it renders; if either column is empty the section is omitted."
+            verify={["We look after the servers (managed-server-care)", "Automatic backups (backups)", "Migration process, including that the old site stays live until you switch (migration-process)"]}
+          >
+            <div className="space-y-12">
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Default, samples forced on</p>
+                <ResponsibilitySplit
+                  eyebrow="Plainly"
+                  title="What we look after, and what stays with you"
+                  description="So you know exactly what you are buying."
+                  weLookAfter={SAMPLE_SPLIT_LOOK_AFTER}
+                  youKeep={SAMPLE_SPLIT_KEEP}
+                  note="Which plan includes which feature is shown on each plan page."
+                  showSamples
+                  headingLevel="h3"
+                  className="!py-0"
+                />
+              </div>
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Edge case: uneven columns, longer text</p>
+                <ResponsibilitySplit title="What we look after, and what stays with you" weLookAfter={SAMPLE_SPLIT_UNEVEN_LEFT} youKeep={SAMPLE_SPLIT_UNEVEN_RIGHT} headingLevel="h3" className="!py-0" />
+              </div>
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">As it ships today (claims not verified): the left column keeps only items with no claim</p>
+                <ResponsibilitySplit title="What we look after, and what stays with you" weLookAfter={SAMPLE_SPLIT_LOOK_AFTER} youKeep={SAMPLE_SPLIT_KEEP} headingLevel="h3" className="!py-0" />
+              </div>
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="answer-block"
+            title="AnswerBlock"
+            status="needs-verification"
+            notes={`Answer-first block: a question as the heading, the direct answer right under it (40 to 80 words, this sample is ${wordCount(SAMPLE_ANSWER.answer)}), then optional detail. Reusable on any page. Omitted when its capability claim is not rendering.`}
+            verify={["Which tasks DronaHost does for managed WordPress hosting (managed-hosting-tasks)"]}
+          >
+            <div className="space-y-12">
+              <AnswerBlock eyebrow="In plain words" title={SAMPLE_ANSWER.title} answer={SAMPLE_ANSWER.answer} detail={SAMPLE_ANSWER.detail} link={{ label: "See WordPress hosting", href: "/wordpress-hosting" }} claim="managed-hosting-tasks" showSamples headingLevel="h3" className="!py-0" />
+              <AnswerBlock title="Is DronaHost the right fit for my site?" answer="DronaHost suits businesses that want managed WordPress hosting with a team to talk to. If you need a very large enterprise platform with custom contracts, ask us first and we will tell you honestly if we are not the right fit." headingLevel="h3" className="!py-0" />
+            </div>
           </ShowcaseSection>
 
           {/* ── Batch G ── */}

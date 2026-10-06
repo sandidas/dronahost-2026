@@ -79,6 +79,14 @@ const categories: Category[] = [
     ],
   },
   {
+    label: "Home page (new)",
+    items: [
+      { id: "path-router", label: "PathRouter" },
+      { id: "responsibility-split", label: "ResponsibilitySplit" },
+      { id: "answer-block", label: "AnswerBlock" },
+    ],
+  },
+  {
     label: "Launch features",
     items: [
       { id: "breadcrumbs", label: "Breadcrumbs" },

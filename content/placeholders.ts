@@ -5,6 +5,8 @@
 // must NEVER ship to a public page. Public pages read verified facts from
 // `content/claims.ts` and prices from `data/pricing.json`.
 // ---------------------------------------------------------------------------
+import type { RouterPath } from "@/components/sections/bespoke/PathRouter";
+import type { SplitItem } from "@/components/sections/bespoke/ResponsibilitySplit";
 import type { LogoItem } from "@/components/sections/LogoWall";
 import type { ResourcePost } from "@/components/sections/ResourceGrid";
 import type { TestimonialItem } from "@/components/sections/Testimonials";
@@ -35,3 +37,55 @@ export const SAMPLE_POSTS: ResourcePost[] = [
 export const SAMPLE_CODE = `# Add this to wp-config.php
 define( 'WP_ENVIRONMENT_TYPE', 'staging' );
 define( 'DISALLOW_FILE_EDIT', true );`;
+
+// Draft home-page copy (docs/reference/pages/HOME_PAGE_DESIGN.md). Capability items carry the claim they depend on; none of
+// those claims is verified, so the live components omit them. The final copy moves to content/pages/home.json.
+export const SAMPLE_PATHS: RouterPath[] = [
+  { title: "I already have a WordPress site", line: "We move it to DronaHost and look after it.", href: "/wordpress-hosting", cta: "See WordPress hosting", icon: "layers" },
+  { title: "I need a website built", line: "We design a new WordPress site, then host it.", href: "/web-design", cta: "See website design", icon: "palette", claim: "website-design-service" },
+  { title: "I need email and hosting for my business", line: "Hosting and professional email together.", href: "/business-hosting", cta: "See business hosting", icon: "mail", claim: "business-hosting-scope" },
+  { title: "I want full control of my server", line: "Managed VPS with root access.", href: "/vps-hosting", cta: "See managed VPS", icon: "server", claim: "managed-vps-scope" },
+];
+
+export const SAMPLE_PATHS_LONG: RouterPath[] = [
+  { title: "I run an online shop that has outgrown the hosting plan it started on and I am not sure what to move to", line: "Tell us how many orders you take and what slows down, and we will say which plan fits, or honestly that you need something else entirely.", href: "/wordpress-hosting", cta: "See WordPress hosting for busy sites", icon: "trending-up" },
+  { title: "I am an agency with client sites", line: "One team to talk to for all of them.", href: "/contact", cta: "Talk to our team", icon: "users" },
+];
+
+export const SAMPLE_SPLIT_LOOK_AFTER: SplitItem[] = [
+  { text: "The servers your site runs on", claim: "managed-server-care" },
+  { text: "Backups of your site", claim: "backups" },
+  { text: "Moving your site across", claim: "migration-process" },
+  { text: "Answering when something goes wrong" },
+];
+
+export const SAMPLE_SPLIT_KEEP: SplitItem[] = [
+  { text: "Your content, products and pages" },
+  { text: "Which plugins and themes you choose" },
+  { text: "Your domain and your accounts" },
+  { text: "Your business decisions" },
+];
+
+export const SAMPLE_SPLIT_UNEVEN_LEFT: SplitItem[] = [
+  { text: "The servers your site runs on, including keeping the software they depend on up to date" },
+  { text: "Backups of your site, so a bad update can be rolled back" },
+  { text: "Moving your site across from your current host" },
+  { text: "Answering when something goes wrong, in plain words" },
+  { text: "Telling you what we did and what you need to do next" },
+];
+
+export const SAMPLE_SPLIT_UNEVEN_RIGHT: SplitItem[] = [
+  { text: "Your content, products and pages" },
+  { text: "Which plugins and themes you choose" },
+  { text: "Your business decisions" },
+];
+
+export const SAMPLE_ANSWER = {
+  title: "What is managed WordPress hosting?",
+  answer:
+    "Managed WordPress hosting means your host looks after the technical work behind your website: the servers, backups, security and updates. You keep control of your content and your business. It suits owners who want a reliable site without learning server administration.",
+  detail: [
+    "In plain terms, you log in to WordPress as usual and write, sell and publish. The work that keeps the site online, safe and recoverable is done for you.",
+    "If something does go wrong, you talk to the team that runs the servers, not to a help article.",
+  ],
+};
