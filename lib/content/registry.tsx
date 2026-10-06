@@ -41,8 +41,9 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
     render: ({ content: c }, ctx) => (
       <ProductHero
         eyebrow={c.eyebrow}
-        title={c.h1}
-        description={c.lead}
+        title={c.accent && c.h1.endsWith(c.accent) ? c.h1.slice(0, -c.accent.length).trimEnd() : c.h1}
+        titleAccent={c.accent && c.h1.endsWith(c.accent) ? c.accent : undefined}
+        description={c.leadRequiresClaims && !c.leadRequiresClaims.every((r) => resolveClaimRef(r, ctx)) ? (c.leadFallback ?? c.lead) : c.lead}
         primaryCta={c.ctaPrimary}
         secondaryCta={c.ctaSecondary}
         highlights={(c.highlights ?? []).flatMap((h) => {

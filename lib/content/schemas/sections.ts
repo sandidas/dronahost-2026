@@ -16,12 +16,20 @@ export const ProductHero = z.strictObject({
   content: z.strictObject({
     eyebrow,
     h1: z.string().min(20).max(70),
+    /** One phrase at the end of the H1 shown in teal. At most one highlighted phrase per heading. */
+    accent: z.string().min(4).optional(),
     lead: z.string().max(220),
+    /** When set, `lead` shows only if every one of these claims renders; otherwise `leadFallback` shows. */
+    leadRequiresClaims: z.array(ClaimRef).min(1).max(4).optional(),
+    /** Neutral copy that states no unconfirmed capability. Required with `leadRequiresClaims`. */
+    leadFallback: z.string().max(220).optional(),
     ctaPrimary: Cta,
     ctaSecondary: Cta.optional(),
     /** Plain text or `claim:` refs. A claim that does not render is dropped. */
     highlights: z.array(z.union([ClaimRef, z.string().min(4).max(80)])).max(4).optional(),
-  }),
+  })
+    .refine((c) => !c.accent || c.h1.endsWith(c.accent), { message: "accent must be the end of the h1", path: ["accent"] })
+    .refine((c) => !c.leadRequiresClaims || Boolean(c.leadFallback), { message: "leadFallback is required with leadRequiresClaims", path: ["leadFallback"] }),
 });
 
 export const AssuranceStrip = z.strictObject({

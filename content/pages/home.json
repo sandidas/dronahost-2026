@@ -71,7 +71,14 @@
           "claim:free-migration",
           "claim:support-24-7",
           "claim:money-back"
-        ]
+        ],
+        "accent": "without the technical worry",
+        "leadRequiresClaims": [
+          "claim:managed-server-care",
+          "claim:backups",
+          "claim:migration-process"
+        ],
+        "leadFallback": "WordPress hosting with a team you can talk to, so you can get on with your business."
       }
     },
     {
@@ -228,7 +235,7 @@
       "id": "support",
       "type": "SupportChannels",
       "content": {
-        "h2": "Reach a person in the channel you already use",
+        "h2": "Reach a person when you need one",
         "channels": [
           "whatsapp",
           "live-chat",
@@ -268,11 +275,11 @@
         "items": [
           {
             "q": "What is managed WordPress hosting?",
-            "a": "Managed WordPress hosting means the host looks after the technical side of your site, including servers, backups and security, while you keep control of your content."
+            "a": "Managed WordPress hosting means the host looks after the technical side of your site, while you keep control of your content and your business."
           },
           {
             "q": "Do I need technical skills to use DronaHost?",
-            "a": "No. You manage your site in WordPress as usual, and the technical work behind it is handled for you. If you get stuck, you can contact our team by chat, WhatsApp or ticket."
+            "a": "No. You manage your site in WordPress as usual, and the technical work behind it is handled for you. If you get stuck, you can open a support ticket and talk to our team."
           },
           {
             "q": "Can I move my existing WordPress site to DronaHost?",

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import home from "../fixtures/home.page.json";
+import home from "../../content/pages/home.json";
 import { computeLayoutSignature, findSignatureCollisions } from "../../lib/content/layout-signature";
 import { parsePage, visibleSections } from "../../lib/content/page";
 import { fillTemplate, passes, resolveClaimRef, resolveFeatureRef, resolveRequires, type ResolveContext } from "../../lib/content/refs";

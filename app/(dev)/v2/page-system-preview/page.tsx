@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import home from "@/tests/fixtures/home.page.json";
+import home from "@/content/pages/home.json";
 import { parsePage } from "@/lib/content/page";
 import { defaultContext, type ResolveContext } from "@/lib/content/refs";
 import { renderPage, visibleSections } from "@/lib/content/render";
@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: "Page system preview", robots: { inde
 const everything: ResolveContext = { ...defaultContext, claimRenders: () => true, flag: () => true, predicate: () => false };
 
 /**
- * Dev-only. Renders the home page spec (tests/fixtures/home.page.json) through the section registry, so the schema, the
+ * Dev-only. Renders the home page spec (content/pages/home.json) through the section registry, so the schema, the
  * resolvers and every renderer adapter run for real. `?mode=today` shows what would ship now (claims hidden, no gaps);
  * `?mode=all` forces every claim and flag on to check the adapters. This is not the home page.
  */
