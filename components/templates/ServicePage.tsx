@@ -20,10 +20,12 @@ type ServicePageProps = {
   content: ServiceContent;
   /** split = hero with product mockup · centered = text only. Default "centered". */
   heroVariant?: "split" | "centered";
+  /** Extra content between the hero and the features, e.g. the domain search. */
+  afterHero?: React.ReactNode;
 };
 
 /** Standard service page: hero, feature grid, FAQ and CTA, with Service + FAQPage + breadcrumb JSON-LD. */
-export default function ServicePage({ content, heroVariant = "centered" }: ServicePageProps) {
+export default function ServicePage({ content, heroVariant = "centered", afterHero }: ServicePageProps) {
   const Hero = heroVariant === "split" ? SplitHero : CenteredHero;
   return (
     <>
@@ -38,6 +40,7 @@ export default function ServicePage({ content, heroVariant = "centered" }: Servi
         <Breadcrumbs path={`/${content.slug}`} />
       </div>
       <Hero {...content.hero} />
+      {afterHero}
       <FeatureGrid {...content.features} columns={4} />
       <FAQSection eyebrow="FAQ" title={`Questions about ${content.schemaName.toLowerCase()}`} items={content.faq} />
       <CTABand {...HOME_CTA} />

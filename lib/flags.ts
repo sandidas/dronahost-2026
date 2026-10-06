@@ -18,6 +18,8 @@ export const FEATURES = {
   accountArea: false,
   /** Newsletter signup endpoint exists and stores consented addresses. */
   newsletter: false,
+  /** WHMCS domain search. Needs WHMCS_API_URL, WHMCS_API_IDENTIFIER and WHMCS_API_SECRET. */
+  domainSearch: false,
   /** Checkout/signup routes exist. While false, plan CTAs go to /contact. */
   checkout: false,
 } as const;
