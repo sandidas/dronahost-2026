@@ -39,25 +39,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let blogEntries: MetadataRoute.Sitemap = [];
 
   try {
-    if (!process.env.MONGODB_URI) {
-      throw new Error("MONGODB_URI not set — skipping blog entries in sitemap");
-    }
-
-    const { connectToDatabase } = await import("@/lib/mongodb");
-    const { Post } = await import("@/lib/models/post");
-    await connectToDatabase();
-
-    const posts = await Post.find(
-      { status: "published", deletedAt: null },
-      { slug: 1, updatedAt: 1, _id: 0 }
-    )
-      .sort({ updatedAt: -1 })
-      .limit(500)
-      .lean();
-
+    const { listSlugs } = await import("@/lib/blog");
+    const posts = await listSlugs();
     blogEntries = posts.map((p) => ({
-      url: `${SITE_URL}/blog/${p.slug as string}`,
-      lastModified: new Date(p.updatedAt as Date),
+      url: `${SITE_URL}/blog/${p.slug}`,
+      lastModified: new Date(p.modified),
       priority: 0.7,
       changeFrequency: "weekly" as const,
     }));

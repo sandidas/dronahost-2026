@@ -8,7 +8,7 @@ type EmptyStateProps = {
   body: string;
   action?: { label: string; href: string };
   /** Heading level for the title. Default "h2". */
-  headingLevel?: "h2" | "h3";
+  headingLevel?: "h1" | "h2" | "h3";
   className?: string;
 };
 

@@ -1,47 +1,62 @@
+import { Newspaper } from "lucide-react";
+import type { Metadata } from "next";
+import CategoryFilter from "@/components/blog/CategoryFilter";
+import Pagination from "@/components/blog/Pagination";
 import CenteredHero from "@/components/sections/CenteredHero";
 import CTABand from "@/components/sections/CTABand";
 import JsonLd from "@/components/sections/JsonLd";
-import ResourceGrid, { type ResourcePost } from "@/components/sections/ResourceGrid";
+import ResourceGrid from "@/components/sections/ResourceGrid";
+import EmptyState from "@/components/ui/EmptyState";
 import { HOME_CTA } from "@/content/home";
-import { Post } from "@/lib/models/post";
-import { connectToDatabase } from "@/lib/mongodb";
+import { BlogUnavailableError, listCategories, listPosts, type BlogCategory, type BlogPage } from "@/lib/blog";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 import { SITE_URL } from "@/lib/seo/config";
 import { breadcrumbSchema } from "@/lib/seo/jsonld";
 import { buildMetadata } from "@/lib/seo/metadata";
 
-export const revalidate = 3600;
+type SearchParams = Promise<{ page?: string; category?: string }>;
 
-export const metadata = buildMetadata({
-  title: "Blog: Hosting, Performance and Web Design | DronaHost",
-  description: "Practical guides on WordPress hosting, web performance, SEO and web design from the DronaHost team.",
-  path: "/blog",
-});
+const toPage = (v?: string) => Math.max(1, Math.min(500, Number.parseInt(v ?? "1", 10) || 1));
+const safeSlug = (v?: string) => (v && /^[a-z0-9-]{1,80}$/.test(v) ? v : undefined);
 
-type LeanPost = { slug: string; title: string; excerpt: string; category: string; publishedAt: Date | null; createdAt: Date };
-
-async function loadPosts(): Promise<ResourcePost[]> {
-  try {
-    await connectToDatabase();
-    const rows = (await Post.find({ status: "published", deletedAt: null }, { slug: 1, title: 1, excerpt: 1, category: 1, publishedAt: 1, createdAt: 1 })
-      .sort({ publishedAt: -1 })
-      .limit(24)
-      .lean()) as unknown as LeanPost[];
-    return rows.map((p) => ({
-      title: p.title,
-      description: p.excerpt,
-      href: `/blog/${p.slug}`,
-      category: p.category,
-      date: (p.publishedAt ?? p.createdAt).toISOString().slice(0, 10),
-    }));
-  } catch {
-    // Database unreachable: render the empty state instead of failing the page.
-    return [];
-  }
+export async function generateMetadata({ searchParams }: { searchParams: SearchParams }): Promise<Metadata> {
+  const sp = await searchParams;
+  const page = toPage(sp.page);
+  const category = safeSlug(sp.category);
+  const q = new URLSearchParams();
+  if (category) q.set("category", category);
+  if (page > 1) q.set("page", String(page));
+  return buildMetadata({
+    title: page > 1 ? `Blog, page ${page}: Hosting, Performance and Web Design | DronaHost` : "Blog: Hosting, Performance and Web Design | DronaHost",
+    description: "Practical guides on WordPress hosting, web performance, SEO and web design from the DronaHost team.",
+    path: `/blog${q.size ? `?${q}` : ""}`,
+  });
 }
 
-export default async function BlogPage() {
-  const posts = await loadPosts();
+export default async function BlogIndexPage({ searchParams }: { searchParams: SearchParams }) {
+  const sp = await searchParams;
+  const page = toPage(sp.page);
+  const category = safeSlug(sp.category);
+
+  let data: BlogPage = { posts: [], page, totalPages: 1 };
+  let categories: BlogCategory[] = [];
+  let unavailable = false;
+  try {
+    [data, categories] = await Promise.all([listPosts({ page, category }), listCategories().catch(() => [])]);
+  } catch (e) {
+    if (!(e instanceof BlogUnavailableError)) throw e;
+    unavailable = true;
+  }
+
+  const posts = data.posts.map((p) => ({
+    title: p.title,
+    description: p.excerpt,
+    href: `/blog/${p.slug}`,
+    category: p.category?.name,
+    readTime: `${p.readingMinutes} min read`,
+    date: p.published.slice(0, 10),
+  }));
+
   return (
     <>
       <JsonLd
@@ -57,15 +72,24 @@ export default async function BlogPage() {
         description="Guides on WordPress, performance, security and search, written by the people who run the servers."
         primaryCta={{ label: "Talk to our team", href: "/contact" }}
       />
+      <div className="container-site">
+        <CategoryFilter categories={categories} active={category} />
+      </div>
       {posts.length > 0 ? (
-        <ResourceGrid title="Latest articles" posts={posts} />
+        <>
+          <ResourceGrid title={category ? "Articles in this category" : "Latest articles"} posts={posts} />
+          <div className="container-site -mt-8 pb-16">
+            <Pagination page={data.page} totalPages={data.totalPages} basePath="/blog" params={{ category }} />
+          </div>
+        </>
       ) : (
-        <section aria-labelledby="blog-empty" className="section-y">
-          <div className="container-site text-center">
-            <h2 id="blog-empty" className="t-h3 text-foreground">
-              Articles are on the way
-            </h2>
-            <p className="t-body mx-auto mt-3 text-muted-foreground">We are preparing our first guides. In the meantime, ask us anything about your site.</p>
+        <section aria-label="Articles" className="section-y">
+          <div className="container-site">
+            {unavailable ? (
+              <EmptyState icon={Newspaper} title="Articles are unavailable right now" body="We could not load the blog just now. Please try again in a few minutes." action={{ label: "Contact the team", href: "/contact" }} />
+            ) : (
+              <EmptyState icon={Newspaper} title={category ? "No articles in this category yet" : "Articles are on the way"} body="We are preparing our first guides. In the meantime, ask us anything about your site." action={{ label: category ? "See all articles" : "Talk to our team", href: category ? "/blog" : "/contact" }} />
+            )}
           </div>
         </section>
       )}

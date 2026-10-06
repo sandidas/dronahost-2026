@@ -26,7 +26,7 @@ type ResourceGridProps = {
 };
 
 const formatDate = (iso: string) =>
-  new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(iso));
+  new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(iso));
 
 /**
  * Blog / resource cards. Each card is an <article> whose title is the (crawlable) link.
