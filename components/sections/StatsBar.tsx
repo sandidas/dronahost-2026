@@ -20,7 +20,8 @@ type StatsBarProps = {
  */
 export default function StatsBar({ ids, label = "Service statistics", claims, className }: StatsBarProps) {
   const headingId = useId();
-  const stats = (claims ?? verifiedClaims(ids)).slice(0, 4);
+  // Measured numbers only. Policy and feature claims ("assurance") render in AssuranceStrip instead.
+  const stats = (claims ?? verifiedClaims(ids).filter((c) => c.kind === "stat")).slice(0, 4);
   if (stats.length === 0) return null;
 
   return (
@@ -35,6 +36,7 @@ export default function StatsBar({ ids, label = "Service statistics", claims, cl
             return (
               <div
                 key={stat.id}
+                data-claim={stat.id}
                 className={cn(
                   "flex min-w-0 basis-1/2 flex-col items-center px-4 py-8 text-center lg:basis-0 lg:flex-1",
                   i > 0 && "lg:border-s lg:border-border",

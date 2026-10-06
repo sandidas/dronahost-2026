@@ -61,6 +61,7 @@ const categories: Category[] = [
       { id: "logo-wall", label: "LogoWall" },
       { id: "case-study", label: "CaseStudy" },
       { id: "stats-bar", label: "StatsBar" },
+      { id: "assurance-strip", label: "AssuranceStrip" },
       { id: "trust-signals", label: "TrustSignals" },
       { id: "trust-badges", label: "TrustBadges" },
     ],

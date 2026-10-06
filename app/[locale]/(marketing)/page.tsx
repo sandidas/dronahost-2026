@@ -5,6 +5,7 @@ import FAQSection from "@/components/sections/FAQSection";
 import FeatureGrid from "@/components/sections/FeatureGrid";
 import JsonLd from "@/components/sections/JsonLd";
 import ProductHero from "@/components/sections/ProductHero";
+import AssuranceStrip from "@/components/sections/AssuranceStrip";
 import StatsBar from "@/components/sections/StatsBar";
 import TrustBadges from "@/components/sections/TrustBadges";
 import TwoColumn from "@/components/sections/TwoColumn";
@@ -62,6 +63,7 @@ export default function Home() {
       <ProductHero {...HOME_HERO} />
       <TrustBadges />
       <StatsBar />
+      <AssuranceStrip />
 
       <BentoGrid eyebrow={HOME_BENTO.eyebrow} title={HOME_BENTO.title} description={HOME_BENTO.description} items={bentoItems} />
 

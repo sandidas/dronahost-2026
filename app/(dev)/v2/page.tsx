@@ -44,6 +44,7 @@ import LogoWall from "@/components/sections/LogoWall";
 import NewsletterSignup from "@/components/sections/NewsletterSignup";
 import ProcessTimeline from "@/components/sections/ProcessTimeline";
 import ResourceGrid from "@/components/sections/ResourceGrid";
+import AssuranceStrip, { SAMPLE_ASSURANCES } from "@/components/sections/AssuranceStrip";
 import StatsBar from "@/components/sections/StatsBar";
 import SupportChannels from "@/components/sections/SupportChannels";
 import Testimonials from "@/components/sections/Testimonials";
@@ -492,9 +493,19 @@ export default function V2ShowcasePage() {
             id="stats-bar"
             title="StatsBar"
             status="built"
-            notes="Driven by content/claims.ts. Renders nothing until a claim is verified; each stat can link to its proof page. Dividers only between stats, no end caps. Sample forced on here."
+            notes="Measured numbers only (claims of kind stat). Renders nothing until a claim is verified and its terms page is published; count-up applies here only. Dividers only between stats, no end caps. Sample forced on here."
           >
-            <StatsBar claims={CLAIMS.slice(0, 4)} className="!py-0" />
+            <StatsBar claims={CLAIMS.filter((c) => c.kind === "stat").slice(0, 4)} className="!py-0" />
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="assurance-strip"
+            title="AssuranceStrip"
+            status="needs-verification"
+            notes="Static strip for policy and feature claims: icon, a short line and a link to the page that publishes the terms. No animation, no count-up. A claim shows only when it is verified AND its termsPage is published; samples are forced on here with a label."
+            verify={["Money-back guarantee: refund-policy page reviewed and published", "24/7 support: a page that publishes the hours and channels", "Free migration: a page that says what is covered", "Renewal price equals signup: a page that states it"]}
+          >
+            <AssuranceStrip claims={SAMPLE_ASSURANCES} className="!py-0" />
           </ShowcaseSection>
 
           <ShowcaseSection
