@@ -97,7 +97,7 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
         aria-hidden="true"
         onClick={onClose}
         className={cn(
-          "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-200 lg:hidden",
+          "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-(--dur-slow) ease-(--ease-in-out) lg:hidden",
           open ? "opacity-100" : "pointer-events-none opacity-0",
         )}
       />
@@ -110,7 +110,7 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
         inert={!open || undefined}
         onKeyDown={trapFocus}
         className={cn(
-          "fixed inset-y-0 end-0 z-[60] flex w-[min(22rem,100vw)] flex-col border-s border-border-strong bg-card shadow-xl transition-transform duration-200 ease-out lg:hidden",
+          "fixed inset-y-0 end-0 z-[60] flex w-[min(22rem,100vw)] flex-col border-s border-border-strong bg-card shadow-xl transition-transform duration-(--dur-slow) ease-(--ease-in-out) lg:hidden",
           open ? "translate-x-0" : "translate-x-full rtl:-translate-x-full",
         )}
       >

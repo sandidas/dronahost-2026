@@ -1,0 +1,321 @@
+/* Interaction details and finishing touches. Motion is transform/opacity (plus colour, border,
+   shadow on hover) only; every duration comes from the tokens, which collapse under reduced motion. */
+@layer components {
+  /* ── Interactive cards: lift only where hover exists; keyboard focus gets the same border and shadow ── */
+  .surface-interactive {
+    transition:
+      transform var(--dur-base) var(--ease-out),
+      box-shadow var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out);
+  }
+  .surface-interactive:focus-within {
+    border-color: var(--border-strong);
+    box-shadow:
+      inset 0 1px 0 var(--inner-highlight),
+      var(--shadow-md);
+  }
+  @media (hover: hover) {
+    .surface-interactive:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-strong);
+      box-shadow:
+        inset 0 1px 0 var(--inner-highlight),
+        var(--shadow-lg);
+    }
+  }
+
+  /* ── Buttons: press scale, and one soft sheen sweep on the primary (hover only, never looping) ── */
+  .btn:active {
+    transform: scale(0.98);
+  }
+  .btn-link:active {
+    transform: none;
+  }
+  .btn-primary {
+    overflow: hidden;
+    isolation: isolate;
+  }
+  /* Small buttons keep their enlarged touch area, which overflow clipping would cut, so they skip the sheen */
+  .btn-primary.btn-sm {
+    overflow: visible;
+  }
+  .btn-primary.btn-sm::before {
+    display: none;
+  }
+  .btn-primary::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.28) 50%, transparent 65%);
+    transform: translateX(-120%);
+    pointer-events: none;
+  }
+  @media (hover: hover) {
+    .btn:hover:not(:disabled):not(:active):not([aria-busy="true"]) {
+      transform: translateY(-1px);
+    }
+    .btn-link:hover {
+      transform: none;
+    }
+    .btn-primary:hover::before {
+      transform: translateX(120%);
+      transition: transform 700ms var(--ease-out);
+    }
+  }
+
+  /* ── Text links: underline grows from the start edge; arrows nudge 3px ── */
+  .link-grow {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0 1px;
+    transition: background-size var(--dur-base) var(--ease-out);
+  }
+  .link-grow:hover,
+  .link-grow:focus-visible {
+    background-size: 100% 1px;
+  }
+  [dir="rtl"] .link-grow {
+    background-position: 100% 100%;
+  }
+  .arrow-nudge {
+    display: inline-block;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  a:hover > .arrow-nudge,
+  a:focus-visible > .arrow-nudge,
+  .surface-interactive:hover .arrow-nudge,
+  .surface-interactive:focus-within .arrow-nudge {
+    transform: translateX(3px);
+  }
+  [dir="rtl"] a:hover > .arrow-nudge,
+  [dir="rtl"] .surface-interactive:hover .arrow-nudge {
+    transform: translateX(-3px) scaleX(-1);
+  }
+
+  /* ── FAQ accordion: native <details>, smooth where the browser supports it, instant elsewhere ── */
+  .faq-item {
+    interpolate-size: allow-keywords;
+  }
+  .faq-item::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition:
+      block-size var(--dur-base) var(--ease-in-out),
+      content-visibility var(--dur-base) allow-discrete;
+  }
+  .faq-item[open]::details-content {
+    block-size: auto;
+  }
+
+  /* ── Grain: static noise on large dark backgrounds only, to prevent banding ── */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ── Theme switch: colours fade for 300ms after the visitor toggles (class set by ThemeToggle) ── */
+  html.theme-fading,
+  html.theme-fading *,
+  html.theme-fading *::before,
+  html.theme-fading *::after {
+    transition:
+      background-color 200ms ease,
+      color 200ms ease,
+      border-color 200ms ease,
+      fill 200ms ease !important;
+  }
+
+  /* ── Hero mockups: play once on load, CSS only, ~1.5s. Content is the final state; this only decorates it ── */
+  .draw-line {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw 1400ms var(--ease-out) 300ms forwards;
+  }
+  .hero-area {
+    animation: fade-in 900ms var(--ease-out) 700ms backwards;
+  }
+  .bar-fill {
+    transform-origin: left;
+    animation: grow 900ms var(--ease-out) var(--d, 400ms) backwards;
+  }
+  [dir="rtl"] .bar-fill {
+    transform-origin: right;
+  }
+  .hero-pill {
+    animation: fade-in 500ms var(--ease-out) 1200ms backwards;
+  }
+  .tick-in {
+    animation: tick 320ms var(--ease-out) var(--d, 350ms) backwards;
+  }
+  .go-live::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 2px solid var(--accent);
+    opacity: 0;
+    pointer-events: none;
+    animation: pulse-once 1100ms var(--ease-out) 1300ms 1;
+  }
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes grow {
+    from {
+      transform: scaleX(0);
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes tick {
+    from {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+  }
+  @keyframes pulse-once {
+    0% {
+      opacity: 0.7;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.35);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .draw-line {
+      stroke-dashoffset: 0;
+    }
+    .go-live::after {
+      display: none;
+    }
+  }
+
+  /* ── Pricing: highlighted plan glows once, slowly; billing switch crossfades the price ── */
+  .plan-glow::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    border: 1px solid var(--accent);
+    opacity: 0;
+    pointer-events: none;
+    animation: glow-once 2600ms var(--ease-in-out) 600ms 1;
+  }
+  @keyframes glow-once {
+    50% {
+      opacity: 0.55;
+    }
+  }
+  [data-swapped] [data-cycle]:not([hidden]) {
+    animation: fade-in 200ms var(--ease-out);
+  }
+
+  /* ── Process timeline: connecting lines draw in when their step is revealed ── */
+  .line-y,
+  .line-x {
+    transition: transform var(--dur-reveal) var(--ease-out);
+    transition-delay: calc(var(--i, 0) * var(--stagger));
+  }
+  .line-y {
+    transform-origin: top;
+  }
+  .line-x {
+    transform-origin: left;
+  }
+  [dir="rtl"] .line-x {
+    transform-origin: right;
+  }
+  .reveal-armed:not(.is-in) .line-y {
+    transform: scaleY(0);
+  }
+  .reveal-armed:not(.is-in) .line-x {
+    transform: scaleX(0);
+  }
+
+  /* ── Mega menu panel: fades and rises 6px when it opens ── */
+  .mega-panel {
+    animation: menu-in var(--dur-base) var(--ease-out);
+  }
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+  .site-header {
+    transition:
+      background-color var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out);
+  }
+
+  /* ── Skeletons: one short shimmer (2s at most), then static ── */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+  }
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--foreground) 8%, transparent), transparent);
+    transform: translateX(-100%);
+    animation: shimmer 1000ms ease-in-out 2;
+  }
+  @keyframes shimmer {
+    to {
+      transform: translateX(100%);
+    }
+  }
+  [dir="rtl"] .skeleton::after {
+    animation-direction: reverse;
+  }
+
+  /* ── Inline validation and results fade in (opacity only, so nothing shifts) ── */
+  .field-msg {
+    animation: fade-in var(--dur-base) var(--ease-out);
+  }
+
+  /* ── Numbers line up ── */
+  table,
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Finishing details that are not motion */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--muted-foreground) 45%, transparent) transparent;
+  accent-color: var(--action);
+}
+
+/* Showcase only: force the reduced-motion path inside a demo block */
+[data-motion="reduced"] *,
+[data-motion="reduced"] *::before,
+[data-motion="reduced"] *::after {
+  animation-duration: 1ms !important;
+  animation-delay: 0s !important;
+  transition-duration: 1ms !important;
+  transition-delay: 0s !important;
+}
+[data-motion="reduced"] .reveal-armed {
+  opacity: 1;
+  transform: none;
+}
+[data-motion="reduced"] .draw-line {
+  stroke-dashoffset: 0;
+}

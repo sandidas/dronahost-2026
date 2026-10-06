@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Link } from "@/i18n/link";
 import { useId } from "react";
+import { reveal } from "@/lib/motion";
 import { cn } from "@/utils/cn";
 import SectionHeader from "./SectionHeader";
 
@@ -56,8 +57,8 @@ export default function Testimonials({ eyebrow, title, description, items, showS
             entries.length === 1 ? "mx-auto max-w-2xl" : entries.length === 2 ? "md:grid-cols-2" : "md:grid-cols-2 lg:grid-cols-3",
           )}
         >
-          {entries.map((t) => (
-            <li key={`${t.name}-${t.company}`} className="flex">
+          {entries.map((t, i) => (
+            <li key={`${t.name}-${t.company}`} className="flex" {...reveal(i)}>
               <figure className="surface flex w-full flex-col p-6 sm:p-7">
                 <blockquote className="flex-1">
                   <p className="t-body text-foreground">“{t.quote}”</p>

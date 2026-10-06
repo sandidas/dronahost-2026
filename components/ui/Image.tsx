@@ -68,7 +68,7 @@ export default function Image({
     <>
       <div className={fill ? "relative w-full h-full" : "relative overflow-hidden rounded-lg"}>
         {showSkeleton && (
-          <div className="absolute inset-0 bg-gradient-to-r from-neutral-200 via-neutral-300 to-neutral-200 dark:from-neutral-800 dark:via-neutral-700 dark:to-neutral-800 animate-pulse rounded-lg" />
+          <div className="absolute inset-0 skeleton bg-muted rounded-lg" />
         )}
         <NextImage
           src={src}

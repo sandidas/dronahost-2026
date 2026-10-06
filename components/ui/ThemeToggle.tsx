@@ -27,7 +27,12 @@ export default function ThemeToggle({ showLabel = false, className }: ThemeToggl
   return (
     <button
       type="button"
-      onClick={() => setTheme(next)}
+      onClick={() => {
+        const root = document.documentElement;
+        root.classList.add("theme-fading");
+        window.setTimeout(() => root.classList.remove("theme-fading"), 300);
+        setTheme(next);
+      }}
       aria-label={label}
       className={cn(
         "btn btn-ghost gap-2 !px-0 sm:!px-0",

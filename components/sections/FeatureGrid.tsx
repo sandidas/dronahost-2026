@@ -2,6 +2,7 @@ import { Link } from "@/i18n/link";
 import { useId } from "react";
 import FeatureIcon, { type FeatureIconName } from "@/components/ui/FeatureIcon";
 import Surface from "@/components/ui/Surface";
+import { reveal } from "@/lib/motion";
 import { cn } from "@/utils/cn";
 import SectionHeader from "./SectionHeader";
 
@@ -64,8 +65,8 @@ export default function FeatureGrid({
             COLS[columns],
           )}
         >
-          {items.map((item) => (
-            <li key={item.title} className="flex">
+          {items.map((item, i) => (
+            <li key={item.title} className="flex" {...reveal(i)}>
               <Surface
                 as="div"
                 interactive={Boolean(item.cta) && variant === "cards"}
@@ -85,7 +86,7 @@ export default function FeatureGrid({
                     className="btn btn-link mt-3 static self-start after:absolute after:inset-0 after:content-['']"
                   >
                     {item.cta.label}
-                    <span aria-hidden="true"> →</span>
+                    <span aria-hidden="true" className="arrow-nudge"> →</span>
                   </Link>
                 )}
               </Surface>

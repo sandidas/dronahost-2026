@@ -1,4 +1,5 @@
 import { Check } from "lucide-react";
+import type { CSSProperties } from "react";
 import { cn } from "@/utils/cn";
 
 /**
@@ -43,7 +44,7 @@ export function SiteDashboardMockup({ className }: { className?: string }) {
                 <Bar className="w-28 !h-2.5 !bg-foreground/70" />
                 <Bar className="w-20" />
               </div>
-              <span className="rounded-full border border-success/30 bg-success-surface px-2.5 py-1 text-[0.6875rem] font-semibold text-success">
+              <span className="hero-pill rounded-full border border-success/30 bg-success-surface px-2.5 py-1 text-[0.6875rem] font-semibold text-success">
                 Online
               </span>
             </div>
@@ -60,10 +61,13 @@ export function SiteDashboardMockup({ className }: { className?: string }) {
                   <line key={y} x1="0" x2="400" y1={y} y2={y} stroke="var(--border)" strokeWidth="1" />
                 ))}
                 <path
+                  className="hero-area"
                   d="M0 96 C40 90 60 62 100 66 S160 100 200 70 S270 28 310 44 S370 52 400 24 V130 H0 Z"
                   fill="url(#hero-area)"
                 />
                 <path
+                  className="draw-line"
+                  pathLength={1}
                   d="M0 96 C40 90 60 62 100 66 S160 100 200 70 S270 28 310 44 S370 52 400 24"
                   fill="none"
                   stroke="var(--accent)"
@@ -74,11 +78,11 @@ export function SiteDashboardMockup({ className }: { className?: string }) {
             </div>
 
             <div className="grid grid-cols-3 gap-3">
-              {["Speed", "Backups", "Security"].map((label) => (
+              {["Speed", "Backups", "Security"].map((label, i) => (
                 <div key={label} className="rounded-xl border border-border bg-card p-3">
                   <p className="text-[0.6875rem] font-semibold uppercase tracking-wider text-subtle-foreground">{label}</p>
                   <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-border">
-                    <span className="block h-full w-4/5 rounded-full bg-accent" />
+                    <span className="bar-fill block h-full w-4/5 rounded-full bg-accent" style={{ "--d": `${450 + i * 120}ms` } as CSSProperties} />
                   </div>
                 </div>
               ))}
@@ -115,7 +119,7 @@ export function StagingFlowMockup({ className }: { className?: string }) {
           </div>
 
           <ol className="space-y-2.5">
-            {STEPS.map((step) => (
+            {STEPS.map((step, i) => (
               <li
                 key={step.label}
                 className={cn(
@@ -129,7 +133,9 @@ export function StagingFlowMockup({ className }: { className?: string }) {
                     step.done ? "bg-success-surface text-success" : "bg-accent text-accent-foreground",
                   )}
                 >
-                  {step.done ? <Check className="size-3.5" strokeWidth={3} /> : <span className="size-1.5 rounded-full bg-current" />}
+                  <span className="tick-in inline-flex" style={{ "--d": `${350 + i * 120}ms` } as CSSProperties}>
+                    {step.done ? <Check className="size-3.5" strokeWidth={3} /> : <span className="size-1.5 rounded-full bg-current" />}
+                  </span>
                 </span>
                 <span className="min-w-0 flex-1 truncate">{step.label}</span>
               </li>
@@ -138,7 +144,7 @@ export function StagingFlowMockup({ className }: { className?: string }) {
 
           <div className="flex items-center justify-between gap-3 border-t border-border pt-4">
             <Bar className="w-24" />
-            <span className="inline-flex h-9 items-center rounded-lg bg-accent px-4 text-sm font-semibold text-accent-foreground">Go live</span>
+            <span className="go-live relative inline-flex h-9 items-center rounded-lg bg-accent px-4 text-sm font-semibold text-accent-foreground">Go live</span>
           </div>
         </div>
       </div>

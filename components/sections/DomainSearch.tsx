@@ -72,8 +72,8 @@ export default function DomainSearch() {
       </form>
 
       <div id={`${id}-status`} role="status" aria-live="polite" className="mt-4 min-h-6 text-center text-sm">
-        {clientError && <p className="text-danger">{clientError}</p>}
-        {result && "error" in result && <p className="text-danger">{result.error}</p>}
+        {clientError && <p className="field-msg text-danger">{clientError}</p>}
+        {result && "error" in result && <p className="field-msg text-danger">{result.error}</p>}
         {result && "status" in result && (
           <p className={cn("font-semibold", result.status === "available" ? "text-success" : "text-muted-foreground")}>
             {result.status === "available" ? (

@@ -145,10 +145,16 @@
 
   --radius: 0.75rem;
 
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur-fast: 150ms;
-  --dur: 200ms;
-  --dur-slow: 250ms;
+  /* Motion tokens. Reduced motion collapses every duration (see the media query near the end). */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* entrances, hovers */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* drawers, accordions */
+  --dur-fast: 150ms; /* colour, border, press */
+  --dur-base: 250ms; /* hover lifts, menus */
+  --dur: var(--dur-base);
+  --dur-slow: 450ms; /* drawers, panels */
+  --dur-reveal: 700ms; /* scroll reveals */
+  --reveal-distance: 14px;
+  --stagger: 70ms;
 
   --container-max: 96rem; /* 1536px (max-w-screen-2xl); single source for the site width */
   --gutter: clamp(1rem, 4vw, 2rem);
@@ -469,20 +475,6 @@ body {
     border-radius: var(--radius-xl);
     box-shadow: inset 0 1px 0 var(--inner-highlight);
   }
-  .surface-interactive {
-    transition:
-      border-color var(--dur) var(--ease-out),
-      box-shadow var(--dur) var(--ease-out),
-      transform var(--dur) var(--ease-out);
-  }
-  .surface-interactive:hover {
-    border-color: var(--border-strong);
-    box-shadow:
-      inset 0 1px 0 var(--inner-highlight),
-      var(--shadow-md);
-    transform: translateY(-2px);
-  }
-
   /* ── Ambient backgrounds: very low-opacity glows and a hairline grid ── */
   .ambient-glow {
     background:
@@ -498,30 +490,41 @@ body {
     -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
   }
 
-  /* ── Scroll-in (once). Client `Reveal` toggles these classes. ── */
-  .reveal-pending {
+  /* ── Scroll reveal (once). RevealObserver adds .reveal-armed below the fold, then .is-in. ── */
+  .reveal-armed {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translate3d(0, var(--reveal-distance), 0);
+    transition:
+      opacity var(--dur-reveal) var(--ease-out),
+      transform var(--dur-reveal) var(--ease-out);
+    transition-delay: calc(var(--i, 0) * var(--stagger));
   }
-  .reveal-in {
+  .reveal-armed.is-in {
     opacity: 1;
     transform: none;
-    transition:
-      opacity var(--dur-slow) var(--ease-out),
-      transform var(--dur-slow) var(--ease-out);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal-pending {
-    opacity: 1;
-    transform: none;
-  }
-  .surface-interactive:hover {
-    transform: none;
+  :root {
+    --dur-fast: 1ms;
+    --dur-base: 1ms;
+    --dur: 1ms;
+    --dur-slow: 1ms;
+    --dur-reveal: 1ms;
+    --reveal-distance: 0px;
+    --stagger: 0ms;
   }
   html {
-    scroll-behavior: auto;
+    scroll-behavior: auto !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: 1ms !important;
   }
 }
 

@@ -2,6 +2,7 @@ import { Link } from "@/i18n/link";
 import { useId } from "react";
 import FeatureIcon from "@/components/ui/FeatureIcon";
 import { TRUST_ITEMS, type TrustItem } from "@/content/trust";
+import { reveal } from "@/lib/motion";
 import { cn } from "@/utils/cn";
 import SectionHeader from "./SectionHeader";
 
@@ -35,8 +36,8 @@ export default function TrustSignals({ eyebrow, title, description, items = TRUS
       <div className="container-site">
         {title && <SectionHeader id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} />}
         <ul className={cn("grid gap-4 sm:grid-cols-2 lg:grid-cols-3", title && "mt-12 sm:mt-14")}>
-          {shown.map((item) => (
-            <li key={item.id} className="surface flex gap-4 p-6">
+          {shown.map((item, i) => (
+            <li key={item.id} className="surface flex gap-4 p-6" {...reveal(i)}>
               <FeatureIcon name={item.icon} />
               <div className="min-w-0">
                 <Item className="t-h4 text-foreground">{item.title}</Item>

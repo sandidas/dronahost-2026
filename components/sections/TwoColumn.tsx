@@ -1,6 +1,7 @@
 import { Check } from "lucide-react";
 import { useId, type ReactNode } from "react";
 import Button from "@/components/ui/Button";
+import { reveal } from "@/lib/motion";
 import { cn } from "@/utils/cn";
 
 type CtaItem = { label: string; href: string; variant?: "primary" | "secondary" | "link" };
@@ -43,7 +44,7 @@ export default function TwoColumn({
   return (
     <section aria-labelledby={headingId} className={cn("section-y", className)}>
       <div className="container-site grid items-center gap-10 lg:grid-cols-2 lg:gap-20">
-        <div className={cn("min-w-0", visualFirst && "lg:order-2")}>
+        <div className={cn("min-w-0", visualFirst && "lg:order-2")} {...reveal(0)}>
           {eyebrow && <p className="t-eyebrow">{eyebrow}</p>}
           <Heading id={headingId} className={cn("t-h2 text-foreground", eyebrow && "mt-3")}>
             {title}
@@ -76,7 +77,9 @@ export default function TwoColumn({
           )}
         </div>
 
-        <div className={cn("min-w-0", visualFirst && "lg:order-1")}>{visual}</div>
+        <div className={cn("min-w-0", visualFirst && "lg:order-1")} {...reveal(1)}>
+          {visual}
+        </div>
       </div>
     </section>
   );

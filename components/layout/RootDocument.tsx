@@ -1,6 +1,7 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 import Analytics from "@/components/analytics/Analytics";
+import RevealObserver from "@/components/motion/RevealObserver";
 import CookieConsent from "@/components/consent/CookieConsent";
 import { geistMono, manrope, sora } from "@/app/fonts";
 import { ThemeProvider } from "@/app/providers";
@@ -21,9 +22,10 @@ export default async function RootDocument({ locale, children }: { locale: Local
           <a href="#main-content" className="skip-link">
             {t("skipToContent")}
           </a>
-          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
             {children}
             <CookieConsent />
+            <RevealObserver />
           </ThemeProvider>
           <Analytics />
         </NextIntlClientProvider>

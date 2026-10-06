@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/link";
 import { useId } from "react";
+import CountUp from "@/components/motion/CountUp";
 import { verifiedClaims, type Claim } from "@/content/claims";
 import { cn } from "@/utils/cn";
 
@@ -41,7 +42,9 @@ export default function StatsBar({ ids, label = "Service statistics", claims, cl
                   i >= 2 && "border-t border-border lg:border-t-0",
                 )}
               >
-                <dd className="font-[family-name:var(--font-heading)] text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">{stat.value}</dd>
+                <dd className="font-[family-name:var(--font-heading)] text-3xl font-semibold tabular-nums tracking-tight text-foreground sm:text-4xl">
+                  {stat.verified ? <CountUp value={stat.value} /> : stat.value}
+                </dd>
                 <dt className="mt-2 text-sm font-medium text-muted-foreground">
                   {href ? (
                     <Link href={href} className="underline underline-offset-4 hover:text-foreground">

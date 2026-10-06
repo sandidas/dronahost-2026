@@ -53,7 +53,7 @@ export default function FAQSection({ eyebrow, title, description, items, aside, 
           </div>
           <div className={cn("space-y-3", !aside && "mx-auto mt-12 max-w-3xl sm:mt-14")}>
             {items.map((item, i) => (
-              <details key={item.question} name={groupName} open={openFirst && i === 0} className="group surface overflow-hidden open:border-border-strong">
+              <details key={item.question} name={groupName} open={openFirst && i === 0} className="faq-item group surface overflow-hidden open:border-border-strong">
                 <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-start focus-visible:outline-offset-[-3px] [&::-webkit-details-marker]:hidden">
                   <Question className="text-base font-semibold text-foreground">{item.question}</Question>
                   <ChevronDown className="size-5 shrink-0 text-link transition-transform group-open:rotate-180 motion-reduce:transition-none" aria-hidden="true" />

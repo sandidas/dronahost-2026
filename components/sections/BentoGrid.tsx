@@ -2,6 +2,7 @@ import { Link } from "@/i18n/link";
 import { useId, type ReactNode } from "react";
 import FeatureIcon, { type FeatureIconName } from "@/components/ui/FeatureIcon";
 import Surface from "@/components/ui/Surface";
+import { reveal } from "@/lib/motion";
 import { cn } from "@/utils/cn";
 import SectionHeader from "./SectionHeader";
 
@@ -48,8 +49,8 @@ export default function BentoGrid({ eyebrow, title, description, items, headingL
       <div className="container-site">
         {title && <SectionHeader id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} />}
         <ul className={cn("grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-6", title && "mt-12 sm:mt-14")}>
-          {items.map((item) => (
-            <li key={item.title} className={cn("flex", SPAN[item.span ?? "half"], item.span === "full" && "sm:col-span-2")}>
+          {items.map((item, i) => (
+            <li key={item.title} className={cn("flex", SPAN[item.span ?? "half"], item.span === "full" && "sm:col-span-2")} {...reveal(i)}>
               <Surface
                 padding="none"
                 interactive={Boolean(item.href)}

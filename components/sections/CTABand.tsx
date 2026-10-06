@@ -1,5 +1,6 @@
 import { useId } from "react";
 import Button from "@/components/ui/Button";
+import { reveal } from "@/lib/motion";
 import { cn } from "@/utils/cn";
 import type { HeroCta } from "./hero/types";
 
@@ -23,7 +24,7 @@ export default function CTABand({ eyebrow, title, description, primaryCta, secon
   return (
     <section aria-labelledby={headingId} className={cn("section-y", className)}>
       <div className="container-site">
-        <div className="surface surface-raised relative isolate overflow-hidden px-6 py-14 text-center sm:px-12 sm:py-20">
+        <div className="surface surface-raised grain relative isolate overflow-hidden px-6 py-14 text-center sm:px-12 sm:py-20" {...reveal()}>
           <div className="ambient-glow absolute inset-0 -z-10" aria-hidden="true" />
           <div className="bg-grid absolute inset-0 -z-10 opacity-50" aria-hidden="true" />
           {eyebrow && <p className="t-eyebrow">{eyebrow}</p>}

@@ -3,6 +3,7 @@
 import { Check } from "lucide-react";
 import { useId, useState, type ReactNode } from "react";
 import Button from "@/components/ui/Button";
+import { reveal } from "@/lib/motion";
 import { cn } from "@/utils/cn";
 import SectionHeader from "./SectionHeader";
 import type { PlanCardData } from "@/lib/pricing/plans";
@@ -32,13 +33,14 @@ type PricingPlansProps = {
 function Price({ amount, vat }: { amount: string; vat?: string | null }) {
   return (
     <p className="flex flex-wrap items-baseline gap-x-1.5">
-      <span className="font-[family-name:var(--font-heading)] text-4xl font-semibold tracking-tight text-foreground">{amount}</span>
+      <span className="min-w-[4.5ch] font-[family-name:var(--font-heading)] text-4xl font-semibold tabular-nums tracking-tight text-foreground">{amount}</span>
       <span className="text-sm text-muted-foreground">/month{vat ? ` ${vat}` : ""}</span>
     </p>
   );
 }
 
 function PlanCard({
+  index = 0,
   plan,
   cycle,
   showPrices,
@@ -46,6 +48,7 @@ function PlanCard({
   guaranteeNote,
   headingLevel,
 }: {
+  index?: number;
   plan: PlanCardData;
   cycle: Cycle;
   showPrices: boolean;
@@ -61,11 +64,11 @@ function PlanCard({
   const ctaAria = plan.custom ? undefined : `${ctaLabel}${showPrices && activeAmount ? ` with ${plan.name}` : `: ${plan.name}`}`;
 
   return (
-    <li className="flex">
+    <li className="flex" {...reveal(index)}>
       <article
         className={cn(
           "surface relative flex w-full flex-col p-6 sm:p-7",
-          plan.highlight && "surface-raised !border-accent/60 shadow-lg ring-1 ring-accent/30",
+          plan.highlight && "plan-glow surface-raised !border-accent/60 shadow-lg ring-1 ring-accent/30",
         )}
       >
         <div className="min-h-6">
@@ -96,7 +99,7 @@ function PlanCard({
             </>
           ) : (
             (["annual", "monthly"] as const).map((c) => (
-              <div key={c} hidden={cycle !== c}>
+              <div key={c} hidden={cycle !== c} data-cycle={c}>
                 <Price amount={amount(c) ?? ""} vat={vat} />
                 <p className="t-small mt-2 text-muted-foreground">
                   {c === "annual" ? (
@@ -164,6 +167,7 @@ export default function PricingPlans({
   className,
 }: PricingPlansProps) {
   const headingId = useId();
+  const [swapped, setSwapped] = useState(false);
   const [cycle, setCycle] = useState<Cycle>(cycles.includes(defaultCycle) ? defaultCycle : cycles[0]);
   const showToggle = showPrices && cycles.length > 1;
   const cardHeading = headingLevel === "h2" ? "h3" : "h4";
@@ -187,7 +191,10 @@ export default function PricingPlans({
                   key={c}
                   type="button"
                   aria-pressed={cycle === c}
-                  onClick={() => setCycle(c)}
+                  onClick={() => {
+                    setSwapped(true);
+                    setCycle(c);
+                  }}
                   className={cn(
                     "min-h-11 rounded-lg px-5 text-sm font-semibold transition-colors",
                     cycle === c ? "bg-card text-foreground shadow-sm ring-1 ring-border-strong" : "text-muted-foreground hover:text-foreground",
@@ -203,10 +210,11 @@ export default function PricingPlans({
         {plans.length === 0 ? (
           <p className="t-body mt-12 text-center text-muted-foreground">Plans are not available right now. Please contact the team.</p>
         ) : (
-          <ul className={cn("grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3", title || showToggle ? "mt-10" : "")}>
-            {plans.map((plan) => (
+          <ul data-swapped={swapped || undefined} className={cn("grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3", title || showToggle ? "mt-10" : "")}>
+            {plans.map((plan, index) => (
               <PlanCard
                 key={plan.id}
+                index={index}
                 plan={plan}
                 cycle={cycle}
                 showPrices={showPrices}

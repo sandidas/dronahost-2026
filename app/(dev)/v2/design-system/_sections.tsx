@@ -2,10 +2,10 @@ import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import GradientText from "@/components/ui/GradientText";
 import Logo from "@/components/ui/Logo";
-import Reveal from "@/components/ui/Reveal";
 import Surface from "@/components/ui/Surface";
 import { contrastRatio, type PairResult, type Theme, type TokenMap } from "@/lib/design/contrast";
 import { cn } from "@/utils/cn";
+import MotionDemo from "./_motion";
 import { BothThemes, SpecLabel, ThemePane } from "./_panes";
 
 type Tokens = Record<Theme, TokenMap>;
@@ -437,9 +437,13 @@ export function ImagerySection() {
 
 const MOTION_TOKENS = [
   ["--dur-fast", "150ms", "hover color and border changes"],
-  ["--dur", "200ms", "shadow and lift"],
-  ["--dur-slow", "250ms", "scroll-in reveal"],
-  ["--ease-out", "cubic-bezier(0.22, 1, 0.36, 1)", "all transitions"],
+  ["--dur-fast", "150ms", "colour, border, press"],
+  ["--dur-base (--dur)", "250ms", "hover lifts, menus"],
+  ["--dur-slow", "450ms", "drawers, panels"],
+  ["--dur-reveal", "700ms", "scroll reveals"],
+  ["--stagger", "70ms", "per item, capped at 5"],
+  ["--ease-out", "cubic-bezier(0.16, 1, 0.3, 1)", "entrances, hovers"],
+  ["--ease-in-out", "cubic-bezier(0.65, 0, 0.35, 1)", "drawers, accordions"],
 ];
 
 export function MotionSection() {
@@ -455,13 +459,8 @@ export function MotionSection() {
         ))}
       </ul>
       <div className="mt-6">
-        <SpecLabel>Scroll-in: fades and lifts once, no layout shift (scroll to see)</SpecLabel>
-        <Reveal className="surface p-6">
-          <p className="t-body text-foreground">
-            This card is in the server HTML. If it starts below the fold, it fades in a single time. With reduced motion enabled it
-            simply appears.
-          </p>
-        </Reveal>
+        <SpecLabel>Live demos</SpecLabel>
+        <MotionDemo />
       </div>
     </ThemePane>
   );

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useId } from "react";
+import { reveal } from "@/lib/motion";
 import { cn } from "@/utils/cn";
 
 export type LogoItem = {
@@ -51,7 +52,7 @@ export default function LogoWall({ eyebrow, title, logos, rating, showSamples = 
             {title}
           </Heading>
         )}
-        <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+        <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-6" {...reveal()}>
           {shown.map((logo) => {
             const mark = logo.src ? (
               <Image src={logo.src} alt={logo.name} width={140} height={40} className="h-8 w-auto opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0 dark:invert" />

@@ -23,6 +23,8 @@ export default function Header() {
   const pathname = usePathname();
   const [megaOpen, setMegaOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [stuck, setStuck] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeMega = useCallback(() => setMegaOpen(false), []);
@@ -45,11 +47,25 @@ export default function Header() {
     };
   }, [megaOpen]);
 
+  // A sentinel at the very top of the page (not a scroll listener) tells us when the header is stuck.
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setStuck(!entry?.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <>
+      <div ref={sentinelRef} aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-6" />
       <header
         inert={drawerOpen || undefined}
-        className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md"
+        data-stuck={stuck || undefined}
+        className={cn(
+          "site-header sticky top-0 z-40 border-b backdrop-blur-md",
+          stuck ? "border-border bg-background/95 backdrop-blur-xl" : "border-border/60 bg-background/80",
+        )}
       >
         <div ref={rootRef} className="relative" onMouseLeave={closeMega}>
           <div className="mx-auto flex h-[4.5rem] max-w-(--container-max) items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">

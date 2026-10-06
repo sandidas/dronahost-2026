@@ -20,6 +20,15 @@ const routes = arg ? arg.slice(9).split(",") : ALL_ROUTES;
       const page = await ctx.newPage();
       await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
       await page.goto(BASE + route, { waitUntil: "load" });
+      // Scan the settled page: reveal every armed element, then let transitions and one-shot animations finish.
+      await page.evaluate(async () => {
+        for (let y = 0; y < document.body.scrollHeight; y += 500) {
+          window.scrollTo(0, y);
+          await new Promise((r) => setTimeout(r, 80));
+        }
+        window.scrollTo(0, 0);
+      });
+      await page.waitForTimeout(1200);
       const { violations } = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"]).analyze();
       const serious = violations.filter((v) => v.impact === "serious" || v.impact === "critical");
       blocking += serious.length;

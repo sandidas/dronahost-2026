@@ -15,7 +15,7 @@ type CenteredHeroProps = HeroBaseProps & {
 export default function CenteredHero({ children, className, ...content }: CenteredHeroProps) {
   const headingId = useId();
   return (
-    <section aria-labelledby={headingId} className={cn("relative isolate overflow-hidden border-b border-border", className)}>
+    <section aria-labelledby={headingId} className={cn("grain relative isolate overflow-hidden border-b border-border", className)}>
       <div className="ambient-glow absolute inset-0 -z-10 opacity-70" aria-hidden="true" />
       <div className="mx-auto max-w-(--container-max) px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
         <HeroContent {...content} headingId={headingId} scale="h1" align="center" />

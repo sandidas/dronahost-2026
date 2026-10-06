@@ -170,7 +170,7 @@ export default function FormWizard({ steps, schema, endpoint, storageKey, event,
           </p>
         )}
         {err && (
-          <p id={`${id}-err`} className="mt-1.5 text-sm text-danger">
+          <p id={`${id}-err`} className="field-msg mt-1.5 text-sm text-danger">
             {err}
           </p>
         )}
@@ -221,7 +221,7 @@ export default function FormWizard({ steps, schema, endpoint, storageKey, event,
               </span>
             </label>
             {errors.consent && (
-              <p id={`${uid}-consent-err`} className="mt-1.5 text-sm text-danger">
+              <p id={`${uid}-consent-err`} className="field-msg mt-1.5 text-sm text-danger">
                 {errors.consent}
               </p>
             )}

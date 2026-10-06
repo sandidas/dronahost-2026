@@ -76,3 +76,15 @@ Not localized yet: page copy (`content/*.ts`), JSON-LD URLs (they point at the d
 - Branded 500: shared `ErrorState`, with a `(marketing)/error.tsx` boundary that keeps header and footer.
 - `TextSkeleton` / `CardGridSkeleton` for in-page Suspense fallbacks (no route-level `loading.tsx`).
 - Showcase entries in `/v2`.
+
+## Motion and luxury pass (per `docs/reference/MOTION_AND_LUXURY_BRIEF.md`)
+- Tokens: easing (`--ease-out`, `--ease-in-out`), durations 150/250/450/700ms, `--reveal-distance`, `--stagger`; reduced motion collapses them all.
+- One `RevealObserver` in `RootDocument` arms `[data-reveal]` below the fold only; `reveal(i)` from `lib/motion.ts` (stagger capped at 5); `Reveal` is now a server component. Nothing above the fold animates and no-JS shows everything.
+- `app/styles/motion.css`: card hover lift (hover devices only) with focus-within parity, button press and one-shot sheen, link underline grow, arrow nudge, native `<details>` FAQ animation, grain, theme fade, scrollbar, `accent-color`, shimmer skeletons (2 short passes), inline message fade.
+- Hero mockups play once: chart line draws, bars fill, status pill fades, checklist ticks in sequence, one soft pulse on "Go live". Hero text is static.
+- Header hairline and stronger blur via an IntersectionObserver sentinel; drawer 450ms, mega menu fade and rise.
+- Pricing: staggered cards, one slow border glow on the highlighted plan, price crossfade on billing switch, `tabular-nums`.
+- Process timeline lines draw as steps reveal; `CountUp` for verified stats only (final value in HTML).
+- Removed the unused `components/loader/*` set (infinite spinners and pulses).
+- `/v2/design-system` Motion section: live demos with a reduced-motion toggle.
+- Tests: `tests/e2e/motion.spec.ts` (no horizontal scroll at 390/820/1440, JS disabled, reduced motion, CLS per page). The axe script now scans the settled page.

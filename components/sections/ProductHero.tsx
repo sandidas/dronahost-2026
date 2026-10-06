@@ -16,7 +16,7 @@ type ProductHeroProps = HeroBaseProps & {
 export default function ProductHero({ visual, className, ...content }: ProductHeroProps) {
   const headingId = useId();
   return (
-    <section aria-labelledby={headingId} className={cn("relative isolate overflow-hidden", className)}>
+    <section aria-labelledby={headingId} className={cn("grain relative isolate overflow-hidden", className)}>
       <div className="ambient-glow absolute inset-0 -z-10" aria-hidden="true" />
       <div className="bg-grid absolute inset-0 -z-10 opacity-70" aria-hidden="true" />
       <div className="mx-auto grid max-w-(--container-max) items-center gap-12 px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-16 lg:grid-cols-2 lg:gap-12 xl:gap-16 lg:px-8 lg:pb-28 lg:pt-24">

@@ -18,7 +18,7 @@ type SplitHeroProps = HeroBaseProps & {
 export default function SplitHero({ visual, reverse = false, className, ...content }: SplitHeroProps) {
   const headingId = useId();
   return (
-    <section aria-labelledby={headingId} className={cn("relative isolate overflow-hidden border-b border-border", className)}>
+    <section aria-labelledby={headingId} className={cn("grain relative isolate overflow-hidden border-b border-border", className)}>
       <div className="ambient-glow absolute inset-0 -z-10 opacity-60" aria-hidden="true" />
       <div className="mx-auto grid max-w-(--container-max) items-center gap-10 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
         <div className={cn(reverse && "lg:order-2")}>
