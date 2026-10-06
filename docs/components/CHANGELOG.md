@@ -108,3 +108,9 @@ Not localized yet: page copy (`content/*.ts`), JSON-LD URLs (they point at the d
 - `/v2` showcase entries (default, edge cases, as-shipped-today states) and a dev-only `/v2/phase1-preview` that shows the three at real page width. Reviewed with screenshots at 1440 and 390 px in dark and light, plus keyboard focus; axe has no violations in either theme.
 - The home page is not built and no existing page was touched.
 
+
+## Home page Phase 2: section registry and schemas (`docs/content-system.md`)
+- `lib/content/`: Zod schemas for the 13 section types and the page spec, the `claim:`, `feature:` and `requires` resolvers behind one `ResolveContext`, a feature library read against `pricing.json`, the layout-signature check, and a section registry with renderers for the existing components.
+- `npm run check:pages` validates `content/pages/*.json` and fails on layout-signature collisions. `tests/fixtures/home.page.json` is the home spec from the design doc; `tests/e2e/content-system.spec.ts` covers schemas, resolvers, gating and signatures.
+- `ResponsibilitySplit` now needs at least two items per column (a single bullet read as an afterthought); the registry gates items with the resolve context and passes plain items on.
+- Dev preview `/v2/page-system-preview` (modes `today` and `all`). The home page is still not built and no existing page changed.
