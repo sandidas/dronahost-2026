@@ -96,3 +96,8 @@ Not localized yet: page copy (`content/*.ts`), JSON-LD URLs (they point at the d
 - Contact page: sticky intro column, form in a card, redundant ticket card removed.
 - Copy: removed WhatsApp and live chat mentions (neither is live); support visuals now show Ticket, Follow-up, Resolved. Pricing hero no longer says prices are listed while they are hidden.
 - Hero mockup "Go live" button uses the orange action colour; pricing badge slot has a fixed height so card prices align.
+
+## /v2 showcase review
+- Removed the unused legacy `Card` component and its GridCard, ResourceCard and ResourceBox showcase entries.
+- Updated stale notes: site width, contact form status (now needs verification: SES and retention), and WhatsApp or live chat mentions in the verify lists.
+- Skeletons are more visible on dark cards (`bg-foreground/10`); price amounts no longer have a minimum width that left a gap before "/month".

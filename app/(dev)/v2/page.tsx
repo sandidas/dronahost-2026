@@ -9,7 +9,6 @@ import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import Section from "@/components/ui/Section";
 import HeadLineText from "@/components/ui/HeadLineText";
-import Card from "@/components/ui/Card";
 import TwoColumn from "@/components/sections/TwoColumn";
 import FeatureGrid from "@/components/sections/FeatureGrid";
 import BentoGrid from "@/components/sections/BentoGrid";
@@ -72,15 +71,6 @@ const orgSchema = {
   url: "https://dronahost.com",
 };
 
-const gridItems = [
-  { title: "Performance Hosting", description: "LiteSpeed servers with NVMe storage." },
-  { title: "Managed WordPress", description: "Daily backups, staging, and one-click rollbacks." },
-  { title: "Global CDN", description: "Content delivered from a global edge network." },
-  { title: "Developer Tools", description: "SSH, WP-CLI, Git deploy hooks, PHP version selector." },
-  { title: "Security", description: "Let's Encrypt SSL, WAF, and automated malware scans." },
-  { title: "Transparent SLA", description: "Published SLA with service-credit terms." },
-];
-
 export default function V2ShowcasePage() {
   if (process.env.NODE_ENV !== "development") notFound();
 
@@ -121,7 +111,7 @@ export default function V2ShowcasePage() {
             <div className="space-y-4">
               <Section size="lg" padding="sm" className="border-2 border-dashed border-border-strong rounded-lg">
                 <p className="text-sm text-muted-foreground">
-                  Default lg size with border-dashed. The inner container is max-w-7xl, centered.
+                  Default lg size with border-dashed. The inner container is the site width (1536px), centered.
                 </p>
               </Section>
               <Section size="md" padding="sm" variant="surface" className="rounded-lg">
@@ -200,57 +190,6 @@ export default function V2ShowcasePage() {
             </div>
           </ShowcaseSection>
 
-          {/* ── GridCard ── */}
-          <ShowcaseSection
-            id="grid-card"
-            title="GridCard"
-            status="needs-work"
-            notes="Legacy bordered-grid Card variant. No page uses it any more (FeatureGrid replaced it). Candidate for removal."
-          >
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-              {gridItems.map((item, i) => (
-                <Card key={i} variant="grid" index={i} total={6} columns={3} size="md">
-                  <h3 className="font-semibold text-foreground mb-1">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">{item.description}</p>
-                </Card>
-              ))}
-            </div>
-          </ShowcaseSection>
-
-          {/* ── ResourceCard ── */}
-          <ShowcaseSection
-            id="resource-card"
-            title="ResourceCard"
-            status="needs-work"
-            notes="Legacy Card “resource” variant. The blog now uses ResourceGrid, so no page imports this. Candidate for removal."
-          >
-            <p className="text-sm text-muted-foreground">
-              ResourceCard renders inside the blog and knowledge base listing pages. Visit{" "}
-              <Link href="/blog" className="text-link underline">
-                /blog
-              </Link>{" "}
-              to see it in use.
-            </p>
-          </ShowcaseSection>
-
-          {/* ── ResourceBox ── */}
-          <ShowcaseSection
-            id="resource-box"
-            title="ResourceBox"
-            status="needs-work"
-            notes="Legacy Card “box” variant. Unused by any page. Candidate for removal."
-          >
-            <p className="text-sm text-muted-foreground">
-              ResourceBox renders inside the blog and knowledge base listing pages. Visit{" "}
-              <Link href="/blog" className="text-link underline">
-                /blog
-              </Link>{" "}
-              to see it in use.
-            </p>
-          </ShowcaseSection>
-
           {/* ── Buttons ── */}
           <ShowcaseSection
             id="buttons"
@@ -311,8 +250,9 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="contact-form"
             title="Contact Form"
-            status="needs-work"
-            notes="Used on /contact only. Zod-validated, honeypot, rate-limited, stored in MongoDB, honest failure message. Still missing: an email notification to the team and a retention policy."
+            status="needs-verification"
+            notes="Used on /contact only. Zod-validated, honeypot, rate-limited, stored in MongoDB, honest failure message. Sends a team notification through Amazon SES and keeps submissions for FORM_RETENTION_DAYS (default 730); both need the .env values and a retention decision."
+            verify={["Retention period for stored form submissions", "SES sender and team recipient configured"]}
           >
             <p className="text-sm text-muted-foreground">
               The contact form is embedded directly in the{" "}
@@ -385,7 +325,7 @@ export default function V2ShowcasePage() {
             title="ProductHero"
             status="needs-verification"
             notes="Hero 1 of 3. Display headline, one primary action, verified highlights, dashboard mockup. Used on the homepage. Replaces HomeHero, HomeHeroSection, HomeHeroBanner and its video variant."
-            verify={["LiteSpeed servers with server-level caching", "Free migration from your current host", "Support by ticket, live chat and WhatsApp (is live chat running? is a WhatsApp number set?)"]}
+            verify={["LiteSpeed servers with server-level caching", "Free migration from your current host", "Support from the team that runs your server"]}
           >
             <div className="overflow-hidden rounded-lg border border-border">
               <ProductHero {...HOME_HERO} headingLevel="h2" />
@@ -435,7 +375,7 @@ export default function V2ShowcasePage() {
             title="BentoGrid"
             status="needs-verification"
             notes="Asymmetric tiles that pair a short claim with a small CSS visual. Used for 'Why DronaHost' on the homepage."
-            verify={["Staging copies and restore points", "LiteSpeed page caching", "Support by ticket, live chat and WhatsApp"]}
+            verify={["Staging copies and restore points", "LiteSpeed page caching", "Tickets answered by the team that runs your server"]}
           >
             <BentoGrid
               eyebrow={HOME_BENTO.eyebrow}

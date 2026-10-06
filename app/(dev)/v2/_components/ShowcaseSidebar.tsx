@@ -26,14 +26,6 @@ const categories: Category[] = [
     items: [{ id: "headline-text", label: "HeadLineText" }],
   },
   {
-    label: "Cards",
-    items: [
-      { id: "grid-card", label: "GridCard" },
-      { id: "resource-card", label: "ResourceCard" },
-      { id: "resource-box", label: "ResourceBox" },
-    ],
-  },
-  {
     label: "Buttons & Forms",
     items: [
       { id: "buttons", label: "Buttons" },

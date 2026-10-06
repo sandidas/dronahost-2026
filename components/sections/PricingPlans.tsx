@@ -33,7 +33,7 @@ type PricingPlansProps = {
 function Price({ amount, vat }: { amount: string; vat?: string | null }) {
   return (
     <p className="flex flex-wrap items-baseline gap-x-1.5">
-      <span className="min-w-[4.5ch] font-[family-name:var(--font-heading)] text-4xl font-semibold tabular-nums tracking-tight text-foreground">{amount}</span>
+      <span className="font-[family-name:var(--font-heading)] text-4xl font-semibold tabular-nums tracking-tight text-foreground">{amount}</span>
       <span className="text-sm text-muted-foreground">/month{vat ? ` ${vat}` : ""}</span>
     </p>
   );
