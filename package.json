@@ -15,7 +15,8 @@
     "qa:jsonld": "tsx scripts/qa/jsonld.ts",
     "qa:entities": "tsx scripts/qa/entities.ts",
     "qa": "npm run check:contrast && npm run qa:axe && npm run qa:links && npm run qa:jsonld && npm run qa:entities",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "check:pages": "tsx scripts/validate-pages.ts"
   },
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.1146.0",

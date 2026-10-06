@@ -1,0 +1,315 @@
+{
+  "id": "home",
+  "path": "/",
+  "archetype": "product",
+  "intent": "navigational-commercial",
+  "audience": "Small business owners who run or need a WordPress site and want fewer technical worries",
+  "primaryKeyword": "managed wordpress hosting",
+  "secondaryKeywords": [
+    "wordpress hosting for small business",
+    "managed vps hosting",
+    "wordpress hosting with migration"
+  ],
+  "layoutSignature": [
+    "ProductHero:dashboard",
+    "AssuranceStrip",
+    "PathRouter",
+    "AnswerBlock",
+    "ResponsibilitySplit"
+  ],
+  "seo": {
+    "title": "Managed WordPress & VPS Hosting",
+    "description": "Managed WordPress, cloud and VPS hosting for growing businesses. See what is included, compare plans and talk to our team.",
+    "ogImage": "/og/home.jpg",
+    "schema": [
+      "Organization",
+      "WebSite"
+    ]
+  },
+  "rules": {
+    "primaryCta": {
+      "label": "See WordPress hosting plans",
+      "href": "/pricing"
+    },
+    "requiredSections": [
+      "hero",
+      "router",
+      "answer",
+      "plans",
+      "faq"
+    ],
+    "mustLinkTo": [
+      "/pricing",
+      "/wordpress-hosting",
+      "/contact"
+    ],
+    "forbiddenClaims": [
+      "unlimited",
+      "best",
+      "fastest"
+    ],
+    "reviewedOn": "2026-10-06"
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "type": "ProductHero",
+      "variant": "dashboard",
+      "content": {
+        "eyebrow": "Managed WordPress, cloud and VPS hosting",
+        "h1": "Managed WordPress hosting without the technical worry",
+        "lead": "We run the servers, back up your site and move it across for you, so you can get on with your business.",
+        "ctaPrimary": {
+          "label": "See WordPress hosting plans",
+          "href": "/pricing"
+        },
+        "ctaSecondary": {
+          "label": "Talk to our team",
+          "href": "/contact"
+        },
+        "highlights": [
+          "claim:free-migration",
+          "claim:support-24-7",
+          "claim:money-back"
+        ]
+      }
+    },
+    {
+      "id": "assurance",
+      "type": "AssuranceStrip",
+      "content": {
+        "claims": [
+          "claim:money-back",
+          "claim:support-24-7",
+          "claim:free-migration",
+          "claim:renewal-price-same"
+        ]
+      }
+    },
+    {
+      "id": "router",
+      "type": "PathRouter",
+      "content": {
+        "eyebrow": "Start here",
+        "h2": "Where are you starting from?",
+        "paths": [
+          {
+            "title": "I already have a WordPress site",
+            "line": "We move it to DronaHost and look after it.",
+            "href": "/wordpress-hosting",
+            "cta": "See WordPress hosting",
+            "icon": "layers"
+          },
+          {
+            "title": "I need a website built",
+            "line": "We design a new WordPress site, then host it.",
+            "href": "/web-design",
+            "cta": "See website design",
+            "icon": "palette",
+            "requiresClaim": "claim:website-design-service"
+          },
+          {
+            "title": "I need email and hosting for my business",
+            "line": "Hosting and professional email together.",
+            "href": "/business-hosting",
+            "cta": "See business hosting",
+            "icon": "mail",
+            "requiresClaim": "claim:business-hosting-scope"
+          },
+          {
+            "title": "I want full control of my server",
+            "line": "Managed VPS with root access.",
+            "href": "/vps-hosting",
+            "cta": "See managed VPS",
+            "icon": "server",
+            "requiresClaim": "claim:managed-vps-scope"
+          }
+        ]
+      }
+    },
+    {
+      "id": "answer",
+      "type": "AnswerBlock",
+      "requiresClaim": "claim:managed-hosting-tasks",
+      "content": {
+        "h2": "What is managed WordPress hosting?",
+        "answer": "Managed WordPress hosting means your host looks after the technical work behind your website: the servers, backups, security and updates. You keep control of your content and your business. It suits owners who want a reliable site without learning server administration."
+      }
+    },
+    {
+      "id": "split",
+      "type": "ResponsibilitySplit",
+      "content": {
+        "h2": "What we look after, and what stays with you",
+        "weLookAfter": [
+          {
+            "text": "The servers your site runs on",
+            "requiresClaim": "claim:managed-server-care"
+          },
+          {
+            "text": "Backups of your site",
+            "requiresClaim": "claim:backups"
+          },
+          {
+            "text": "Moving your site across",
+            "requiresClaim": "claim:migration-process"
+          },
+          "Answering when something goes wrong"
+        ],
+        "youKeep": [
+          "Your content, products and pages",
+          "Which plugins and themes you choose",
+          "Your domain and your accounts",
+          "Your business decisions"
+        ]
+      }
+    },
+    {
+      "id": "moving",
+      "type": "ProcessTimeline",
+      "requiresClaim": "claim:free-migration",
+      "content": {
+        "h2": "Moving to DronaHost, step by step",
+        "steps": [
+          {
+            "title": "Tell us where your site is",
+            "text": "Share your current host details."
+          },
+          {
+            "title": "We copy it",
+            "text": "Your site is copied to DronaHost."
+          },
+          {
+            "title": "You check it",
+            "text": "Review the copy on a private link."
+          },
+          {
+            "title": "You switch when ready",
+            "text": "Your old site stays live until you switch."
+          }
+        ]
+      }
+    },
+    {
+      "id": "platform",
+      "type": "BentoGrid",
+      "content": {
+        "h2": "What is included on the platform",
+        "tiles": [
+          "feature:staging",
+          "feature:backups",
+          "feature:security",
+          "feature:performance",
+          "feature:developer-tools"
+        ]
+      }
+    },
+    {
+      "id": "plans",
+      "type": "PricingPlans",
+      "requires": "FEATURES.pricesConfirmed",
+      "content": {
+        "h2": "Plans and pricing",
+        "source": "pricing.json",
+        "show": [
+          "starter",
+          "growth",
+          "pop"
+        ],
+        "highlight": "growth",
+        "showRenewalPrice": true,
+        "link": {
+          "label": "Compare all plans",
+          "href": "/pricing"
+        }
+      }
+    },
+    {
+      "id": "support",
+      "type": "SupportChannels",
+      "content": {
+        "h2": "Reach a person in the channel you already use",
+        "channels": [
+          "whatsapp",
+          "live-chat",
+          "ticket"
+        ],
+        "hoursFrom": "claim:support-24-7"
+      }
+    },
+    {
+      "id": "proof",
+      "type": "Testimonials",
+      "hideIfEmpty": true,
+      "requires": "verifiedReviews",
+      "content": {
+        "source": "reviews.json"
+      }
+    },
+    {
+      "id": "policies",
+      "type": "TrustSignals",
+      "content": {
+        "h2": "Our policies, in plain language",
+        "links": [
+          "/refund-policy",
+          "/terms",
+          "/sla",
+          "/privacy"
+        ],
+        "onlyPublished": true
+      }
+    },
+    {
+      "id": "faq",
+      "type": "FAQSection",
+      "content": {
+        "h2": "Questions before you choose",
+        "items": [
+          {
+            "q": "What is managed WordPress hosting?",
+            "a": "Managed WordPress hosting means the host looks after the technical side of your site, including servers, backups and security, while you keep control of your content."
+          },
+          {
+            "q": "Do I need technical skills to use DronaHost?",
+            "a": "No. You manage your site in WordPress as usual, and the technical work behind it is handled for you. If you get stuck, you can contact our team by chat, WhatsApp or ticket."
+          },
+          {
+            "q": "Can I move my existing WordPress site to DronaHost?",
+            "a": "Yes. Share your current host details and we copy your site across. You review it before you switch, and your current site stays live until you do.",
+            "requiresClaim": "claim:migration-process"
+          },
+          {
+            "q": "How much does WordPress hosting cost at DronaHost?",
+            "a": "{{pricing.summary}}",
+            "requires": "FEATURES.pricesConfirmed"
+          },
+          {
+            "q": "Will the price go up when my plan renews?",
+            "a": "No. Your renewal price is the same as your signup price.",
+            "requiresClaim": "claim:renewal-price-same"
+          },
+          {
+            "q": "Is DronaHost the right fit for my site?",
+            "a": "DronaHost suits businesses that want managed WordPress hosting with a team to talk to. If you need a very large enterprise platform with custom contracts, ask us first and we will tell you honestly if we are not the right fit."
+          }
+        ]
+      }
+    },
+    {
+      "id": "cta",
+      "type": "CTABand",
+      "content": {
+        "h2": "Ready to see which plan fits?",
+        "ctaPrimary": {
+          "label": "See WordPress hosting plans",
+          "href": "/pricing"
+        },
+        "ctaSecondary": {
+          "label": "Talk to our team",
+          "href": "/contact"
+        }
+      }
+    }
+  ]
+}
