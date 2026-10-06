@@ -70,6 +70,9 @@ motion is CSS-first and respects `prefers-reduced-motion`; internal links use `L
 | `SupportChannels` | Ticket, live chat and WhatsApp cards, each only when it exists | Built (no page uses it now) |
 | `DomainSearch` | Domain availability through the WHMCS WhoisLookup API | Gated (`FEATURES.domainSearch` and credentials) |
 | `NewsletterSignup` | Email capture | Gated (`FEATURES.newsletter`, needs an endpoint) |
+| `AnswerBlock` | Question as the heading, the direct 40-80 word answer right under it, optional detail | Built (Phase 1, needs review) |
+| `bespoke/PathRouter` | "Where are you starting from?": situation cards routing to product pages; omitted with fewer than two visible paths | Built (Phase 1, needs review; gated per path) |
+| `bespoke/ResponsibilitySplit` | "What we look after / what stays with you": two plain lists; capability items gated by claims | Built (Phase 1, needs review; gated per item) |
 | `JsonLd` | Inline JSON-LD script for a page | Live |
 | `hero/HeroContent`, `hero/mockups` | Shared hero copy block; dashboard and staging mockups with one-time animation | Live |
 | `visuals/bento`, `visuals/split`, `visuals/shared` | Designed CSS and SVG visuals for bento and two-column sections | Live |

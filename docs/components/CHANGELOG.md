@@ -101,3 +101,10 @@ Not localized yet: page copy (`content/*.ts`), JSON-LD URLs (they point at the d
 - Removed the unused legacy `Card` component and its GridCard, ResourceCard and ResourceBox showcase entries.
 - Updated stale notes: site width, contact form status (now needs verification: SES and retention), and WhatsApp or live chat mentions in the verify lists.
 - Skeletons are more visible on dark cards (`bg-foreground/10`); price amounts no longer have a minimum width that left a gap before "/month".
+
+## Home page Phase 1: new components (per `docs/reference/pages/HOME_PAGE_DESIGN.md`)
+- `components/sections/bespoke/PathRouter` and `ResponsibilitySplit` (bespoke tier), plus a reusable `components/sections/AnswerBlock`. All three are server components, reveal once below the fold, use logical properties and tokens, and omit themselves (no empty gaps) when their claims are not rendering.
+- `lib/sections/gated.ts` (`visibleItems`): claim-gated list items. `content/claims.ts` gains kind `feature` and twelve unverified capability entries from section 7 of the design doc; none renders until confirmed, verified and published.
+- `/v2` showcase entries (default, edge cases, as-shipped-today states) and a dev-only `/v2/phase1-preview` that shows the three at real page width. Reviewed with screenshots at 1440 and 390 px in dark and light, plus keyboard focus; axe has no violations in either theme.
+- The home page is not built and no existing page was touched.
+
