@@ -945,7 +945,7 @@ const orgSchema = {
 
 - HTTPS canonical enforced in metadata
 - Consistent NAP (Name, Address, Phone) format across all pages
-- Renewal price equals the signup price (decision #5). Pricing pages say so plainly, next to the price, as a verified claim (`renewal-price-same` in `claims.ts`, which must link to the page that publishes the term): "Renews at the same price. No price increase." Never hide renewal pricing or put it in a tooltip.
+- Renewal price equals the signup price (decision #5). Every pricing card shows the renewal price ("Renews at $X/month", from `pricing.renewal`). The promise wording ("same price, no increase") is a claim: it renders only when `renewal-price-same` renders (verified AND its terms page published, see `content/claims.ts`). Never hide the renewal price or put it in a tooltip.
 - Money-back guarantee badge on hosting pages, only if the guarantee is verified in `claims.ts`
 - Real phone and email from `claims.ts`, never hidden. TODO(decision #6): values unconfirmed.
 - Cookie consent banner for EU/UK visitors

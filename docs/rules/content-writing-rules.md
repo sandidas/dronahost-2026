@@ -38,6 +38,10 @@ A claim **renders only when `status` is `"verified"` AND its `termsPage` is a pu
 claim, and `claimHiddenReason()` says why one is hidden. Measured numbers (`kind: "stat"`) render in `StatsBar` with
 count-up; policy and feature claims (`kind: "assurance"`) render in the static `AssuranceStrip` with a link to their terms page.
 
+**Publishing a claim:** when its terms page is published and reviewed, flipping `termsPageStatus` to `"published"` in
+`content/claims.ts` is the only change needed to show it (set `termsPage` too if it was null). Every place that renders the
+claim reads the same gate: `StatsBar`, `AssuranceStrip`, the pricing guarantee line and the renewal promise.
+
 Status on 2026-10-06 (owner-confirmed the same day). **None of these renders today**, because no terms page is published:
 
 | Verified claim | `termsPage` | Gap |
@@ -373,7 +377,9 @@ Acceptable:
 > "[EXAMPLE, NOT VERIFIED: Offer ends 31 July 2026.]"
 
 Renewal price equals the signup price (decision #5). Never write an introductory price that "renews at" a higher
-price, and never imply one.
+price, and never imply one. **Every plan card shows the renewal price** ("Renews at $X/month", from `pricing.renewal` in
+`data/pricing.json`). The promise wording ("same price, no increase") is gated by claims: it renders only when
+`renewal-price-same` renders.
 
 Not acceptable:
 > "Hurry! Limited time offer!" (no deadline, no specifics)

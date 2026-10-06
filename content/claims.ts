@@ -10,7 +10,9 @@
  * not rendered from this file. Prices come only from data/pricing.json.
  *
  * Gating rule: a claim renders only when `status` is "verified" AND its `termsPage`
- * is a published, reviewed route (`termsPageStatus: "published"`). The derived
+ * is a published, reviewed route (`termsPageStatus: "published"`). To show a claim once its
+ * terms page is live and reviewed, set `termsPageStatus: "published"` (and `termsPage` if it
+ * was null): that is the only change needed. The derived
  * `verified` flag that components read means exactly that, so a claim cannot be shown
  * while its terms page is a draft or missing. `claimHiddenReason()` says why a claim
  * is hidden.

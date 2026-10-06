@@ -23,7 +23,9 @@ open decision affects them; do not choose for the owner.
 - **Decision #3 detail:** implemented. `ThemeProvider` uses `defaultTheme="system"` with `enableSystem` (next-themes reads the
   system only when the theme is "system", so `defaultTheme="dark"` would ignore it). The server renders `.dark`, which is
   the fallback with no JavaScript. A system that prefers light gets light, and the toggle stores an explicit choice that wins.
-  `tests/e2e/theme.spec.ts` covers it, including a no-flash check.
+  `tests/e2e/theme.spec.ts` covers it, including a no-flash check. **Accepted:** a browser that reports no colour-scheme
+  preference resolves to light (next-themes treats anything that does not match `prefers-color-scheme: dark` as light). Only
+  the no-JavaScript fallback is dark.
 - **Decision #8 detail:** locale routing for `en-gb` and `en-ae` exists in code behind `FEATURES.localeVariants`, which
   stays off. Only `en-us` is live.
 - **Claims confirmed 2026-10-06:** 30-day money-back guarantee, 24/7 support, free migration, renewal price equals signup

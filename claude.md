@@ -185,10 +185,9 @@ const currency = pricing.currencies.USD;
 
 ### Renewal pricing
 
-- Renewal price is always identical to signup price — this is a key trust signal.
-- Every plan card **must** show the renewal price line beneath the signup price.
-- Format: `Renews at $X/month — same price, no increase`
-- Never hide renewal pricing or put it in a tooltip.
+- **Every card shows the renewal price** beneath the signup price: `Renews at $X/month`. The value comes from the explicit `pricing.renewal` field in `data/pricing.json`, never derived from the signup price.
+- **Promise wording is gated by claims.** The phrase "same price, no increase" renders only when the `renewal-price-same` claim renders (`isVerified("renewal-price-same")`: verified AND its terms page published) and the data agrees. Until then the card shows the price without the promise.
+- Never hide the renewal price or put it in a tooltip.
 
 ### CTA format (per content-writing-rules §4)
 
