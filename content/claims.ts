@@ -9,6 +9,10 @@
  * Copy never contains a number, guarantee, SLA, location or certification that is
  * not rendered from this file. Prices come only from data/pricing.json.
  *
+ * Terms-page rule: a verified claim must link to the page where its terms are
+ * published (refund policy, terms, SLA). Set `termsPage` to that path. A verified claim
+ * whose `termsPage` is null is a gap; `claimsMissingTermsPage()` lists them.
+ *
  * TODO: replace with verified data. All entries start unverified because the
  * owner has not yet confirmed any of them.
  */
@@ -33,6 +37,8 @@ export type ClaimRecord = {
   source: string | null;
   /** Who confirmed it. */
   verifiedBy: string | null;
+  /** Path of the page that publishes the terms of this claim (for example "/refund-policy"). Null until one exists. */
+  termsPage: string | null;
   /** ISO date (YYYY-MM-DD) of the confirmation. */
   verifiedOn: string | null;
 };
@@ -40,14 +46,23 @@ export type ClaimRecord = {
 /** A claim plus the derived `verified` flag that components read. Never set `verified` by hand. */
 export type Claim = ClaimRecord & { verified: boolean };
 
-const NONE = { status: "unverified", source: null, verifiedBy: null, verifiedOn: null } as const;
+const NONE = { status: "unverified", source: null, verifiedBy: null, verifiedOn: null, termsPage: null } as const;
+const OWNER_CONFIRMED = {
+  status: "verified",
+  source: "owner confirmation 2026-10-06, terms page to be linked",
+  verifiedBy: "owner",
+  verifiedOn: "2026-10-06",
+} as const;
 
 const RECORDS: readonly ClaimRecord[] = [
   { id: "uptime-sla", text: "99.95% uptime SLA with service credits", value: "99.95%", label: "Uptime SLA", note: "with service credits", ...NONE },
   { id: "ttfb", text: "Average TTFB under 200ms from London, New York and Dubai", value: "< 200ms", label: "Avg. TTFB", note: "London · New York · Dubai", ...NONE },
   { id: "first-reply", text: "Average first reply in 18 minutes", value: "18 min", label: "Avg. first reply", ...NONE },
   { id: "founded", text: "Founded in 2019", value: "2019", label: "Founded", ...NONE },
-  { id: "money-back", text: "30-day money-back guarantee", value: "30-day", label: "Money-back guarantee", ...NONE },
+  { id: "money-back", text: "30-day money-back guarantee", value: "30-day", label: "Money-back guarantee", ...OWNER_CONFIRMED, termsPage: "/refund-policy" },
+  { id: "support-24-7", text: "24/7 support", value: "24/7", label: "Support", ...OWNER_CONFIRMED, termsPage: null },
+  { id: "free-migration", text: "Free migration to DronaHost", value: "Free", label: "Site migration", ...OWNER_CONFIRMED, termsPage: null },
+  { id: "renewal-price-same", text: "Renewal price equals the signup price", value: "Same price", label: "At renewal", ...OWNER_CONFIRMED, termsPage: null },
   { id: "free-ssl", text: "Free SSL certificates from Let's Encrypt", value: "Free SSL", label: "Let's Encrypt certificates", ...NONE },
   { id: "cloudflare-cdn", text: "Served through the Cloudflare network", value: "CDN", label: "Cloudflare network", ...NONE },
 ];
@@ -58,6 +73,9 @@ export const verifiedClaims = (ids?: readonly string[]): Claim[] =>
   CLAIMS.filter((c) => c.verified && (!ids || ids.includes(c.id)));
 
 export const isVerified = (id: string): boolean => CLAIMS.some((c) => c.id === id && c.verified);
+
+/** Verified claims that do not yet link to a page publishing their terms. */
+export const claimsMissingTermsPage = (): Claim[] => CLAIMS.filter((c) => c.verified && !c.termsPage);
 
 /**
  * Payment methods the checkout accepts.
