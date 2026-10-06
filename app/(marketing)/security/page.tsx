@@ -33,7 +33,7 @@ export default function SecurityPage() {
       <div className="article">
         <p>
           Security is a core part of DronaHost&apos;s infrastructure. This page
-          describes the technical and organisational measures we use to protect
+          describes the technical and organizational measures we use to protect
           your data and hosting environment.
         </p>
 

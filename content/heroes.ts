@@ -11,8 +11,8 @@ type HeroCopy = Omit<HeroBaseProps, "headingLevel" | "className">;
 
 export const HOME_HERO: HeroCopy = {
   eyebrow: "WordPress, cloud and VPS hosting",
-  title: "Managed WordPress hosting",
-  titleAccent: "for growing businesses",
+  title: "Managed WordPress hosting for",
+  titleAccent: "growing businesses",
   description:
     "DronaHost runs managed WordPress, cloud and VPS hosting on LiteSpeed servers. We migrate your existing site, and you can reach the team by ticket, live chat or WhatsApp.",
   primaryCta: { label: "View plans", href: "/pricing" },
@@ -26,8 +26,8 @@ export const HOME_HERO: HeroCopy = {
 
 export const WORDPRESS_HERO: HeroCopy = {
   eyebrow: "Managed WordPress hosting",
-  title: "WordPress hosting that is",
-  titleAccent: "looked after for you",
+  title: "WordPress hosting,",
+  titleAccent: "managed for you.",
   description:
     "LiteSpeed servers with built-in caching, a staging area for testing updates, and a team that moves your existing site across.",
   primaryCta: { label: "View plans", href: "/pricing" },

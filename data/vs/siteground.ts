@@ -18,7 +18,7 @@ const data: CompetitorData = {
   ] satisfies ComparisonRow[],
   dronahostPros: [
     "Significantly lower renewal pricing — no surprise bill after year one",
-    "UAE and UK data centres for MENA and British markets",
+    "UAE and UK data centers for MENA and British markets",
     "Wildcard SSL included on all plans",
     "Unlimited site migrations included",
   ],

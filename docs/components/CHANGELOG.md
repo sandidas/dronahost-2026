@@ -16,7 +16,7 @@ Branch `polish/design-system`. Each batch is one commit.
 ## Phase 2: design system
 - `app/styles/tokens.css`: dark-default light/dark tokens, brand-anchored (orange action, teal secondary), 12/16/24 radius, layered shadows, fluid type, motion tokens.
 - `npm run check:contrast` gates 74 token pairs against WCAG AA (runs first in `npm run build`).
-- `Button` rewritten (4 variants, 3 sizes, loading/disabled); `Surface`, `Reveal`; `Badge`/`GradientText` recoloured.
+- `Button` rewritten (4 variants, 3 sizes, loading/disabled); `Surface`, `Reveal`; `Badge`/`GradientText` recolored.
 - `/v2/design-system` page. Dark surface separation measured and increased.
 
 ## Batch A: navigation

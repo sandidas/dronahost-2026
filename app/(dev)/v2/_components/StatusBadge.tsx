@@ -1,12 +1,12 @@
 import { cn } from "@/utils/cn";
 
-export type Status = "built" | "needs-work" | "missing" | "pending-review";
+export type Status = "built" | "needs-work" | "missing" | "needs-verification";
 
 const config: Record<Status, { label: string; classes: string }> = {
   built: { label: "Built", classes: "border-success/30 bg-success-surface text-success" },
   "needs-work": { label: "Needs work", classes: "border-warning/30 bg-warning-surface text-warning" },
   missing: { label: "Missing", classes: "border-danger/30 bg-danger-surface text-danger" },
-  "pending-review": { label: "Pending review", classes: "border-accent/30 bg-accent/12 text-link" },
+  "needs-verification": { label: "Needs verification", classes: "border-accent/30 bg-accent/12 text-link" },
 };
 
 export default function StatusBadge({ status }: { status: Status }) {

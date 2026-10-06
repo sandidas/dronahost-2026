@@ -44,7 +44,7 @@ const channel = (v: number) => {
 
 export function luminance(hex: string): number {
   const m = HEX.exec(hex);
-  if (!m) throw new Error(`Not a 6-digit hex colour: ${hex}`);
+  if (!m) throw new Error(`Not a 6-digit hex color: ${hex}`);
   const n = parseInt(m[1], 16);
   return 0.2126 * channel((n >> 16) & 255) + 0.7152 * channel((n >> 8) & 255) + 0.0722 * channel(n & 255);
 }
@@ -77,9 +77,9 @@ export const PAIRS: PairSpec[] = [
   ...text("action", 4.5, "action (text)"),
   { fg: "ring", bg: "background", min: 3, label: "focus ring on background" },
   { fg: "ring", bg: "card", min: 3, label: "focus ring on card" },
-  { fg: "action-foreground", bg: "action", min: 4.5, label: "button label on action" },
-  { fg: "action-foreground", bg: "action-hover", min: 4.5, label: "button label on action (hover)" },
-  { fg: "action-foreground", bg: "action-active", min: 4.5, label: "button label on action (active)" },
+  { fg: "on-action", bg: "action-fill", min: 4.5, label: "button label on action fill" },
+  { fg: "on-action", bg: "action-fill-hover", min: 4.5, label: "button label on action fill (hover)" },
+  { fg: "on-action", bg: "action-fill-active", min: 4.5, label: "button label on action fill (active)" },
   { fg: "accent-foreground", bg: "accent", min: 4.5, label: "label on accent fill" },
   { fg: "accent-foreground", bg: "accent-hover", min: 4.5, label: "label on accent fill (hover)" },
   { fg: "success", bg: "success-surface", min: 4.5, label: "success text on its surface" },

@@ -16,9 +16,9 @@ type LogoProps = {
 
 /**
  * The official DronaHost wordmark (docs/reference/brand/dronaHost-logo.svg).
- * Brand rules: never recolour, add effects or filters, stretch, rotate, outline,
+ * Brand rules: never recolor, add effects or filters, stretch, rotate, outline,
  * reverse, or place on an orange or teal fill. Leave clear space around it. This
- * component intentionally accepts no colour or filter props.
+ * component intentionally accepts no color or filter props.
  */
 export default function Logo({ size = "md", priority = false, className }: LogoProps) {
   const { width, height, className: sizeClass } = SIZES[size];

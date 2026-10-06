@@ -4,7 +4,7 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Universal box-sizing and border colour live in styles/tokens.css (layered base). */
+/* Universal box-sizing and border color live in styles/tokens.css (layered base). */
 
 html, body, #root {
   min-height: 100%;

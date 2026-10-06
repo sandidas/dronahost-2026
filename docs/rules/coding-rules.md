@@ -188,7 +188,7 @@ Every component added to `/v2` must demonstrate:
 
 ```tsx
 // app/(dev)/v2/page.tsx — example entry for a new component
-<Section heading="PricingCard" status="pending-review">
+<Section heading="PricingCard" status="needs-verification">
   <PricingCard
     name="Starter"
     price="$5"
@@ -213,7 +213,7 @@ Use a `status` prop on the section wrapper so review state is visible at a glanc
 
 | Status | Meaning |
 |---|---|
-| `"pending-review"` | Built, awaiting approval — do not use on real pages yet |
+| `"needs-verification"` | Built and tested, but renders claims the owner must confirm before launch |
 | `"approved"` | Approved — safe to use on real pages |
 | `"revision"` | Approval rejected — needs changes before re-review |
 

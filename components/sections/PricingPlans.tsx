@@ -56,11 +56,9 @@ function PlanCard({
   const Heading = headingLevel;
   const amount = (c: Cycle) => (c === "annual" ? plan.annual : plan.monthly);
   const activeAmount = amount(cycle);
-  const ctaLabel = plan.custom
-    ? "Talk to the team"
-    : showPrices && activeAmount
-      ? `${plan.ctaLabel} — ${activeAmount}/month`
-      : `Ask about ${plan.name}`;
+  // One label on every card (the plan name sits in the accessible name, which still contains the visible label).
+  const ctaLabel = plan.custom ? "Talk to the team" : showPrices && activeAmount ? "Get started" : "Ask about this plan";
+  const ctaAria = plan.custom ? undefined : `${ctaLabel}${showPrices && activeAmount ? ` with ${plan.name}` : `: ${plan.name}`}`;
 
   return (
     <li className="flex">
@@ -103,7 +101,7 @@ function PlanCard({
                 <p className="t-small mt-2 text-muted-foreground">
                   {c === "annual" ? (
                     <>
-                      Billed annually.{" "}
+                      {plan.annualTotal ? `${plan.annualTotal} billed annually. ` : "Billed annually. "}
                       {plan.renewal && (
                         <>
                           Renews at {plan.renewal}/month{plan.renewalSame ? " — same price, no increase" : ""}
@@ -124,6 +122,7 @@ function PlanCard({
             href={plan.ctaHref}
             variant={plan.highlight ? "primary" : "secondary"}
             fullWidth
+            aria-label={ctaAria}
             className="!h-auto !whitespace-normal py-3 text-center"
           >
             {ctaLabel}

@@ -19,7 +19,7 @@ const data: CompetitorData = {
   dronahostPros: [
     "Up to 35× lower entry price — accessible to small businesses and startups",
     "Longer backup retention (30 days vs 14 days)",
-    "UAE and UK data centres for regional compliance",
+    "UAE and UK data centers for regional compliance",
     "No overage fees on standard plans",
   ],
   competitorPros: [

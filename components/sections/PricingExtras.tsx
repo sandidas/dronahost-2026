@@ -1,7 +1,8 @@
 import { Check } from "lucide-react";
 import ComparisonTable from "@/components/sections/ComparisonTable";
 import { buildPlanComparison } from "@/lib/pricing/compare";
-import { ADDONS, INCLUDED_WITH_EVERY_PLAN } from "@/lib/pricing/plans";
+import BackupAddonCard from "@/components/sections/BackupAddonCard";
+import { ADDONS, BACKUP_ADDON, INCLUDED_WITH_EVERY_PLAN } from "@/lib/pricing/plans";
 
 /** Everything under the plan cards: included list, optional add-ons and the full feature table. */
 export default function PricingExtras({ showPrices }: { showPrices: boolean }) {
@@ -24,7 +25,7 @@ export default function PricingExtras({ showPrices }: { showPrices: boolean }) {
         </section>
       )}
 
-      {ADDONS.length > 0 && (
+      {(ADDONS.length > 0 || BACKUP_ADDON) && (
         <section aria-labelledby="addons-heading">
           <h3 id="addons-heading" className="t-h4 text-foreground">
             Optional add-ons
@@ -39,6 +40,7 @@ export default function PricingExtras({ showPrices }: { showPrices: boolean }) {
                 {showPrices && <p className="shrink-0 text-sm font-semibold text-foreground">+{addon.monthly}/month</p>}
               </li>
             ))}
+            {BACKUP_ADDON && <BackupAddonCard {...BACKUP_ADDON} showPrices={showPrices} />}
           </ul>
         </section>
       )}

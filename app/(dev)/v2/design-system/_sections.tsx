@@ -419,7 +419,7 @@ export function ImagerySection() {
             </div>
           </div>
           <div>
-            <SpecLabel>Hairline grid, masked to the centre</SpecLabel>
+            <SpecLabel>Hairline grid, masked to the center</SpecLabel>
             <div className="relative flex h-40 items-center justify-center overflow-hidden rounded-2xl border border-border">
               <div className="bg-grid absolute inset-0" aria-hidden="true" />
               <p className="t-h3 relative px-4 text-center text-foreground">Infrastructure, drawn in hairlines</p>
@@ -436,7 +436,7 @@ export function ImagerySection() {
 }
 
 const MOTION_TOKENS = [
-  ["--dur-fast", "150ms", "hover colour and border changes"],
+  ["--dur-fast", "150ms", "hover color and border changes"],
   ["--dur", "200ms", "shadow and lift"],
   ["--dur-slow", "250ms", "scroll-in reveal"],
   ["--ease-out", "cubic-bezier(0.22, 1, 0.36, 1)", "all transitions"],
@@ -481,9 +481,9 @@ export function LogoSection() {
         </div>
       </ThemePane>
       <ul className="t-small list-disc space-y-1 ps-5 text-muted-foreground xl:col-span-2">
-        <li>Official SVG only (docs/reference/brand/dronaHost-logo.svg). The component takes no colour or filter props.</li>
-        <li>Never recolour, add gradients, shadows or other effects, stretch, rotate, outline, reverse or repeat it as a pattern.</li>
-        <li>Never place it on an orange, teal or similar-coloured background. Keep generous clear space around it.</li>
+        <li>Official SVG only (docs/reference/brand/dronaHost-logo.svg). The component takes no color or filter props.</li>
+        <li>Never recolor, add gradients, shadows or other effects, stretch, rotate, outline, reverse or repeat it as a pattern.</li>
+        <li>Never place it on an orange, teal or similar-colored background. Keep generous clear space around it.</li>
       </ul>
     </div>
   );

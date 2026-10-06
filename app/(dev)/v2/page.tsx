@@ -60,7 +60,7 @@ const orgSchema = {
 };
 
 const gridItems = [
-  { title: "Performance Hosting", description: "LiteSpeed + NVMe storage, NVMe storage on every plan." },
+  { title: "Performance Hosting", description: "LiteSpeed servers with NVMe storage." },
   { title: "Managed WordPress", description: "Daily backups, staging, and one-click rollbacks." },
   { title: "Global CDN", description: "Content delivered from a global edge network." },
   { title: "Developer Tools", description: "SSH, WP-CLI, Git deploy hooks, PHP version selector." },
@@ -129,7 +129,7 @@ export default function V2ShowcasePage() {
             id="gradient-text"
             title="GradientText"
             status="built"
-            notes="Inline gradient fill via bg-clip-text. 4 presets: brand (sky→indigo→orange), warm (indigo→orange), cool (sky→indigo), aurora (wide sweep). Use inside any HeadLineText or paragraph."
+            notes="Highlights one short phrase in a heading, teal only (orange is reserved for actions). The four preset names are kept for compatibility and all resolve to teal."
           >
             <div className="space-y-6">
               {(["brand", "warm", "cool", "aurora"] as const).map((g) => (
@@ -160,8 +160,8 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="headline-text"
             title="HeadLineText"
-            status="needs-work"
-            notes="No fluid clamp sizing between breakpoints — jumps on tablet."
+            status="built"
+            notes="Fluid clamp() sizing between breakpoints, so tablet no longer jumps. Takes the heading level via `as` and an `id`."
           >
             <div className="space-y-4">
               <div>
@@ -192,7 +192,7 @@ export default function V2ShowcasePage() {
             id="grid-card"
             title="GridCard"
             status="needs-work"
-            notes="Missing mobile hover/focus states. Border logic desktop-only."
+            notes="Legacy bordered-grid Card variant. No page uses it any more (FeatureGrid replaced it). Candidate for removal."
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               {gridItems.map((item, i) => (
@@ -210,8 +210,8 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="resource-card"
             title="ResourceCard"
-            status="built"
-            notes="Used in blog/KB context. Renders correctly."
+            status="needs-work"
+            notes="Legacy Card “resource” variant. The blog now uses ResourceGrid, so no page imports this. Candidate for removal."
           >
             <p className="text-sm text-muted-foreground">
               ResourceCard renders inside the blog and knowledge base listing pages. Visit{" "}
@@ -226,8 +226,8 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="resource-box"
             title="ResourceBox"
-            status="built"
-            notes="Used in blog/KB context. Renders correctly."
+            status="needs-work"
+            notes="Legacy Card “box” variant. Unused by any page. Candidate for removal."
           >
             <p className="text-sm text-muted-foreground">
               ResourceBox renders inside the blog and knowledge base listing pages. Visit{" "}
@@ -243,45 +243,52 @@ export default function V2ShowcasePage() {
             id="buttons"
             title="Buttons"
             status="built"
-            notes="Link-based SSR component (renders <a>). Variants: primary, secondary. Sizes: sm, md (default), lg. fullWidth stretches to container. external adds target=_blank + rel. Hover: lift + shadow (primary), border accent (secondary)."
+            notes="Four variants (primary, secondary, ghost, link), three sizes (sm 40px, md 48px, lg 56px), a loading state and a real <button> mode. Renders a crawlable <a> when href is set, otherwise a native <button> (type button, submit or reset). Bright #FE5504 fill with navy label in both themes. One primary per section. Full states are on /v2/design-system."
           >
             <div className="space-y-6">
               <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Variants</p>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Variants (links, render an &lt;a&gt;)</p>
                 <div className="flex flex-wrap items-center gap-4">
-                  <Button href="#" variant="primary">Primary</Button>
-                  <Button href="#" variant="secondary">Secondary</Button>
+                  <Button href="#buttons" variant="primary">Primary</Button>
+                  <Button href="#buttons" variant="secondary">Secondary</Button>
+                  <Button href="#buttons" variant="ghost">Ghost</Button>
+                  <Button href="#buttons" variant="link">Link</Button>
                 </div>
               </div>
               <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Sizes — primary (resize window to see responsive scaling)</p>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Sizes</p>
                 <div className="flex flex-wrap items-end gap-4">
-                  <Button href="#" size="sm">Small</Button>
-                  <Button href="#" size="md">Medium</Button>
-                  <Button href="#" size="lg">Large</Button>
-                  <Button href="#" size="xl">Extra Large</Button>
+                  <Button href="#buttons" size="sm">Small</Button>
+                  <Button href="#buttons" size="md">Medium</Button>
+                  <Button href="#buttons" size="lg">Large</Button>
+                  <Button href="#buttons" variant="secondary" size="sm">Small</Button>
+                  <Button href="#buttons" variant="secondary" size="md">Medium</Button>
+                  <Button href="#buttons" variant="secondary" size="lg">Large</Button>
                 </div>
               </div>
               <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Sizes — secondary</p>
-                <div className="flex flex-wrap items-end gap-4">
-                  <Button href="#" variant="secondary" size="sm">Small</Button>
-                  <Button href="#" variant="secondary" size="md">Medium</Button>
-                  <Button href="#" variant="secondary" size="lg">Large</Button>
-                  <Button href="#" variant="secondary" size="xl">Extra Large</Button>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Real button mode (renders a &lt;button&gt;)</p>
+                <div className="flex flex-wrap items-center gap-4">
+                  <Button type="submit">Submit</Button>
+                  <Button type="button" variant="secondary">Button</Button>
+                  <Button type="reset" variant="ghost">Reset</Button>
                 </div>
               </div>
               <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Full width</p>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Loading and disabled</p>
+                <div className="flex flex-wrap items-center gap-4">
+                  <Button type="submit" loading>Sending</Button>
+                  <Button type="submit" variant="secondary" loading>Sending</Button>
+                  <Button type="button" disabled>Disabled</Button>
+                  <Button type="button" variant="secondary" disabled>Disabled</Button>
+                </div>
+              </div>
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Full width and external</p>
                 <div className="max-w-sm space-y-3">
-                  <Button href="#" fullWidth>Primary full width</Button>
-                  <Button href="#" variant="secondary" fullWidth>Secondary full width</Button>
-                </div>
-              </div>
-              <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">External link</p>
-                <div className="flex flex-wrap gap-4">
-                  <Button href="https://dronahost.com" external>Opens new tab ↗</Button>
+                  <Button href="#buttons" fullWidth>Primary full width</Button>
+                  <Button href="#buttons" variant="secondary" fullWidth>Secondary full width</Button>
+                  <Button href="https://dronahost.com" variant="ghost" external fullWidth>Opens in a new tab</Button>
                 </div>
               </div>
             </div>
@@ -292,7 +299,7 @@ export default function V2ShowcasePage() {
             id="contact-form"
             title="Contact Form"
             status="needs-work"
-            notes="Embedded in /contact only — not a reusable component."
+            notes="Used on /contact only. Zod-validated, honeypot, rate-limited, stored in MongoDB, honest failure message. Still missing: an email notification to the team and a retention policy."
           >
             <p className="text-sm text-muted-foreground">
               The contact form is embedded directly in the{" "}
@@ -307,7 +314,7 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="announcement-bar"
             title="Announcement Bar"
-            status="pending-review"
+            status="built"
             notes="Reads content/announcement.ts and renders nothing while disabled. The sample below is forced on for review only. Dismissal is remembered per message id."
           >
             <div className="overflow-hidden rounded-lg border border-border">
@@ -324,8 +331,8 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="theme-currency"
             title="Theme Toggle and Currency Selector"
-            status="pending-review"
-            notes="Theme toggle switches dark (default) and light. The currency selector is behind FEATURES.currencySelector (off, USD only) and is forced on here for review."
+            status="built"
+            notes="Theme toggle switches dark (default) and light. The currency selector is built but behind FEATURES.currencySelector (off, USD only) and forced on here for review."
           >
             <div className="flex flex-wrap items-center gap-4">
               <ThemeToggle />
@@ -338,8 +345,8 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="header"
             title="Header"
-            status="pending-review"
-            notes="Batch A rebuild: sticky, tokens only, crawlable hosting mega menu (always in the HTML), keyboard and Escape support, mobile drawer with focus trap. Log in points to /login, which is not built yet."
+            status="built"
+            notes="Sticky, tokens only, crawlable hosting mega menu (always in the HTML), keyboard and Escape support, mobile drawer with focus trap. The Log in link renders only when FEATURES.accountArea is on."
           >
             <div className="border border-border rounded-lg overflow-hidden">
               <Header />
@@ -350,8 +357,9 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="footer"
             title="Footer"
-            status="pending-review"
-            notes="Batch A rebuild: four unique columns, real routes only. Legal entity, address, email, socials and payment methods stay hidden until set in content/company.ts and content/claims.ts."
+            status="needs-verification"
+            notes="Four unique columns, real routes only. Legal entity, address, email, socials and payment methods stay hidden until set in content/company.ts and content/claims.ts."
+            verify={["Legal entity, address and company number (hidden until set)", "Support email and social profile URLs (hidden until set)"]}
           >
             <div className="border border-border rounded-lg overflow-hidden">
               <Footer />
@@ -362,8 +370,9 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="product-hero"
             title="ProductHero"
-            status="pending-review"
+            status="needs-verification"
             notes="Hero 1 of 3. Display headline, one primary action, verified highlights, dashboard mockup. Used on the homepage. Replaces HomeHero, HomeHeroSection, HomeHeroBanner and its video variant."
+            verify={["LiteSpeed servers with server-level caching", "Free migration from your current host", "Support by ticket, live chat and WhatsApp (is live chat running? is a WhatsApp number set?)"]}
           >
             <div className="overflow-hidden rounded-lg border border-border">
               <ProductHero {...HOME_HERO} headingLevel="h2" />
@@ -373,8 +382,9 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="split-hero"
             title="SplitHero"
-            status="pending-review"
+            status="needs-verification"
             notes="Hero 2 of 3. Text beside a UI mockup (staging workflow). Used on /wordpress-hosting. Replaces InnerPageHeroBanner and the per-page split heroes."
+            verify={["Staging area for testing updates", "LiteSpeed servers with built-in caching", "Team moves your existing site across"]}
           >
             <div className="overflow-hidden rounded-lg border border-border">
               <SplitHero {...WORDPRESS_HERO} headingLevel="h2" />
@@ -384,8 +394,9 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="centered-hero"
             title="CenteredHero"
-            status="pending-review"
+            status="needs-verification"
             notes="Hero 3 of 3. Minimal, text only. Used on /about and /seo-services. Replaces PageHero and ExperienceHeroSection."
+            verify={["About page: team based in India serving US, UK, UAE and Europe", "SEO page: monthly retainer with readable reports"]}
           >
             <div className="overflow-hidden rounded-lg border border-border">
               <CenteredHero {...ABOUT_HERO} headingLevel="h2" />
@@ -396,8 +407,9 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="feature-grid"
             title="FeatureGrid"
-            status="pending-review"
+            status="needs-verification"
             notes="Cards, divided or plain variants; 2/3/4 columns; 1 to 12 items. Used for 'What we offer'. Replaces ServiceSection, FeatureSection and the old divided Card grid."
+            verify={["Per-page feature copy: LiteSpeed, staging, free migration, SSL, backups, malware scanning, firewall rules, network-level DDoS protection"]}
           >
             <div className="space-y-10">
               <FeatureGrid {...HOME_OFFER} columns={4} headingLevel="h3" className="!py-0" />
@@ -408,8 +420,9 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="bento-grid"
             title="BentoGrid"
-            status="pending-review"
+            status="needs-verification"
             notes="Asymmetric tiles that pair a short claim with a small CSS visual. Used for 'Why DronaHost' on the homepage."
+            verify={["Staging copies and restore points", "LiteSpeed page caching", "Support by ticket, live chat and WhatsApp"]}
           >
             <BentoGrid
               eyebrow={HOME_BENTO.eyebrow}
@@ -431,8 +444,9 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="two-column"
             title="TwoColumn"
-            status="pending-review"
+            status="needs-verification"
             notes="Text, checklist and actions beside a designed visual (no placeholder images). Four visuals shown: settings, migration, protection, support."
+            verify={["Staging environments", "Free migration, review before DNS switch", "Automatic backups with restore points", "Malware scanning, firewall rules, SSL auto-renew"]}
           >
             <div className="space-y-4">
               {HOME_SPLITS.map((split, i) => (
@@ -455,8 +469,9 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="comparison-table"
             title="ComparisonTable"
-            status="pending-review"
+            status="needs-verification"
             notes="Real <table> with caption, row/column headers, sticky first column and a keyboard-scrollable wrapper. Top: hosting types (homepage). Bottom: plans, built from data/pricing.json."
+            verify={["Every plan row comes from data/pricing.json: limits, “Unlimited” resources, backup retention, DDoS protection, staging, priority support, dedicated account manager"]}
           >
             <div className="space-y-6">
               <ComparisonTable {...HOME_COMPARE} headingLevel="h3" rowHeader="Hosting type" className="!py-0" />
@@ -474,8 +489,9 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="pricing-plans"
             title="PricingPlans"
-            status="pending-review"
+            status="needs-verification"
             notes="Billing toggle (only because pricing.json offers monthly and annual), highlighted plan, renewal line under the price, 'Price on request' when prices are hidden, add-ons, and a native <details> full feature table. Prices are draft and hidden in production until FEATURES.pricesConfirmed."
+            verify={["Prices and the annual total (12 x the per-month annual price)", "“Same price, no increase” renewal line", "“Unlimited” sites and storage on higher plans", "Staging, free migration, priority support, performance tuning per plan", "Plan names and badges (“Pop”, “Most Popular”, “High Power”)", "30-day guarantee note (hidden until verified)"]}
           >
             <PricingPlans
               title="Choose your plan"
@@ -495,7 +511,7 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="testimonials"
             title="Testimonials"
-            status="pending-review"
+            status="built"
             notes="Renders only with name, role, company and a source link; hidden otherwise. Samples are forced on here and labelled. Photo optional (initials fallback). Replaces the star-rated cards."
           >
             <Testimonials title="What customers say" headingLevel="h3" items={SAMPLE_TESTIMONIALS} showSamples className="!py-0" />
@@ -504,7 +520,7 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="logo-wall"
             title="LogoWall"
-            status="pending-review"
+            status="built"
             notes="Verified logos only (written permission). Hidden when none. Third-party rating only with a source link. Text wordmark when an image is missing."
           >
             <LogoWall title="Businesses that host with DronaHost" headingLevel="h3" logos={SAMPLE_LOGOS} showSamples className="!py-0" />
@@ -513,7 +529,7 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="case-study"
             title="CaseStudy"
-            status="pending-review"
+            status="built"
             notes="Hidden unless it links to a customer-approved published source. Sample forced on here."
           >
             <CaseStudy {...SAMPLE_CASE_STUDY} headingLevel="h3" showSamples className="!py-0" />
@@ -522,8 +538,8 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="stats-bar"
             title="StatsBar"
-            status="pending-review"
-            notes="Driven by content/claims.ts. Renders nothing until a claim is verified; each stat can link to its proof page. Sample forced on here."
+            status="built"
+            notes="Driven by content/claims.ts. Renders nothing until a claim is verified; each stat can link to its proof page. Dividers only between stats, no end caps. Sample forced on here."
           >
             <StatsBar claims={CLAIMS.slice(0, 4)} className="!py-0" />
           </ShowcaseSection>
@@ -531,7 +547,7 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="trust-signals"
             title="TrustSignals"
-            status="pending-review"
+            status="built"
             notes="Guarantee, SLA, security, data-center locations, DPA and support. Each item shows only when verified in content/trust.ts. Samples forced on here."
           >
             <TrustSignals title="Why you can trust us" headingLevel="h3" items={TRUST_ITEMS} showSamples note="Renewal prices are shown next to the signup price on every plan." className="!py-0" />
@@ -540,7 +556,7 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="trust-badges"
             title="TrustBadges"
-            status="pending-review"
+            status="built"
             notes="Accepted payment methods only (never trust marks). Hidden until verified."
           >
             <TrustBadges showSamples />
@@ -550,8 +566,9 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="faq"
             title="FAQSection"
-            status="pending-review"
-            notes="Native <details> accordion: answers are in the initial HTML, work without JavaScript and are keyboard accessible. Pair with FAQPage JSON-LD for the same visible items."
+            status="needs-verification"
+            notes="Native <details> accordion: answers are in the initial HTML, work without JavaScript and are keyboard accessible. Single outline when open, divider between question and answer, optional help card with a button. Pair with FAQPage JSON-LD for the same visible items."
+            verify={["Homepage answers: managed stack, migration, “same price at renewal”, staging, backups"]}
           >
             <FAQSection {...HOME_FAQ} headingLevel="h3" openFirst className="!py-0" />
           </ShowcaseSection>
@@ -559,7 +576,7 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="cta-band"
             title="CTABand"
-            status="pending-review"
+            status="built"
             notes="One primary action, one quieter action. Replaces HomeCTA and CTASection."
           >
             <CTABand {...HOME_CTA} headingLevel="h3" className="!py-0" />
@@ -568,7 +585,7 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="process-timeline"
             title="ProcessTimeline"
-            status="pending-review"
+            status="built"
             notes="Semantic ordered list. Horizontal from lg, vertical rail on phones. Replaces ProcessSteps / HowItWorks / OurProcess."
           >
             <ProcessTimeline title="How moving your site works" headingLevel="h3" steps={MIGRATION_STEPS} className="!py-0" />
@@ -577,7 +594,7 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="resource-grid"
             title="ResourceGrid"
-            status="pending-review"
+            status="built"
             notes="Blog/resource cards with crawlable title links and no required image. Dates formatted unambiguously."
           >
             <ResourceGrid title="From the blog" headingLevel="h3" posts={SAMPLE_POSTS} className="!py-0" />
@@ -586,7 +603,7 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="code-block"
             title="CodeBlock"
-            status="pending-review"
+            status="built"
             notes="Real <pre><code> in the initial HTML, keyboard-scrollable, with a copy button as the only client JS."
           >
             <div className="max-w-2xl"><CodeBlock title="wp-config.php" language="php" code={SAMPLE_CODE} /></div>
@@ -595,8 +612,8 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="newsletter"
             title="NewsletterSignup"
-            status="pending-review"
-            notes="Off by default (FEATURES.newsletter) because no endpoint stores addresses yet. Zod-validated, labelled, aria-live status, privacy line. Forced on here."
+            status="needs-work"
+            notes="Off by default (FEATURES.newsletter) because no endpoint stores addresses yet. UI is built, Zod-validated, labelled and aria-live. Needs a subscribe endpoint and a double opt-in flow before it is switched on."
           >
             <NewsletterSignup forceEnabled className="!py-0" />
           </ShowcaseSection>
@@ -604,8 +621,9 @@ export default function V2ShowcasePage() {
           <ShowcaseSection
             id="support-channels"
             title="SupportChannels"
-            status="pending-review"
+            status="needs-verification"
             notes="WhatsApp / live chat / ticket. A channel shows only when it exists (number set, widget installed); ticket is always real. Samples forced on here."
+            verify={["WhatsApp number (hidden until set)", "Live chat: is a widget installed and staffed?", "Ticket system exists"]}
           >
             <SupportChannels title="Reach the team" headingLevel="h3" showSamples className="!py-0" />
           </ShowcaseSection>
@@ -620,7 +638,7 @@ export default function V2ShowcasePage() {
             <p className="text-sm text-muted-foreground mb-4">
               JsonLd injects a{" "}
               <code className="rounded bg-muted px-1 py-0.5 text-xs">
-                {"<script type=\"application/ld+json\">"}
+                {"<script type=“application/ld+json”>"}
               </code>{" "}
               tag with no visual output. Preview of the schema passed below:
             </p>
@@ -635,7 +653,7 @@ export default function V2ShowcasePage() {
             id="badge"
             title="Badge"
             status="built"
-            notes="Four variants: primary (orange), secondary (blue), success (green), neutral (gray). Used for plan labels, status tags, taglines."
+            notes="Six variants: primary (orange tint), secondary (teal tint), success, warning, danger, neutral. Used for plan labels and status tags."
           >
             <div className="flex flex-wrap gap-3">
               <Badge variant="primary">WordPress Hosting</Badge>

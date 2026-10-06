@@ -373,7 +373,7 @@
       "slug": "dedicated-core",
       "badge": "WooCommerce / Large Store",
       "highlight": false,
-      "description": "Dedicated infrastructure built for high-traffic, mission-critical platforms. Isolated resources — no shared neighbours.",
+      "description": "Dedicated infrastructure built for high-traffic, mission-critical platforms. Isolated resources — no shared neighbors.",
       "cta": {
         "label": "Start Dedicated Core",
         "href": "/checkout?plan=dedicated-core"
@@ -544,7 +544,7 @@
     {
       "id": "page-speed-boost",
       "name": "Page Speed Boost",
-      "description": "Advanced image optimisation (AVIF/WebP conversion), critical CSS extraction, and JS deferral tuned for Core Web Vitals.",
+      "description": "Advanced image optimization (AVIF/WebP conversion), critical CSS extraction, and JS deferral tuned for Core Web Vitals.",
       "pricing": {
         "monthly": {
           "USD": 10,
@@ -572,7 +572,7 @@
     {
       "id": "backup-5gb",
       "name": "Offsite Backup — 5 GB",
-      "description": "Daily off-server backups stored in an independent data centre. 30-day retention.",
+      "description": "Daily off-server backups stored in an independent data center. 30-day retention.",
       "pricing": {
         "monthly": {
           "USD": 3,
@@ -586,7 +586,7 @@
     {
       "id": "backup-10gb",
       "name": "Offsite Backup — 10 GB",
-      "description": "Daily off-server backups stored in an independent data centre. 30-day retention.",
+      "description": "Daily off-server backups stored in an independent data center. 30-day retention.",
       "pricing": {
         "monthly": {
           "USD": 5,
@@ -600,7 +600,7 @@
     {
       "id": "backup-30gb",
       "name": "Offsite Backup — 30 GB",
-      "description": "Daily off-server backups stored in an independent data centre. 30-day retention.",
+      "description": "Daily off-server backups stored in an independent data center. 30-day retention.",
       "pricing": {
         "monthly": {
           "USD": 9,
@@ -614,7 +614,7 @@
     {
       "id": "backup-60gb",
       "name": "Offsite Backup — 60 GB",
-      "description": "Daily off-server backups stored in an independent data centre. 30-day retention.",
+      "description": "Daily off-server backups stored in an independent data center. 30-day retention.",
       "pricing": {
         "monthly": {
           "USD": 13,
@@ -628,7 +628,7 @@
     {
       "id": "backup-100gb",
       "name": "Offsite Backup — 100 GB",
-      "description": "Daily off-server backups stored in an independent data centre. 30-day retention.",
+      "description": "Daily off-server backups stored in an independent data center. 30-day retention.",
       "pricing": {
         "monthly": {
           "USD": 25,
@@ -642,7 +642,7 @@
     {
       "id": "backup-250gb",
       "name": "Offsite Backup — 250 GB",
-      "description": "Daily off-server backups stored in an independent data centre. 30-day retention.",
+      "description": "Daily off-server backups stored in an independent data center. 30-day retention.",
       "pricing": {
         "monthly": {
           "USD": 35,

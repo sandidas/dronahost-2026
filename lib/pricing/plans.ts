@@ -1,4 +1,5 @@
 import pricing from "@/data/pricing.json";
+import { isVerified } from "@/content/claims";
 import { FEATURES } from "@/lib/flags";
 import { DEFAULT_CURRENCY, formatPrice, type CurrencyCode } from "@/lib/pricing";
 
@@ -16,6 +17,8 @@ export type PlanCardData = {
   monthly: string | null;
   /** Formatted per-month price when billed annually. Null for custom plans. */
   annual: string | null;
+  /** Formatted total billed once a year (12 x the annual per-month price). Null for custom plans. */
+  annualTotal: string | null;
   /** Formatted renewal price per month on the annual plan. */
   renewal: string | null;
   /** True when the renewal price equals the signup price (data-driven, never assumed). */
@@ -68,6 +71,7 @@ export function buildPlanCards(currency: CurrencyCode = DEFAULT_CURRENCY): PlanC
       custom,
       monthly: monthly == null ? null : formatPrice(monthly, currency),
       annual: annual == null ? null : formatPrice(annual, currency),
+      annualTotal: annual == null ? null : formatPrice(Math.round(annual * 12 * 100) / 100, currency),
       renewal: renewal == null ? null : formatPrice(renewal, currency),
       renewalSame: renewal != null && renewal === annual,
       highlights: planHighlights(p),
@@ -80,11 +84,27 @@ export function buildPlanCards(currency: CurrencyCode = DEFAULT_CURRENCY): PlanC
 
 export const VAT_DISPLAY = pricing.currencies[DEFAULT_CURRENCY].vatDisplay;
 
-export const ADDONS = pricing.addons.map((a) => ({
+const toAddon = (a: (typeof pricing.addons)[number]) => ({
   id: a.id,
   name: a.name,
   description: a.description,
   monthly: formatPrice(a.pricing.monthly[DEFAULT_CURRENCY]),
-}));
+});
 
-export const INCLUDED_WITH_EVERY_PLAN: string[] = pricing.includedWithEveryPlan.map((i) => i.label);
+const isBackup = (a: { id: string }) => a.id.startsWith("backup-");
+
+/** Add-ons other than offsite backup (those are one card with a size selector). */
+export const ADDONS = pricing.addons.filter((a) => !isBackup(a)).map(toAddon);
+
+/** Offsite backup sizes, from pricing.json. The size comes from the add-on name, e.g. "Offsite Backup — 5 GB". */
+export const BACKUP_ADDON = (() => {
+  const tiers = pricing.addons.filter(isBackup).map((a) => ({ ...toAddon(a), size: a.name.split("—").pop()?.trim() ?? a.name }));
+  return tiers.length > 0
+    ? { name: "Offsite Backup", description: pricing.addons.find(isBackup)?.description ?? "", tiers }
+    : null;
+})();
+
+/** The guarantee is listed in pricing.json but only shown once it is verified in content/claims.ts. */
+export const INCLUDED_WITH_EVERY_PLAN: string[] = pricing.includedWithEveryPlan
+  .filter((i) => i.id !== "money-back" || isVerified("money-back"))
+  .map((i) => i.label);

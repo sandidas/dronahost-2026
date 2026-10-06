@@ -25,7 +25,7 @@ import { startingPriceLabel } from "@/lib/pricing";
 
 export const metadata = buildMetadata({
   title: "DronaHost — Managed WordPress & Cloud Hosting",
-  description: `High-performance WordPress and cloud hosting with NVMe storage and LiteSpeed servers. Serving US, UK, and UAE businesses${startingPriceLabel() ? ` from ${startingPriceLabel()}` : ""}.`,
+  description: `Managed WordPress and cloud hosting for businesses in the US, UK, UAE and Europe, with migration help and support by ticket, chat or WhatsApp${startingPriceLabel() ? ` from ${startingPriceLabel()}` : ""}.`,
   path: "/",
 });
 

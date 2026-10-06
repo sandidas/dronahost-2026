@@ -35,7 +35,7 @@ export default function HeroContent({
   return (
     <div className={cn("min-w-0", centered && "mx-auto flex max-w-3xl flex-col items-center text-center")}>
       {eyebrow && <p className="t-eyebrow">{eyebrow}</p>}
-      <Heading id={headingId} className={cn(scale === "display" ? "t-display" : "t-h1", "text-foreground", eyebrow && "mt-4")}>
+      <Heading id={headingId} className={cn(scale === "display" ? "t-display" : "t-h1", "text-balance text-foreground", eyebrow && "mt-4")}>
         {title}
         {titleAccent && (
           <>

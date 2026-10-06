@@ -1,11 +1,11 @@
 /*
  * DronaHost design tokens
  * ───────────────────────
- * Single source of truth for colour, radius, shadow, type and motion.
+ * Single source of truth for color, radius, shadow, type and motion.
  * Dark is the default theme (`.dark` on <html>); light is `:root` / `.light`.
  *
  * Brand rules (docs/reference/brand):
- *   Orange #FE5504  = the ACTION colour (primary CTA, one per viewport).
+ *   Orange #FE5504  = the ACTION color (primary CTA, one per viewport).
  *   Teal   #05A2C6  = secondary (links, icons, data accents, one highlighted word per heading).
  *   No other hues. No pink, purple or indigo.
  *
@@ -13,7 +13,7 @@
  *   - On bright brand fills use navy text (#07131F).
  *   - On white / light surfaces use the deep shades (#C23700 orange, #027280 teal).
  * `npm run check:contrast` verifies every pair below and fails the build on a violation.
- * Keep colour tokens as 6-digit hex so the checker can parse them.
+ * Keep color tokens as 6-digit hex so the checker can parse them.
  */
 
 /* ── Raw brand palette (not theme-aware; use semantic tokens in components) ── */
@@ -41,15 +41,21 @@
   --muted: #e3f1f2;
   --muted-foreground: #3f5b70;
   --subtle-foreground: #52697c;
-  --border: #c3d9dd;
-  --border-strong: #9fbbc2;
+  --border: #b2cbd1;
+  --border-strong: #84a4ad;
   --ring: #027280;
 
   /* Action (orange): fill + text */
   --action: #c23700;
   --action-hover: #a83000;
   --action-active: #8f2900;
-  --action-foreground: #ffffff;
+  --action-foreground: #07131f;
+  /* Button fill: bright brand orange with navy text in both themes. --action stays the
+     darker text-safe orange for links and badges on light surfaces. */
+  --action-fill: #fe5504;
+  --action-fill-hover: #ff6b26;
+  --action-fill-active: #e84a00;
+  --on-action: #07131f;
   /* Secondary (teal): fill + text/link */
   --accent: #027280;
   --accent-hover: #015c68;
@@ -70,6 +76,8 @@
   --inverse-muted: #b8cdd9;
 
   --shadow-rgb: 9 47 73;
+  /* Multiplier on shadow opacity: light surfaces need stronger shadows to separate. */
+  --shadow-k: 1.9;
   --inner-highlight: rgb(255 255 255 / 0.7);
   --glow-orange: rgb(254 85 4 / 0.1);
   --glow-teal: rgb(5 162 198 / 0.12);
@@ -96,6 +104,10 @@
   --action-hover: #ff6b26;
   --action-active: #e84a00;
   --action-foreground: #07131f;
+  --action-fill: #fe5504;
+  --action-fill-hover: #ff6b26;
+  --action-fill-active: #e84a00;
+  --on-action: #07131f;
   --accent: #05a2c6;
   --accent-hover: #2bb8d9;
   --accent-foreground: #07131f;
@@ -113,6 +125,7 @@
   --inverse-muted: #a9bbc9;
 
   --shadow-rgb: 0 0 0;
+  --shadow-k: 1;
   --inner-highlight: rgb(255 255 255 / 0.1);
   --glow-orange: rgb(254 85 4 / 0.12);
   --glow-teal: rgb(5 162 198 / 0.14);
@@ -123,9 +136,9 @@
 :root,
 .light,
 .dark {
-  --primary: var(--action);
-  --primary-light: var(--action-hover);
-  --primary-foreground: var(--action-foreground);
+  --primary: var(--action-fill);
+  --primary-light: var(--action-fill-hover);
+  --primary-foreground: var(--on-action);
   --secondary: var(--accent);
   --secondary-light: var(--accent-hover);
   --accent-light: var(--accent-hover);
@@ -189,20 +202,20 @@
   --radius-xl: 1rem;
   --radius-2xl: 1.5rem;
 
-  /* Layered, soft shadows. Colour comes from --shadow-rgb so dark mode stays calm. */
-  --shadow-xs: 0 1px 2px rgb(var(--shadow-rgb) / 0.08);
+  /* Layered, soft shadows. Color comes from --shadow-rgb so dark mode stays calm. */
+  --shadow-xs: 0 1px 2px rgb(var(--shadow-rgb) / calc(0.08 * var(--shadow-k)));
   --shadow-sm:
-    0 1px 2px rgb(var(--shadow-rgb) / 0.06), 0 2px 6px -1px rgb(var(--shadow-rgb) / 0.08);
+    0 1px 2px rgb(var(--shadow-rgb) / calc(0.06 * var(--shadow-k))), 0 2px 6px -1px rgb(var(--shadow-rgb) / calc(0.08 * var(--shadow-k)));
   --shadow-md:
-    0 1px 2px rgb(var(--shadow-rgb) / 0.06), 0 4px 12px -2px rgb(var(--shadow-rgb) / 0.1),
-    0 12px 24px -8px rgb(var(--shadow-rgb) / 0.12);
+    0 1px 2px rgb(var(--shadow-rgb) / calc(0.06 * var(--shadow-k))), 0 4px 12px -2px rgb(var(--shadow-rgb) / calc(0.1 * var(--shadow-k))),
+    0 12px 24px -8px rgb(var(--shadow-rgb) / calc(0.12 * var(--shadow-k)));
   --shadow-lg:
-    0 2px 4px rgb(var(--shadow-rgb) / 0.06), 0 8px 20px -4px rgb(var(--shadow-rgb) / 0.12),
-    0 24px 48px -12px rgb(var(--shadow-rgb) / 0.16);
+    0 2px 4px rgb(var(--shadow-rgb) / calc(0.06 * var(--shadow-k))), 0 8px 20px -4px rgb(var(--shadow-rgb) / calc(0.12 * var(--shadow-k))),
+    0 24px 48px -12px rgb(var(--shadow-rgb) / calc(0.16 * var(--shadow-k)));
   --shadow-xl:
-    0 4px 8px rgb(var(--shadow-rgb) / 0.06), 0 16px 32px -8px rgb(var(--shadow-rgb) / 0.16),
-    0 40px 80px -20px rgb(var(--shadow-rgb) / 0.24);
-  --shadow-2xl: 0 48px 96px -24px rgb(var(--shadow-rgb) / 0.32);
+    0 4px 8px rgb(var(--shadow-rgb) / calc(0.06 * var(--shadow-k))), 0 16px 32px -8px rgb(var(--shadow-rgb) / calc(0.16 * var(--shadow-k))),
+    0 40px 80px -20px rgb(var(--shadow-rgb) / calc(0.24 * var(--shadow-k)));
+  --shadow-2xl: 0 48px 96px -24px rgb(var(--shadow-rgb) / calc(0.32 * var(--shadow-k)));
 
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-sora), var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
@@ -255,7 +268,7 @@ body {
   /* ── Typography: fluid, tight tracking, balanced wrapping ── */
   .t-display {
     font-family: var(--font-heading);
-    font-size: clamp(2.25rem, 1.4rem + 3.4vw, 4rem);
+    font-size: clamp(2.25rem, 1.5rem + 2.6vw, 3.5rem);
     line-height: 1.04;
     letter-spacing: -0.035em;
     font-weight: 600;

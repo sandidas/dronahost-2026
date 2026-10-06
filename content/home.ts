@@ -209,12 +209,13 @@ export const HOME_TESTIMONIALS: { eyebrow: string; title: string; items: Testimo
 /** Empty until customers give written permission; the component hides itself. */
 export const HOME_LOGOS: { title: string; logos: LogoItem[] } = { title: "Businesses that host with DronaHost", logos: [] };
 
-export const HOME_FAQ: { eyebrow: string; title: string; aside: { title: string; body: string }; items: FaqItem[] } = {
+export const HOME_FAQ: { eyebrow: string; title: string; aside: { title: string; body: string; cta?: { label: string; href: string } }; items: FaqItem[] } = {
   eyebrow: "Hosting basics",
   title: "Questions we are asked most",
   aside: {
     title: "Not sure what you need?",
     body: "Tell us about your site and your traffic and we will recommend a plan. If a plan is not the right fit, we will say so.",
+    cta: { label: "Talk to our team", href: "/contact" },
   },
   items: [
     {

@@ -41,24 +41,24 @@
 /* Primary: the single orange action */
 .btn-primary,
 .primary-btn {
-  background: var(--action);
-  color: var(--action-foreground);
+  background: var(--action-fill);
+  color: var(--on-action);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.28),
     0 1px 2px rgb(var(--shadow-rgb) / 0.2),
-    0 6px 16px -6px color-mix(in srgb, var(--action) 55%, transparent);
+    0 6px 16px -6px color-mix(in srgb, var(--action-fill) 55%, transparent);
 }
 .btn-primary:hover,
 .primary-btn:hover {
-  background: var(--action-hover);
+  background: var(--action-fill-hover);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.32),
     0 1px 2px rgb(var(--shadow-rgb) / 0.2),
-    0 10px 24px -8px color-mix(in srgb, var(--action) 65%, transparent);
+    0 10px 24px -8px color-mix(in srgb, var(--action-fill) 65%, transparent);
 }
 .btn-primary:active,
 .primary-btn:active {
-  background: var(--action-active);
+  background: var(--action-fill-active);
   transform: translateY(1px);
   box-shadow: inset 0 1px 2px rgb(var(--shadow-rgb) / 0.25);
 }
@@ -204,10 +204,10 @@
 @layer components {
 /* ── Forced interaction states (design-system page only; mirrors :hover/:active) ── */
 .btn-primary.is-hover {
-  background: var(--action-hover);
+  background: var(--action-fill-hover);
 }
 .btn-primary.is-active {
-  background: var(--action-active);
+  background: var(--action-fill-active);
   transform: translateY(1px);
   box-shadow: inset 0 1px 2px rgb(var(--shadow-rgb) / 0.25);
 }

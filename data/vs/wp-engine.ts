@@ -20,7 +20,7 @@ const data: CompetitorData = {
     "25× lower entry price — dramatically more affordable for small teams",
     "Wildcard SSL on all plans",
     "Unlimited free migrations",
-    "UAE and UK data centres for regional compliance requirements",
+    "UAE and UK data centers for regional compliance requirements",
   ],
   competitorPros: [
     "Staging on all plans including entry tier",

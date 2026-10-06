@@ -14,7 +14,7 @@ const LIMIT_ROWS: { label: string; get: (p: Plan) => ComparisonValue }[] = [
   { label: "Domains", get: (p) => fmt(p.limits.domains) },
   { label: "Mailboxes", get: (p) => fmt(p.limits.mailboxes) },
   { label: "Databases", get: (p) => fmt(p.limits.databases) },
-  { label: "Backup retention", get: (p) => (p.limits.backupRetentionDays ? `${p.limits.backupRetentionDays} days` : false) },
+  { label: "Backup retention", get: (p) => (p.limits.backupRetentionDays ? `${p.limits.backupRetentionDays} ${p.limits.backupRetentionDays === 1 ? "day" : "days"}` : false) },
   { label: "Dedicated resources", get: (p) => Boolean(p.limits.dedicatedResources) },
 ];
 

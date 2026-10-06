@@ -5,7 +5,7 @@ const data: CompetitorData = {
   name: "Bluehost",
   tagline: "DronaHost vs Bluehost — Which Shared Host Is Worth Your Money?",
   intro:
-    "Bluehost is one of the most heavily marketed shared hosting providers, officially recommended by WordPress.org. However, it is owned by EIG (Endurance International Group) and has faced criticism for performance and renewal pricing. DronaHost is a modern alternative with NVMe SSD storage, competitive renewal rates, and data centres in the UK and UAE.",
+    "Bluehost is one of the most heavily marketed shared hosting providers, officially recommended by WordPress.org. However, it is owned by EIG (Endurance International Group) and has faced criticism for performance and renewal pricing. DronaHost is a modern alternative with NVMe SSD storage, competitive renewal rates, and data centers in the UK and UAE.",
   table: [
     { feature: "Starter Price", dronahost: "$0.99/mo", competitor: "$2.95/mo", winner: "dronahost" },
     { feature: "Renewal Price", dronahost: "$2.99/mo", competitor: "$10.99/mo", winner: "dronahost" },

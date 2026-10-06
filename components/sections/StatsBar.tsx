@@ -27,27 +27,37 @@ export default function StatsBar({ ids, label = "Service statistics", claims, cl
       <h2 id={headingId} className="sr-only">
         {label}
       </h2>
-      <dl className="container-site grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border lg:grid-cols-4">
-        {stats.map((stat) => {
-          const href = (stat as { href?: string }).href;
-          return (
-            <div key={stat.id} className="flex flex-col items-center bg-card px-4 py-8 text-center">
-              <dd className="font-[family-name:var(--font-heading)] text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">{stat.value}</dd>
-              <dt className="mt-2 text-sm font-medium text-muted-foreground">
-                {href ? (
-                  <Link href={href} className="underline underline-offset-4 hover:text-foreground">
-                    {stat.label}
-                  </Link>
-                ) : (
-                  stat.label
+      <div className="container-site">
+        <dl className="surface flex flex-wrap overflow-hidden">
+          {stats.map((stat, i) => {
+            const href = (stat as { href?: string }).href;
+            return (
+              <div
+                key={stat.id}
+                className={cn(
+                  "flex min-w-0 basis-1/2 flex-col items-center px-4 py-8 text-center lg:basis-0 lg:flex-1",
+                  i > 0 && "lg:border-s lg:border-border",
+                  i % 2 === 1 && "border-s border-border",
+                  i >= 2 && "border-t border-border lg:border-t-0",
                 )}
-              </dt>
-              {stat.note && <dd className="mt-1 text-xs text-subtle-foreground">{stat.note}</dd>}
-              {!stat.verified && <dd className="mt-1 text-xs font-semibold text-warning">Sample, unverified</dd>}
-            </div>
-          );
-        })}
-      </dl>
+              >
+                <dd className="font-[family-name:var(--font-heading)] text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">{stat.value}</dd>
+                <dt className="mt-2 text-sm font-medium text-muted-foreground">
+                  {href ? (
+                    <Link href={href} className="underline underline-offset-4 hover:text-foreground">
+                      {stat.label}
+                    </Link>
+                  ) : (
+                    stat.label
+                  )}
+                </dt>
+                {stat.note && <dd className="mt-1 text-xs text-subtle-foreground">{stat.note}</dd>}
+                {!stat.verified && <dd className="mt-1 text-xs font-semibold text-warning">Sample, unverified</dd>}
+              </div>
+            );
+          })}
+        </dl>
+      </div>
     </section>
   );
 }

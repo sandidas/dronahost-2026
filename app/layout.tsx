@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     default: "DronaHost — Managed WordPress & Cloud Hosting",
     template: "%s | DronaHost",
   },
-  description: `High-performance WordPress, VPS, and cloud hosting for US, UK, and UAE businesses. LiteSpeed servers and NVMe storage${startingPriceLabel() ? `, from ${startingPriceLabel()}` : ""}.`,
+  description: `Managed WordPress, VPS and cloud hosting for businesses in the US, UK, UAE and Europe${startingPriceLabel() ? `, from ${startingPriceLabel()}` : ""}.`,
   openGraph: {
     siteName: "DronaHost",
     locale: "en_US",

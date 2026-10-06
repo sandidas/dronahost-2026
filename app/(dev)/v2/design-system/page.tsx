@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 };
 
 const NAV = [
-  ["color", "Colour"],
+  ["color", "Color"],
   ["contrast", "Contrast"],
   ["type", "Type"],
   ["layout", "Radius, shadow, spacing"],
@@ -67,7 +67,7 @@ export default function DesignSystemPage() {
           </p>
         </div>
 
-        <DsSection id="color" title="Colour" intro="Navy-derived surfaces, one orange action colour, one teal secondary. No other hues.">
+        <DsSection id="color" title="Color" intro="Navy-derived surfaces, one orange action color, one teal secondary. No other hues.">
           <ColorSection tokens={tokens} />
         </DsSection>
         <DsSection

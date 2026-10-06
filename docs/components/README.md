@@ -2,7 +2,7 @@
 
 Showcased live at `/v2` (development only) and `/v2/design-system`. All components are Server Components unless marked **client**. Every section component takes a `headingLevel` (`"h2" | "h3"`, hero components also `"h1"`) so a page keeps exactly one H1, and labels itself with `aria-labelledby`.
 
-Import the design tokens from `app/styles/tokens.css` (colour, radius, shadow, type, motion) and `app/styles/buttons.css`. Never hardcode colours; use Tailwind token utilities (`bg-card`, `text-muted-foreground`, `text-link`, `border-border`, `bg-action`, ...). `npm run check:contrast` verifies every token pair.
+Import the design tokens from `app/styles/tokens.css` (color, radius, shadow, type, motion) and `app/styles/buttons.css`. Never hardcode colors; use Tailwind token utilities (`bg-card`, `text-muted-foreground`, `text-link`, `border-border`, `bg-action`, ...). `npm run check:contrast` verifies every token pair.
 
 ## Rules that apply everywhere
 
@@ -17,7 +17,7 @@ Import the design tokens from `app/styles/tokens.css` (colour, radius, shadow, t
 | `Button` | `<a>` (via `next/link`) when `href` is set, otherwise `<button>` | `variant` primary/secondary/ghost/link, `size` sm/md/lg, `loading`, `disabled`, `fullWidth`, `external`, `leadingIcon`, `trailingIcon` |
 | `Surface` | Layered card: hairline border, inner highlight, soft shadow | `variant` default/raised/glass, `padding`, `interactive`, `as` |
 | `Badge` | Small status/category label | `variant` primary/secondary/success/warning/danger/neutral |
-| `Logo` | The official SVG only (no colour or filter props) | `size` sm/md/lg, `priority` |
+| `Logo` | The official SVG only (no color or filter props) | `size` sm/md/lg, `priority` |
 | `FeatureIcon` | Teal icon tile from a curated lucide set | `name`, `size` |
 | `ThemeToggle` (**client**) | Dark (default) / light switch, no hydration flash | `showLabel` |
 | `Reveal` (**client**) | Fade-and-lift once on scroll, reduced-motion aware, no layout shift | `as`, `className` |

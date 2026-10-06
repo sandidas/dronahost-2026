@@ -60,7 +60,7 @@ export default function DataProcessingPage() {
         <h2>Sub-processors</h2>
         <p>
           DronaHost uses the following sub-processors to deliver its services:
-          data centre providers in the UK, EU, US, and UAE; payment processors;
+          data center providers in the UK, EU, US, and UAE; payment processors;
           and monitoring and security services. A current list of sub-processors
           is available on request via legal@dronahost.com.
         </p>
@@ -74,7 +74,7 @@ export default function DataProcessingPage() {
 
         <h2>Security Measures</h2>
         <p>
-          DronaHost implements the technical and organisational security measures
+          DronaHost implements the technical and organizational security measures
           described in our{" "}
           <Link href="/security" className="text-link underline underline-offset-4">
             Security Policy

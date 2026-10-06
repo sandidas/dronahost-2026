@@ -34,6 +34,8 @@ type CommonProps = {
   leadingIcon?: React.ReactNode;
   /** Icon rendered after the label. Decorative: give it aria-hidden. */
   trailingIcon?: React.ReactNode;
+  /** Longer accessible name. Must start with or contain the visible label (WCAG 2.5.3). */
+  "aria-label"?: string;
   className?: string;
   children: React.ReactNode;
 };
@@ -95,6 +97,7 @@ export default function Button(props: ButtonProps) {
       <Link
         href={props.href}
         className={classes}
+        aria-label={props["aria-label"]}
         aria-disabled={blocked || undefined}
         aria-busy={loading || undefined}
         tabIndex={blocked ? -1 : undefined}
@@ -110,6 +113,7 @@ export default function Button(props: ButtonProps) {
       type={props.type ?? "button"}
       className={classes}
       disabled={blocked}
+      aria-label={props["aria-label"]}
       aria-busy={loading || undefined}
       onClick={props.onClick}
     >
