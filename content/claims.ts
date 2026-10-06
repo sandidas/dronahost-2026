@@ -47,8 +47,11 @@ export type ClaimRecord = {
   termsPage: string | null;
   /** "published" only once the termsPage route exists and its wording has been reviewed. Otherwise "draft". */
   termsPageStatus: "draft" | "published";
-  /** "stat" is a measured number (animated count-up allowed). "assurance" is a policy or feature shown as a static line. */
-  kind: "stat" | "assurance";
+  /**
+   * "stat" is a measured number (animated count-up allowed). "assurance" is a policy shown as a static line with a terms link.
+   * "feature" is a product capability fact (backups, staging, SSH...) that gates feature tiles and list items; no strip renders it.
+   */
+  kind: "stat" | "assurance" | "feature";
   /** Icon for the static assurance strip. */
   icon?: FeatureIconName;
   /** Link text for the terms page, for example "Read the refund policy". */
@@ -79,6 +82,21 @@ const RECORDS: readonly ClaimRecord[] = [
   { id: "free-migration", kind: "assurance", icon: "server", termsLabel: "Read the migration terms", text: "Free migration to DronaHost", value: "Free", label: "Site migration", ...OWNER_CONFIRMED, termsPage: null },
   { id: "renewal-price-same", kind: "assurance", icon: "shield-check", termsLabel: "Read how renewals work", text: "Renewal price equals the signup price", value: "Same price", label: "At renewal", ...OWNER_CONFIRMED, termsPage: null },
   { id: "free-ssl", kind: "assurance", icon: "lock", text: "Free SSL certificates from Let's Encrypt", value: "Free SSL", label: "Let's Encrypt certificates", ...NONE },
+  // ── Capability facts the owner must confirm (HOME_PAGE_DESIGN.md section 7). All unverified: tiles and list items
+  // that depend on them do not render. When confirmed, set status "verified", fill source and verifiedBy/On, and point
+  // termsPage at the page that states the capability (for example "/wordpress-hosting"), then publish it.
+  { id: "managed-server-care", kind: "feature", text: "DronaHost looks after the servers your site runs on", value: "Servers", label: "Server care", ...NONE },
+  { id: "managed-hosting-tasks", kind: "feature", text: "DronaHost handles servers, backups, security and updates for managed WordPress hosting", value: "Managed", label: "What managed covers", ...NONE },
+  { id: "backups", kind: "feature", text: "Automatic backups of your site", value: "Backups", label: "Backups", ...NONE },
+  { id: "backup-retention", kind: "feature", text: "Backup retention period for each plan", value: "Retention", label: "Backup retention by plan", ...NONE },
+  { id: "staging-plans", kind: "feature", text: "A staging environment on the plans that include it", value: "Staging", label: "Staging (which plans)", ...NONE },
+  { id: "litespeed", kind: "feature", text: "LiteSpeed web servers with server-level caching", value: "LiteSpeed", label: "LiteSpeed", ...NONE },
+  { id: "ssh-wp-cli", kind: "feature", text: "SSH and WP-CLI access", value: "SSH", label: "SSH and WP-CLI", ...NONE },
+  { id: "malware-scanning", kind: "feature", text: "Malware scanning", value: "Scanning", label: "Malware scanning", ...NONE },
+  { id: "business-hosting-scope", kind: "feature", text: "What Business Hosting includes (hosting with professional email)", value: "Business", label: "Business Hosting scope", ...NONE },
+  { id: "managed-vps-scope", kind: "feature", text: "What Managed VPS includes (root access)", value: "VPS", label: "Managed VPS scope", ...NONE },
+  { id: "website-design-service", kind: "feature", text: "Website design is offered as described: a new WordPress site designed, then hosted", value: "Design", label: "Website design service", ...NONE },
+  { id: "migration-process", kind: "feature", text: "Migration process: we copy your site, you check it on a private link, you switch when ready, and your old site stays live until then", value: "Migration", label: "Migration process", ...NONE },
   { id: "cloudflare-cdn", kind: "assurance", icon: "cloud", text: "Served through the Cloudflare network", value: "CDN", label: "Cloudflare network", ...NONE },
 ];
 
