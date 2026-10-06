@@ -59,9 +59,11 @@ function PlanCard({
   const Heading = headingLevel;
   const amount = (c: Cycle) => (c === "annual" ? plan.annual : plan.monthly);
   const activeAmount = amount(cycle);
-  // One label on every card (the plan name sits in the accessible name, which still contains the visible label).
-  const ctaLabel = plan.custom ? "Talk to the team" : showPrices && activeAmount ? "Get started" : "Ask about this plan";
-  const ctaAria = plan.custom ? undefined : `${ctaLabel}${showPrices && activeAmount ? ` with ${plan.name}` : `: ${plan.name}`}`;
+  // "Choose {plan name}" when prices are shown (no price in the label). The visible label already names the plan,
+  // so it needs no separate aria-label; the generic fallback gets the plan name added for screen readers.
+  const priced = !plan.custom && showPrices && Boolean(activeAmount);
+  const ctaLabel = plan.custom ? "Talk to the team" : priced ? `Choose ${plan.name}` : "Ask about this plan";
+  const ctaAria = plan.custom || priced ? undefined : `${ctaLabel}: ${plan.name}`;
 
   return (
     <li className="flex" {...reveal(index)}>
