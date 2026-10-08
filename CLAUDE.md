@@ -433,12 +433,10 @@ All integrations wrapped in `/lib/services/[service].ts`. Each service exports t
 - Track conversions: signup, purchase, contact form, discovery call booking
 - Consider server-side tracking for accuracy (Stape, or custom)
 
-### Live Chat
+### Live Chat (not offered)
 
-- Crisp or Intercom — both handle GDPR well
-- Load via `next/script` with `strategy="lazyOnload"` — never block LCP
-- Defer widget until user idle or scrolls past hero
-- **Business hours indicator**: show "Online" only during actual covered hours across US/UK/UAE timezones
+- Live chat, WhatsApp and phone support are not offered (owner decision 22, 2026-10-07). Support is by ticket and email only.
+- Do not add a chat widget, a chat or WhatsApp button, or a phone number anywhere. If this changes, the owner reopens decision 22 first.
 
 ## Security Rules (hosting companies are high-value targets)
 

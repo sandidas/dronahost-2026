@@ -6,7 +6,7 @@ Everything below is either **hidden** until you confirm it, or **draft copy** th
 
 1. **Billing**: `data/pricing.json` lists monthly and annual billing, so the billing toggle exists. Confirm both are real, and whether web-design pricing is one-time.
 2. **True claims**: which of uptime SLA, money-back guarantee, support response time, founding year, certifications are real (section 2).
-3. **Support numbers**: WhatsApp number(s), per region if any.
+3. **Support numbers**: none. WhatsApp, live chat and phone are not offered (owner decision 22).
 4. **Final USD prices** (and whether the other currencies are real).
 5. **Legal entity name and registered address.**
 
@@ -30,7 +30,7 @@ Money-back guarantee, published uptime commitment, security practices, data-cent
 
 ## 4. Company details: `content/company.ts` (all empty)
 
-`legalName`, `registrationNumber`, `vatNumber`, `address`, `supportEmail`, `whatsappNumber`, `liveChatEnabled`, `socials`. The footer, contact page, Organization schema (`sameAs`) and llms.txt use these automatically once set.
+`legalName`, `registrationNumber`, `vatNumber`, `address`, `supportEmail`, `socials`. The footer, contact page, Organization schema (`sameAs`) and llms.txt use these automatically once set.
 
 ## 5. Feature flags: `lib/flags.ts` (all off)
 

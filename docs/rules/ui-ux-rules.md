@@ -718,10 +718,7 @@ export function useTheme() {
 
 ### 16 · Live Chat Widget Wrapper
 
-- Wrapper for Intercom / Crisp — load lazily after page is interactive
-- Custom launcher button: `--gradient-accent`, `--radius-full`
-- Position: bottom-right, 24px from edge
-- Label: "Chat with us" on desktop, icon-only on mobile
+**Retired (owner decision 22, 2026-10-07).** Live chat, WhatsApp and phone are not offered. Support is by ticket and email only. Do not build this component. If live chat is ever offered, the owner reopens decision 22 first.
 
 ---
 
@@ -868,7 +865,7 @@ const orgSchema = {
       logo: { "@type": "ImageObject", url: "https://dronahost.com/logo.png", width: 200, height: 60 },
       contactPoint: {
         "@type": "ContactPoint",
-        telephone: "+1-206-201-2431", // [EXAMPLE, NOT VERIFIED] TODO(decision #6): phone is unconfirmed
+        // telephone: omitted. Phone support is not offered (owner decision 22). Use a ContactPoint with url and email only.
         contactType: "customer service",
         email: "sales@dronahost.com", // [EXAMPLE, NOT VERIFIED] TODO(decision #6): hello@ vs sales@
         availableLanguage: ["English"],

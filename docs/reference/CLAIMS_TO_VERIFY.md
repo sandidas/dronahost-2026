@@ -18,7 +18,7 @@ For each one: confirm it is true today, or tell me to remove it. Source column =
 | Free migration, review before DNS switch | Hero, split section, FAQ, every plan | `content/*`, `data/pricing.json` |
 | Backups, restore points, per-plan retention (1 to 30 days) | Plan cards, comparison table, split section | `data/pricing.json` limits |
 | Malware scanning, SSL auto-renew, network-level DDoS | WordPress features, home split | `content/wordpress.ts`, `content/home.ts` |
-| Support by ticket, live chat and WhatsApp | Heroes, bento, support split, support channels | `content/*`, `content/company.ts` (WhatsApp number unset) |
+| Support by ticket and email (live chat and WhatsApp removed, owner decision 22) | Heroes, bento, support split, support channels | `content/*` |
 | Priority support queue, performance tuning, dedicated account manager, one-click scaling | Comparison table and plan cards | `data/pricing.json` capabilities |
 | Team based in India serving US, UK, UAE and Europe | About hero, meta description | `content/heroes.ts`, `app/(marketing)/about/page.tsx` |
 | Data centers in the US, UK, EU and UAE | `/hosting/[region]` pages (copy kept claim-free); trust item hidden | `content/trust.ts` |
