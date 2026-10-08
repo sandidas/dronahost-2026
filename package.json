@@ -26,7 +26,20 @@
     "check:no-brand": "tsx docs/content-planner/tools/check-no-brand.ts",
     "check:links": "tsx docs/content-planner/tools/check-links.ts",
     "check:schemas": "tsx docs/content-planner/tools/check-schemas.ts",
-    "test:schemas": "tsx --test docs/content-planner/tools/check-schemas.test.ts"
+    "test:schemas": "tsx --test docs/content-planner/tools/check-schemas.test.ts",
+    "content:check": "tsx docs/content-planner/tools/check-content.ts",
+    "content:register": "tsx docs/content-planner/tools/check-register.ts",
+    "content:governor": "tsx docs/content-planner/tools/governor.ts",
+    "content:eval": "tsx docs/content-planner/tools/eval.ts",
+    "content:gen-schema": "tsx docs/content-planner/tools/gen-schema.ts",
+    "content:suggest-links": "tsx docs/content-planner/tools/suggest-links.ts",
+    "content:similarity": "tsx docs/content-planner/tools/similarity.ts",
+    "content:gsc-report": "tsx docs/content-planner/tools/gsc-report.ts",
+    "content:refresh-queue": "tsx docs/content-planner/tools/refresh-queue.ts",
+    "content:install": "tsx docs/content-planner/tools/install.ts",
+    "content:init-project": "tsx docs/content-planner/tools/init-project.ts",
+    "test:tools": "tsx --test docs/content-planner/tools/*.test.ts",
+    "eval": "tsx docs/content-planner/tools/eval.ts"
   },
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.1146.0",

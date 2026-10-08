@@ -1,0 +1,16 @@
+{
+  "id": "09-no-first-hand",
+  "description": "A page with an interview gap and no original element cannot be Ready for owner review, but may stay a Draft",
+  "type": "readiness",
+  "input": "how to find plugin conflicts",
+  "expect": {
+    "readyAllowed": false,
+    "draftAllowed": true,
+    "failing": [
+      "E1",
+      "E3"
+    ]
+  },
+  "ready": "eval/fixtures/eval/drafts/plugin-conflicts-ready.md",
+  "draft": "eval/fixtures/eval/drafts/plugin-conflicts-draft.md"
+}

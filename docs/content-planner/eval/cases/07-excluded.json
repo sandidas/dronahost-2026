@@ -1,0 +1,9 @@
+{
+  "id": "07-excluded",
+  "description": "An excluded keyword is rejected",
+  "type": "resolve",
+  "input": "best web hosting",
+  "expect": {
+    "decision": "reject"
+  }
+}

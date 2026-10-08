@@ -1,0 +1,11 @@
+{
+  "id": "06-money",
+  "description": "A hosting plans keyword goes to the money plan",
+  "type": "resolve",
+  "input": "managed wordpress hosting plans",
+  "expect": {
+    "decision": "accept",
+    "plan": "01",
+    "intent": "Buy"
+  }
+}

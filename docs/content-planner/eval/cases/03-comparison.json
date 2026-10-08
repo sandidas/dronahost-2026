@@ -1,0 +1,11 @@
+{
+  "id": "03-comparison",
+  "description": "A versus keyword goes to the comparison plan",
+  "type": "resolve",
+  "input": "examplehost vs rivalhost",
+  "expect": {
+    "decision": "accept",
+    "plan": "02",
+    "intent": "Compare"
+  }
+}

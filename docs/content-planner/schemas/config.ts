@@ -23,7 +23,16 @@ export const ConfigSchema = z.object({
     claims: z.enum(["ts-export", "json"]),
     pricing: z.literal("json"),
     posts: z.enum(["files", "wordpress"]),
-    pageSpec: z.object({ $comment: z.string().optional(), command: z.string().min(1) }).nullable(),
+    pageSpec: z
+      .object({
+        $comment: z.string().optional(),
+        command: z.string().min(1),
+        /** Keys in a page spec whose strings are structure, not copy. */
+        nonCopyKeys: z.array(z.string()).default([]),
+        /** Keys that hold a button or link label. */
+        labelKeys: z.array(z.string()).default([]),
+      })
+      .nullable(),
   }),
   governor: z.object({
     maxInFlight: z.number().int().positive(),
@@ -47,6 +56,10 @@ export const ConfigSchema = z.object({
       faqAnswerWarnBelow: z.number().int(),
       faqAnswerFailAbove: z.number().int(),
       internalLinksMin: z.number().int().nonnegative(),
+      /** Page-type exceptions to faqItems, keyed by plan number such as "01". */
+      faqItemsByPlan: z.record(z.string(), z.tuple([z.number().int(), z.number().int()])).default({}),
+      similarity: z.object({ shingleWords: z.number().int().min(2), threshold: z.number().min(0).max(1) }).default({ shingleWords: 5, threshold: 0.3 }),
+      linksSuggested: z.number().int().positive().default(3),
     })
     .refine((l) => l.titleWarnAbove <= l.titleFailAbove, { message: "titleWarnAbove must not exceed titleFailAbove" })
     .refine((l) => l.gradeWarnAbove <= l.gradeFailAbove, { message: "gradeWarnAbove must not exceed gradeFailAbove" })

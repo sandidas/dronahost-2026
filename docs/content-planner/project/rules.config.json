@@ -1,22 +1,83 @@
 {
   "$comment": "Machine-readable project rules. One home for each list. Until Phase 3, lib/content/lint.ts and check-content.ts still carry copies; they are replaced by reads from this file. Schema: schemas/rules-config.ts",
   "bannedPhrases": [
-    "don't fret", "don't worry", "do the needful", "revert back", "prepone", "best of luck", "kindly", "world-class", "blazing fast",
-    "cutting-edge", "state-of-the-art", "next-generation", "revolutionary", "game-changing", "game changer", "one-to-one support",
-    "supercharge", "unlock the power", "take your business to the next level", "all-in-one", "seamless", "robust platform",
-    "scalable infrastructure", "empower your team", "we provide best services", "in today's fast-paced world", "it's important to note",
-    "dive into", "unleash", "lorem ipsum"
+    "don't fret",
+    "don't worry",
+    "do the needful",
+    "revert back",
+    "prepone",
+    "best of luck",
+    "kindly",
+    "world-class",
+    "blazing fast",
+    "cutting-edge",
+    "state-of-the-art",
+    "next-generation",
+    "revolutionary",
+    "game-changing",
+    "game changer",
+    "one-to-one support",
+    "supercharge",
+    "unlock the power",
+    "take your business to the next level",
+    "all-in-one",
+    "seamless",
+    "robust platform",
+    "scalable infrastructure",
+    "empower your team",
+    "we provide best services",
+    "in today's fast-paced world",
+    "it's important to note",
+    "dive into",
+    "unleash",
+    "lorem ipsum"
   ],
-  "bannedCtaLabels": ["click here", "learn more", "read more", "get started", "submit", "sign up", "buy now", "try it", "order now"],
+  "bannedCtaLabels": [
+    "click here",
+    "learn more",
+    "read more",
+    "get started",
+    "submit",
+    "sign up",
+    "buy now",
+    "try it",
+    "order now"
+  ],
   "featureWords": [
-    { "pattern": "litespeed", "claim": "litespeed" },
-    { "pattern": "nvme", "claim": "nvme" },
-    { "pattern": "free ssl", "claim": "free-ssl" },
-    { "pattern": "daily backups?", "claim": "backups" },
-    { "pattern": "uptime", "claim": "uptime-sla" },
-    { "pattern": "\\bCDN\\b", "claim": "cloudflare-cdn", "caseSensitive": true }
+    {
+      "pattern": "litespeed",
+      "claim": "litespeed"
+    },
+    {
+      "pattern": "nvme",
+      "claim": "nvme"
+    },
+    {
+      "pattern": "free ssl",
+      "claim": "free-ssl"
+    },
+    {
+      "pattern": "daily backups?",
+      "claim": "backups"
+    },
+    {
+      "pattern": "uptime",
+      "claim": "uptime-sla"
+    },
+    {
+      "pattern": "\\bCDN\\b",
+      "claim": "cloudflare-cdn",
+      "caseSensitive": true
+    }
   ],
-  "forbiddenChannels": ["WhatsApp", "live chat", "phone support", "phone number", "call us", "call our"],
+  "forbiddenChannels": [
+    "WhatsApp",
+    "live chat",
+    "phone support",
+    "phone number",
+    "call us",
+    "call our"
+  ],
   "forbiddenClaims": [
     "we host email",
     "we provide email",
@@ -36,12 +97,163 @@
   "noBrand": {
     "$comment": "Words the reusable core must never contain. The no-brand test greps rules/ plans/ templates/ schemas/ eval/ tools/ claude/ later/ for these.",
     "terms": [
-      "DronaHost", "dronahost", "Drona Host", "Alphabet Force", "Sandipan",
-      "WhatsApp", "live chat",
-      "India", "GST",
-      "WHMCS", "Hetzner", "DigitalOcean", "AWS", "Google Cloud", "Cloudflare"
+      "DronaHost",
+      "dronahost",
+      "Drona Host",
+      "Alphabet Force",
+      "Sandipan",
+      "WhatsApp",
+      "live chat",
+      "India",
+      "GST",
+      "WHMCS",
+      "Hetzner",
+      "DigitalOcean",
+      "AWS",
+      "Google Cloud",
+      "Cloudflare"
     ],
-    "patterns": ["(^|[\\s(])[$£€₹]\\s?\\d"],
-    "allowFiles": ["tools/check-no-brand.ts", "eval/sample-project"]
-  }
+    "patterns": [
+      "(^|[\\s(])[$£€₹]\\s?\\d"
+    ],
+    "allowFiles": [
+      "tools/check-no-brand.ts",
+      "eval/sample-project"
+    ]
+  },
+  "planRouting": [
+    {
+      "plan": "02",
+      "patterns": [
+        "\\bvs\\b",
+        "alternatives?\\b",
+        "\\bcompare\\b",
+        "comparison"
+      ]
+    },
+    {
+      "plan": "14",
+      "patterns": [
+        "\\bmigrat",
+        "move my .{0,25}(site|website)",
+        "switch host",
+        "business email",
+        "email hosting",
+        "email for (my |a )?domain"
+      ]
+    },
+    {
+      "plan": "08",
+      "patterns": [
+        "\\bdomains?\\b",
+        "\\.com\\b",
+        "\\.co\\.uk\\b",
+        "\\btransfer\\b",
+        "\\btld\\b"
+      ]
+    },
+    {
+      "plan": "05",
+      "patterns": [
+        "\\b(uk|us|usa|eu|uae|europe|german|germany|france|netherlands|ireland|dubai)\\b.*\\bhosting\\b",
+        "\\bhosting\\b.*\\b(uk|us|usa|eu|uae|europe|germany|france|netherlands|ireland|dubai)\\b"
+      ]
+    },
+    {
+      "plan": "07",
+      "patterns": [
+        "\\bgdpr\\b",
+        "\\bdpa\\b",
+        "data processing",
+        "\\bccpa\\b",
+        "privacy",
+        "\\bterms\\b",
+        "refund policy",
+        "\\bsla\\b"
+      ]
+    },
+    {
+      "plan": "06",
+      "patterns": [
+        "\\bagency\\b",
+        "\\bservices?\\b",
+        "\\bhire\\b",
+        "\\bredesign\\b",
+        "\\bdeveloper\\b",
+        "\\bmaintenance\\b",
+        "web design"
+      ]
+    },
+    {
+      "plan": "04",
+      "patterns": [
+        "\\bslow\\b",
+        "\\bhacked\\b",
+        "\\berror\\b",
+        "\\bfix\\b",
+        "\\bwhy is\\b",
+        "\\bttfb\\b",
+        "\\bnot working\\b"
+      ]
+    },
+    {
+      "plan": "15",
+      "patterns": [
+        "\\breviews?\\b.*\\b(trustpilot|g2|hostadvice|clutch)\\b",
+        "\\bpartnership\\b",
+        "\\bpress\\b"
+      ]
+    },
+    {
+      "plan": "03",
+      "patterns": [
+        "^how to\\b",
+        "^what is\\b",
+        "\\bguide\\b",
+        "\\bchecklist\\b",
+        "\\bexplained\\b",
+        "^how (do|does|can)\\b"
+      ]
+    },
+    {
+      "plan": "01",
+      "patterns": [
+        "\\bbuy\\b",
+        "\\bprice\\b",
+        "\\bplans?\\b",
+        "\\bhosting\\b"
+      ]
+    }
+  ],
+  "intentByPlan": {
+    "01": "Buy",
+    "02": "Compare",
+    "03": "Learn",
+    "04": "Solve",
+    "05": "Buy",
+    "06": "Buy",
+    "07": "Learn",
+    "08": "Buy",
+    "09": "Find",
+    "10": "Learn",
+    "14": "Solve",
+    "15": "Find"
+  },
+  "idioms": [
+    "go the extra mile",
+    "at the end of the day",
+    "think outside the box",
+    "hit the ground running",
+    "low-hanging fruit",
+    "touch base",
+    "ballpark figure",
+    "move the needle",
+    "game plan",
+    "raise the bar",
+    "in a nutshell",
+    "piece of cake",
+    "hit the nail on the head",
+    "back to square one",
+    "the ball is in your court"
+  ]
 }

@@ -1,0 +1,11 @@
+{
+  "id": "02-guide",
+  "description": "A how-to keyword goes to the informational plan",
+  "type": "resolve",
+  "input": "how to check wordpress version",
+  "expect": {
+    "decision": "accept",
+    "plan": "03",
+    "intent": "Learn"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": "01-fix",
+  "description": "A fix keyword goes to the troubleshooting plan",
+  "type": "resolve",
+  "input": "how to improve ttfb on wordpress",
+  "expect": {
+    "decision": "accept",
+    "plan": "04",
+    "intent": "Solve"
+  }
+}

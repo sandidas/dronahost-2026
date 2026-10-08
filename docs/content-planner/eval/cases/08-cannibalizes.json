@@ -1,0 +1,9 @@
+{
+  "id": "08-cannibalizes",
+  "description": "A secondary phrase of an existing row is merged, not given a new page",
+  "type": "resolve",
+  "input": "reduce ttfb wordpress",
+  "expect": {
+    "decision": "merge"
+  }
+}

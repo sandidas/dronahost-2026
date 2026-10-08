@@ -13,6 +13,7 @@ governor_in_flight_max: 3
 governor_month_count: 1
 governor_month_cap: 4
 governor_paused: false
+created_on: 2026-10-08
 serp_checked_on: 2026-10-08
 information_gain_status: confirmed
 original_element: artifact

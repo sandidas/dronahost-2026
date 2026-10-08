@@ -13,6 +13,7 @@ governor_in_flight_max: <from the config>
 governor_month_count: <N>
 governor_month_cap: <from the config>
 governor_paused: <true | false>
+created_on: <YYYY-MM-DD, the day the brief was started; the governor counts briefs by month>
 serp_checked_on: <YYYY-MM-DD or unavailable>
 information_gain_status: <confirmed | not-confirmed>
 original_element: <artifact | flag>

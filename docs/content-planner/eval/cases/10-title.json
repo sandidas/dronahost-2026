@@ -1,0 +1,11 @@
+{
+  "id": "10-title",
+  "description": "A title is turned into a keyword that the owner must confirm",
+  "type": "resolve",
+  "input": "How to Speed Up My WordPress Site?",
+  "expect": {
+    "decision": "confirm",
+    "keyword": "how to speed up wordpress site",
+    "plan": "03"
+  }
+}

@@ -20,6 +20,7 @@ export const BriefFrontMatter = z
     governor_month_count: z.coerce.number().int().nonnegative(),
     governor_month_cap: z.coerce.number().int().nonnegative(),
     governor_paused: Bool,
+    created_on: IsoDate,
     serp_checked_on: z.union([IsoDate, z.literal("unavailable")]),
     information_gain_status: z.enum(["confirmed", "not-confirmed"]),
     original_element: z.enum(["artifact", "flag"]),

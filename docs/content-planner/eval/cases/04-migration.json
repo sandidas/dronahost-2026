@@ -1,0 +1,11 @@
+{
+  "id": "04-migration",
+  "description": "A move-my-site keyword goes to the migration plan",
+  "type": "resolve",
+  "input": "move my wordpress site to a new host",
+  "expect": {
+    "decision": "accept",
+    "plan": "14",
+    "intent": "Solve"
+  }
+}

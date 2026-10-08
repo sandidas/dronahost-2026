@@ -1,0 +1,11 @@
+{
+  "id": "05-service",
+  "description": "A maintenance services keyword goes to the service plan",
+  "type": "resolve",
+  "input": "wordpress maintenance services",
+  "expect": {
+    "decision": "accept",
+    "plan": "06",
+    "intent": "Buy"
+  }
+}
