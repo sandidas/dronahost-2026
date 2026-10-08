@@ -4,6 +4,14 @@
 **Goal:** convert. Every element earns trust or removes a doubt about price, risk or fit.
 **Owns:** product pages and the pricing page. Nothing else on the site targets these keywords.
 
+## Workflow fit
+
+- **Workflow:** [content-writer-workflow.md](../rules/content-writer-workflow.md), Stages 0 to 3 and 5 to 7 (page spec). This plan supplies the outline (Stage 3), the CTA and the checklist (Stage 6).
+- **Intent:** Buy.
+- **Interview:** The **Money page** bank in [interview-questions.md](../rules/interview-questions.md).
+- **Brief and limits:** [brief.md](../templates/brief.md) holds the field list, including the information gain and the original element. [governor.md](../rules/governor.md) holds the caps. Length, title, description and reading limits are in the config, not in this plan.
+- **Schema:** FAQ and HowTo markup give no Google rich result ([sources.md](../rules/sources.md), item 5). Use them only when they match the visible content and help the reader.
+
 ## Pages
 
 | Page | URL | Status in repo | Primary keyword (seed, unvalidated) |
@@ -122,7 +130,7 @@ The layout signature must differ between money pages (`npm run check:pages` enfo
 - [ ] One primary CTA only
 - [ ] Renewal price shown on every plan card
 - [ ] FAQ answers start with the answer
-- [ ] Reading grade 8 to 10, sentences under 28 words, no phrase from the avoid list
+- [ ] Reading grade inside the target (warn above 10, fail above 11), no sentence over 28 words, no banned phrase
 - [ ] Unique title and description, JSON-LD validates
 - [ ] LCP image has `priority`, below-fold images lazy, CLS under 0.1
 - [ ] `npm run check:pages` and `npm run lint:content` pass

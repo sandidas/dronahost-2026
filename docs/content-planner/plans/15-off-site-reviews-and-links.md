@@ -9,6 +9,10 @@ Project specifics for this plan: [plan-specifics/15-off-site-reviews-and-links.m
 A new brand is not trusted because of its own pages alone. Rankings and AI citations follow evidence from outside. This plan is
 slow, honest work. It cannot be bought or faked, and trying to is the fastest way to lose trust.
 
+## Workflow fit
+
+This plan is **off-site work**, not a page type. It produces evidence that on-site pages then show. It is outside the governor's page caps, but it follows [eeat-and-people-first.md](../rules/eeat-and-people-first.md): never invent a review, a rating, a partner or a quote.
+
 ## Rules (these protect trust and legal risk)
 
 1. **Real customers only.** Never write, buy, trade or invent a review, a rating or a testimonial. Never ask staff or friends to post one. AI never writes any of them (content rules 8.4).

@@ -6,6 +6,14 @@
 
 This is the most useful plan for people who are not yet customers, and the one most likely to be cited by AI tools for "how do I fix ..." questions.
 
+## Workflow fit
+
+- **Workflow:** [content-writer-workflow.md](../rules/content-writer-workflow.md), All stages. This plan supplies the outline (Stage 3), the CTA and the checklist (Stage 6).
+- **Intent:** Solve.
+- **Interview:** The **Fix or troubleshooting** bank in [interview-questions.md](../rules/interview-questions.md).
+- **Brief and limits:** [brief.md](../templates/brief.md) holds the field list, including the information gain and the original element. [governor.md](../rules/governor.md) holds the caps. Length, title, description and reading limits are in the config, not in this plan.
+- **Schema:** FAQ and HowTo markup give no Google rich result ([sources.md](../rules/sources.md), item 5). Use them only when they match the visible content and help the reader.
+
 ## Content families (seeds, unvalidated)
 
 | Family | Example queries | Typical fix | Soft link |

@@ -2,7 +2,7 @@
 
 Only Google's own pages are treated as rules. Blogs and tool vendors are not. Each entry has the URL, the date fetched, the date shown on the page, a summary in our words, and what it means for this planner. **Re-check every quarter** (next: 2027-01-08). If a page changes, update the entry and run the evaluation set.
 
-Fetched on **2026-10-08** with the web fetch tool. The tool reads a page and returns a summary, so these entries are a second reading of Google's text. Where the fetched text was thin, the entry says so. Items 8 and 9 of the spec (Bing, AI crawler documents) are not part of Phase A and are not fetched yet.
+Fetched on **2026-10-08** with the web fetch tool. The tool reads a page and returns a summary, so these entries are a second reading of Google's text. Where the fetched text was thin, the entry says so. Items 1 to 7 were fetched in Phase A. Items 8 and 9 (Bing, AI crawler documents) were fetched on 2026-10-08 in Phase 2; Bing could not be read (see item 8).
 
 ---
 
@@ -71,7 +71,7 @@ Fetched on **2026-10-08** with the web fetch tool. The tool reads a page and ret
   - Including the site name briefly is accepted. There is no fixed length limit, but long titles are cut to fit the screen.
 - Snippets and meta descriptions: https://developers.google.com/search/docs/appearance/snippet (fetched 2026-10-08, dated 2026-04-20).
   - Google writes snippets from page content and uses the meta description only when it describes the page better. Write a unique, readable description per page. No keyword lists. No official length limit.
-- For the planner: our limits (title 60 characters or fewer with no brand suffix, description 160 or fewer) are **project rules, not Google rules**. Google accepts a brand name in the title. We keep our rule because the helper adds the brand. The validator labels these checks "project rule".
+- For the planner: our limits are **project rules, not Google rules**. Title: measured with the brand suffix, warn above 60 characters, fail above 70, which keeps titles inside the room Google shows. Description: warn above 160, fail only if missing or duplicate. Google accepts a brand name in the title. The suffix text is `limits.titleSuffix` in the config. The validator labels these checks "project rule".
 
 ## 7. Search Quality Rater Guidelines (E-E-A-T)
 
@@ -87,6 +87,35 @@ Fetched on **2026-10-08** with the web fetch tool. The tool reads a page and ret
 - Note: the rater guidelines tell human raters how to judge quality. They are not a list of ranking factors, and Google has said E-E-A-T is a concept, not a single ranking factor.
 - For the planner: interview answers carry Experience, named authors and sources carry Expertise and Trust, and Authoritativeness comes from Plan 15 over time. A page with no real experience, no owner and no added value is what the guidelines rate lowest.
 
+
+## 8. Bing Webmaster guidelines
+
+- URLs tried: https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a and https://www.bing.com/webmasters/help/webmasters-guidelines-30fba23a. A third try, a Bing blog post, returned 404.
+- Fetched: 2026-10-08. **Could not be read.** Both pages returned only the title "Bing Webmaster Tools - Help Documentation"; the guideline text is loaded by script and the fetch tool does not run it. Nothing is summarised here, and no rule in this folder is based on Bing's guidelines.
+- Next step: the owner pastes the guidelines text, or reads them in a browser, and Claude summarises the pasted text. Until then Bing is covered only by the same fundamentals as Google (crawlable, original, people-first content).
+- IndexNow (https://www.indexnow.org/documentation, fetched 2026-10-08, no date shown). A protocol for telling participating search engines that a URL was added, changed or removed. A site hosts a key file at its root and sends the URL, or up to 10,000 URLs in one batch, to an endpoint. The page does not say which engines take part and does not mention Google. For the planner: optional; see `later/13-search-and-ai-delivery-standard.md`. It is not a ranking lever.
+
+## 9. AI crawler documents
+
+Each provider splits its crawlers by purpose. A site can allow search and answer bots and block training bots. These entries describe what each provider says; which bots a project allows is a project decision (the host's SEO rules and `robots.txt`), not a rule here.
+
+| Provider | Bot | What the provider says it is for | robots.txt |
+|---|---|---|---|
+| OpenAI | OAI-SearchBot | Finds sites for ChatGPT search results | Obeys. Blocking it keeps the site out of ChatGPT search answers |
+| OpenAI | GPTBot | Collects content to train OpenAI models | Obeys. Blocking it opts out of training |
+| OpenAI | ChatGPT-User | Visits a page when a user asks ChatGPT to | robots.txt does not govern it, because a person triggers the visit |
+| Google | Googlebot | Search, Images, News, Discover | Obeys. This is the bot that matters for Search |
+| Google | Google-Extended | A token that controls use of content for Gemini training and grounding | Obeys. Google says it has no effect on inclusion in Search or as a ranking signal |
+| Anthropic | ClaudeBot | Collects public content that may be used in training | Obeys. Blocking signals exclusion from future training |
+| Anthropic | Claude-SearchBot | Indexes content to improve search answers | Obeys. Blocking keeps the site out of that index |
+| Anthropic | Claude-User | Fetches a page when a user asks Claude to | Obeys. Blocking may cut visibility when users ask about the site |
+| Perplexity | PerplexityBot | Surfaces sites in Perplexity search results; separate from training | Obeys |
+| Perplexity | Perplexity-User | Fetches a page when a user asks | Perplexity says it generally ignores robots.txt, because a person triggers it |
+
+- URLs and dates: https://developers.openai.com/api/docs/bots (no date shown); https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers (updated 2026-07-14); https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler (April 7, 2026); https://docs.perplexity.ai/guides/bots (no date shown). All fetched 2026-10-08. The OpenAI and Anthropic links were redirects from older addresses (platform.openai.com/docs/bots and support.anthropic.com).
+- Not fetched: Microsoft Bingbot documentation, Apple (Applebot), Meta, Common Crawl, and other providers. Add them if the project decides on a policy for them.
+- For the planner: do not block search and answer bots by accident (a CDN bot rule can). Do not promise that allowing a bot gets a citation. Plan 10 and `rules/ai-search.md` use this table.
+
 ---
 
 ## Review log
@@ -94,3 +123,4 @@ Fetched on **2026-10-08** with the web fetch tool. The tool reads a page and ret
 | Date | Who | What changed |
 |---|---|---|
 | 2026-10-08 | Claude (fetched), owner to confirm | First summaries, items 1 to 7 |
+| 2026-10-08 | Claude (fetched), owner to confirm | Item 6 title rule aligned with owner limits; item 8 (Bing) not readable; item 9 crawler table added |

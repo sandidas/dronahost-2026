@@ -6,6 +6,10 @@
 
 Project specifics for this plan: [plan-specifics/10-ai-search-queries.md](../project/plan-specifics/10-ai-search-queries.md)
 
+## Workflow fit
+
+This plan is a **layer on every page**, not a page type. Each page follows [content-writer-workflow.md](../rules/content-writer-workflow.md); this plan adds the target questions and the monthly spot-check. The working assumptions are in [ai-search.md](../rules/ai-search.md), the bot table in [sources.md](../rules/sources.md), item 9.
+
 ## How AI tools choose a source (working assumptions, re-check each quarter)
 
 - They quote **self-contained, factual sentences** near the heading that asks the question.

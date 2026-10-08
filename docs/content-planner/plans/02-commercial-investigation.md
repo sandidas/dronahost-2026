@@ -4,6 +4,14 @@
 **Goal:** earn trust by being fair, then convert the reader who is a good fit.
 **Owns:** `vs`, `alternative`, `compare` and "best for [use case]" queries.
 
+## Workflow fit
+
+- **Workflow:** [content-writer-workflow.md](../rules/content-writer-workflow.md), All stages. This plan supplies the outline (Stage 3), the CTA and the checklist (Stage 6).
+- **Intent:** Compare.
+- **Interview:** The **Comparison** bank in [interview-questions.md](../rules/interview-questions.md).
+- **Brief and limits:** [brief.md](../templates/brief.md) holds the field list, including the information gain and the original element. [governor.md](../rules/governor.md) holds the caps. Length, title, description and reading limits are in the config, not in this plan.
+- **Schema:** FAQ and HowTo markup give no Google rich result ([sources.md](../rules/sources.md), item 5). Use them only when they match the visible content and help the reader.
+
 ## Pages
 
 | Type | URL | Status | Seed keyword (unvalidated) |
@@ -63,7 +71,7 @@ Same honesty rules. Open with the reasons people leave (price at renewal, suppor
 
 ## Keyword placement and metadata
 
-- Title: `[Brand] vs [Competitor]: [Axis]` kept under 60 characters with the suffix.
+- Title: `[Brand] vs [Competitor]: [Axis]` kept inside the title limits in the config, measured with the suffix (warn above 60 characters, fail above 70).
 - Meta description: the verdict in one sentence, then the date reviewed.
 - H2s use the questions buyers ask: "Is [Competitor] cheaper at renewal?"
 

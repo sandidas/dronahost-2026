@@ -4,6 +4,14 @@
 **Goal:** win "for my country" queries and prove we understand the rules there.
 **Owns:** hosting queries with a country or region, and web design or SEO queries with a country or city.
 
+## Workflow fit
+
+- **Workflow:** [content-writer-workflow.md](../rules/content-writer-workflow.md), Stages 0 to 3 and 5 to 7 (page spec). This plan supplies the outline (Stage 3), the CTA and the checklist (Stage 6).
+- **Intent:** Buy (regional).
+- **Interview:** No bank exists for this page type yet. Use the closest bank in [interview-questions.md](../rules/interview-questions.md) and record every missing answer as a GAP.
+- **Brief and limits:** [brief.md](../templates/brief.md) holds the field list, including the information gain and the original element. [governor.md](../rules/governor.md) holds the caps. Length, title, description and reading limits are in the config, not in this plan.
+- **Schema:** FAQ and HowTo markup give no Google rich result ([sources.md](../rules/sources.md), item 5). Use them only when they match the visible content and help the reader.
+
 ## Honesty first (this plan has the highest risk of false claims)
 
 **What is true.** The facts about who runs the hosting, on what, and where are owner decisions with dates. They live in the project specifics and nowhere else. Copy may state only those facts.

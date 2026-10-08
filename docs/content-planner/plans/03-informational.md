@@ -6,6 +6,14 @@
 
 For broken-site queries ("my site is slow", "hacked", "error 500") use [Plan 04](04-problem-and-troubleshooting.md).
 
+## Workflow fit
+
+- **Workflow:** [content-writer-workflow.md](../rules/content-writer-workflow.md), All stages. This plan supplies the outline (Stage 3), the CTA and the checklist (Stage 6).
+- **Intent:** Learn (and Plan).
+- **Interview:** The **Guide or explainer** bank in [interview-questions.md](../rules/interview-questions.md).
+- **Brief and limits:** [brief.md](../templates/brief.md) holds the field list, including the information gain and the original element. [governor.md](../rules/governor.md) holds the caps. Length, title, description and reading limits are in the config, not in this plan.
+- **Schema:** FAQ and HowTo markup give no Google rich result ([sources.md](../rules/sources.md), item 5). Use them only when they match the visible content and help the reader.
+
 ## Principle: win the long tail, cite the pillars
 
 Head terms like "what is web hosting" are held by large brands and Wikipedia. We target specific, practical questions where an expert answer is rare, then connect them into clusters.
@@ -23,7 +31,7 @@ Head terms like "what is web hosting" are held by large brands and Wikipedia. We
 | Privacy for site owners | gdpr checklist for small business sites; cookie banner requirements; what is a data processing agreement | `/data-processing`, `/privacy` |
 | Next.js and modern stacks | how to host a nextjs app on a vps; nextjs vs wordpress for a business site | `/cloud-hosting`, custom development |
 
-Rule: publish the **pillar and 3 cluster posts together**, so the cluster links exist at launch.
+Rule: publish the **pillar and 3 cluster posts together**, so the cluster links exist at launch. A keyword outside this seed map goes into the closest pillar, chosen by the owner when the brief is approved; if no pillar fits, propose a new one. The "together" rule applies to a new pillar, not to a single post added to a live cluster.
 
 ## Formats
 
@@ -37,12 +45,12 @@ Rule: publish the **pillar and 3 cluster posts together**, so the cluster links 
 
 ## Human-first fields (before any draft)
 
-Fill these in the brief first: the reader's real question, our angle, what we know first-hand, the one original element, and the sources to verify ([content-writing-rules.md](../rules/content-writing-rules.md) section 8). If "what we know first-hand" is empty, the post is not ready to write. Guides carry a byline and reviewer, and an "AI-assisted" line when AI produced most of the first draft.
+Fill these in the brief first ([brief.md](../templates/brief.md)): the reader's real question, our angle, the original element, the interview answers (what we know first-hand), and the sources to verify ([content-writing-rules.md](../rules/content-writing-rules.md) section 8). If "what we know first-hand" is empty, the post stays a Draft with the gap named (see "States" in the workflow). Guides carry a byline and reviewer, and an "AI-assisted" line when AI produced most of the first draft.
 
 ## Page template
 
 1. **H1** that is the question or task in plain words.
-2. **Answer first:** 40 to 80 words directly under the H1. A reader who stops here still got the answer.
+2. **Answer first:** directly under the H1, inside the answer-block word range in the config. A reader who stops here still got the answer.
 3. **Who this is for** (one sentence) and the time it takes, if a task.
 4. **Body** in H2 sections, each opening with its own direct answer. Short paragraphs, one idea each.
 5. **First-hand detail:** at least one real scenario from running sites, with a named tool and outcome. Flag `[HUMAN REVIEW: add first-hand insight]` until added.
@@ -78,7 +86,7 @@ Pillar page, one sibling post, the supported money page, and one policy or trust
 ## Pre-ship checklist
 
 - [ ] Intent confirmed by the live results (informational, not commercial)
-- [ ] Answer in the first 80 words
+- [ ] Answer block under the H1, inside the configured range
 - [ ] Real author, review date, next review date in the register
 - [ ] Sources cited with retrieval dates
 - [ ] First-hand section written, flags cleared

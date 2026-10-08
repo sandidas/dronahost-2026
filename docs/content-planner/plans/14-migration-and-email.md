@@ -7,6 +7,14 @@
 Project specifics for this plan: [plan-specifics/14-migration-and-email.md](../project/plan-specifics/14-migration-and-email.md)
 Numbers 11 to 13 are used in `later/`, so this plan is 14.
 
+## Workflow fit
+
+- **Workflow:** [content-writer-workflow.md](../rules/content-writer-workflow.md), All stages for guides; stages 0 to 3 and 5 to 7 for service pages. This plan supplies the outline (Stage 3), the CTA and the checklist (Stage 6).
+- **Intent:** Solve and Buy.
+- **Interview:** The **Migration or email** bank in [interview-questions.md](../rules/interview-questions.md).
+- **Brief and limits:** [brief.md](../templates/brief.md) holds the field list, including the information gain and the original element. [governor.md](../rules/governor.md) holds the caps. Length, title, description and reading limits are in the config, not in this plan.
+- **Schema:** FAQ and HowTo markup give no Google rich result ([sources.md](../rules/sources.md), item 5). Use them only when they match the visible content and help the reader.
+
 ## Pages
 
 | Page | URL | Status | Primary keyword (seed, unvalidated) | Tier |
@@ -113,7 +121,7 @@ Do not target: "business email hosting", "email hosting" (we do not offer it), "
 - [ ] No mention of mailboxes or any unstaffed support channel as part of any plan
 - [ ] Premium email provider named by the owner, or the card is hidden
 - [ ] Email notice has dates, steps and a support route, and a record of sending
-- [ ] 3 or more internal links, reading grade 8 to 10, lint passes
+- [ ] 3 or more internal links, reading grade inside the target, checks pass
 
 ## Measure
 
