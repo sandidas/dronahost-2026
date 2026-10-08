@@ -47,7 +47,7 @@ If "Real material behind it" is empty, the status is **not confirmed** and the p
 - Invented statistics, studies, quotes, customers or "in my experience" statements. Claude has no first-hand experience.
 - A table of numbers with no source and date.
 - A new page for a keyword variant that the existing page already answers.
-- A claim about DronaHost that is not in `claims.ts`.
+- A claim about [Brand] that is not in `claims.ts`.
 
 ## Examples (illustrative, not real data)
 
@@ -55,7 +55,7 @@ If "Real material behind it" is empty, the status is **not confirmed** and the p
 |---|---|---|---|
 | How to improve TTFB on WordPress | Most guides list tips with no order, no stop point and a product pitch | "Unlike the top results, this page orders fixes by effort and gives a stop point and a check after each one." Needs the owner's tested numbers | Testable, and it rests on real tests |
 | Same page, weak version | The same | "A complete guide to TTFB" | Not testable. No real material behind it |
-| DronaHost vs a competitor | Most comparisons are affiliate lists with no sources | "Each competitor fact has its source URL and the date we read it, and the page names where the competitor is stronger." | Checkable on the page. Already how our comparison data works |
+| [Brand] vs a competitor | Most comparisons are affiliate lists with no sources | "Each competitor fact has its source URL and the date we read it, and the page names where the competitor is stronger." | Checkable on the page. Already how our comparison data works |
 | Migration guide | Guides skip what goes wrong | "The three failures we see most often, each with the fix." Needs the owner's interview answers | Only valid if the failures are real. Otherwise: dropped |
 
 ## Check

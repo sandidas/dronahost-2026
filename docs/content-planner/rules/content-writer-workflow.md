@@ -86,6 +86,7 @@ INFORMATION GAIN: gap in the top results (with URLs checked) / our gain in one s
   / the real material behind it / status (confirmed by owner or not). See rules/information-gain.md. No gain = drop or merge
 RECOMMENDED LENGTH: a range and the reason. A guide, not a rule. Under 300 words is flagged thin
 HUMAN FIRST (owner supplies): reader's real question / our angle
+ORIGINAL ELEMENT: the one thing the page has that others lack (a real screenshot, log, test result, checklist or table of sourced data), taken from the interview artifacts; if none, an open [HUMAN REVIEW] flag
 INTERVIEW ANSWERS (verbatim): each question from rules/interview-questions.md, the owner's exact words, the date, and the artifact
   (screenshot, log, numbers) or "none". An unanswered question is written as GAP and its section is dropped, never invented
 FACT LEDGER (project/facts/<slug>.md): every fact the page may use: the fact, source URL or project file, date read, who checked,
@@ -99,7 +100,7 @@ TOOL OR TABLE needed (rules sections 9 and 10)
 INTERNAL LINKS (3 or more): anchor text / target page / why it helps the reader
 CTA: from the intent table, one only
 SCHEMA: from the plan. Must match the visible content. Google no longer shows FAQ or HowTo rich results (rules/sources.md, item 5)
-METADATA DRAFT: title (60 characters or fewer, no brand suffix), description (160 or fewer). These limits are project rules
+METADATA DRAFT: title (warn above 60 characters, fail above 70, measured with the brand suffix; the suffix text comes from `limits.titleSuffix` in the config), description (warn above 160; fail only if missing or duplicate)
 OWNER / REVIEWER (the owner until a second person exists) / NEXT REVIEW DATE
 AI USED FOR THE DRAFT: yes or no / OPEN FLAGS: every [HUMAN REVIEW] item
 APPROVAL 1: owner approves the brief and the interview answers (no draft before this)
@@ -128,7 +129,7 @@ Write within the project rules (`voice.md`, content rules). In addition:
 4. **Unique value comes from real material only.** Allowed: steps a person tested, the owner's first-hand details, tables of sourced data, checklists, real examples from the brief, calculations the reader can repeat. Not allowed: invented statistics, studies, customers, testimonials, case studies, quotes, expert opinions, product specifications, prices, or "in my experience" statements. Claude has no first-hand experience. Where first-hand detail is missing, write `[HUMAN REVIEW: add first-hand insight]`.
 5. **Trust is real.** The author and reviewer lines name real people. Credentials come from the author page. No manufactured expertise.
 6. **Claims and prices** come only from rendering claims and `pricing.json`. No feature word in a title, H1 or description unless its claim renders.
-7. **Honest limits.** Say when DronaHost is not the right choice. State what we do not offer (email hosting, live chat, WhatsApp or phone support).
+7. **Honest limits.** Say when [Brand] is not the right choice. State what we do not offer (see `project/brand.md` and `forbiddenChannels` in `project/rules.config.json`).
 8. **Sources.** At least two primary sources for guides, each with a retrieval date. No statistic without one.
 9. **Structure for answer engines, written for people.** Descriptive headings, short answer paragraphs, lists and tables where they help, defined terms. Do not write unnaturally for AI.
 10. **No AI-sounding filler.** Run the voice self-check (`voice.md`, last section).
@@ -137,8 +138,8 @@ Write within the project rules (`voice.md`, content rules). In addition:
 
 | Field | Rule |
 |---|---|
-| SEO title | Keyword first, 60 characters or fewer, no brand suffix (the helper adds it), no feature word without a rendering claim |
-| Meta description | 160 characters or fewer. Outcome, difference, next step. Not a copy of the title |
+| SEO title | Keyword first, measured with the brand suffix (warn above 60 characters, fail above 70), no brand suffix typed by hand (the helper adds it), no feature word without a rendering claim |
+| Meta description | Warn above 160 characters; fail only if missing or duplicate. Outcome, difference, next step. Not a copy of the title |
 | URL slug | The register's target URL. Do not invent one. If `planned`, propose one and wait for approval |
 | Primary and secondary keywords | As in the register |
 | Search intent | From stage 1 |
@@ -160,7 +161,7 @@ Then answer each line **yes or no with proof** (a quote or a check result):
 | One CTA, from the intent table | |
 | No `[HUMAN REVIEW]` flag open (or each is listed in the handoff) | |
 | Author, reviewer and review date are real | |
-| Reading grade 8 to 10 | |
+| Reading grade 8 to 10 (warn above 10, fail above 11), average sentence under 20 words, none over 28 | |
 
 **Quality rubric (advisory, for the reviewer).** Score 0 to 10 on intent match, content quality, topic coverage, keyword relevance, readability, original value, trust, SERP alignment, answer-engine readiness and CTA relevance. Give one line of evidence per score. The score is **not** a gate and never decides publication. The owner decides. Any category below 7 gets a named fix.
 

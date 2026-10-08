@@ -6,31 +6,33 @@
 
 ## Honesty first (this plan has the highest risk of false claims)
 
-**What is true (owner, 2026-10-07 and 2026-10-07).** DronaHost is a focused team based in India. It does **not own servers or data centres**. It buys servers from AWS, Google Cloud, DigitalOcean, Hetzner and similar providers in various locations and runs hosting on them. There is **no fixed provider for a given city or plan**. The WHMCS billing system runs on a server in Europe.
+**What is true.** The facts about who runs the hosting, on what, and where are owner decisions with dates. They live in the project specifics and nowhere else. Copy may state only those facts.
+
+Project specifics for this plan: [plan-specifics/05-regional-and-location.md](../project/plan-specifics/05-regional-and-location.md)
 
 **Two modes for location claims**
 
 | Mode | When | What copy may say |
 |---|---|---|
 | **B: no location claim** (default today) | Until the registry below exists and is verified | "Hosting for UK businesses", "runs on infrastructure from leading cloud providers". No city, country or provider. No "UK servers" |
-| **A: location chosen at order** | When customers can pick a location and each option maps to a real WHMCS server group with capacity | "Choose where your site runs: [list]". Only the locations in the registry, for the plans that offer them |
+| **A: location chosen at order** | When customers can pick a location and each option maps to a real [Billing system] server group with capacity | "Choose where your site runs: [list]". Only the locations in the registry, for the plans that offer them |
 
 Mode A needs the product to offer it. If a site can be placed anywhere at the team's discretion, only Mode B is honest.
 
 **What that means for copy**
-- A location may be named only when it is in the **infrastructure registry** (`content/infrastructure.ts`, planned). One row per **WHMCS server group**: city, country, whether customers can choose it, which plans offer it, date verified, who verified. The provider is recorded for internal use and the sub-processor list. It is not tied to a plan in public copy.
+- A location may be named only when it is in the **infrastructure registry** (`content/infrastructure.ts`, planned). One row per **[Billing system] server group**: city, country, whether customers can choose it, which plans offer it, date verified, who verified. The provider is recorded for internal use and the sub-processor list. It is not tied to a plan in public copy.
 - Write "hosted in [City]" only for a plan and a group the registry confirms. Never "our data centre", "our servers" or "our own network". We rent the capacity and say so plainly.
 - "UK servers" or "hosted in the UK" is allowed only in Mode A with a verified UK group for that plan. Otherwise write for "UK businesses" and describe what applies (UK GDPR and the ICO), not where the server is.
 - Provider names are not used on marketing pages (see [Plan 07](07-compliance-and-trust.md), "Naming providers"). The sub-processor list names them.
-- The WHMCS server location says nothing about where customer sites run. Do not use it to imply European site hosting.
+- The [Billing system] server location says nothing about where customer sites run. Do not use it to imply regional site hosting.
 - Do not claim a local office, address or phone line in the US, UK, EU or UAE. Do not target "near me" queries.
 - Latency numbers appear only after we measure them with a stated method (tool, date, source and destination cities). Placeholder numbers never ship.
 
-**Infrastructure registry (to build before any location copy).** The owner exports the WHMCS server list (name, hostname, server group, location) and fills the table. Regional pages, the DPA sub-processor list and the "Where is my site hosted?" FAQ all read from it. `content/regions.ts` keeps the compliance regimes and stays free of locations.
+**Infrastructure registry (to build before any location copy).** The owner exports the [Billing system] server list (name, hostname, server group, location) and fills the table. Regional pages, the DPA sub-processor list and the "Where is my site hosted?" FAQ all read from it. `content/regions.ts` keeps the compliance regimes and stays free of locations.
 
 ### Standard answer: "Where is my site hosted?" (Mode B, the default)
 
-> DronaHost is a team based in India. Your site runs on servers that we rent from leading cloud providers. We name a location only when we can confirm it for your plan, and we list the providers we use in our sub-processor list. `[HUMAN REVIEW: Mode A wording needs the infrastructure registry]`
+> [Brand] is a team based in [Country]. Your site runs on servers that we rent from leading cloud providers. We name a location only when we can confirm it for your plan, and we list the providers we use in our sub-processor list. `[HUMAN REVIEW: Mode A wording needs the infrastructure registry]`
 
 Use this wording for the FAQ, the About page and AI-search answers. Do not add a city, country or provider name until the registry confirms it.
 
@@ -44,7 +46,7 @@ Use this wording for the FAQ, the About page and AI-search answers. Do not add a
 | | `/hosting/uae` | route exists | uae web hosting, wordpress hosting dubai |
 | Regional services | `/web-design/[region]`, `/seo-services/[region]` | planned, **owned by [Plan 06](06-service-pages.md)** | This plan supplies the regional facts only |
 | Country variants (phase 2) | `/hosting/de`, `/hosting/fr`, `/hosting/nl`, `/hosting/ie` | planned | hosting for german businesses |
-| Locale versions | `/en-gb`, `/en-ae` and later `de-de`, `fr-fr`, `nl-nl`, `ar-ae` | off until `FEATURES.localeVariants` | Governed by [Plan 11](../later/11-localization-country-language-currency.md), including how a region page relates to its locale page |
+| Locale versions | `/en-gb`, `/en-ae` and later `de-de`, `fr-fr`, `nl-nl`, `ar-ae` | off until the owner enables them (flag in project specifics) | Governed by [Plan 11](../later/11-localization-country-language-currency.md), including how a region page relates to its locale page |
 
 Do not create a city page for every city. A city page needs a reason a city-specific searcher will not get from the country page (a real local fact we can verify). Otherwise skip it.
 
@@ -55,12 +57,12 @@ Do not create a city page for every city. A city page needs a reason a city-spec
 | 1 | Hero | H1 states the product and the region ("WordPress hosting for UK businesses"). Currency defaults from `pricing.regions[region].defaultCurrency`. |
 | 2 | Direct answer | 40 to 80 words: what this page covers and for whom. |
 | 3 | Why location matters | Latency, data residency and search, in plain words. No invented numbers. |
-| 4 | Rules that apply | Table of regimes from `content/regions.ts` (UK GDPR and ICO, GDPR, CCPA, UAE PDPL), what each means for a site owner, and what DronaHost provides. Link to `/privacy`, `/data-processing`, `/security`. |
-| 5 | Plans and price | `PricingCards` with the regional currency and the standard tax line ("Prices exclude tax. Customers in India pay GST at checkout."). Renewal beneath. |
-| 6 | Support across time zones | Only the hours confirmed in the support policy. Channels are ticket and email only. Show times with a timezone ("9:00 AM ET"). |
+| 4 | Rules that apply | Table of regimes from `content/regions.ts` (UK GDPR and ICO, GDPR, CCPA, UAE PDPL), what each means for a site owner, and what [Brand] provides. Link to `/privacy`, `/data-processing`, `/security`. |
+| 5 | Plans and price | `PricingCards` with the regional currency and the standard tax line (wording in project specifics). Renewal beneath. |
+| 6 | Support across time zones | Only the hours confirmed in the support policy. Channels: only those the support policy lists. Show times with a timezone ("9:00 AM ET"). |
 | 7 | Payment methods | Only methods marked verified in `ACCEPTED_PAYMENT_METHODS`. |
 | 8 | Region proof | Real testimonial or case study from a customer in the region, with permission. Otherwise omit the block. |
-| 9 | FAQ | Region-specific: "Does DronaHost sign a data processing agreement?", "Do I pay tax?" (answer: no, unless you are a customer in India), "Which currency will I be charged in?". |
+| 9 | FAQ | Region-specific: "Does [Brand] sign a data processing agreement?", "Do I pay tax?" (answer from the tax rule in project specifics), "Which currency will I be charged in?". |
 | 10 | CTA | One primary, region currency. |
 
 ## Per-region notes
@@ -78,7 +80,7 @@ Never state legal conclusions ("this makes you compliant"). Say what we provide 
 
 Plan 06 owns the keywords and the template. This plan supplies the facts. Rules for those pages:
 
-- State plainly: "We work with clients in [region] from our team in India." No fake address, no local phone.
+- State plainly: "We work with clients in [region] from our team in [Country]." No fake address, no local phone.
 - Use time-zone overlap for meetings, and real case studies from clients in that region.
 - Include region-specific concerns: UK cookie rules for design, local search for SEO, Arabic and right-to-left needs for UAE.
 

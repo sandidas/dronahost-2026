@@ -51,7 +51,7 @@ The checks use the same rules as the page linter, applied to the post fields and
 | Banned phrases | Any phrase from `rules/voice.md` ("Phrases that never appear") or the content rules avoid list |
 | Numbers and claims | A price, percentage, guarantee, SLA, location or "X times faster" that is not rendered from `claims.ts`, `pricing.json` or a listed source |
 | Feature words | LiteSpeed, NVMe, free SSL, daily backups, uptime or CDN appear and the matching claim does not render |
-| Support channels | WhatsApp, live chat or phone support is mentioned |
+| Support channels | A channel listed in `forbiddenChannels` (`project/rules.config.json`) is mentioned |
 | Email | Any wording that suggests we host email |
 | Answer block | Missing, under 40 or over 80 words, or the first sentence does not answer |
 | FAQ | An answer outside 40 to 80 words, or more than one link per answer |

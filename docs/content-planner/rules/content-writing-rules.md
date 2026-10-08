@@ -1,61 +1,13 @@
-# DronaHost — Content Writing Rules
+# Content Writing Rules
 
 > Covers every word on the site: marketing copy, UI labels, error messages, empty states, blog posts, and meta content.
-> For visual design tokens and component patterns, see `docs/rules/ui-ux-rules.md`.
-> For logo and wordmark usage, see `docs/rules/brand-identity.md`.
+> For visual design tokens and component patterns, see the project's UI rules. For logo and wordmark usage, see the project's brand identity file.
+> Project terms (brand spelling, product names, support channels, locations): see `project/brand.md`.
+> Machine-readable lists (banned phrases, banned CTA labels, forbidden channels, limits): `project/rules.config.json`.
 
 > **Examples in this file are not facts.** Every number, price, SLA, location, certification and date shown in an
 > example is marked `[EXAMPLE, NOT VERIFIED]` or is a placeholder. Never copy one into live copy. Real values
-> come only from `content/claims.ts` (status `verified`) and `data/pricing.json`.
-
----
-
-## Audience and reading level
-
-**Audience:** educated small-business owners, freelancers and agencies worldwide who read English as a first or
-second language. They are smart but not necessarily technical. They compare providers carefully and distrust hype.
-
-- Reading level: roughly grade 8-10. Average sentence under 20 words. No idioms or slang that does not translate
-  ("hit the ground running", "ballpark").
-- Lead with the business outcome in plain words. Put the technical term second, in the same sentence or in a short
-  "How it works" line. Example: "Your site stays online while we update it (LiteSpeed server, NVMe storage)."
-- Write dates unambiguously ("6 October 2026"). Show units with their symbol. Show the currency symbol and the
-  billing period on every price.
-- US English by default. `en-GB` variants only when that locale exists.
-- Default currency is USD. Offer GBP, EUR, AED and INR through a selector or locale. Never show a currency without
-  its symbol and billing period.
-
-## Claims discipline
-
-Copy never contains a number, guarantee, SLA, location or certification that is not rendered from
-`content/claims.ts` with `status: "verified"`. Unverified claims render nothing. Prices come only from
-`data/pricing.json`; these rules must never contain a real price.
-
-**Terms-page rule:** a verified claim must link to the page where its terms are published (refund policy, terms, SLA).
-A claim **renders only when `status` is `"verified"` AND its `termsPage` is a published, reviewed route**
-(`termsPageStatus: "published"`; the derived `verified` flag means exactly this). Each claim in `claims.ts` carries a
-`termsPage` path and a `termsPageStatus`. `claimsMissingTermsPage()` and `claimsWithDraftTermsPage()` list what blocks each
-claim, and `claimHiddenReason()` says why one is hidden. Measured numbers (`kind: "stat"`) render in `StatsBar` with
-count-up; policy and feature claims (`kind: "assurance"`) render in the static `AssuranceStrip` with a link to their terms page.
-
-**What "reviewed" means:** Tier A pages (commercial promises) are approved by the owner. Tier B pages (legal documents) need a
-qualified human reviewer. See `plans/07-compliance-and-trust.md`, "Policy tiers". No one is appointed as a legal reviewer yet.
-
-**Publishing a claim:** when its terms page is published and reviewed, flipping `termsPageStatus` to `"published"` in
-`content/claims.ts` is the only change needed to show it (set `termsPage` too if it was null). Every place that renders the
-claim reads the same gate: `StatsBar`, `AssuranceStrip`, the pricing guarantee line and the renewal promise.
-
-Status on 2026-10-06 (owner-confirmed the same day). **None of these renders today**, because no terms page is published:
-
-| Verified claim | `termsPage` | Gap |
-|---|---|---|
-| `money-back` (30-day money-back guarantee) | `/refund-policy` | Page exists and states the 30-day policy, but it is an unreviewed draft (legal review pending) |
-| `support-24-7` (24/7 support) | `/support-policy` (planned) | Page not written. The owner must first define what 24/7 means with ticket and email only |
-| `free-migration` (free migration) | `/migration-terms` (planned) | `/migration` is a request form; no page publishes what "free" covers |
-| `renewal-price-same` (renewal equals signup price) | `/pricing-policy` (planned) | No page states it, and the owner must define how long the promise lasts |
-
-Still unverified (never rendered): `uptime-sla` (`/sla` exists and is the intended terms page), `ttfb`, `first-reply`,
-`founded`, `free-ssl`, `cloudflare-cdn`. Customer counts have no entry yet. They stay hidden until evidence is on file.
+> come only from the verified claims registry and the pricing file named in `project/PROJECT.md`.
 
 ---
 
@@ -76,92 +28,92 @@ Still unverified (never rendered): `uptime-sla` (`/sla` exists and is the intend
 
 ---
 
-## 1. Tone of Voice & Brand Voice
+## Audience and reading level
 
-### The DronaHost character
+**Audience:** set in `project/PROJECT.md`. Write for smart readers who may not be technical, who may read English as a
+second language, who compare providers carefully and who distrust hype.
 
-**Confident, specific, calm.** We know what we are doing and we do not need to shout about it.
-
-| Attribute | What it means in practice |
+| Check | Rule |
 |---|---|
-| **Confident** | State verified facts, not hopes. "[EXAMPLE, NOT VERIFIED: 99.95% uptime SLA with automatic service credits]" — not "we try our best." |
-| **Specific** | Numbers, locations, benchmarks. Never a vague adjective where a metric can stand. |
-| **Calm** | No urgency that isn't real. No exclamation marks in marketing copy. No countdown timers without a genuine deadline. |
-| **Honest** | State where the company is based and who runs it. Do not imply a location you do not have. Do not pretend to be bigger than we are. Being a focused team is a feature. |
-| **Technical, second** | Lead with the outcome in plain words, then give the technical term in the same sentence or a short "How it works" line (LiteSpeed, NVMe, TTFB, cPanel). The reader is a business owner, not a sysadmin. |
+| Reading grade | Target grade 8 to 10. Warn above 10, fail above 11. A per-page override is allowed only when the owner approves it and a reason is written down |
+| Sentence length | Average under 20 words. No sentence over 28 words |
+| FAQ answers | 40 to 80 words. Warn under 40, fail over 80 |
+| Title | Measured with the brand suffix. Warn above 60 characters, fail above 70. The suffix text comes from the config (`limits.titleSuffix`), not from this file |
+| Meta description | Warn above 160 characters. Fail only if missing or duplicate |
+| Exclamation marks | None in marketing copy |
 
-### Reference points (read their copy)
+- No idioms or slang that does not translate ("hit the ground running", "ballpark").
+- Lead with the business outcome in plain words. Put the technical term second, in the same sentence or in a short
+  "How it works" line. Example: "Your site stays online while we update it (LiteSpeed server, NVMe storage)."
+- Write dates unambiguously ("6 October 2026"). Show units with their symbol. Show the currency symbol and the
+  billing period on every price.
+- US English by default. Regional variants only when that locale exists.
+- Default currency and the currency selector: see `project/brand.md`. Never show a currency without its symbol and billing period.
 
-**Write like:** Fathom Analytics, Kinsta, Cloudways, Basecamp, Bunny.net
-**Never write like:** Hostinger, GoDaddy, or any reseller site built on hype and pressure
+## Claims discipline
 
-### The spectrum
+Copy never contains a number, guarantee, SLA, location or certification that is not rendered from the claims registry
+with `status: "verified"`. Unverified claims render nothing. Prices come only from the pricing file; these rules must
+never contain a real price.
 
-```
-TOO FORMAL ←————————————————→ TOO CASUAL
-  "We are pleased to inform you   "OMG your site is live!! 🚀🎉"
-   that your hosting account has
-   been provisioned successfully."
+**Terms-page rule:** a verified claim must link to the page where its terms are published (refund policy, terms, SLA).
+A claim **renders only when `status` is `"verified"` AND its `termsPage` is a published, reviewed route**
+(`termsPageStatus: "published"`; the derived `verified` flag means exactly this). Each claim carries a
+`termsPage` path and a `termsPageStatus`. Helper functions list what blocks each claim and say why one is hidden.
+Measured numbers (`kind: "stat"`) render in a stats bar; policy and feature claims (`kind: "assurance"`) render in a
+static assurance strip with a link to their terms page.
 
-                    ▼ DronaHost sits here
-           "Your hosting is ready. Here's how to log in."
-```
+**What "reviewed" means:** Tier A pages (commercial promises) are approved by the owner. Tier B pages (legal documents) need a
+qualified human reviewer. See `plans/07-compliance-and-trust.md`, "Policy tiers".
+
+**Publishing a claim:** when its terms page is published and reviewed, flipping `termsPageStatus` to `"published"` in the
+claims registry is the only change needed to show it (set `termsPage` too if it was null). Every place that renders the
+claim reads the same gate.
+
+Current claim status and gaps: see `project/brand.md`, "From rules, Claims discipline".
 
 ---
+
+## 1. Tone of Voice & Brand Voice
+
+### The character
+
+**Confident, specific, calm.** Attributes: confident, specific, calm, honest, technical second. The full table and the
+spectrum diagram are in `project/brand.md`, "From rules section 1: The character".
+
+### Reference points
+
+Named writers to read and to avoid: see `project/brand.md`.
 
 ### Phrases to avoid
 
 These phrases cost clarity and credibility with readers worldwide, including readers who use English as a second
-language. Do not use them.
+language. Do not use them. The full list is `bannedPhrases` in `project/rules.config.json`, the single source. The linter
+reads that list. A few examples:
 
 | Prohibited | Replace with |
 |---|---|
-| "Don't fret!" | Remove — just say what to do |
-| "Don't worry!" | Remove — just say what to do |
+| "Don't worry!" | Remove, just say what to do |
 | "Kindly..." | "Please..." |
-| "Do the needful" | Say what specifically needs doing |
-| "Revert back to us" | "Get back to us" / "Reply" |
-| "Prepone" | "Reschedule to an earlier time" |
-| "Best of luck!" | Remove — irrelevant in product copy |
-| "World-class" | Name the specific thing that makes it good |
+| "World-class", "Cutting-edge" | Name the specific thing that makes it good |
 | "Blazing fast" | Cite TTFB, LCP, or benchmark numbers |
-| "Cutting-edge" | Name the specific technology |
-| "State-of-the-art" | Name the specific technology |
-| "Next-generation" | Name what is actually new |
-| "Revolutionary" | Remove — your work speaks for itself |
-| "Game-changing" | Remove |
-| An uptime figure with no SLA behind it | A figure from `claims.ts` with its SLA terms, only when verified |
-| "One-to-one support" | "Dedicated support" |
-| "We provide best services" | State the specific service and outcome |
-| Multiple exclamation marks!! | One at most, only in celebration moments |
-
-### Phrases to avoid (generic SaaS)
-
-These are worn out and trusted by nobody.
-
-| Prohibited | Replace with |
-|---|---|
 | "Supercharge your..." | State the actual improvement |
-| "Unlock the power of..." | State what it does |
-| "Take your business to the next level" | State the specific outcome |
 | "All-in-one solution" | List what is included |
-| "Seamless integration" | Describe how it connects and what it does |
-| "Robust platform" | Name the actual capabilities |
-| "Scalable infrastructure" | State the actual scale limits or growth story |
-| "Empower your team" | Say what they can now do that they could not before |
+| An uptime figure with no SLA behind it | A figure from the claims registry with its SLA terms, only when verified |
+| Exclamation marks | None in marketing copy |
 
 ### Replace adjectives with specifics
 
-All right-hand examples are `[EXAMPLE, NOT VERIFIED]`. Render real values from `claims.ts` and `pricing.json` only.
+All right-hand examples are `[EXAMPLE, NOT VERIFIED]`. Render real values from the claims registry and the pricing file only.
 
 | Do not write | Write instead |
 |---|---|
 | "Blazing fast servers" | "[EXAMPLE, NOT VERIFIED: LiteSpeed + NVMe storage. Average TTFB: 200ms from London, Frankfurt, and New York.]" |
 | "World-class support" | "[EXAMPLE, NOT VERIFIED: Average first response: 18 minutes, 24/7 across US, UK, and UAE business hours.]" |
 | "Amazing uptime" | "[EXAMPLE, NOT VERIFIED: 99.95% uptime SLA with automatic service credits if we miss it.]" |
-| "Affordable pricing" | "[EXAMPLE, NOT VERIFIED: WordPress hosting from $5/month.]" Add "Renews at the same price" only while the `renewal-price-same` claim is verified. |
+| "Affordable pricing" | "[EXAMPLE, NOT VERIFIED: [Plan] from [Price]/month.]" Add "Renews at the same price" only while the renewal claim is verified. |
 | "Easy to use" | "[EXAMPLE, NOT VERIFIED: One-click WordPress install. Live in under 4 minutes.]" |
-| "Secure hosting" | "[EXAMPLE, NOT VERIFIED: Daily backups, free SSL, DDoS protection via Cloudflare, malware scanning included.]" |
+| "Secure hosting" | "[EXAMPLE, NOT VERIFIED: Daily backups, free SSL, DDoS protection via [Provider], malware scanning included.]" |
 
 ### Voice across contexts
 
@@ -184,35 +136,17 @@ Every product or service page must have:
 - A single primary CTA (not three competing options)
 - At least one trust signal (SLA, money-back, security badge, review score)
 
----
-
 ## 2. Terminology List
 
 Use these terms exactly and consistently across all copy, UI, metadata, and blog posts.
 
 ### Brand name
 
-| Context | Correct usage |
-|---|---|
-| Logo / wordmark | `dronahost` (all lowercase — deliberate design choice) |
-| Prose, headings, page titles | `DronaHost` |
-| Domain / URL | `dronahost.com` |
-| Never use | `Drona Host`, `DRONAHOST`, `Dronahost` |
+[Brand] spelling for logo, prose and domain, and the forms never to use: see `project/brand.md`, "From rules section 2: Terminology".
 
 ### Product and service names
 
-| Preferred term | Do not use |
-|---|---|
-| WordPress Hosting | Shared Hosting (when specifically selling WordPress plans) |
-| Managed WordPress Hosting | cPanel WordPress, PHP hosting |
-| VPS Hosting | Virtual Private Server (spell out only on first mention if needed) |
-| Cloud Hosting | Cloud Server (unless specifically a cloud server product) |
-| Business Hosting | Business Email Hosting, Email + Hosting Bundle |
-| Domain Registration | Domain Purchase, Domain Buying |
-| Website Design | Web Design in headings and body (the URL `/web-design` and the keyword may still use "web design"), Website Development (unless specifically code-only work) |
-| Custom Development | Software Development (too broad), App Development (unless it is an app) |
-| SEO Services | Search Engine Marketing (SEM is paid ads), Digital Marketing (too broad) |
-| Knowledge Base | FAQ (FAQ is a section, KB is the full library), Help Center is acceptable |
+[Product] names, preferred and not-to-use forms: see `project/brand.md`, "From rules section 2: Terminology".
 
 ### Technical terms (use precisely)
 
@@ -220,16 +154,17 @@ Use these terms exactly and consistently across all copy, UI, metadata, and blog
 |---|---|
 | LiteSpeed | Always capitalised. "LiteSpeed Web Server" on first mention if space allows. |
 | NVMe | Always uppercase. "NVMe SSD storage" on first mention. |
-| TTFB | Time to First Byte — spell out in blog posts on first mention. |
-| LCP | Largest Contentful Paint — spell out in blog posts on first mention. |
+| TTFB | Time to First Byte, spell out in blog posts on first mention. |
+| LCP | Largest Contentful Paint, spell out in blog posts on first mention. |
 | GDPR | Always uppercase. "GDPR-compliant" with hyphen when used as adjective. |
 | SSL / TLS | Prefer "SSL certificate" for user-facing copy. TLS is more accurate but SSL is what buyers search for. |
-| CDN | Content Delivery Network — spell out in non-technical contexts. |
+| CDN | Content Delivery Network, spell out in non-technical contexts. |
 | cPanel | Lowercase "c", uppercase "P". Never "Cpanel" or "cpanel". |
-| Cloudflare | Always capitalised. One word. |
 | WordPress | Always capitalised exactly this way. Never "Wordpress" or "wordpress". |
 | WooCommerce | Always this casing. One word. |
 | Let's Encrypt | Exactly this casing with apostrophe. |
+
+Third-party names used in this project (for example the CDN provider) and their capitalisation: see `project/brand.md`.
 
 ### Pricing and commitment terms
 
@@ -240,8 +175,8 @@ Use these terms exactly and consistently across all copy, UI, metadata, and blog
 | billed annually | annual billing, yearly plan |
 | billed monthly | monthly billing |
 | renewal price | renewal rate, ongoing price |
-| money-back guarantee | refund policy (in CTAs — use "guarantee") |
-| 30-day money-back guarantee | "risk-free" without specifics |
+| money-back guarantee | refund policy (in CTAs, use "guarantee") |
+| [N]-day money-back guarantee | "risk-free" without specifics |
 | service credit | compensation, refund (for SLA breaches) |
 
 ### Support terms
@@ -250,22 +185,25 @@ Use these terms exactly and consistently across all copy, UI, metadata, and blog
 |---|---|
 | support ticket | help request, case |
 | email support | mail us, drop us a line |
-| average first response: [EXAMPLE, NOT VERIFIED: 18 minutes] (only after we measure it and publish the method) | fast response, quick support |
-| 24/7 support (only after the owner defines what it means for ticket and email, and `/support-policy` is published) | round-the-clock (old-fashioned), always-on |
+| average first response: [EXAMPLE, NOT VERIFIED: N minutes] (only after we measure it and publish the method) | fast response, quick support |
+| 24/7 support (only after the owner defines what it means for the channels offered, and the support policy page is published) | round-the-clock (old-fashioned), always-on |
 | dedicated support (only if a named person is assigned) | one-to-one support, personal support |
 
-**Not offered (owner, 2026-10-07):** live chat, WhatsApp and phone support. Never mention them in copy, metadata, schema, UI text or `pricing.json`. Support channels are **ticket and email**. Email hosting is also discontinued: write "email support" for contacting us, and send mailbox questions to `/email`.
+**Channels not offered:** the list is `forbiddenChannels` in `project/rules.config.json`; the owner's note is in
+`project/brand.md`. Never mention a forbidden channel in copy, metadata, schema, UI text or the pricing file.
 
 ### Regions and locations
 
-Naming guidance only. DronaHost owns no data centres and runs hosting on rented servers, so never state a server location unless the infrastructure registry confirms it for that plan (see `docs/content-planner/plans/05-regional-and-location.md`). Write "for UK businesses", not "UK servers".
+Naming guidance only. Never state a server location unless the infrastructure registry confirms it for that plan (see
+`plans/05-regional-and-location.md`). Write "for [Country] businesses", never "[Country] servers". How this project
+describes its own infrastructure: see `project/brand.md`.
 
 | Preferred | Do not use |
 |---|---|
-| United States | America, USA (in prose — US is fine in tables) |
+| United States | America, USA (in prose, US is fine in tables) |
 | United Kingdom | Britain (informal), UK (fine in tables and CTAs) |
 | European Union | Europe (EU is 27 countries; Europe includes more) |
-| United Arab Emirates | Dubai (one city — use UAE unless specifically Dubai) |
+| United Arab Emirates | Dubai (one city, use UAE unless specifically Dubai) |
 | Germany, Netherlands, France, Ireland | "Continental Europe" only in contexts where EU applies to all |
 
 ---
@@ -345,7 +283,7 @@ Every CTA tells the user exactly what will happen next. No generic verbs.
 |---|---|
 | "Click here" | "Start your WordPress hosting" |
 | "Learn more" | "See what's included" / "Read the full comparison" |
-| "Get started" | "Start hosting from [EXAMPLE, NOT VERIFIED: $5/month]" |
+| "Get started" | "Start hosting from [Price]/month" (the amount comes from the pricing file) |
 | "Submit" | "Send your message" |
 | "Sign up" | "Create your account" |
 | "Buy now" | "Choose your plan" |
@@ -355,7 +293,7 @@ Every CTA tells the user exactly what will happen next. No generic verbs.
 
 ### Primary CTA
 
-One primary CTA per page or section. It uses the filled/solid button style (Brand Orange background).
+One primary CTA per page or section. It uses the filled/solid button style (brand action colour).
 It leads directly to the next conversion step.
 
 | Page type | Primary CTA |
@@ -459,7 +397,7 @@ Short, specific, placed inline next to the field.
 | Not authorised | "You do not have permission to do this. If you think this is a mistake, contact support." |
 | Session expired | "Your session has expired. Sign in again to continue." |
 | Rate limited | "Too many attempts. Please wait a minute before trying again." |
-| Maintenance mode | "DronaHost is undergoing scheduled maintenance. We will be back by [time + timezone]. Check our status page for updates." |
+| Maintenance mode | "[Brand] is undergoing scheduled maintenance. We will be back by [time + timezone]. Check our status page for updates." |
 
 ### Payment errors
 
@@ -574,9 +512,9 @@ Primary Keyword
 
 Rules:
 - Titles are written **without** the brand suffix. `buildMetadata()` appends it once (see `seo-rules.md`), so titles
-  never contain "DronaHost" as a suffix. This avoids "— DronaHost — DronaHost".
-- Keep the title at 60 characters or fewer including the suffix. Google truncates by pixel width, not characters, so
-  this is a guideline. The linter fails only on a missing, duplicate or over-length title.
+  never contain "[Brand]" as a suffix. This avoids a doubled brand name.
+- Measure the title with the brand suffix: warn above 60 characters, fail above 70. Google truncates by pixel width,
+  not characters. The suffix text comes from the config (`limits.titleSuffix`), not from this file.
 - Keyword first
 - Feature words (LiteSpeed, NVMe, free SSL, daily backups, uptime) appear in a title, H1 or description **only when their claim renders**
 - The suffix and its separator are defined in one place only (the metadata helper and the layout title template).
@@ -593,7 +531,7 @@ Rules:
 | Pricing | "Hosting Plans & Pricing" |
 | Contact | "Contact the Team" |
 | Blog post | "[Post Title]" (keyword-first post title) |
-| `/vs/siteground` | "DronaHost vs SiteGround — Honest Comparison" (a year is allowed only when set from `reviewedOn`, see below) |
+| `/vs/[competitor]` | "[Brand] vs [Competitor] — Honest Comparison" (a year is allowed only when set from `reviewedOn`, see below) |
 
 **Years in titles and copy:** allowed only on pages reviewed on a schedule (comparisons, annual reports). The year
 comes from the page's `reviewedOn` field, never typed by hand.
@@ -601,11 +539,11 @@ comes from the page's `reviewedOn` field, never typed by hand.
 ### Meta description format
 
 ```
-[Specific outcome or key fact]. [What makes DronaHost different]. [CTA].
+[Specific outcome or key fact]. [What makes [Brand] different]. [CTA].
 ```
 
 Rules:
-- 160 characters or fewer (guideline; Google truncates by pixel width)
+- Warn above 160 characters (Google truncates by pixel width). Fail only if the description is missing or duplicate
 - Every page has a unique description
 - Include the primary keyword naturally — do not force it
 - End with a clear next step (not "Click here")
@@ -616,7 +554,7 @@ Rules:
 | WordPress Hosting | "Managed WordPress hosting for small business sites. See what is included, compare plans and talk to the team." |
 | WordPress Hosting for UK businesses | "Managed WordPress hosting for UK businesses, priced in pounds. See the plans and what UK GDPR means for your site." |
 | VPS Hosting | "VPS hosting with root access for teams that want full control. Talk to the team about the right size." |
-| `/vs/siteground` | "How DronaHost compares to SiteGround on price, renewal price, support and migration. Sources and review date included." |
+| `/vs/[competitor]` | "How [Brand] compares to [Competitor] on price, renewal price, support and migration. Sources and review date included." |
 
 Examples contain no number, price or feature that is not in `claims.ts` or `pricing.json`. A feature word appears in a
 description only when its claim renders. `npm run lint:content` should flag a feature word with no rendering claim.
@@ -632,27 +570,13 @@ Match the page content to what the searcher actually wants. Mismatched intent ra
 | "how to migrate wordpress without downtime" | Informational | Blog post / KB article |
 | "buy wordpress hosting" | Transactional | Pricing page / plan selection page |
 | "hosting for eu businesses" | Commercial investigation | Regional page (Phase 2) |
-| "dronahost review" | Navigational | About page + Trustpilot/G2 citation |
+| "[brand] review" | Navigational | About page + Trustpilot/G2 citation |
 
 **Rule:** Never put a transactional keyword on an informational page or vice versa. Google is very good at detecting this mismatch and will not rank the page.
 
 ### Target keyword strategy
 
-**Target (high commercial intent, winnable):**
-- "siteground alternative"
-- "wordpress hosting uk"
-- "managed wordpress hosting usa"
-- "hosting for eu businesses" (not "gdpr compliant hosting": that phrase claims compliance, which needs the legal review first)
-- "uae web hosting"
-- "next.js hosting alternative to vercel"
-- "web design agency small business uk"
-- "affordable website redesign services"
-
-**Do not target (too competitive or wrong intent):**
-- "best web hosting" — Hostinger and Bluehost own this with annual SEO budgets we cannot match
-- "web hosting" — same reason
-- "cheap hosting india" — price-only intent that does not convert (India is not excluded as an audience)
-- "free web hosting" — wrong intent; does not convert
+Which keywords to target and which to avoid is a project decision: see `project/brand.md` ("From rules section 7: Target keyword strategy") and `project/keyword-register.md`. The rule here: target high commercial intent you can win; avoid terms owned by large advertisers, price-only intent and wrong-intent terms.
 
 ### Keyword density and placement
 
@@ -676,20 +600,15 @@ Every plan/product page must have a FAQ section. FAQs:
 
 **FAQ writing rules:**
 - Questions written as a real buyer would ask them (conversational, first-person)
-- Answers in clean declarative prose, 40-80 words
+- Answers in clean declarative prose, 40 to 80 words (warn under 40, fail over 80)
 - Answer the question in the first sentence (AI tools grab the first sentence)
 - At most one link per answer, and only where the reader's next step is obvious (for example the refund policy). The first sentence still answers on its own
 
-Good FAQ questions:
-- "How much does WordPress hosting cost at DronaHost?"
-- "Does DronaHost offer a money-back guarantee?"
-- "Where is my site hosted?" (use the standard answer in `plans/05-regional-and-location.md`)
-- "Can I migrate my existing WordPress site to DronaHost for free?"
-- "Does DronaHost sign a data processing agreement?" (only after `/data-processing` is published and reviewed by a qualified person)
+Good FAQ questions are the ones a buyer would type, for example "How much does [Product] cost at [Brand]?", "Does [Brand] offer a money-back guarantee?", "Where is my site hosted?" (use the standard answer in `plans/05-regional-and-location.md`) and "Can I migrate my existing site to [Brand] for free?". A data processing agreement question is allowed only after the DPA page is published and reviewed by a qualified person.
 
-Bad FAQ questions:
-- "What makes DronaHost amazing?" (not what buyers ask)
-- "How do I get started?" (too vague)
+Bad FAQ questions: "What makes [Brand] amazing?" (not what buyers ask) and "How do I get started?" (too vague).
+
+Worked project examples: `project/brand.md`, "From rules section 7: FAQ questions".
 
 ### E-E-A-T signals (required for ranking)
 
@@ -707,8 +626,8 @@ Google rewards pages that demonstrate Experience, Expertise, Authoritativeness, 
 AI tools increasingly cite specific pages in answers. To be cited:
 - All SEO-critical content must be server-rendered HTML
 - FAQ answers in declarative prose (not bullet lists — AI reads prose better)
-- Factual, specific headings: "How much does WordPress hosting cost at DronaHost?" not "Pricing"
-- Comparison tables with real numbers: DronaHost vs SiteGround, vs Kinsta, vs WP Engine
+- Factual, specific headings: "How much does [Product] cost at [Brand]?" not "Pricing"
+- Comparison tables with real numbers: [Brand] vs [Competitor] for each named competitor
 - `/public/llms.txt` and `/public/llms-full.txt` are an optional extra (see `/scripts/generate-llms-txt.ts`); no major AI provider has confirmed using them
 
 ### Internal linking rules
@@ -740,7 +659,7 @@ All testimonials and case study copy must be:
 
 What a good testimonial includes (this sample is invented, `[EXAMPLE, NOT VERIFIED]`, never publish it):
 ```
-"We moved from [Competitor] to DronaHost in January and our TTFB dropped from 800ms to 190ms.
+"We moved from [Competitor] to [Brand] in January and our TTFB dropped from 800ms to 190ms.
 PageSpeed went from 54 to 91. That is not a rounding error — our conversion rate went up 12%."
 
 — Sarah Mitchell, Head of E-commerce, Brackley Goods Ltd (brackleygoods.co.uk)
@@ -804,7 +723,7 @@ Every page contains at least **one original element**:
 
 The test: **if the top ten results disappeared, could this page still be written?** If yes, it adds nothing and fails review.
 
-Voice: say "we" only for things we did. Prefer a concrete example over a general statement. Keep the DronaHost voice in section 1: confident, specific, calm.
+Voice: say "we" only for things we did. Prefer a concrete example over a general statement. Keep the [Brand] voice in section 1: confident, specific, calm.
 
 ### 8.4 Retain full accountability
 
@@ -857,7 +776,7 @@ First tools to build, in order: billing-cycle toggle, plan finder (3 to 5 questi
 There are two kinds, with separate rules.
 
 - **Service vs service (our own services):** WordPress, VPS, Cloud and Business hosting, or one plan against another. Lives on money pages and `/pricing`.
-- **Provider vs provider:** DronaHost against a competitor. Governed by `docs/content-planner/plans/02-commercial-investigation.md`.
+- **Provider vs provider:** [Brand] against a competitor. Governed by `docs/content-planner/plans/02-commercial-investigation.md`.
 
 ### Service vs service rules
 
@@ -876,7 +795,7 @@ There are two kinds, with separate rules.
 
 ## 11. Maintenance Pitch
 
-**Status (7 October 2026):** the owner confirms DronaHost offers website maintenance (website maintenance, website management, WooCommerce and WordPress maintenance, support and helpdesk). Its scope, price and response times are **not yet defined** in `data/pricing.json` or `content/claims.ts`. Until the owner fills the service definition sheet in `docs/content-planner/plans/06-service-pages.md`, pages may be planned and drafted, but they **must not state inclusions, times, hours or prices**. Managed-hosting tasks (updates, backups, security) may be described only as far as their feature claims render.
+**Status:** if the service's scope, price and response times are not defined in the pricing file or the claims registry, pages may be planned and drafted, but they **must not state inclusions, times, hours or prices**. Managed-hosting tasks (updates, backups, security) may be described only as far as their feature claims render. Project status: see `project/brand.md`, "From rules section 11: Maintenance status".
 
 When a service exists, the pitch has these parts:
 

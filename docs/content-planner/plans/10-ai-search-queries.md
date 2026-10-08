@@ -4,6 +4,8 @@
 **Goal:** be the source that gets quoted, for both informational and buying questions.
 **Not a separate set of pages.** This plan is a layer added to every page in Plans 01 to 09.
 
+Project specifics for this plan: [plan-specifics/10-ai-search-queries.md](../project/plan-specifics/10-ai-search-queries.md)
+
 ## How AI tools choose a source (working assumptions, re-check each quarter)
 
 - They quote **self-contained, factual sentences** near the heading that asks the question.
@@ -18,7 +20,7 @@ Under every H2 and H3 that is a question, the first paragraph is an **answer blo
 
 - 40 to 80 words, plain prose, no list, no bold, no link.
 - The first sentence answers the question on its own.
-- It names the subject (DronaHost, WordPress hosting, a VPS) instead of "it" or "this".
+- It names the subject ([Brand], [Product], a VPS) instead of "it" or "this".
 - It makes sense if pasted alone into an AI answer.
 
 Shape: `[Subject] [specific fact], because [reason], which means [outcome for the reader].`
@@ -30,8 +32,8 @@ See [voice.md](../rules/voice.md) for worked examples.
 | Intent | Example questions |
 |---|---|
 | Buy | What is the best managed WordPress hosting for a small business that sells to the UK? How much does managed WordPress hosting cost? Does a host charge more when I renew? |
-| Compare | How is DronaHost different from SiteGround? Is Kinsta worth the price for a small site? |
-| Trust | Is DronaHost a real company? Where is DronaHost based? Does DronaHost have a money-back guarantee? |
+| Compare | How is [Brand] different from [Competitor]? Is [Competitor] worth the price for a small site? |
+| Trust | Is [Brand] a real company? Where is [Brand] based? Does [Brand] have a money-back guarantee? |
 | Compliance | Do I need a data processing agreement with my host? Is WordPress hosting GDPR compliant? |
 | How-to | How do I move a WordPress site without downtime? How do I fix a high TTFB? |
 | Region | Which hosting is suitable for a UAE business that serves EU customers? |
@@ -51,7 +53,7 @@ Rules for each: answer only with verified facts. If the honest answer is "we do 
 
 ## Monitoring (monthly, 30 minutes)
 
-1. Ask 20 target questions in ChatGPT, Perplexity, Gemini, Claude and Google AI Overviews. Record whether DronaHost is named, which page is cited, and whether the facts are correct.
+1. Ask 20 target questions in ChatGPT, Perplexity, Gemini, Claude and Google AI Overviews. Record whether [Brand] is named, which page is cited, and whether the facts are correct.
 2. Fix wrong facts at the source page. If an AI states a wrong claim, check whether our page is ambiguous.
 3. Log results in the register's `AI cited` column.
 4. Check server logs and `robots.ts` for AI crawlers. Our policy on which bots to allow is in `docs/rules/seo-rules.md` section 3.

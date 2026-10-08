@@ -4,6 +4,8 @@
 **Goal:** answer the doubt so completely that the page can be forwarded to a decision maker.
 **Owns:** policy pages and compliance explainers that carry search demand.
 
+Project specifics for this plan: [plan-specifics/07-compliance-and-trust.md](../project/plan-specifics/07-compliance-and-trust.md)
+
 ## Two kinds of page
 
 | Kind | Purpose | Pages |
@@ -25,7 +27,7 @@ The claims system depends on policy pages. A claim renders only when its terms p
   - **`/sla`:** uptime target, how it is measured, service credits, exclusions, how to claim. Required before `uptime-sla` renders.
   - **`/security`:** data protection, backups, access control, incident response, breach notice (72 hours). No claim of a test or certification we do not hold.
   - **`/data-processing`:** the DPA as a downloadable PDF, sub-processors list, transfer mechanisms (SCCs), contact for requests.
-  - **`/support-policy`:** hours and channels (ticket and email only). Required before `support-24-7` renders.
+  - **`/support-policy`:** hours and [Channel] list (only the channels the business really staffs). Required before `support-24-7` renders.
   - **`/migration-terms`:** what "free migration" covers and excludes. Required before `free-migration` renders.
   - **`/pricing-policy`:** billing cycles, renewal price, taxes, price changes, cancellation. Required before `renewal-price-same` renders.
 
@@ -35,7 +37,7 @@ The claims system depends on policy pages. A claim renders only when its terms p
 
 | Tier | Pages | Approved by | Why |
 |---|---|---|---|
-| **A: commercial promises** | `/refund-policy`, `/support-policy`, `/migration-terms`, `/pricing-policy`, `/fair-use-policy`, `/backup-policy`, `/security` (operational facts only), `/sla` | The owner, after the Tier A checklist. A lawyer's read is recommended, not required | These state what DronaHost will do. The owner decides, and the promise must match operations |
+| **A: commercial promises** | `/refund-policy`, `/support-policy`, `/migration-terms`, `/pricing-policy`, `/fair-use-policy`, `/backup-policy`, `/security` (operational facts only), `/sla` | The owner, after the Tier A checklist. A lawyer's read is recommended, not required | These state what [Brand] will do. The owner decides, and the promise must match operations |
 | **B: legal documents** | `/terms`, `/privacy`, `/cookie-policy`, `/data-processing`, `/sub-processors`, `/acceptable-use-policy`, `/data-retention`, regional compliance pages and explainers | A qualified human (a lawyer with the right jurisdictions, or a reputable legal-document service whose output the owner reviews). Name and date recorded | Liability, data protection and cross-border duties carry legal risk that a draft cannot carry |
 
 **Tier A checklist (the owner ticks every line):**
@@ -55,15 +57,15 @@ Facts in the last column are for the owner. Claude drafts from the answers and f
 | Page | Tier | Unlocks | Must contain | The owner provides |
 |---|---|---|---|---|
 | `/refund-policy` | A | `money-back` | The window and when it starts, what is refundable, exclusions (domains, add-ons), how to request, how long a refund takes and how it is paid, what happens to the account | Exact window, exclusions, refund time, abuse conditions |
-| `/support-policy` | A | `support-24-7` | Channels (ticket and email), what "24/7" means in practice, hours per plan with a timezone, what is and is not supported, escalation, language | What 24/7 means with ticket and email only, who answers overnight, plan differences |
+| `/support-policy` | A | `support-24-7` | [Channel] list, what "24/7" means in practice, hours per plan with a timezone, what is and is not supported, escalation, language | What 24/7 means with the [Channel] list, who answers overnight, plan differences |
 | `/migration-terms` | A | `free-migration` | What is moved (platform, how many sites per plan), what is excluded, what the customer must provide, that the old site stays live until the switch (only if true), any limits | Scope, limits, process, exclusions |
-| `/pricing-policy` | A | `renewal-price-same` | Billing cycles, renewal price rule for each cycle, taxes (GST for India), how and when a price can change and with what notice, add-ons, domains, failed payments, cancellation | **How long "renewal equals signup price" lasts**, and whether a later price rise would apply to existing customers |
+| `/pricing-policy` | A | `renewal-price-same` | Billing cycles, renewal price rule for each cycle, taxes (see the tax rule in the project specifics), how and when a price can change and with what notice, add-ons, domains, failed payments, cancellation | **How long "renewal equals signup price" lasts**, and whether a later price rise would apply to existing customers |
 | `/fair-use-policy` | A | plan limits | What fair use means, the resource limits that apply, what happens first (notice, throttle, upgrade offer). No "unlimited" wording | Resource limits and enforcement steps |
 | `/backup-policy` | A | backup lines on plans | Frequency, retention per plan, where backups are stored, how to restore, what is not guaranteed, the offsite add-on | Real frequency and retention, storage location |
 | `/security` | A | security lines | Operational facts only: access control, updates, backups, incident handling. No certification we do not hold | Facts that are true today |
 | `/sla` | A | `uptime-sla` | Target, how it is measured, exclusions, service credits and how to claim. Only after a measured basis exists | Whether an SLA exists, measurement method, credit rules |
 | `/terms` | B | none directly | Service, accounts, payment, cancellation and suspension, liability, governing law, how policies relate | Governing law and jurisdiction, legal entity |
-| `/privacy` | B | none directly | Data collected (WHMCS, payments, analytics, support), purposes, legal bases, transfers (India and the WHMCS host), rights, retention, contacts, representatives where required, Indian law | Real data flows, legal entity, contacts |
+| `/privacy` | B | none directly | Data collected ([Billing system], payments, analytics, support), purposes, legal bases, transfers (the company's [Country] and the [Billing system] host), rights, retention, contacts, representatives where required, the law of the company's [Country] | Real data flows, legal entity, contacts |
 | `/cookie-policy` | B | none directly | Cookie list from the consent tool, purposes, how to withdraw consent | The final consent tool configuration |
 | `/data-processing` | B | none directly | DPA as a versioned PDF, roles, security measures, transfers, breach notice, deletion | Reviewed DPA text |
 | `/sub-processors` | B | none directly | Company, purpose, location, link to its terms, date of change, change-notice method | Confirmed list from the infrastructure registry |
@@ -72,7 +74,7 @@ Facts in the last column are for the owner. Claude drafts from the answers and f
 
 ## Tax and consumer price display (needs an adviser)
 
-The owner rule is one plain line: "Prices exclude tax. Customers in India pay GST at checkout." As the reviewer understands it, businesses outside the UK and the EU that sell digital services to **consumers** there generally have to register for VAT and show consumer prices including VAT, while sales to registered **businesses** are treated differently. The one-line rule may therefore not fit sole traders and private customers in the UK and EU. This is not a legal conclusion. Ask a tax adviser before selling actively to those markets, and record the answer. Until then, say nothing more than the plain line, and do not target UK or EU consumers in ads or pages.
+The owner rule is one plain tax line (wording in the project specifics). As the reviewer understands it, businesses outside the UK and the EU that sell digital services to **consumers** there generally have to register for VAT and show consumer prices including VAT, while sales to registered **businesses** are treated differently. The one-line rule may therefore not fit sole traders and private customers in the UK and EU. This is not a legal conclusion. Ask a tax adviser before selling actively to those markets, and record the answer. Until then, say nothing more than the plain line, and do not target UK or EU consumers in ads or pages.
 
 ## Compliance explainer template
 
@@ -81,7 +83,7 @@ The owner rule is one plain line: "Prices exclude tax. Customers in India pay GS
 | 1 | H1 | The question: "Is my web hosting GDPR compliant?" |
 | 2 | Answer first | 40 to 80 words: what the rule asks of a site owner and which part is the host's job. |
 | 3 | Who is responsible | Table: controller (the customer), processor (the host), what each must do. |
-| 4 | What DronaHost provides | Only verified items: DPA, backups, access controls. Link to the policy pages. |
+| 4 | What [Brand] provides | Only verified items: DPA, backups, access controls. Link to the policy pages. |
 | 5 | What you still need to do | Cookie banner, privacy policy, consent logging, data subject requests. This honesty is the point. |
 | 6 | Checklist | Printable. |
 | 7 | FAQ | "Do I need a DPA with my host?" and similar. |
@@ -93,25 +95,25 @@ Target (question and checklist intent only): is my web hosting gdpr compliant, d
 Owned by Plan 05, not here: hosting for eu businesses, uk gdpr hosting, uae web hosting.
 Do not target: `hipaa compliant hosting` and `pci compliant hosting` unless we hold and can show the support for them. Never claim a regime we have not been assessed against.
 
-## Data location statements (WHMCS in Europe, company in India)
+## Data location statements ([Billing system] location, company [Country])
 
-- Billing and account data sits in WHMCS on a server in Europe. The team works from India and accesses it from there.
-- The privacy policy and the DPA must say: what data WHMCS holds, that WHMCS is a processor, the hosting location (once recorded), who may access it from India and the transfer mechanism (for the EU and the UK, usually standard contractual clauses). A legal reviewer writes it.
+- Where the billing and account data sits, and where the team accesses it from, is recorded in the project specifics.
+- The privacy policy and the DPA must say: what data [Billing system] holds, that [Billing system] is a processor, the hosting location (once recorded), who may access it from [Country] and the transfer mechanism (for the EU and the UK, usually standard contractual clauses). A legal reviewer writes it.
 - A public sentence about the billing data location is a claim. Add it to `content/claims.ts` as unverified, and render it only when verified and its terms page is published.
-- Never write "your data stays in Europe" without proof that covers the data in question. Billing data, customer websites and backups are different things in different places.
+- Never write "your data stays in [Region]" without proof that covers the data in question. Billing data, customer websites and backups are different things in different places.
 
 ## Representatives and applicable law (needs a lawyer)
 
-DronaHost is outside the EU, the UK and the UAE but sells to people there. Using AWS, Google Cloud or other reputed providers does not remove these duties.
+[Brand] may be based outside the EU, the UK and the UAE while selling to people there. Using [Provider] or other reputed providers does not remove these duties.
 
 - The EU and UK GDPR can apply to a non-EU business that offers services to people there. In many cases such a business must appoint a local representative and name them in the privacy policy. A legal reviewer decides whether this applies and who acts.
-- The UAE PDPL and Indian data protection law may also apply. List which laws the policies rely on.
+- The UAE PDPL and the data protection law of the company's [Country] may also apply. List which laws the policies rely on.
 - Each infrastructure provider has its own data processing terms. Sign and file them, and list the provider as a sub-processor.
 - Until the reviewer decides, policy pages do not claim compliance. They state what we do.
 
 ## Naming providers (we buy servers and resell hosting)
 
-DronaHost buys servers from AWS, Google Cloud, DigitalOcean, Hetzner and others and resells hosting on them. These companies are sub-processors and must be listed. That does not mean we may use their names in marketing.
+[Brand] buys servers from [Provider] and others and resells hosting on them. These companies are sub-processors and must be listed. That does not mean we may use their names in marketing.
 
 - **Marketing pages:** say "runs on infrastructure from leading cloud providers". Do not name providers, show their logos, or write "powered by", "partner" or "certified by". Those can breach trademark terms and imply an endorsement we do not have.
 - **Sub-processor list, DPA and privacy policy:** name each provider factually, as the law expects.
@@ -121,10 +123,10 @@ DronaHost buys servers from AWS, Google Cloud, DigitalOcean, Hetzner and others 
 
 ## Sub-processors (we run on rented infrastructure)
 
-Because customer data sits on AWS, Google Cloud, DigitalOcean and Hetzner, and payments go through Stripe and PayPal, these companies process data for us. GDPR and UK GDPR expect them to be listed.
+Because customer data sits on [Provider] infrastructure, and payments go through [Payment provider], these companies process data for us. GDPR and UK GDPR expect them to be listed.
 
 - Publish a **sub-processor list** at `/sub-processors` (planned): company, what it does, where it processes data, link to its own terms, date of last change. Link it from the DPA, privacy policy and footer.
-- Candidates to check: AWS, Google Cloud, DigitalOcean, Hetzner (hosting), Stripe, PayPal (payments), the WHMCS host, the email sender (`@aws-sdk/client-sesv2` is in the code), analytics, support tools. Include only what we really use.
+- Candidates to check: [Provider] (hosting), [Payment provider] (payments), the [Billing system] host, the email sender, analytics, support tools. Include only what we really use. The named candidates are in the project specifics.
 - Say how customers are told about a change (for example, a notice period) in the DPA. A legal reviewer writes it.
 - The list is a policy page: reviewed, dated, and kept in step with the infrastructure registry ([Plan 05](05-regional-and-location.md)).
 - Never describe a sub-processor's certification or location unless we checked it on the provider's own page and recorded the date.
@@ -135,7 +137,7 @@ Because customer data sits on AWS, Google Cloud, DigitalOcean and Hetzner, and p
 |---|---|---|
 | Registered company name and number, address | Footer, `/about` | `content/company.ts` (verified only) |
 | Team names, photos, LinkedIn | `/about` | Real people only |
-| Review scores | Home, product pages | Real platform links only (Trustpilot, G2, HostAdvice, Clutch) |
+| Review scores | Home, product pages | Real platform links only ([Review platform]) |
 | Security badges | Footer | Only for things we actually hold |
 
 ## Schema

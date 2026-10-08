@@ -11,7 +11,7 @@
 | WordPress hosting | `/wordpress-hosting` | exists | managed wordpress hosting |
 | VPS hosting | `/vps-hosting` | exists | managed vps hosting |
 | Cloud hosting | `/cloud-hosting` | exists | cloud hosting for small business |
-| Business hosting | `/business-hosting` | exists | business web hosting (see "Products and their data": email is not part of it today) |
+| Business hosting | `/business-hosting` | exists | business web hosting (see "Products and their data") |
 | Pricing | `/pricing` | exists | hosting plans and pricing |
 | Migration | `/migration` | exists as a request form | owned by [Plan 14](14-migration-and-email.md) |
 | Email (not hosted) | `/email` | planned | owned by [Plan 14](14-migration-and-email.md) |
@@ -25,32 +25,14 @@
 | Freelancers | wordpress hosting for freelancers | Same |
 | WooCommerce | woocommerce hosting | A feature claim confirms store support |
 | Next.js | nextjs hosting | A feature claim confirms Node.js support on the plan |
-| (removed) Business email | `pricing.json` says email hosting is discontinued, so no email keyword is targeted until the owner says otherwise | n/a |
 
 If the condition is not met, the page does not exist yet. Do not write a segment page from assumptions.
 
-## Products and their data (checked against `data/pricing.json` v3.0.0, 2026-10-07)
+## Products and their data
 
-The owner offers five products. Only some have data behind them. A page may state specifics only where the data exists. `pricing.json` itself is marked "recommended, needs owner confirmation", and its `confirmBeforeLaunch` list (limits, backup retention, staging, security and support items, free domain) is still open.
+A page may state specifics only where the data exists. For each product, list what the pricing data holds and what the page may say today. A product with no plan in the pricing data gets no price and no plan cards: it uses "Talk to the team" and a clear next step. Capabilities in the pricing data decide what a keyword page may claim.
 
-| Product | Page | What `pricing.json` holds | What the page may say today |
-|---|---|---|---|
-| WordPress hosting | `/wordpress-hosting` | Family "wordpress": Starter, Growth, Pro (managed WordPress, limits, capabilities, add-ons) | Plan names, `bestFor` lines and the structure. Limits and features render only when their claim renders. Prices stay hidden until `pricesConfirmed` |
-| Business hosting | `/business-hosting` | Family "web": Essential and Plus (cPanel, unmanaged, any site type). **Confirmed by the owner, 2026-10-07** | Plans and limits as confirmed, prices hidden until confirmed. Never call it managed or WordPress-specific. Email is not included: say so once and link to `/email` |
-| VPS hosting | `/vps-hosting` | **No VPS plans.** Only the "high-traffic and dedicated" contact entry (no price, no resources) | "Talk to the team". No price, no specs, no "unlimited" |
-| Cloud hosting | `/cloud-hosting` | **No cloud plans** | "Talk to the team". No price or specs |
-| Domain registration | `/domains` | **No domain pricing** (the file says so) | Describe the service. No price. Live search stays off until `domainSearch` is on |
-
-**Owner decisions (2026-10-07):**
-- **All service prices live in `pricing.json`.** VPS, cloud and business plans are added there by the owner when ready. Until a plan is in the file, its page has no price and no plan cards ("Talk to the team").
-- **Domain prices sync from WHMCS later.** They are never typed into copy or into `pricing.json` by hand. Until the sync exists, domain pages show no price.
-- **The maintenance plan is added later,** as a plan or add-on in `pricing.json`. Until then maintenance pages are drafts with no inclusions, times or prices (Plan 06).
-
-Consequences for the plans:
-- The "Plans" block and the price CTA exist only for WordPress hosting (and the web family once confirmed). VPS, cloud and domains use "Talk to the team" and a clear next step.
-- `capabilities` decide what a keyword page may claim. Examples: staging, object cache and automated plugin testing start at Growth. WooCommerce optimisation, advanced security and performance tuning are Pro only. Free domain for the first year is Growth, Pro and Plus (unconfirmed). So "woocommerce hosting" belongs on a Pro-led page, and "wordpress hosting for agencies" fits Pro.
-- The web family is **unmanaged**. Never call it managed or give it WordPress-specific tools.
-- Segment pages (agencies, WooCommerce, Next.js) wait for the plan limits to be confirmed.
+Project specifics for this plan: [plan-specifics/01-money-pages.md](../project/plan-specifics/01-money-pages.md) (products, data status, owner decisions, consequences).
 
 ## Keyword seeds
 
@@ -75,7 +57,7 @@ Order matters. Each block must work if the reader reads only that block.
 |---|---|---|---|
 | 1 | Hero | `ProductHero` | H1 names the product and one outcome. One primary CTA with price from `pricing.json`. One trust line from a rendering claim. |
 | 2 | Direct answer | `TwoColumn` or short text | 40 to 80 words answering "what is this and who is it for". |
-| 3 | Plans | `PricingCards` | Signup price, renewal price beneath (`pricing.renewal`), the tax line ("Prices exclude tax. Customers in India pay GST at checkout."), A null limit is never shown as "Unlimited": show "Fair use" (link to `/fair-use-policy`) when `trafficType` is `fair-use`, and hide any field that is null. |
+| 3 | Plans | `PricingCards` | Signup price, renewal price beneath (`pricing.renewal`), the tax line (see project specifics), A null limit is never shown as "Unlimited": show "Fair use" (link to `/fair-use-policy`) when `trafficType` is `fair-use`, and hide any field that is null. |
 | 4 | What is included | `FeatureGrid` | Items use `feature:` refs, so unverified features do not render. |
 | 5 | How it works | `ProcessSteps` | Order, set up, migrate, go live. Plain steps, no invented timings. |
 | 6 | Proof | `Testimonials`, `CaseStudy`, `StatsBar` | Real, named, with permission. Renders only when `verifiedReviews` and claims allow. Otherwise the block is dropped, not faked. |
@@ -94,14 +76,14 @@ Order matters. Each block must work if the reader reads only that block.
 
 The layout signature must differ between money pages (`npm run check:pages` enforces it). Vary the hero variant and the section order, not the quality bar.
 
-**Email is not hosted by DronaHost.** Product pages say so once, in plain words, and link to `/email`. Never imply a mailbox comes with a plan.
+**Exclusions customers may assume.** Where a product does not include something customers expect (for example email), product pages say so once, in plain words, and link to the page that owns it. Never imply it comes with a plan. Project specifics hold the current exclusions.
 
 **Same plans everywhere.** Locale and regional versions of these pages show the same plans and terms. Only the currency, tax line and regional compliance text differ ([Plan 11](../later/11-localization-country-language-currency.md)).
 
 ## Keyword placement
 
 - H1: primary keyword or a close variant, under 70 characters.
-- First 100 words: primary keyword once, with the entity named ("DronaHost is a hosting and web agency ...").
+- First 100 words: primary keyword once, with the entity named ("[Brand] is a [business description] ...").
 - One H2 contains a secondary keyword. Do not repeat the primary keyword in every heading.
 - Title: keyword first, no brand suffix (the helper adds it). Meta description: outcome, difference, next step.
 
@@ -109,7 +91,7 @@ The layout signature must differ between money pages (`npm run check:pages` enfo
 
 - **H1:** `[Product] for [audience], [outcome]`. Example shape: "Managed WordPress hosting for small business sites".
 - **Hero line:** the server work we handle, then the technical term in brackets. See [voice.md](../rules/voice.md).
-- **CTA:** the card button reads `Choose [Plan Name]`. The price, billing period, renewal price and tax line sit above it, read from `pricing.json`, and never inside the label. While `FEATURES.pricesConfirmed` and `FEATURES.checkout` are not both on, the button goes to `/contact` and reads "Talk to the team about [Plan Name]", and the price block shows "Price on request" in production. Beneath the button: the guarantee line, only when its claim renders.
+- **CTA:** the card button reads `Choose [Plan Name]`. The price, billing period, renewal price and tax line sit above it, read from `pricing.json`, and never inside the label. While prices or checkout are not confirmed, the button goes to the contact page and the price block shows "Price on request" (gate details in project specifics). Beneath the button: the guarantee line, only when its claim renders.
 - **Price line:** symbol, amount, billing period, and the tax line. Always the renewal price beneath.
 
 ## Proof and claims needed

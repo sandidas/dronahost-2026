@@ -10,15 +10,17 @@
 |---|---|---|---|
 | Domain search | `/domains` | exists | domain registration, buy a domain name |
 | TLD pages | `/domains/[tld]` | planned | register .co.uk domain, .ae domain registration, .eu domain, .de domain, .us domain, .co domain |
-| Transfer | `/domains/transfer` | planned | transfer domain to dronahost |
+| Transfer | `/domains/transfer` | planned | transfer domain to [brand] |
 | Domain with hosting | section on product pages | planned | domain and hosting together |
 | Guides | `/kb/[slug]` | planned | see [Plan 03](03-informational.md) domains cluster |
 
-TLD pages match the supported list in CLAUDE.md: `.co.uk`, `.de`, `.fr`, `.nl`, `.eu`, `.ae`, `.us`, `.co`, plus `.com`. Publish a TLD page only after the registrar integration supports it.
+TLD pages match the registrar's supported list (the project specifics name it). Publish a TLD page only after the registrar integration supports it.
 
-> **Gate:** `FEATURES.domainSearch` is off until the WHMCS credentials are set. While off, `/domains` and TLD pages describe the service and link to `/contact`. They do not show a live search box or live prices.
+Project specifics for this plan: [plan-specifics/08-domains.md](../project/plan-specifics/08-domains.md) (supported TLD list, gate, owner decision).
 
-**Owner decision (2026-10-07):** domain prices will sync from WHMCS later. Until the sync exists, domain and TLD pages show no price. When it exists, prices come only from the synced data with a fetch date, never typed.
+> **Gate:** while the registrar integration is not live, `/domains` and TLD pages describe the service and link to the contact page. They do not show a live search box or live prices.
+
+**Price source rule:** until a synced price source exists, domain and TLD pages show no price. When it exists, prices come only from the synced data with a fetch date, never typed.
 
 ## Pricing and legal rules
 

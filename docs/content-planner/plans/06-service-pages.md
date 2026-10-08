@@ -18,9 +18,11 @@
 
 Add sub-service pages only for work we have delivered and can show. A page about a service with no case study is a weak page.
 
-## Maintenance cluster (service confirmed by the owner, 2026-10-07)
+## Maintenance cluster (service confirmed by the owner)
 
-DronaHost offers website maintenance. The owner's service list: website maintenance, website management, WooCommerce maintenance, WordPress maintenance, website support and helpdesk, and maintenance use cases. Scope, price and response times are **not defined yet**, so pages can be planned and drafted but cannot state what is included, how fast we respond or what it costs until the service sheet below is filled.
+[Brand] offers website maintenance once the owner has confirmed the service and its list. Scope, price and response times may be **not defined yet**. Then pages can be planned and drafted but cannot state what is included, how fast we respond or what it costs until the service sheet below is filled.
+
+Project specifics for this plan: [plan-specifics/06-service-pages.md](../project/plan-specifics/06-service-pages.md) (the owner's confirmed service list, owner decisions, location sentence).
 
 | Page | URL (planned) | Searcher thinks | Primary keyword seed (unvalidated) | Status |
 |---|---|---|---|---|
@@ -33,7 +35,7 @@ DronaHost offers website maintenance. The owner's service list: website maintena
 
 **How the pages differ (so they do not compete):** the hub explains the whole service and links to the rest. WordPress and WooCommerce pages answer platform questions (plugin updates, store checks). Website management covers editing and running the site, which maintenance alone does not. Support and helpdesk covers help on request (tickets), not scheduled care. Each has its own keyword and its own register row.
 
-**Use-case pages** (only when we have a real example and permission): agencies that need maintenance for client sites, online shops, small business sites after a move to DronaHost, sites that outgrew a freelancer. Each needs a real case or process we actually run (rules section 8.3). Otherwise fold the use case into a section of the hub.
+**Use-case pages** (only when we have a real example and permission): agencies that need maintenance for client sites, online shops, small business sites after a move to [Brand], sites that outgrew a freelancer. Each needs a real case or process we actually run (rules section 8.3). Otherwise fold the use case into a section of the hub.
 
 **Informational support** (Plan 03): "website maintenance checklist", "what does website maintenance include", "how often should wordpress be updated". These pull readers toward the maintenance pages and are owned by Plan 03, not this plan.
 
@@ -42,13 +44,13 @@ DronaHost offers website maintenance. The owner's service list: website maintena
 | Question | Answer |
 |---|---|
 | What tasks are done, and how often? (updates, backups, security scans, uptime monitoring, performance checks, content edits, fixes) | |
-| Does it cover sites **not** hosted with DronaHost? | |
+| Does it cover sites **not** hosted with [Brand]? | |
 | WordPress only, or other platforms? WooCommerce included or extra? | |
 | How many hours or requests per month, if limited? | |
 | How do customers ask for help (ticket, email) and what hours do we work? | |
 | Response and fix times we can honestly state | |
 | Tools used (monitoring, backup, security) and what we may name | |
-| Price: per site per month, plans, or custom? Owner decision: the maintenance plan is added to `pricing.json` later. Until then no price on the pages | |
+| Price: per site per month, plans, or custom? Until a maintenance plan is in the pricing data, no price on the pages (owner decision in project specifics) | |
 | What is not covered (new design, custom development, third-party plugin bugs) | |
 | Reports the customer receives | |
 | Contract: minimum term, cancellation, refund terms page | |
@@ -58,13 +60,13 @@ Until it is filled: draft structure and headlines only. Do not write inclusions,
 
 **Pitch and headline:** follow rules sections 11 and 12. The reason in a "because" headline comes from a rendering claim, for example: "We handle your WordPress updates because a failed update should not take your site offline" (needs a verified claim and the restore process described).
 
-**Links to hosting:** each page links to the matching hosting plan and says plainly that maintenance works with or without DronaHost hosting (only if the owner confirms that in the sheet).
+**Links to hosting:** each page links to the matching hosting plan and says plainly that maintenance works with or without [Brand] hosting (only if the owner confirms that in the sheet).
 
 ## Page template
 
 | # | Block | Rule |
 |---|---|---|
-| 1 | Hero | H1 names the service and the outcome. CTA: "Book a consultation" (`/consultation`). Include the location sentence: "A team based in India working with clients worldwide." |
+| 1 | Hero | H1 names the service and the outcome. CTA: "Book a consultation" (`/consultation`). Include the location sentence from project specifics. |
 | 2 | Direct answer | 40 to 80 words: what we do, for whom, what you get. |
 | 3 | Who it suits | Two or three audience types, and one who it does not suit. Honesty builds trust. |
 | 4 | What is included | Deliverables as a list, with plain words for each. No guarantees of results. |

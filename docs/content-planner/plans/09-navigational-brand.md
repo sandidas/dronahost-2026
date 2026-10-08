@@ -1,28 +1,30 @@
 # Plan 09: Navigational and Brand
 
-**Intent:** the searcher already knows DronaHost and wants a specific place: login, support, pricing, or independent proof that we are real.
+**Intent:** the searcher already knows [Brand] and wants a specific place: login, support, pricing, or independent proof that we are real.
 **Goal:** be the first and the cleanest result for our own name, and make every brand search lead to a trust page, not to a rumour.
 **Owns:** brand queries and brand-plus-modifier queries.
+
+Project specifics for this plan: [plan-specifics/09-navigational-brand.md](../project/plan-specifics/09-navigational-brand.md)
 
 ## Queries and the page that owns each
 
 | Query (seed) | Page | Notes |
 |---|---|---|
-| dronahost | `/` | Homepage defines the entity in the first 50 words. |
-| dronahost login, dronahost client area | `my.dronahost.com` (the WHMCS client area) | The login page may be indexed with a clear title, so existing customers find it. The rest of the client area, the cart and API paths are `noindex`. The main site links to it in the header and footer. `FEATURES.accountArea` governs only a future in-app account area, not this link |
-| dronahost support, dronahost contact | `/contact` | Hours and channels only from verified claims. |
-| dronahost pricing | `/pricing` | Plan 01. |
-| dronahost reviews | `/reviews` (planned) | A page that links to our real profiles on Trustpilot, G2, HostAdvice and Clutch. No ratings typed by hand. |
-| dronahost about, who owns dronahost | `/about` | Company registration, address, team, founding year (only when verified). |
-| is dronahost legit | `/about` section or `/trust` (planned) | The honest answer: who we are, where we are based, how to verify us. |
-| dronahost status | status page (planned) | External status page, linked from the footer. |
-| dronahost vs [x] | `/vs/[x]` | Plan 02. |
+| [brand] | `/` | Homepage defines the entity in the first 50 words. |
+| [brand] login, [brand] client area | the [Billing system] client area | The login page may be indexed with a clear title, so existing customers find it. The rest of the client area, the cart and API paths are `noindex`. The main site links to it in the header and footer. Feature flags for any future in-app account area are in the project specifics |
+| [brand] support, [brand] contact | `/contact` | Hours and channels only from verified claims. |
+| [brand] pricing | `/pricing` | Plan 01. |
+| [brand] reviews | `/reviews` (planned) | A page that links to our real profiles on [Review platform]. No ratings typed by hand. |
+| [brand] about, who owns [brand] | `/about` | Company registration, address, team, founding year (only when verified). |
+| is [brand] legit | `/about` section or `/trust` (planned) | The honest answer: who we are, where we are based, how to verify us. |
+| [brand] status | status page (planned) | External status page, linked from the footer. |
+| [brand] vs [Competitor] | `/vs/[competitor]` | Plan 02. |
 
 ## Entity definition (use on every key page)
 
-One sentence in the first 50 words, the same wording everywhere. Place the wording in a single registry (for example `content/company.ts`), not retyped. The sentence says what DronaHost is and where it is based. Structured data (`Organization`, `WebSite`) uses the same name and the same facts.
+One sentence in the first 50 words, the same wording everywhere. Place the wording in a single registry (for example `content/company.ts`), not retyped. The sentence says what [Brand] is and where it is based. Structured data (`Organization`, `WebSite`) uses the same name and the same facts.
 
-Spelling: logo reads `dronahost`, prose reads `DronaHost`, domain reads `dronahost.com`. Never `Drona Host`, `DRONAHOST`, `Dronahost`.
+Spelling: fix one spelling for the logo, one for prose and one for the domain, and never vary them (the exact forms are in the project specifics).
 
 ## Brand SERP checklist
 
@@ -36,7 +38,7 @@ Spelling: logo reads `dronahost`, prose reads `DronaHost`, domain reads `dronaho
 
 ## Trust page (`/about` or `/trust`)
 
-Must show: registered company name and number, physical address (India is fine), Indian GST number if the owner wants it public, team names with LinkedIn links, year founded (verified), how to reach a human. Only verified items render. Anything missing is left out, never faked.
+Must show: registered company name and number, physical address (the company's real [Country] address is fine), the company's tax registration number if the owner wants it public, team names with LinkedIn links, year founded (verified), how to reach a human. Only verified items render. Anything missing is left out, never faked.
 
 ## Reviews page rules
 

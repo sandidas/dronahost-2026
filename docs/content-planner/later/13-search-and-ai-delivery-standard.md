@@ -50,7 +50,7 @@ Validate with the Rich Results Test and the schema validator. `npm run qa:jsonld
 Targets from `CLAUDE.md`: LCP under 2 s (aim 1.5 s on 4G from London, New York and Dubai), INP under 200 ms, CLS under 0.1, Lighthouse 95 or more, JavaScript under 150 KB gzipped per page.
 
 - Static or incremental generation for marketing pages. Dynamic data (domain search) is client-initiated and does not block the page.
-- Cloudflare in front, HTML cached at the edge with short revalidation, static assets immutable, Brotli and HTTP/3.
+- A CDN in front, HTML cached at the edge with short revalidation, static assets immutable, Brotli and HTTP/3.
 - Images in AVIF or WebP through `next/image`. The LCP image has `priority`. Below-fold images lazy. Width and height always set.
 - Fonts through `next/font`, Latin subset, Arabic subset added for `ar-AE` only.
 - Third-party scripts after interaction. Analytics cookieless where possible.
@@ -75,9 +75,9 @@ What is solid: AI tools and AI Overviews read server-rendered text, favour pages
 | Gate | Standard |
 |---|---|
 | Answer-first passages | Each question heading is followed by a 40 to 80 word standalone answer (see [Plan 10](../plans/10-ai-search-queries.md)) |
-| Entity clarity | One identical line defining DronaHost, in the first 50 words of key pages, from `content/company.ts`. Same name spelling everywhere |
+| Entity clarity | One identical line defining [Brand], in the first 50 words of key pages, from `content/company.ts`. Same name spelling everywhere |
 | Citable facts | Specific, sourced, dated. Tables with real figures. No unsupported superlatives |
-| Crawler access | `robots.txt` states the policy for AI crawlers explicitly (allowed by default for search and answer bots; the decision on training bots is the owner's, recorded in `seo-rules.md`). Cloudflare bot settings must not silently block the bots we allow |
+| Crawler access | `robots.txt` states the policy for AI crawlers explicitly (allowed by default for search and answer bots; the decision on training bots is the owner's, recorded in `seo-rules.md`). CDN bot settings must not silently block the bots we allow |
 | Freshness | `dateModified` and `lastmod` change only on real edits, and a review date is visible |
 | Consistency | The same fact says the same thing on every page, in every locale. Facts are single-sourced (claims, pricing, company) |
 | Corrections | When an AI tool states something wrong, fix the source page first, then record it in the monthly check |
@@ -85,13 +85,13 @@ What is solid: AI tools and AI Overviews read server-rendered text, favour pages
 
 ## 7. Fast discovery
 
-- **IndexNow** (supported by Bing and some other engines, not Google): ping on publish, on a price change and on a redirect. Fire it from the same step that updates `lastmod` (A10 in [Plan 12](12-whmcs-data-and-automation.md)). Needs a key file on the site. Plan the key file in `public/`.
+- **IndexNow** (supported by Bing and some other engines, not Google): ping on publish, on a price change and on a redirect. Fire it from the same step that updates `lastmod` (A10 in [Plan 12](12-billing-system-integration.md)). Needs a key file on the site. Plan the key file in `public/`.
 - **Google:** the sitemap and internal links are the route. Use URL Inspection for key launches. Do not abuse the indexing API.
 - **Bing Webmaster Tools:** submit the sitemap and watch coverage. Some AI assistants are reported to use Bing results (assumption, re-check).
 
 ## 8. Trust gates (they decide conversion and citation)
 
-- Footer and about page show the registered company name and number, address (India is fine), tax numbers where applicable, and real team names with profile links, only from verified registries.
+- Footer and about page show the registered company name and number, address (a real address in the home country), tax numbers where applicable, and real team names with profile links, only from verified registries.
 - Policy pages exist and are published and reviewed before claims that depend on them render.
 - Review profiles are real and linked. No ratings typed by hand.
 - Accessibility to WCAG 2.1 AA: `npm run qa:axe` passes. Keyboard use works through the switcher and the consent banner.

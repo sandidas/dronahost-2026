@@ -32,7 +32,7 @@ One control in the header and footer: **"Country and currency"**. It opens a sma
 | European Union, in English | `/en-ie/` | `en-IE` | EUR | "+ VAT" | **Wave 3** |
 | Germany, France, Netherlands | `/de-de/`, `/fr-fr/`, `/nl-nl/` | `de-DE`, `fr-FR`, `nl-NL` | EUR | "+ VAT" | later |
 | UAE in Arabic | `/ar-ae/` (right to left) | `ar-AE` | AED | none | later |
-| India (currency selector only) | any | none | INR | none | offered, never forced |
+| [Country with currency selector only] | any | none | INR | none | offered, never forced |
 
 **Why `en-IE` for the EU English version.** Hreflang takes a language and an optional country. There is no code for "the EU". Ireland is an EU country, English is an official language there, and it uses the euro. So the EU English locale uses `en-IE`. The page copy speaks to businesses across the EU, not only Ireland. The EU-wide landing page `/hosting/eu` stays as the region page (see "Region page versus locale page").
 
@@ -56,7 +56,7 @@ Behaviour rules (these follow existing decisions in `CLAUDE.md` and `docs/compon
 
 | Check | Pass condition |
 |---|---|
-| Prices | Every plan, billing cycle, renewal price and addon has an explicit price in `pricing.json` and the same price in WHMCS |
+| Prices | Every plan, billing cycle, renewal price and addon has an explicit price in `pricing.json` and the same price in the billing system |
 | Payment | Stripe or PayPal can charge in that currency for this business, and the payout currency is known (Plan 12) |
 | Tax display | `pricing.currencies[code]` has its `vatDisplay` and the tax position for its main market is confirmed |
 | Format | Symbol, decimals and position come from `Intl` for the locale. The currency name is shown where the symbol is ambiguous (`$` is used by many currencies) |
@@ -176,8 +176,8 @@ A search engine crawls without cookies, so every URL must show **one currency in
 | 1 | Launch order | UK (wave 1), then UAE (wave 2), then EU in English with euro pricing (wave 3) |
 | 2 | Currency memory | Yes. Remembered in a preferences cookie after consent. Static HTML stays in the locale default currency |
 | 3 | Region page versus locale page | When a locale goes live, its region page moves into that locale and the unprefixed URL redirects with a 301 (`/hosting/uk` to `/en-gb/hosting/uk`). EU keeps `/hosting/eu` as the EU-wide region page and `/en-ie/hosting/eu` follows the same pattern when wave 3 starts |
-| 4 | Prices in other currencies | Explicit stored prices per plan, rounded to local price points, in `pricing.json` (edited by hand for now, synced from WHMCS later). WHMCS holds the same numbers (see [Plan 12](12-whmcs-data-and-automation.md)) |
-| 6 | Selector currencies | **All pricing shows in every currency that passes the readiness test**, starting with USD, GBP, EUR, AED and INR, then the others WHMCS already holds ("etc"). A currency joins the selector only when it passes all four checks below |
+| 4 | Prices in other currencies | Explicit stored prices per plan, rounded to local price points, in `pricing.json` (edited by hand for now, synced from the billing system later). the billing system holds the same numbers (see [Plan 12](12-billing-system-integration.md)) |
+| 6 | Selector currencies | **All pricing shows in every currency that passes the readiness test**, starting with USD, GBP, EUR, AED and INR, then the others the billing system already holds ("etc"). A currency joins the selector only when it passes all four checks below |
 | 5 | English variants | `en-GB` for the UK, `en-AE` (UK spelling) for the UAE, `en-IE` (UK spelling) for the EU |
 
 ## Still open
@@ -192,11 +192,11 @@ A search engine crawls without cookies, so every URL must show **one currency in
 | Wave | Locale | Gate to go live (all must be true) |
 |---|---|---|
 | 0 | `en-US`, USD, worldwide (the default site) | Already the default. All content plans can ship here first. The currency selector and other locales wait for their own waves. No tax display change |
-| 1 | `en-GB`, GBP | GBP prices confirmed in `pricing.json` and in WHMCS (the manual price-check list in Plan 12). A gateway live for GBP. Tax follows the owner rule (GST for India only, no tax elsewhere). UK Tier A pages written and reviewed. UK keyword rows validated. `/hosting/uk` redirect ready. Prices flag on. Checkout hand-off works with the GBP currency |
+| 1 | `en-GB`, GBP | GBP prices confirmed in `pricing.json` and in the billing system (the manual price-check list in Plan 12). A gateway live for GBP. Tax follows the owner rule (the project tax rule in `project/PROJECT.md`). UK Tier A pages written and reviewed. UK keyword rows validated. `/hosting/uk` redirect ready. Prices flag on. Checkout hand-off works with the GBP currency |
 | 2 | `en-AE`, AED | Same for AED (gateway, prices), plus UAE PDPL page reviewed and the support-hours claim verified for UAE hours |
-| 3 | `en-IE`, EUR | Same for EUR, plus DPA published with the WHMCS location and transfer wording, `en-IE` added to the locale config |
+| 3 | `en-IE`, EUR | Same for EUR, plus DPA published with the billing-system location and transfer wording, `en-IE` added to the locale config |
 
-**Check the order against real demand.** Before wave 1, read the aggregate customer count by country from the existing WHMCS (Plan 12, audit). If the numbers point to a different order, tell the owner. Do not change the order on your own.
+**Check the order against real demand.** Before wave 1, read the aggregate customer count by country from the existing billing system (Plan 12, audit). If the numbers point to a different order, tell the owner. Do not change the order on your own.
 
 ## Measure
 
