@@ -91,8 +91,9 @@ test.describe("resolvers", () => {
     expect(resolveClaimRef("claim:does-not-exist")).toBe(false);
   });
 
-  test("the real registry renders no claim today", () => {
-    for (const ref of ["claim:money-back", "claim:support-24-7", "claim:free-migration", "claim:renewal-price-same"]) expect(resolveClaimRef(ref)).toBe(false);
+  test("the real registry renders the four owner-approved assurances and no unverified claim", () => {
+    for (const ref of ["claim:money-back", "claim:support-24-7", "claim:free-migration", "claim:renewal-price-same"]) expect(resolveClaimRef(ref)).toBe(true);
+    for (const ref of ["claim:uptime-sla", "claim:managed-hosting-tasks", "claim:migration-process"]) expect(resolveClaimRef(ref)).toBe(false);
   });
 
   test("feature: needs its claim AND, when plan-specific, a plan that includes it", () => {
@@ -140,12 +141,12 @@ test.describe("section gating on the home page", () => {
   const ids = (c: ResolveContext) => visibleSections(spec, c).map((s) => s.id);
 
   test("today (nothing verified, prices unconfirmed) the gated sections drop out and no gap is left", () => {
-    expect(ids(ctx())).toEqual(["hero", "assurance", "router", "split", "platform", "support", "policies", "faq", "cta"]);
+    expect(ids(ctx())).toEqual(["hero", "assurance", "router", "meaning", "platform", "help", "faq", "cta"]);
   });
 
   test("section-level requires and requiresClaim each remove a section", () => {
-    const all = ctx({ claims: ["managed-hosting-tasks", "free-migration"], flags: ["pricesConfirmed"], predicates: ["verifiedReviews"] });
-    expect(ids(all)).toEqual(["hero", "assurance", "router", "answer", "split", "moving", "platform", "plans", "support", "proof", "policies", "faq", "cta"]);
+    const all = ctx({ claims: ["migration-process"], flags: ["pricesConfirmed"], predicates: ["verifiedReviews"] });
+    expect(ids(all)).toEqual(["hero", "assurance", "router", "meaning", "moving", "platform", "plans", "help", "proof", "faq", "cta"]);
   });
 });
 

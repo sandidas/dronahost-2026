@@ -1,0 +1,11 @@
+import { UI } from "@/content/strings";
+
+export default function Clean({ title }: { title: string }) {
+  return (
+    <section className="mt-3 flex gap-4" aria-labelledby="x">
+      <h2 id="x">{title}</h2>
+      <p>{UI.generic.learnMore}</p>
+      <a href="/pricing" className="text-link underline">{UI.generic.readTerms}</a>
+    </section>
+  );
+}

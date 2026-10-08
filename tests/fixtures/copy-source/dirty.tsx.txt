@@ -1,0 +1,10 @@
+export default function Dirty({ label = "Click here to continue" }: { label?: string }) {
+  const rows = [{ title: "Our friendly team", href: "/about" }];
+  return (
+    <section>
+      <h2>Why customers choose us</h2>
+      <button aria-label="Close the dialog">{label}</button>
+      <p note={ready ? "Ready to ship" : null}>{rows[0].title}</p>
+    </section>
+  );
+}

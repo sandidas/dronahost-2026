@@ -31,12 +31,45 @@ test.describe("home page (rendered from content/pages/home.json)", () => {
 
   test("the sections that are confirmed render, with no empty gaps", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { name: "Reach a person when you need one" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Help when you need it, and the terms behind our promises" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "What we look after, and what stays with you" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Questions before you choose" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Ready to see which plan fits?" })).toBeVisible();
     // Every section on the page has a heading: no section renders empty.
     const sections = await page.locator("main section").evaluateAll((els) => els.map((el) => !!el.querySelector("h1, h2, h3")));
     expect(sections.every(Boolean)).toBe(true);
+  });
+
+  test("the hero mockup says it is an example, and the support button is secondary", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByText("Example dashboard")).toBeVisible();
+    await expect(page.getByRole("link", { name: "Open a ticket" })).toHaveClass(/btn-secondary/);
+  });
+
+  test("spacing stays even between the visible sections, however many are hidden", async ({ page }) => {
+    for (const width of [1280, 390]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto("/");
+      // Content to content: the lowest visible element of one section to the highest visible element of the next.
+      const gaps = await page.locator("main > section").evaluateAll((els) => {
+        const box = (el: Element) => {
+          const rects = [...el.querySelectorAll("h1,h2,h3,p,li,figure,figcaption,a,button,summary")]
+            .filter((n) => !n.closest(".sr-only") && n.checkVisibility({ checkVisibilityCSS: true, contentVisibilityAuto: true }))
+            .filter((n) => {
+              // Skip anything pinned to the screen (a mobile call-to-action bar): it floats over the page and has no place in the flow.
+              for (let p: Element | null = n; p; p = p.parentElement) if (["fixed", "sticky"].includes(getComputedStyle(p).position)) return false;
+              return true;
+            })
+            .map((n) => n.getBoundingClientRect())
+            .filter((r) => r.width > 8 && r.height > 8);
+          return { top: Math.min(...rects.map((r) => r.top)), bottom: Math.max(...rects.map((r) => r.bottom)) };
+        };
+        return els.slice(1).map((el, i) => Math.round(box(el).top - box(els[i]).bottom));
+      });
+      // Each section pads itself, so two neighbours sit 40 to 240px apart: never touching and never a double gap.
+      for (const g of gaps) expect(g, `gap ${g}px at ${width}px wide (all: ${gaps.join(", ")})`).toBeGreaterThanOrEqual(40);
+      for (const g of gaps) expect(g, `gap ${g}px at ${width}px wide`).toBeLessThanOrEqual(240);
+    }
   });
 
   test("FAQ answers are in the server HTML and the open state is accessible without JavaScript", async ({ browser }) => {

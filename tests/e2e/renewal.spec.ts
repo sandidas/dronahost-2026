@@ -27,8 +27,8 @@ test.describe("renewal line", () => {
     }
   });
 
-  test("the renewal-price-same claim does not render today, so the promise is hidden", () => {
-    expect(isVerified("renewal-price-same")).toBe(false);
+  test("the renewal-price-same claim renders today (owner approved /pricing-policy on 2026-10-08)", () => {
+    expect(isVerified("renewal-price-same")).toBe(true);
   });
 
   for (const path of ["/pricing", "/wordpress-hosting"]) {
