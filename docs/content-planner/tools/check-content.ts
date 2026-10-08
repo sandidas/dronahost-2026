@@ -48,10 +48,22 @@ export function checkDoc(ctx: Ctx, doc: Doc, opts: { overlap?: boolean } = {}): 
     ...experienceRules(ctx, doc), ...sourceRules(ctx, doc), ...metadataRules(ctx, doc), ...schemaRules(ctx, doc), ...policyRules(ctx, doc),
     ...(opts.overlap === false ? [] : overlapRules(ctx, doc)), ...flagRules(doc),
   ];
-  if (!/^draft/i.test(doc.state)) return results;
-  return results.map((r) => READY_ONLY.has(r.id) && !r.ok
+  const staged = !/^draft/i.test(doc.state) ? results : results.map((r) => READY_ONLY.has(r.id) && !r.ok
     ? { ...r, ok: true, failures: [], warnings: [...r.warnings, ...r.failures], note: "readiness rule: warns in a Draft" }
     : r);
+  return applyOwnerWaivers(doc, staged);
+}
+
+/**
+ * An owner decision can overrule a rule for one page. Front matter: `waive_rules: K2, P2`, `waive_reason`, `waive_approved_by`.
+ * The failures of those rules then show as warnings that name the owner. Without a reason and an approver the waiver is ignored.
+ */
+function applyOwnerWaivers(doc: Doc, results: RuleResult[]): RuleResult[] {
+  const f = doc.front;
+  const ids = new Set((f.waive_rules ?? "").split(/[,;\s]+/).map((x) => x.trim().toUpperCase()).filter(Boolean));
+  if (!ids.size || !f.waive_reason?.trim() || !f.waive_approved_by?.trim()) return results;
+  const note = `waived by ${f.waive_approved_by.trim()}: ${f.waive_reason.trim()}`;
+  return results.map((r) => ids.has(r.id) && !r.ok ? { ...r, ok: true, failures: [], warnings: [...r.warnings, ...r.failures], note } : r);
 }
 
 /** Cross-page rules: no two pages share a title or a description. */
@@ -64,8 +76,10 @@ export function duplicateRules(docs: Doc[]): Map<string, RuleResult[]> {
       const failures: Finding[] = [];
       if (v) {
         const other = seen.get(v);
-        if (other) failures.push({ line: 1, message: `same ${id === "OV3" ? "title" : "description"} as ${other.file}` });
-        else seen.set(v, d);
+        // A Markdown draft and the page spec built from it (same URL, different file kind) may share a title. Anything else clashes.
+        const sameUrl = other && other.kind !== d.kind && (other.front.slug ?? "").trim() !== "" && (other.front.slug ?? "").trim() === (d.front.slug ?? "").trim();
+        if (other && !sameUrl) failures.push({ line: 1, message: `same ${id === "OV3" ? "title" : "description"} as ${other.file}` });
+        else if (!other) seen.set(v, d);
       }
       out.set(d.file, [...(out.get(d.file) ?? []), rule(id, "Overlap", name, failures)]);
     }

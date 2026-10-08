@@ -214,3 +214,19 @@ test("the host page-spec adapter passes when its command passes, fails when it f
   assert.deepEqual(hostPageSpecCheck(withCommand('node -e "process.exit(1)"'), [article]), { ran: false, ok: true }, "an article is not a page spec");
   assert.deepEqual(hostPageSpecCheck({ ...ctx, config: { ...ctx.config, adapters: { ...ctx.config.adapters, pageSpec: null } } }, [spec]), { ran: false, ok: true });
 });
+
+test("Waiver: an owner waiver turns the named rule's failures into warnings only when a reason and an approver are given", () => {
+  const noAi = (extra: string) => guide((t) => t.replace(/^.*Drafted with AI assistance.*$/m, "").replace("ai_assisted: yes", `ai_assisted: yes${extra}`));
+  assert.equal(result(noAi(""), "P2")?.ok, false, "baseline: the disclosure line is missing in this fixture");
+  const full = result(noAi("\nwaive_rules: P2\nwaive_reason: owner wants no AI line on this page\nwaive_approved_by: Sam Example"), "P2");
+  assert.equal(full?.ok, true);
+  assert.ok(full?.warnings.length, "the waived failure stays visible as a warning");
+  assert.equal(result(noAi("\nwaive_rules: P2"), "P2")?.ok, false, "no reason and no approver: the waiver is ignored");
+});
+
+test("Overlap: a Markdown draft and the page spec for the same URL do not clash on title or description", () => {
+  const a = loadDoc(ctx, guide((t) => t));
+  const b = { ...a, file: a.file + ".json", kind: "json" as const };
+  const dupes = duplicateRules([a, b]);
+  assert.ok((dupes.get(b.file) ?? []).every((r) => r.ok));
+});

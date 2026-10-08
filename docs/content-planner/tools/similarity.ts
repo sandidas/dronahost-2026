@@ -42,7 +42,9 @@ export function compare(file: string, ctx: Ctx, against: string[] = []): Match[]
   const dw = words(doc.text);
   const ds = new Set(shingles(dw, k));
   const selfPath = resolve(file);
-  const slug = (doc.front.slug ?? "").replace(/\/+$/, "");
+  // The home page slug is "/", so strip trailing slashes but keep a lone "/" (otherwise the same-slug skip never matches it).
+  const normSlug = (v?: string): string => { const t = (v ?? "").trim(); return t === "" ? "" : t.replace(/\/+$/, "") || "/"; };
+  const slug = normSlug(doc.front.slug);
   const sources: { rule: Match["rule"]; file: string; text: string }[] = [];
   const own = against.length
     ? against.flatMap((a) => listDocs(resolve(a)))
@@ -50,7 +52,7 @@ export function compare(file: string, ctx: Ctx, against: string[] = []): Match[]
   for (const f of own) {
     if (resolve(f) === selfPath) continue;
     const o = loadText(f, ctx);
-    if (slug && (o.front.slug ?? "").replace(/\/+$/, "") === slug) continue;
+    if (slug && normSlug(o.front.slug) === slug) continue;
     sources.push({ rule: "OV1", file: f, text: o.text });
   }
   for (const f of listDocs(ctx.resolvePath(ctx.config.paths.briefs)).filter((x) => x.endsWith(".md"))) {

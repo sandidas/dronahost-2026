@@ -112,7 +112,7 @@ Valid plans are the section titles below (Plans 01 to 10 and Plan 14). Plan 15 (
 
 | Keyword | Locale | Secondary | Intent check | Volume / KD | Target URL | Owner | Status | Next review | AI cited |
 |---|---|---|---|---|---|---|---|---|---|
-| dronahost | en-US | wordpress and vps hosting for small business | brand | | `/` | | published | 2027-01-07 | |
+| dronahost | en-US | managed wordpress hosting for small business | brand | | `/` | Sandipan Das | review | 2027-04-08 | |
 | dronahost reviews | en-US | | | | `/reviews` | | unvalidated | | |
 | is dronahost legit | en-US | | | | `/about` | | unvalidated | | |
 

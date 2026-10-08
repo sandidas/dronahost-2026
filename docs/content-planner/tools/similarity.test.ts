@@ -43,3 +43,8 @@ test("CLI exits 1 with a FAIL line for copied text and 0 for original text", () 
   assert.equal(go("clean.md").status, 0);
   assert.match(go("serp-copy.md").stdout, /FAIL OV2/);
 });
+
+test("a different file with the root slug \"/\" is skipped as the old version of the same page", () => {
+  const others = compare(`${FIX}/drafts/root-new.md`, ctx).map((x) => x.other);
+  assert.ok(!others.some((o) => o.endsWith("root-old.md")));
+});

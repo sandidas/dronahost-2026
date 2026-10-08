@@ -6,7 +6,7 @@
   "audience": "Small business owners who run or need a WordPress site and want fewer technical worries",
   "primaryKeyword": "dronahost",
   "secondaryKeywords": [
-    "wordpress and vps hosting for small business"
+    "managed wordpress hosting for small business"
   ],
   "layoutSignature": [
     "ProductHero:dashboard",
@@ -16,8 +16,8 @@
     "ResponsibilitySplit"
   ],
   "seo": {
-    "title": "Managed WordPress & VPS Hosting",
-    "description": "Managed WordPress, cloud and VPS hosting for growing businesses. See what is included, compare plans and talk to our team.",
+    "title": "Managed WordPress Hosting for Small Businesses",
+    "description": "DronaHost is a focused team in India offering managed WordPress hosting for small businesses, freelancers and agencies worldwide. See the plans and policies.",
     "ogImage": "/og/home.jpg",
     "schema": [
       "Organization",
@@ -27,7 +27,7 @@
   "rules": {
     "primaryCta": {
       "label": "See WordPress hosting plans",
-      "href": "/pricing"
+      "href": "/wordpress-hosting"
     },
     "requiredSections": [
       "hero",
@@ -46,7 +46,7 @@
       "best",
       "fastest"
     ],
-    "reviewedOn": "2026-10-07"
+    "reviewedOn": "2026-10-08"
   },
   "sections": [
     {
@@ -54,17 +54,12 @@
       "type": "ProductHero",
       "variant": "dashboard",
       "content": {
-        "eyebrow": "Managed WordPress, cloud and VPS hosting",
-        "h1": "WordPress hosting you can leave to us, because we always reply",
-        "h1Requires": [
-          "claim:support-24-7"
-        ],
-        "h1Fallback": "Managed WordPress hosting without the technical worry",
-        "accentFallback": "without the technical worry",
-        "lead": "We run the servers, back up your site and move it across for you, so you can get on with your business.",
+        "eyebrow": "Managed WordPress hosting",
+        "h1": "Managed WordPress hosting without the technical worry",
+        "lead": "DronaHost is a focused team in India that offers managed WordPress hosting for small businesses, freelancers and agencies worldwide. We move your site for free, and you can reach us by ticket or email.",
         "ctaPrimary": {
           "label": "See WordPress hosting plans",
-          "href": "/pricing"
+          "href": "/wordpress-hosting"
         },
         "ctaSecondary": {
           "label": "Talk to our team",
@@ -72,16 +67,14 @@
         },
         "highlights": [
           "claim:free-migration",
-          "claim:support-24-7",
-          "claim:money-back"
+          "claim:money-back",
+          "claim:renewal-price-same"
         ],
-        "accent": "because we always reply",
+        "accent": "without the technical worry",
+        "leadFallback": "DronaHost is a focused team in India that offers managed WordPress hosting for small businesses, freelancers and agencies worldwide. You can reach the team by support ticket or email.",
         "leadRequiresClaims": [
-          "claim:managed-server-care",
-          "claim:backups",
-          "claim:migration-process"
-        ],
-        "leadFallback": "WordPress hosting with a team you can talk to, so you can get on with your business."
+          "claim:free-migration"
+        ]
       }
     },
     {
@@ -90,7 +83,6 @@
       "content": {
         "claims": [
           "claim:money-back",
-          "claim:support-24-7",
           "claim:free-migration",
           "claim:renewal-price-same"
         ]
@@ -105,18 +97,17 @@
         "paths": [
           {
             "title": "I already have a WordPress site",
-            "line": "We move it to DronaHost and look after it.",
-            "href": "/wordpress-hosting",
-            "cta": "See WordPress hosting",
+            "line": "We move it to DronaHost, and the move is free.",
+            "href": "/migration",
+            "cta": "See free migration",
             "icon": "layers"
           },
           {
-            "title": "I need a website built",
-            "line": "We design a new WordPress site, then host it.",
-            "href": "/web-design",
-            "cta": "See website design",
-            "icon": "palette",
-            "requiresClaim": "claim:website-design-service"
+            "title": "I need a new WordPress site",
+            "line": "Choose managed WordPress hosting.",
+            "href": "/wordpress-hosting",
+            "cta": "See WordPress hosting",
+            "icon": "layers"
           },
           {
             "title": "I need simple hosting for a business site",
@@ -242,8 +233,7 @@
         "channels": [
           "ticket",
           "email"
-        ],
-        "hoursFrom": "claim:support-24-7"
+        ]
       }
     },
     {
@@ -280,20 +270,20 @@
         "items": [
           {
             "q": "What is managed WordPress hosting?",
-            "a": "Managed WordPress hosting means your host looks after the technical work behind your website, while you keep control of your content and your business. It suits owners who want a reliable site without learning how servers work, and who would rather ask a team than search for answers alone."
+            "a": "Managed WordPress hosting means the host looks after the server your site runs on, so you can focus on your content and your customers. DronaHost offers it on its WordPress hosting plans. If you want to know what is included before you buy, ask the team by support ticket or email."
           },
           {
             "q": "Do I need technical skills to use DronaHost?",
-            "a": "No. You manage your site in WordPress as usual, and the technical work behind it is handled for you. If you get stuck, you can contact our team by support ticket or email at any hour, and we reply with the next step. You do not need to know what a server is to run your site here."
+            "a": "No. You manage your site in WordPress as usual, and we handle the technical side."
           },
           {
             "q": "Does DronaHost host email?",
-            "a": "No. Email is not hosted on DronaHost servers. You can use Google Workspace or another email service with your domain, and we show you the DNS records to add. Email stays separate from your hosting, so you can choose the provider that suits your team."
+            "a": "No. Email is not hosted on DronaHost servers, and Business Hosting does not include email. Your hosting and your email are separate, so you will need an email service from another provider. If you are unsure which option fits, write to the team before you buy."
           },
           {
             "q": "Can I move my existing WordPress site to DronaHost?",
-            "a": "Yes. Share your current host details and we copy your site across. You review it before you switch, and your current site stays live until you do. Moving is free on every package: one website per hosting package, and up to 10 websites on a VPS. Start on the migration page and we reply by email.",
-            "requiresClaim": "claim:migration-process"
+            "a": "Yes, you can move your existing WordPress site to DronaHost. Moving is free on every package. Each hosting package includes the move of one website, and a VPS includes up to 10 websites. The migration terms page explains what is covered. To start, open the free migration page.",
+            "requiresClaim": "claim:free-migration"
           },
           {
             "q": "How much does WordPress hosting cost at DronaHost?",
@@ -302,12 +292,17 @@
           },
           {
             "q": "Will the price go up when my plan renews?",
-            "a": "No. Your hosting price does not change when you renew. You pay the same price you paid at signup, and each plan shows its renewal price next to its signup price. Domains are not covered by this promise. Prices exclude tax, and customers in India pay GST at checkout.",
+            "a": "No. The hosting price does not change on renewal, because the renewal price equals the signup price. Each plan shows its renewal price next to its signup price. The pricing policy has the full terms. Prices exclude tax. Customers in India pay GST at checkout.",
             "requiresClaim": "claim:renewal-price-same"
           },
           {
-            "q": "Is DronaHost the right fit for my site?",
-            "a": "DronaHost suits businesses that want managed WordPress hosting with a team to talk to. If you need a very large enterprise platform with custom contracts, ask us first and we will tell you honestly if we are not the right fit."
+            "q": "What if I am not happy with my plan?",
+            "a": "DronaHost offers a 30-day money-back guarantee. The refund policy sets out the exact terms, so please read it before you buy. If you have a question about the guarantee, contact the team by support ticket or email.",
+            "requiresClaim": "claim:money-back"
+          },
+          {
+            "q": "How do I reach support?",
+            "a": "You can reach the team by support ticket or email. Tickets and email are the only support channels we offer. The support policy explains how support works, so read it for the details."
           }
         ]
       }
@@ -319,7 +314,7 @@
         "h2": "Ready to see which plan fits?",
         "ctaPrimary": {
           "label": "See WordPress hosting plans",
-          "href": "/pricing"
+          "href": "/wordpress-hosting"
         },
         "ctaSecondary": {
           "label": "Talk to our team",

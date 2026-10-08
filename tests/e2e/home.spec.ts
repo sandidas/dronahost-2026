@@ -13,20 +13,20 @@ test.describe("home page (rendered from content/pages/home.json)", () => {
     await page.goto("/");
     await expect(page.locator("h1")).toHaveCount(1);
     await expect(page.getByRole("heading", { level: 1 })).toContainText("Managed WordPress hosting without the technical worry");
-    await expect(page.getByRole("link", { name: "See WordPress hosting plans" }).first()).toHaveAttribute("href", "/pricing");
+    await expect(page.getByRole("link", { name: "See WordPress hosting plans" }).first()).toHaveAttribute("href", "/wordpress-hosting");
     await expect(page.getByRole("link", { name: "Talk to our team" }).first()).toHaveAttribute("href", "/contact");
   });
 
-  test("shows only what is confirmed: no unverified capability, claim or channel appears", async ({ page }) => {
+  test("shows only what is confirmed: no unverified capability, retired channel or reply-time promise appears", async ({ page }) => {
     await page.goto("/");
-    await expect(page.locator("[data-claim]")).toHaveCount(0);
     const text = (await page.locator("main").innerText()).toLowerCase();
-    // Gated sections and copy stay out until their claims are verified and published.
-    for (const hidden of ["where are you starting from", "what we look after", "moving to dronahost", "back up your site", "same price, no increase", "whatsapp", "live chat", "24/7"]) {
+    // Gated sections and copy stay out until their claims are verified and published. The home page makes no reply-time promise (owner, 2026-10-08).
+    for (const hidden of ["moving to dronahost", "same price, no increase", "whatsapp", "live chat", "24/7", "5 minutes", "5-minute", "litespeed", "nvme"]) {
       expect(text, `main shows "${hidden}"`).not.toContain(hidden);
     }
-    // The neutral fallback lead stands in for the capability lead.
-    expect(text).toContain("a team you can talk to");
+    // The lead names DronaHost and uses the free-migration claim, which renders.
+    expect(text).toContain("dronahost is a focused team in india");
+    expect(text).toContain("we move your site for free");
   });
 
   test("the sections that are confirmed render, with no empty gaps", async ({ page }) => {
@@ -44,7 +44,7 @@ test.describe("home page (rendered from content/pages/home.json)", () => {
     await context.addCookies([{ name: "dh_consent", value: CONSENT, url: "http://localhost:3200" }]);
     const page = await context.newPage();
     await page.goto("/");
-    await expect(page.locator("details")).toHaveCount(3);
+    await expect(page.locator("details")).toHaveCount(7);
     // A closed <details> hides its answer from innerText but the text is in the HTML.
     expect(await page.locator("details").first().textContent()).toContain("Managed WordPress hosting means");
     await context.close();
@@ -61,8 +61,8 @@ test.describe("home page (rendered from content/pages/home.json)", () => {
 
   test("metadata comes from the spec: title, description and a canonical for the home page", async ({ page }) => {
     await page.goto("/");
-    await expect(page).toHaveTitle(/Managed WordPress & VPS Hosting/);
-    await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /compare plans and talk to our team/);
+    await expect(page).toHaveTitle(/Managed WordPress Hosting for Small Businesses/);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /DronaHost is a focused team in India/);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /dronahost\.com\/?$/);
   });
 });

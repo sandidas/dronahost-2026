@@ -2,6 +2,11 @@
 
 Versioned changes to the engine (rules, plans, tools). Business decisions are in `project/DECISIONS.md`.
 
+## 1.0.4 (2026-10-08)
+
+- Owner waivers. A page's front matter can name rules the owner has overruled: `waive_rules: K2, P2`, `waive_reason`, `waive_approved_by`. Their failures show as warnings that name the approver. Without a reason and an approver the waiver is ignored. A test covers it.
+- A Markdown draft and the page spec built from it (same URL, different file kind) no longer fail OV3 and OV4 against each other. OV1 now keeps the root slug "/" when it normalizes slugs, so the draft of the home page is no longer compared with its own page spec. Tests cover both.
+
 ## 1.0.3 (2026-10-08)
 
 - Rule K2 now reads the page title together with the site suffix. A brand keyword could not pass before: M1 forbids the brand in the typed title, while K2 required the keyword in it. A test covers it.
