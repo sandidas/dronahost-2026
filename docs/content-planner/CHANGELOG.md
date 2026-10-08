@@ -2,6 +2,15 @@
 
 Versioned changes to the engine (rules, plans, tools). Business decisions are in `project/DECISIONS.md`.
 
+## 1.0.2 (2026-10-09), second owner review
+
+- Interview banks for regional (Plan 05), policy (07), domain (08), brand and trust (09) and off-site (15) pages, in the owner's exact wording (decision 32). A test pins each bank by hash so no question can be reworded by accident; each plan names its bank; `rules/interview-questions.md` has a "which bank for which plan" table. The domain bank names a billing system, which the no-brand list forbids in the core, so the project's rules carry one narrow exception for that term in that file (`noBrand.allowTerms`).
+- The linter files `lib/content/lint.ts`, `scripts/lint-content.ts` and `project/tests/parity.test.ts` were removed in their own commit after a final parity run (16 of 16) and a `git grep`. `docs/content-system.md` now describes `check-content`.
+- The home page (a `product` archetype, 7 FAQ items) is fine; About and Trust pages are the brand archetype (decision 31).
+- CI: the reuse proof runs as its own job on `ubuntu-latest` and `windows-latest`.
+- Windows readiness: every file reader accepts CRLF line endings (`tools/eol.ts`); tools start `tsx` through Node itself (`tools/run-node.ts`) instead of `npx`; the reuse test links `node_modules` with a junction and starts npm without a shell; paths are compared with forward slashes. A new reuse test converts every text file to CRLF and runs the checks again. Not yet run on a real Windows machine.
+- `code-follow-ups.md`: restored an original row I had overwritten by mistake, and gave the three duplicated numbers new ones (28 to 30).
+
 ## 1.0.1 (2026-10-09), owner review
 
 - FAQ item counts are set per archetype in the config (`limits.faqItemsByArchetype`, `archetypeByPlan`, `archetypeAliases`): money and pricing pages 6 to 8, guides and brand pages 4 to 6. A page's own `archetype` field wins; the app's `product` and `landing` count as money, `decision` as guide, `trust` as brand. This replaces `faqItemsByPlan`.
