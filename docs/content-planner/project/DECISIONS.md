@@ -35,7 +35,7 @@ Decisions that shape what is written. Do not reopen without the owner. Date form
 | 29 | FAQ limits | FAQ item counts are set per archetype in the config: money and pricing pages 6 to 8, guides and brand pages 4 to 6 (owner, 2026-10-09) |
 | 30 | Spec file | `docs/reference/SUPER_CONTENT_PLANNER_SPEC.md` stays in `docs/reference/` with a "superseded, kept for history" note (owner, 2026-10-09) |
 | 31 | Home, About and Trust pages | The home page (`product` archetype) is a money page: 6 to 8 FAQ items, and 7 is fine. About and Trust pages are the brand archetype: 4 to 6 (owner, 2026-10-09) |
-| 32 | Interview banks | The interview questions for regional (Plan 05), policy (07), domain (08), brand and trust (09) and off-site (15) pages are the owner's exact wording, asked one at a time, answers recorded word for word, "none" drops the section (owner, 2026-10-09) |
+| 32 | Interview banks | The interview questions for regional (Plan 05), policy (07), domain (08), brand and trust (09) and off-site (15) pages are the owner's exact wording, asked one at a time, answers recorded word for word, "none" drops the section. Domain question 1 was later reworded by the owner to "Which registrar or billing system sells these domains, and who supports transfers?" so the no-brand list needs no exception (owner, 2026-10-09) |
 | 33 | Reuse proof in CI | `npm run test:reuse` runs on ubuntu-latest and windows-latest in CI (owner, 2026-10-09) |
 
 ## Open (waiting on the owner)

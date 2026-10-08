@@ -90,7 +90,7 @@ Artifacts: the source and date for each competitor fact.
 
 ### Domain pages (Plan 08)
 
-1. Which registrar or WHMCS module sells these domains, and who supports transfers?
+1. Which registrar or billing system sells these domains, and who supports transfers?
 2. What are the real rules for this TLD?
 3. What goes wrong most often?
 4. How is the renewal price set, and when can it change?
