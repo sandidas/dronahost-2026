@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { isVerified } from "../../content/claims";
 
 const CONSENT = encodeURIComponent(
   JSON.stringify({ preferences: false, analytics: false, marketing: false, id: "00000000-0000-4000-8000-000000000000", at: "2026-01-01T00:00:00.000Z", v: 1 }),
@@ -96,8 +97,13 @@ test.describe("home page (rendered from content/pages/home.json)", () => {
 
   test("metadata comes from the spec: title, description and a canonical for the home page", async ({ page }) => {
     await page.goto("/");
-    await expect(page).toHaveTitle(/Managed WordPress Hosting for Small Businesses/);
+    await expect(page).toHaveTitle(/Hosting With the Same Price at Renewal/);
     await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /DronaHost is a focused team offering managed WordPress hosting/);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /dronahost\.com\/?$/);
+  });
+
+  test("the title promises the renewal price only while that claim renders", () => {
+    // A title is static text. If renewal-price-same stops rendering, change the title in content/pages/home.json (decision 35).
+    expect(isVerified("renewal-price-same")).toBe(true);
   });
 });

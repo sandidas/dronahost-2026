@@ -2,7 +2,7 @@
 slug: /
 plan: 09 Navigational and brand
 primary_keyword: dronahost
-secondary_keywords: managed wordpress hosting for small business
+secondary_keywords: hosting for small business
 locale: en-US
 state: Draft
 author: "[HUMAN REVIEW: no byline on the home page by owner decision; set only if that changes]"
@@ -13,7 +13,7 @@ waive_reason: "owner decision 2026-10-08: no brand name in the H1 and no AI line
 waive_approved_by: Sandipan Das (owner)
 reviewed_on: "[HUMAN REVIEW: set when a person rechecks the whole page]"
 next_review_on: 2027-04-08
-seo_title: Managed WordPress Hosting for Small Businesses
+seo_title: Hosting With the Same Price at Renewal
 meta_description: DronaHost is a focused team offering managed WordPress hosting for small businesses, freelancers and agencies worldwide. See the plans and policies.
 claims_used: money-back; free-migration; renewal-price-same; backups
 ---

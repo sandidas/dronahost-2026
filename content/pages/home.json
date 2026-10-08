@@ -7,7 +7,7 @@
   "audience": "Small business owners who run or need a WordPress site and want fewer technical worries",
   "primaryKeyword": "dronahost",
   "secondaryKeywords": [
-    "managed wordpress hosting for small business"
+    "hosting for small business"
   ],
   "layoutSignature": [
     "ProductHero:dashboard",
@@ -17,7 +17,7 @@
     "ProcessTimeline"
   ],
   "seo": {
-    "title": "Managed WordPress Hosting for Small Businesses",
+    "title": "Hosting With the Same Price at Renewal",
     "description": "DronaHost is a focused team offering managed WordPress hosting for small businesses, freelancers and agencies worldwide. See the plans and policies.",
     "ogImage": "/og/home.jpg",
     "schema": [
