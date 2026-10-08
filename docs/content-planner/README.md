@@ -1,68 +1,73 @@
 # Content Planner
 
-Everything about planning, writing and checking content lives in this folder: the business facts, the rules, the plans for each kind of search, the keyword list and the checking tool. Copy the folder to another project, fill in `project/`, and it works there too (see "Reuse").
+A reusable content engine. You give it **a keyword or a page title**. It checks the keyword, classifies the search intent, records the live results, builds the brief, interviews the owner for first-hand experience, drafts only from allowed material, runs hard checks, prepares metadata, links and schema, and hands back a page **ready for owner review**. The owner approves and publishes. It cannot guarantee a ranking, a featured snippet or an AI citation; it removes obstacles and measures.
+
+Copy the folder into any project, fill in `project/`, and it works (see "Reuse").
 
 ## For the AI assistant: do this whenever you are asked to write, edit, review or plan content
 
 "Content" means page copy, blog posts, guides, FAQs, CTAs, headlines, metadata, microcopy, comparison tables and keyword plans.
 
-1. Read this file, then `project/PROJECT.md` (business facts) and `project/DECISIONS.md` (owner decisions).
-2. Find the keyword's plan with "Which plan owns a keyword" below, and read that file in `plans/`.
-3. Read `rules/voice.md`. Open `rules/content-writing-rules.md` for the section you need (tone, headings, CTAs, errors, SEO copy, human-first and AI use, tools, tables, maintenance, "because" headlines).
-4. Check `project/keyword-register.md` for an existing owner of the keyword.
-5. Write the **brief** (template below) and show it to the owner **before** long copy.
-6. Never invent a fact. Anything not in `project/PROJECT.md`, the claims registry or the pricing file becomes a `[HUMAN REVIEW: ...]` note.
-7. After writing, run the checks and update the register.
-8. If a rule here conflicts with a request, say so and ask. Do not quietly break a rule.
-9. To write any page or article, follow `rules/content-writer-workflow.md`.
+1. Read this file, then `project/PROJECT.md` (business facts), `project/DECISIONS.md` (owner decisions) and `project/brand.md` (voice and terms).
+2. Follow [rules/content-writer-workflow.md](rules/content-writer-workflow.md), stages 0 to 7. If you were given a **title**, derive the keyword, show it with your reason, and ask the owner to confirm before continuing.
+3. Find the keyword's plan with "Which plan owns a keyword" below and read that file in `plans/`. If `project/plan-specifics/<same name>.md` exists, read it too (only plans that held business facts have one).
+4. Read [rules/voice.md](rules/voice.md). Open [rules/content-writing-rules.md](rules/content-writing-rules.md) for the section you need.
+5. Check `project/keyword-register.md` for an existing owner of the keyword, and the governor ([rules/governor.md](rules/governor.md)): stop if a cap is reached or the pause switch is on.
+6. Build the brief from [templates/brief.md](templates/brief.md), interview the owner with [rules/interview-questions.md](rules/interview-questions.md), and **stop at APPROVAL 1**. No long copy before it.
+7. Never invent a fact, a quote, a customer, a review, or first-hand experience. Anything not in `project/PROJECT.md`, the claims registry, the pricing file or the interview becomes a `[HUMAN REVIEW: ...]` note.
+8. Draft, edit, run the checks, fix what fails, and hand off with [templates/handoff.md](templates/handoff.md). The status is "Ready for owner review", never "publish-ready".
+9. If a rule here conflicts with a request, say so and ask. Do not quietly break a rule.
+
+## 5-minute quick start (for a person)
+
+1. Open `project/keyword-register.md`, pick a row (status `validated`), or add one (one keyword, one URL).
+2. Ask Claude: `/write-content <keyword or title>`. A first version of the command already exists and stops at APPROVAL 1; the full command arrives in Phase 4.
+3. Answer the interview questions, one at a time. Say "none" if you have no answer. Gaps are recorded, never invented.
+4. Read the brief and the interview read-back. Approve, or say what to change. This is APPROVAL 1.
+5. Read the draft and the handoff. Fix the open flags that need your facts. Run the checks below.
+6. Publish it yourself. Update the register row (status, owner, next review date).
+
+```
+npm run check:register   the keyword register
+npm run check:content    drafts and page specs
+npm run check:schemas    the schemas against their fixtures
+npm run check:config     the two config files
+npm run check:no-brand   the reusable core names no business
+npm run check:links      Markdown links resolve
+```
 
 ## Folder map
 
 ```
 docs/content-planner/
-  README.md                    this file: how it works and where things are
+  README.md                    this file
   CHANGELOG.md                 versioned changes to the engine
   MIGRATION_PLAN.md            the Phase 0 plan and the owner's answers (history)
   content-planner.config.json  host integration: paths, adapters, governor, limits (schema: schemas/config.ts)
-  project/                     facts and decisions about THIS business (replace for another project)
+  project/                     facts and decisions about THIS business (replaced per project)
     PROJECT.md  DECISIONS.md  keyword-register.md  roadmap.md  team-and-workflow.md  url-inventory.md
-    measurement.md  learning-log.md  code-follow-ups.md
-    brand.md                   voice, terminology and avoid-list for this brand
-    rules.config.json          banned phrases, CTA labels, feature words, forbidden channels and claims, disclosure line, no-brand terms
-    plan-specifics/            the facts and owner decisions taken out of each plan (same file names as plans/)
-    briefs/                    one brief per page; tier-a-briefs.md; briefs/golden/ holds exemplar pages later
-    drafts/                    drafts in progress
-    facts/                     one fact ledger per page
-    later/                     project copy of parked plans (billing system)
-  rules/                       how to write (reusable, no business facts)
-    content-writing-rules.md   tone, headings, CTAs, errors, SEO copy, human-first, tools, tables
-    voice.md  content-writer-workflow.md  sources.md  interview-questions.md  information-gain.md  wordpress-content-model.md
-  plans/                       one plan per search intent: 01 to 10, 14, 15 (reusable structure)
+    measurement.md  learning-log.md  code-follow-ups.md  brand.md  rules.config.json
+    plan-specifics/  briefs/  drafts/  facts/  later/
+  rules/                       reusable rules, no business facts
+    content-writer-workflow.md  content-writing-rules.md  voice.md  eeat-and-people-first.md  ai-search.md
+    governor.md  information-gain.md  interview-questions.md  quality-rubric.md  sources.md  wordpress-content-model.md
+  plans/                       one plan per search intent: 01 to 10, 14, 15
+  templates/                   brief.md  interview.md  fact-ledger.json  handoff.md  page-skeleton.json  front-matter.md
+  schemas/                     Zod: config, rules-config, brief, fact-ledger, page-envelope, front-matter
+  eval/                        fixtures now; the evaluation set arrives in Phase 3
   later/                       parked plans: 11 locales and currency, 12 billing system, 13 search and AI launch standard
-  templates/  schemas/  claude/  eval/   built in later phases (schemas/ holds the config schemas; eval/fixtures/ holds test fixtures)
-  tools/
-    check-register.ts          the keyword register (npm run check:register)
-    check-content.ts           page JSON and drafts (npm run check:content)
-    check-config.ts            the two config files (npm run check:config)
-    check-no-brand.ts          the reusable core names no brand (npm run check:no-brand)
-    check-links.ts             Markdown links resolve (npm run check:links)
+  claude/                      source for .claude/commands and .claude/agents (installer in Phase 3)
+  tools/                       TypeScript run with tsx; read the config; exit non-zero on failure
 ```
+
+Reusable core = `rules/ plans/ templates/ schemas/ eval/ tools/ claude/ later/`. It names no brand, price, claim, location, channel or owner (`npm run check:no-brand` proves it). Everything specific to the business is in `project/` and the config.
 
 ## How it works
 
 ```
-keyword -> intent -> plan -> brief -> owner approves -> write -> checks -> review -> publish -> register
+keyword or title -> resolve -> classify -> research + fact ledger -> brief -> interview -> APPROVAL 1
+                 -> draft -> edit -> metadata -> checks -> handoff -> owner review -> publish -> register -> measure
 ```
-
-1. **Pick a keyword** from the register. One keyword gets one page.
-2. **Confirm intent** by looking at what ranks. If the top results are product pages, write a product page.
-3. **Open the plan** for that intent and follow its outline and checklist.
-4. **Write the brief.** A person fills the human-first fields first, before any AI draft.
-5. **Owner approves the brief.**
-6. **Write** within the rules. Facts come only from the sources named in `project/PROJECT.md`.
-7. **Check:** `npm run check:pages`, `npm run lint:content` (they cover `content/pages/*.json` only) and `npm run check:register`. Blog and guide copy gets the manual self-check in `rules/voice.md`, the checks in `rules/wordpress-content-model.md`, and a second reviewer where one exists (until then the owner reviews).
-8. **Review and publish.** The reviewer signs off. The register is updated with owner, reviewer and next review date.
-9. **Measure** after 28 days and review on the date set.
 
 ## The plans
 
@@ -106,7 +111,7 @@ One keyword, one URL. Look-alike phrases go in the Secondary column of the ownin
 
 ## The rules that matter most
 
-1. **Human first.** A person fills the brief (reader's question, our angle, what we know first-hand, one original element) before any AI draft. Every fact is in a verification log. Every page has an owner and a reviewer. Never use AI for testimonials, reviews, team bios, case-study results or unreviewed legal text. Disclosure follows `rules/content-writing-rules.md` section 8.5.
+1. **Human first.** A person fills the brief (reader's question, our angle, what we know first-hand, one original element) before any AI draft. Every fact is in the fact ledger. Every page has an owner and a reviewer. Never use AI for testimonials, reviews, team bios, case-study results or unreviewed legal text. Disclosure follows `rules/content-writing-rules.md` section 8.5.
 2. **No invented facts.** Business facts come from `project/PROJECT.md` and the registries it names. Prices come only from the pricing file.
 3. **Answer first.** A 40 to 80 word direct answer under the H1 and under question headings.
 4. **One reason-led headline** ("[Outcome] because [verified reason]") on money, service, regional and landing pages, with a fallback. Not on guides or policy pages.
@@ -114,45 +119,12 @@ One keyword, one URL. Look-alike phrases go in the Secondary column of the ownin
 6. **Location, tax and claims rules** are in `project/PROJECT.md`. They override any example.
 7. **Every page** has 3 or more internal links, a FAQ on product, service and guide pages, a named owner and a next review date.
 8. **Roles and legal text.** Claude drafts, the owner approves. Tier A policy pages (commercial promises) are approved by the owner. Tier B legal documents need a qualified human and stay drafts until then (`plans/07`).
-9. **Support is ticket and email only.** Never mention WhatsApp, live chat or phone. Email is not hosted: send it to `/email`.
-10. **Flag, do not guess.** Missing facts become `[HUMAN REVIEW: ...]` notes. A page ships with none open.
+9. **Only offered channels.** Never mention a support channel the project does not offer (`forbiddenChannels` in `project/rules.config.json`; the reason and the allowed channels are in `project/brand.md`).
+10. **Flag, do not guess.** Missing facts become `[HUMAN REVIEW: ...]` notes. A page is published with none open (see "States" in the workflow for what "Ready for owner review" may still carry).
 
 ## Where project rules override the `seo-content-writer` skill
 
-Use the skill for research (competitors, gaps, People Also Ask). Where it disagrees, this folder wins: titles carry no brand suffix and stay under 60 characters, word counts are guides, FAQ answers are 40 to 80 words, and years come only from a review date field.
-
-## Brief template
-
-The full brief is Stage 3 of `rules/content-writer-workflow.md`. Copy of the template:
-
-```
-Slug (from the register) / Plan / Locale
-Primary keyword / Secondary keywords (from the register) / Semantic terms / Entities / Question keywords
-GOVERNOR STATUS: in-flight pages (register rows briefed, drafting or review) N of 3 / new pages this month N of cap (owner sets the cap, start at 4) / pause switch off
-INTENT: primary / secondary / reader's problem / reader's goal / expected format / buying stage
-SERP SNAPSHOT: (table in Stage 2)
-INFORMATION GAIN: gap in the top results (with URLs checked) / our gain in one sentence ("Unlike the top results, this page ...")
-  / the real material behind it / status (confirmed by owner or not). See rules/information-gain.md. No gain = drop or merge
-RECOMMENDED LENGTH: a range and the reason. A guide, not a rule. Under 300 words is flagged thin
-HUMAN FIRST (owner supplies): reader's real question / our angle
-INTERVIEW ANSWERS (verbatim): each question from rules/interview-questions.md, the owner's exact words, the date, and the artifact
-  (screenshot, log, numbers) or "none". An unanswered question is written as GAP and its section is dropped, never invented
-FACT LEDGER (project/facts/<slug>.md): every fact the page may use: the fact, source URL or project file, date read, who checked,
-  status (verified, needs check). The draft may use only ledger facts, interview answers and rendering claims
-CLAIMS NEEDED (ids from claims.ts, and whether each renders) / PLANS AND PRICES NEEDED (from pricing.json)
-WHO / HOW / WHY (shown on the page): who = real author and reviewer, linked to the author page / how = how it was made, including the AI
-  line ("Drafted with AI assistance, then edited, fact-checked and approved by [name]") and what was tested / why = the reader's need
-OUTLINE: H1, H2, H3 following the intent pattern below. Each H2 states its direct answer in one line
-HEADLINE: reason-led version and fallback (money, service, regional and landing pages only)
-TOOL OR TABLE needed (rules sections 9 and 10)
-INTERNAL LINKS (3 or more): anchor text / target page / why it helps the reader
-CTA: from the intent table, one only
-SCHEMA: from the plan. Must match the visible content. Google no longer shows FAQ or HowTo rich results (rules/sources.md, item 5)
-METADATA DRAFT: title (60 characters or fewer, no brand suffix), description (160 or fewer). These limits are project rules
-OWNER / REVIEWER (the owner until a second person exists) / NEXT REVIEW DATE
-AI USED FOR THE DRAFT: yes or no / OPEN FLAGS: every [HUMAN REVIEW] item
-APPROVAL 1: owner approves the brief and the interview answers (no draft before this)
-```
+Use the skill for research (competitors, gaps, People Also Ask). Where it disagrees, this folder wins: titles carry no typed brand suffix and are measured with the suffix the helper adds (warn above 60 characters, fail above 70), word counts are guides, FAQ answers are 40 to 80 words (warn under 40, fail over 80), and years come only from a review date field.
 
 ## Reuse in another project
 
@@ -160,10 +132,10 @@ APPROVAL 1: owner approves the brief and the interview answers (no draft before 
 2. Replace everything in `project/`: new `PROJECT.md` (use the existing one as the template), `brand.md`, `rules.config.json`, an empty `DECISIONS.md`, an empty register, and empty `briefs/`, `drafts/`, `facts/`, `plan-specifics/`, `later/`.
 3. Edit `content-planner.config.json` (name, paths, limits, governor).
 4. Run `npm run check:config` and `npm run check:no-brand`. The second must pass before and after the swap: it proves the reusable core names no business.
-5. Add a short block to the new project's `CLAUDE.md` that points here (copy the block from this project's `claude.md`).
-6. Add the scripts from this project's `package.json`: `check:register`, `check:content`, `check:config`, `check:no-brand`, `check:links`.
+5. Add a short block to the new project's `CLAUDE.md` that points here (copy the block from this project's `CLAUDE.md`).
+6. Add the scripts from this project's `package.json`: `check:register`, `check:content`, `check:schemas`, `check:config`, `check:no-brand`, `check:links`.
 
-The installer and the sample project arrive in Phases 3 and 6. Stack-specific code (page JSON linter, metadata helper, sitemap code) is not in this folder; it lives in the host project and is registered in the config.
+The installer and the sample project arrive in Phases 3 and 6. Stack-specific code (the page renderer and its section schemas, the metadata helper, sitemap code) is not in this folder; it lives in the host project and is registered in the config (`adapters.pageSpec`).
 
 ## Not in this folder (by design)
 
