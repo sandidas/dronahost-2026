@@ -4,13 +4,14 @@
  * A rule marked "(project rule)" is ours, not Google's (see rules/sources.md).
  *
  * Usage: npx tsx docs/content-planner/tools/check-content.ts [file or folder ...]
- * Default: docs/content-planner/project/drafts and content/pages. Exits 1 if any rule fails.
+ * Default: the drafts and pages folders named in content-planner.config.json. Exits 1 if any rule fails.
  * Open [HUMAN REVIEW] flags are allowed only when the front matter `state` starts with "Draft".
  */
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { basename, extname, join, resolve } from "node:path";
 import { CLAIMS } from "../../../content/claims";
-import { BANNED_PHRASES, copyStrings } from "../../../lib/content/lint";
+import { copyStrings } from "../../../lib/content/lint";
+import { loadConfig } from "./load-config";
 
 export type Group = "Structure" | "Voice" | "Facts" | "People" | "Metadata" | "Flags";
 export type RuleResult = { id: string; group: Group; name: string; ok: boolean; skipped?: boolean; failures: { line: number; message: string }[]; note?: string };
@@ -33,9 +34,11 @@ type Doc = {
   state: string;
 };
 
-// The tests point these at fixtures with CHECK_CONTENT_REGISTER and CHECK_CONTENT_FACTS.
-const registerPath = (): string => process.env.CHECK_CONTENT_REGISTER ?? "docs/content-planner/project/keyword-register.md";
-const ledgerDir = (): string => process.env.CHECK_CONTENT_FACTS ?? "docs/content-planner/project/facts";
+// Lists and paths come from content-planner.config.json and project/rules.config.json. The tests point the register and ledger
+// folder at fixtures with CHECK_CONTENT_REGISTER and CHECK_CONTENT_FACTS.
+const { config, rules, resolvePath } = loadConfig();
+const registerPath = (): string => process.env.CHECK_CONTENT_REGISTER ?? resolvePath(config.paths.register);
+const ledgerDir = (): string => process.env.CHECK_CONTENT_FACTS ?? resolvePath(config.paths.facts);
 const FLAG = /\[HUMAN REVIEW[^\]]*\]/g;
 const wc = (t: string): number => t.split(/\s+/).filter((w) => /[A-Za-z0-9]/.test(w)).length;
 const strip = (t: string): string => t.replace(/`[^`]*`/g, "").replace(/\[HUMAN REVIEW[^\]]*\]/g, "").replace(/\[([^\]]*)\]\([^)]*\)/g, "$1").replace(/[*_>#]/g, "");
@@ -180,16 +183,12 @@ const rule = (id: string, group: Group, name: string, failures: RuleResult["fail
 const skipped = (id: string, group: Group, name: string, note: string): RuleResult => ({ id, group, name, ok: true, skipped: true, failures: [], note });
 
 const GENERIC_ANCHOR = /^(click here|here|read more|learn more|this page|link|more)$/i;
-const BANNED_VOICE = [...BANNED_PHRASES, "in today's fast-paced world", "it's important to note", "dive into", "game changer", "unleash"];
+const BANNED_VOICE = rules.bannedPhrases;
 const UNCLAIMED_NUMBER = /(\d[\d.,]*\s?(%|ms|gb|tb|mb|minutes?|mins?|hours?|days?|weeks?|months?|years?|seconds?|x\b|\/month|\/year))|([$£€]\s?\d)|\b24\/7\b/i;
-const FEATURE_WORDS: { re: RegExp; claim: string }[] = [
-  { re: /litespeed/i, claim: "litespeed" },
-  { re: /nvme/i, claim: "nvme" },
-  { re: /free ssl/i, claim: "free-ssl" },
-  { re: /daily backups?/i, claim: "backups" },
-  { re: /uptime/i, claim: "uptime-sla" },
-  { re: /\bCDN\b/, claim: "cloudflare-cdn" },
-];
+const FEATURE_WORDS: { re: RegExp; claim: string }[] = rules.featureWords.map((f) => ({ re: new RegExp(f.pattern, f.caseSensitive ? "" : "i"), claim: f.claim }));
+const escapeRe = (t: string): string => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const CHANNEL_RE = new RegExp(rules.forbiddenChannels.map(escapeRe).join("|"), "i");
+const BRAND_RE = new RegExp(`\\b(we|our|${escapeRe(config.name)})\\b`, "i");
 const claimRenders = (id: string): boolean => CLAIMS.some((c) => c.id === id && c.verified);
 
 const ledgerFor = (doc: Doc): string => {
@@ -286,18 +285,19 @@ export function checkDoc(doc: Doc): RuleResult[] {
   const featFails: RuleResult["failures"] = [];
   for (const l of copy) {
     for (const s of sentencesOf(l.text)) {
-      if (!/\b(we|our|DronaHost)\b/i.test(s)) continue;
-      for (const f of FEATURE_WORDS) if (f.re.test(s) && !claimRenders(f.claim)) featFails.push({ line: l.n, message: `feature word "${s.match(f.re)?.[0]}" about DronaHost, but claim "${f.claim}" does not render` });
+      if (!BRAND_RE.test(s)) continue;
+      for (const f of FEATURE_WORDS) if (f.re.test(s) && !claimRenders(f.claim)) featFails.push({ line: l.n, message: `feature word "${s.match(f.re)?.[0]}" about ${config.name}, but claim "${f.claim}" does not render` });
     }
   }
-  out.push(rule("F2", "Facts", "Feature words about DronaHost only when the claim renders", featFails));
+  out.push(rule("F2", "Facts", "Feature words about the business only when the claim renders", featFails));
   const pol: RuleResult["failures"] = [];
   for (const l of copy) {
     const t = strip(l.text);
-    if (/whats\s?app/i.test(t) || /live[\s-]?chat/i.test(t) || /\b(phone support|phone number|call us|call our)\b/i.test(t)) {
-      if (!/\b(do not|does not|not offer|no )\b/i.test(t) && doc.file.indexOf("vs") < 0) pol.push({ line: l.n, message: "mentions WhatsApp, live chat or phone support as if offered" });
+    if (CHANNEL_RE.test(t)) {
+      if (!/\b(do not|does not|not offer|no )\b/i.test(t) && !rules.channelAllowlistFiles.some((a) => doc.file.includes(a))) pol.push({ line: l.n, message: `mentions a channel the project does not offer (${t.match(CHANNEL_RE)?.[0]}) as if offered` });
     }
-    if (/\bwe (host|provide) (your )?email\b/i.test(t) || /\bour (data cent(er|re)|servers)\b/i.test(t) || /\b(uk|us|eu|uae) servers\b/i.test(t)) pol.push({ line: l.n, message: "email hosting or location claim (we host email, our data centre, our servers)" });
+    const claim = rules.forbiddenClaims.find((c) => t.toLowerCase().includes(c.toLowerCase()));
+    if (claim) pol.push({ line: l.n, message: `forbidden claim wording "${claim}" (project/rules.config.json)` });
     if (/\b(guarantee|guaranteed)\b[^.]*\b(rank|ranking|top|first page)/i.test(t) || /\bvat (included|incl)|\+ vat\b/i.test(t)) pol.push({ line: l.n, message: "ranking guarantee or VAT wording" });
   }
   out.push(rule("F3", "Facts", "No unsupported channel, email, location, ranking or VAT wording", pol));
@@ -312,7 +312,7 @@ export function checkDoc(doc: Doc): RuleResult[] {
     const fails = (isDraft ? absent : missing).map((k) => ({ line: lineOf(doc.raw, `${k}:`), message: `front matter "${k}" is missing${f[k] ? " or still a placeholder" : ""}` }));
     out.push(rule("P1", "People", "Author, reviewer, review date and next review date are real", fails, { note: isDraft && placeholders.length ? `${placeholders.length} placeholder(s) allowed in a draft: ${placeholders.join(", ")}` : undefined }));
     const ai = /^yes/i.test(f.ai_assisted ?? "");
-    out.push(rule("P2", "People", "AI-assisted pages carry the disclosure line", ai && !/Drafted with AI assistance, then edited, fact-checked and approved by/i.test(bodyText) ? [{ line: lineOf(doc.raw, "ai_assisted"), message: "ai_assisted is yes but the disclosure line is missing" }] : []));
+    out.push(rule("P2", "People", "AI-assisted pages carry the disclosure line", ai && !bodyText.toLowerCase().includes(rules.disclosureLine.toLowerCase()) ? [{ line: lineOf(doc.raw, "ai_assisted"), message: "ai_assisted is yes but the disclosure line is missing" }] : []));
   } else {
     const rv = doc.front.reviewed_on;
     out.push(rule("P1", "People", "Review date set", rv && /^\d{4}-\d{2}-\d{2}$/.test(rv) ? [] : [{ line: lineOf(doc.raw, "reviewedOn"), message: "rules.reviewedOn missing or not YYYY-MM-DD" }]));
@@ -323,7 +323,7 @@ export function checkDoc(doc: Doc): RuleResult[] {
   const desc = doc.description ?? "";
   out.push(rule("M1", "Metadata", "Title 60 characters or fewer, no brand suffix (project rule)", !title ? [{ line: 1, message: "no title" }] : [
     ...(title.length > 60 ? [{ line: lineOf(doc.raw, title), message: `title is ${title.length} characters` }] : []),
-    ...(/(\s[|\-–:]\s*DronaHost|DronaHost\s*[|\-–:])/i.test(title) ? [{ line: lineOf(doc.raw, title), message: "title carries a brand suffix" }] : []),
+    ...(new RegExp(rules.brandSuffixPattern, "i").test(title) ? [{ line: lineOf(doc.raw, title), message: "title carries a brand suffix" }] : []),
   ]));
   out.push(rule("M2", "Metadata", "Description 160 characters or fewer and not a copy of the title (project rule)", !desc ? [{ line: 1, message: "no description" }] : [
     ...(desc.length > 160 ? [{ line: lineOf(doc.raw, desc), message: `description is ${desc.length} characters` }] : []),
@@ -389,7 +389,7 @@ export function report(file: string, results: RuleResult[]): boolean {
 const invoked = process.argv[1] ? resolve(process.argv[1]).endsWith("check-content.ts") : false;
 if (invoked) {
   const args = process.argv.slice(2);
-  const files = collect(args.length ? args : ["docs/content-planner/project/drafts", "content/pages"]);
+  const files = collect(args.length ? args : [resolvePath(config.paths.drafts), resolvePath(config.paths.pages)]);
   let failed = 0;
   for (const f of files) {
     try {

@@ -6,10 +6,10 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { checkDoc, loadDoc } from "./check-content";
 
-process.env.CHECK_CONTENT_REGISTER = "docs/content-planner/tools/fixtures/register.md";
-process.env.CHECK_CONTENT_FACTS = "docs/content-planner/tools/fixtures/facts";
+process.env.CHECK_CONTENT_REGISTER = "docs/content-planner/eval/fixtures/register.md";
+process.env.CHECK_CONTENT_FACTS = "docs/content-planner/eval/fixtures/facts";
 
-const FIX = "docs/content-planner/tools/fixtures";
+const FIX = "docs/content-planner/eval/fixtures";
 
 const failed = (file: string): string[] => checkDoc(loadDoc(`${FIX}/${file}`)).filter((r) => !r.ok).map((r) => r.id);
 

@@ -94,7 +94,7 @@ These are configuration tasks in WHMCS. The content plans depend on them.
 | A7 | **Provisioning status** | Service status from WHMCS | Shows "being set up" and "ready" in the account area | 2 |
 | A8 | **Support ticket creation** | `OpenTicket` | The contact and consultation forms create a ticket, so nothing lives only in email | 2 |
 | A9 | **GDPR requests** | `GetClientsDetails` and related | Export and deletion requests in the account area call WHMCS. Deletion follows the soft-delete and tax-retention rules | 3 |
-| A10 | **Content freshness signals** | Price or TLD change detected | Revalidates the affected pages, updates `dateModified` and the sitemap `lastmod`, and pings IndexNow (see [Plan 13](13-search-and-ai-delivery-standard.md)) | 2 |
+| A10 | **Content freshness signals** | Price or TLD change detected | Revalidates the affected pages, updates `dateModified` and the sitemap `lastmod`, and pings IndexNow (see [Plan 13](../../later/13-search-and-ai-delivery-standard.md)) | 2 |
 | A12 | **Claim evidence report** | Aggregate counts only | A person exports and reviews counts of years billed, customers and countries for claim verification | 1 |
 | A11 | **Status and SLA data** | Monitoring, not WHMCS | Not a WHMCS job. Listed to avoid mixing it in | later |
 
@@ -114,7 +114,7 @@ These are configuration tasks in WHMCS. The content plans depend on them.
 
 WHMCS makes it easy to generate many pages, such as one per TLD. That risks thin duplicate pages, which hurt the whole site.
 
-- Create a TLD page only if it passes the test in [Plan 08](../plans/08-domains.md): a real reason to search for that TLD, unique eligibility and use text, and the TLD is actually sold.
+- Create a TLD page only if it passes the test in [Plan 08](../../plans/08-domains.md): a real reason to search for that TLD, unique eligibility and use text, and the TLD is actually sold.
 - Start with a short list (about 8 TLDs from the supported list in `CLAUDE.md`). Fold the rest into the table on `/domains`.
 - A TLD page with only a price and a search box is thin. Add eligibility rules, who it suits, transfer notes and a real FAQ, or do not publish it. Unpublished candidates are `noindex` or not generated.
 - The same guardrail applies to any page type generated from WHMCS data. Generated does not mean exempt from the plan's checklist.
@@ -153,7 +153,7 @@ Gateways in use: **Stripe and PayPal.** The company is registered in India with 
 
 **Gateways**
 - Payment lines in copy come from `ACCEPTED_PAYMENT_METHODS` and name only what is live: "Credit and debit cards" (through Stripe) and "PayPal". No other logo or method until it is switched on and tested. Do not write "Apple Pay", "Google Pay", "bank transfer" or "UPI" unless enabled.
-- **Per currency:** confirm for each currency that Stripe and PayPal can charge it for this entity, the payout currency, and any conversion fee. A PayPal or Stripe restriction on a currency means that currency fails the readiness test in [Plan 11](11-localization-country-language-currency.md).
+- **Per currency:** confirm for each currency that Stripe and PayPal can charge it for this entity, the payout currency, and any conversion fee. A PayPal or Stripe restriction on a currency means that currency fails the readiness test in [Plan 11](../../later/11-localization-country-language-currency.md).
 - Stripe Radar and PayPal's own checks handle fraud. Expect more attempts on US, UK and EU cards.
 - Never store card details. Card entry stays on Stripe or PayPal pages.
 
@@ -168,11 +168,11 @@ Gateways in use: **Stripe and PayPal.** The company is registered in India with 
 ## Data location, infrastructure and transfers
 
 - **Billing data:** WHMCS is on a server in Europe. The exact provider and country are still to be recorded (they are probably one of the providers below).
-- **Customer sites:** run on rented infrastructure from AWS, Google Cloud, DigitalOcean, Hetzner and similar providers, in various locations. Each plan and location is recorded in the infrastructure registry ([Plan 05](../plans/05-regional-and-location.md)). Each WHMCS server group maps to one registry entry, so the cart, the provisioning and the page copy agree.
+- **Customer sites:** run on rented infrastructure from AWS, Google Cloud, DigitalOcean, Hetzner and similar providers, in various locations. Each plan and location is recorded in the infrastructure registry ([Plan 05](../../plans/05-regional-and-location.md)). Each WHMCS server group maps to one registry entry, so the cart, the provisioning and the page copy agree.
 - **People:** the team works from India and accesses systems from there. Customer data therefore moves between the hosting location and India when the team works on accounts.
 - **Copy may say** where a plan runs only from the registry, and where billing data is held only after the owner records it and the claim is verified. A sentence such as "billing data is held in Europe" starts as an unverified claim in `content/claims.ts`.
 - **Never say** "our data centre", "our own servers" or "your data stays in Europe" without proof covering that data. Billing data, customer sites and backups can be in different places.
-- **Privacy policy, DPA and `/sub-processors`** list WHMCS and each infrastructure and payment provider as processors, with locations and the transfer mechanism for access from India (for the EU and the UK, usually standard contractual clauses). A legal reviewer writes them ([Plan 07](../plans/07-compliance-and-trust.md)).
+- **Privacy policy, DPA and `/sub-processors`** list WHMCS and each infrastructure and payment provider as processors, with locations and the transfer mechanism for access from India (for the EU and the UK, usually standard contractual clauses). A legal reviewer writes them ([Plan 07](../../plans/07-compliance-and-trust.md)).
 - **Backups and monitoring** may sit with other providers. List them too, once known.
 
 ## Price display rules that involve WHMCS

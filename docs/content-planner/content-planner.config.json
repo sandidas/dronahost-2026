@@ -1,0 +1,45 @@
+{
+  "$comment": "Host integration. Every path is relative to this file. Tools read paths and flags only from here. Schema: schemas/config.ts",
+  "name": "DronaHost",
+  "locale": "en-US",
+  "paths": {
+    "register": "project/keyword-register.md",
+    "pricing": "../../data/pricing.json",
+    "claims": "../../content/claims.ts",
+    "company": "../../content/company.ts",
+    "pages": "../../content/pages",
+    "posts": null,
+    "briefs": "project/briefs",
+    "facts": "project/facts",
+    "drafts": "project/drafts",
+    "rulesConfig": "project/rules.config.json"
+  },
+  "adapters": {
+    "claims": "ts-export",
+    "pricing": "json",
+    "posts": "files",
+    "pageSpec": {
+      "$comment": "App-specific Zod page-spec and layout-signature checks stay in the app (owner decision, Q9). check-content calls this command; it is not copied into schemas/.",
+      "command": "npm run check:pages"
+    }
+  },
+  "governor": { "maxInFlight": 3, "monthlyNewPages": 4, "paused": false },
+  "cta": { "bannedLabels": [], "cardLabelTemplate": "Choose {plan}" },
+  "limits": {
+    "titleSuffix": " | DronaHost",
+    "titleWarnAbove": 60,
+    "titleFailAbove": 70,
+    "descriptionWarnAbove": 160,
+    "sentenceMax": 28,
+    "averageSentenceMax": 20,
+    "gradeTarget": [8, 10],
+    "gradeWarnAbove": 10,
+    "gradeFailAbove": 11,
+    "answerBlockWords": [40, 80],
+    "faqItems": [4, 6],
+    "faqAnswerWarnBelow": 40,
+    "faqAnswerFailAbove": 80,
+    "internalLinksMin": 3
+  },
+  "web": { "serpSource": "claude-web", "gscSource": "csv" }
+}

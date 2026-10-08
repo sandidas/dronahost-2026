@@ -1,0 +1,47 @@
+{
+  "$comment": "Machine-readable project rules. One home for each list. Until Phase 3, lib/content/lint.ts and check-content.ts still carry copies; they are replaced by reads from this file. Schema: schemas/rules-config.ts",
+  "bannedPhrases": [
+    "don't fret", "don't worry", "do the needful", "revert back", "prepone", "best of luck", "kindly", "world-class", "blazing fast",
+    "cutting-edge", "state-of-the-art", "next-generation", "revolutionary", "game-changing", "game changer", "one-to-one support",
+    "supercharge", "unlock the power", "take your business to the next level", "all-in-one", "seamless", "robust platform",
+    "scalable infrastructure", "empower your team", "we provide best services", "in today's fast-paced world", "it's important to note",
+    "dive into", "unleash", "lorem ipsum"
+  ],
+  "bannedCtaLabels": ["click here", "learn more", "read more", "get started", "submit", "sign up", "buy now", "try it", "order now"],
+  "featureWords": [
+    { "pattern": "litespeed", "claim": "litespeed" },
+    { "pattern": "nvme", "claim": "nvme" },
+    { "pattern": "free ssl", "claim": "free-ssl" },
+    { "pattern": "daily backups?", "claim": "backups" },
+    { "pattern": "uptime", "claim": "uptime-sla" },
+    { "pattern": "\\bCDN\\b", "claim": "cloudflare-cdn", "caseSensitive": true }
+  ],
+  "forbiddenChannels": ["WhatsApp", "live chat", "phone support", "phone number", "call us", "call our"],
+  "forbiddenClaims": [
+    "we host email",
+    "we provide email",
+    "our data centre",
+    "our data center",
+    "our servers",
+    "UK servers",
+    "US servers",
+    "EU servers",
+    "UAE servers",
+    "+ VAT",
+    "VAT included"
+  ],
+  "channelAllowlistFiles": [],
+  "disclosureLine": "Drafted with AI assistance, then edited, fact-checked and approved by",
+  "brandSuffixPattern": "(\\s[|\\-–:]\\s*DronaHost|DronaHost\\s*[|\\-–:])",
+  "noBrand": {
+    "$comment": "Words the reusable core must never contain. The no-brand test greps rules/ plans/ templates/ schemas/ eval/ tools/ claude/ later/ for these.",
+    "terms": [
+      "DronaHost", "dronahost", "Drona Host", "Alphabet Force", "Sandipan",
+      "WhatsApp", "live chat",
+      "India", "GST",
+      "WHMCS", "Hetzner", "DigitalOcean", "AWS", "Google Cloud", "Cloudflare"
+    ],
+    "patterns": ["(^|[\\s(])[$£€₹]\\s?\\d"],
+    "allowFiles": ["tools/check-no-brand.ts", "eval/sample-project"]
+  }
+}

@@ -2,8 +2,8 @@
 slug: /kb/check-wordpress-version
 primary_keyword: how to check wordpress version
 state: Ready for owner review
-author: Sandipan Das
-reviewer: Sandipan Das
+author: Sam Example
+reviewer: Sam Example
 ai_assisted: yes
 reviewed_on: 2026-10-08
 next_review_on: 2027-04-08
@@ -14,9 +14,9 @@ meta_description: Find the WordPress version your site runs in under a minute, f
 
 You can check which WordPress version your site runs from the dashboard, the Updates screen or the page source. The dashboard shows it at the bottom of every admin page and on the Updates screen. Knowing your version tells you whether security fixes are waiting, and whether your plugins support the version you run.
 
-*Drafted with AI assistance, then edited, fact-checked and approved by Sandipan Das.*
+*Drafted with AI assistance, then edited, fact-checked and approved by Sam Example.*
 
-### Find it in the dashboard
+## Find it in the dashboard
 
 Log in and open the Updates screen. The version number sits at the top of the page. See our [WordPress hosting page](/wordpress-hosting) if you want help running updates, or [contact the team](/contact).
 
