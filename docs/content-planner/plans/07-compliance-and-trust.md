@@ -10,7 +10,7 @@ Project specifics for this plan: [plan-specifics/07-compliance-and-trust.md](../
 
 - **Workflow:** [content-writer-workflow.md](../rules/content-writer-workflow.md), Stages 0 to 3 and 5 to 7 for policy pages; all stages for explainers. This plan supplies the outline (Stage 3), the CTA and the checklist (Stage 6).
 - **Intent:** Learn and Find (trust, policy).
-- **Interview:** No bank exists for this page type yet. Use the closest bank in [interview-questions.md](../rules/interview-questions.md) and record every missing answer as a GAP.
+- **Interview:** the **Policy pages** bank in [interview-questions.md](../rules/interview-questions.md). Ask the questions exactly as written, one at a time.
 - **Brief and limits:** [brief.md](../templates/brief.md) holds the field list, including the information gain and the original element. [governor.md](../rules/governor.md) holds the caps. Length, title, description and reading limits are in the config, not in this plan.
 - **Schema:** FAQ and HowTo markup give no Google rich result ([sources.md](../rules/sources.md), item 5). Use them only when they match the visible content and help the reader.
 

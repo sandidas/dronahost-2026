@@ -13,6 +13,8 @@ slow, honest work. It cannot be bought or faked, and trying to is the fastest wa
 
 This plan is **off-site work**, not a page type. It produces evidence that on-site pages then show. It is outside the governor's page caps, but it follows [eeat-and-people-first.md](../rules/eeat-and-people-first.md): never invent a review, a rating, a partner or a quote.
 
+**Interview:** the **Off-site work** bank in [interview-questions.md](../rules/interview-questions.md). Ask the questions exactly as written, one at a time.
+
 ## Rules (these protect trust and legal risk)
 
 1. **Real customers only.** Never write, buy, trade or invent a review, a rating or a testimonial. Never ask staff or friends to post one. AI never writes any of them (content rules 8.4).

@@ -70,6 +70,68 @@ Artifacts: the source and date for each competitor fact.
 3. What is the honest limit of this plan?
 4. What do customers ask support most?
 
+### Regional pages (Plan 05)
+
+1. Which customers from this region do you serve today, and what do they ask for?
+2. Which local rules or tax questions have real customers raised?
+3. What support hours can you honestly staff, in that time zone?
+4. Which currency and payment methods do they actually use?
+5. What can you not promise there?
+6. Has a qualified person reviewed any local-law wording? Name and date.
+
+### Policy pages (Plan 07)
+
+1. What do you actually do today in practice?
+2. Which exclusions and edge cases have come up with real customers?
+3. Who keeps this page true, and how are changes announced?
+4. What limits or times will you commit to?
+5. What would you refuse to promise?
+6. For Tier B: who reviews it, and when?
+
+### Domain pages (Plan 08)
+
+1. Which registrar or WHMCS module sells these domains, and who supports transfers?
+2. What are the real rules for this TLD?
+3. What goes wrong most often?
+4. How is the renewal price set, and when can it change?
+5. What do you do when a transfer fails?
+
+### Brand and trust pages (Plan 09)
+
+1. Who runs the company, and what is each person's real role?
+2. What can you prove about your history?
+3. Which review profiles exist, and what do customers say most?
+4. What should a skeptical buyer check about you?
+5. What are the legal entity, address and contact route?
+6. What do you honestly not do?
+
+### Off-site work (Plan 15)
+
+1. Which customers might review you, and how will you ask them?
+2. Which partners and communities are you already part of?
+3. What original data or insight could you publish?
+4. Which relationships need disclosure?
+5. Who does the monthly routine?
+
+The five banks above are the owner's exact wording (2026-10-09). Do not reword, merge or shorten them. As with every bank, ask one question at a time, record the answer word for word, and treat "none" as a gap: the section that needed the answer is dropped, never invented.
+
+## Which bank for which plan
+
+| Plan | Bank |
+|---|---|
+| 01 Money pages | Money page |
+| 02 Commercial investigation | Comparison |
+| 03 Informational | Guide or explainer |
+| 04 Problem and troubleshooting | Fix or troubleshooting |
+| 05 Regional | Regional pages |
+| 06 Service pages | Service page |
+| 07 Compliance and trust | Policy pages |
+| 08 Domains | Domain pages |
+| 09 Navigational and brand (also About and Trust pages) | Brand and trust pages |
+| 14 Migration and email | Migration or email |
+| 15 Off-site | Off-site work |
+| 10 AI search | None: it is a layer on pages that have their own bank |
+
 ## Recording format (in the brief)
 
 ```

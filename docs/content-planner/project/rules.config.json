@@ -119,6 +119,12 @@
     "allowFiles": [
       "tools/check-no-brand.ts",
       "eval/sample-project"
+    ],
+    "allowTerms": [
+      {
+        "file": "rules/interview-questions.md",
+        "term": "WHMCS"
+      }
     ]
   },
   "planRouting": [

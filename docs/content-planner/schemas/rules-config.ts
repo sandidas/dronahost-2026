@@ -20,6 +20,8 @@ export const RulesConfigSchema = z.object({
     terms: z.array(z.string().min(1)).min(1),
     patterns: z.array(z.string().min(1)),
     allowFiles: z.array(z.string()),
+    /** A term allowed in one file only, for wording the owner fixed exactly. Narrower than allowFiles. */
+    allowTerms: z.array(z.object({ file: z.string(), term: z.string() })).default([]),
   }),
 });
 
