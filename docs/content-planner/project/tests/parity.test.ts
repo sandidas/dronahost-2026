@@ -8,8 +8,8 @@ import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { before, test } from "node:test";
-import { lintPage } from "../../../lib/content/lint";
-import { type Ctx, checkDoc, duplicateRules, loadContext, loadDoc } from "./check-content";
+import { lintPage } from "../../../../lib/content/lint";
+import { type Ctx, checkDoc, duplicateRules, loadContext, loadDoc } from "../../tools/check-content";
 
 type Spec = { sections: { type: string; content: Record<string, unknown> }[]; seo: { title: string; description: string } } & Record<string, unknown>;
 let ctx: Ctx;

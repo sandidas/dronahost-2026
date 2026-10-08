@@ -4,9 +4,9 @@
  * Usage: npx tsx docs/content-planner/tools/check-register.ts [register-file] [--help]
  */
 import { existsSync, readdirSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { loadConfig } from "./load-config";
+import { PLANNER_DIR, loadConfig } from "./load-config";
 import { IN_FLIGHT, LOCALES, STATUSES, isConcreteUrl, norm, readRegister, type Row } from "./register";
 
 export type Issue = { level: "error" | "warn"; line: number; rule: string; message: string };
@@ -96,7 +96,7 @@ if (invoked) {
   }
   const { config, resolvePath } = loadConfig();
   const file = process.argv.slice(2).find((a) => !a.startsWith("--")) ?? resolvePath(config.paths.register);
-  const { issues, rows } = checkRegister(file, { maxInFlight: config.governor.maxInFlight, paused: config.governor.paused, plans: knownPlans(dirname(resolvePath(config.paths.register)).replace(/[\\/]project$/, "")) });
+  const { issues, rows } = checkRegister(file, { maxInFlight: config.governor.maxInFlight, paused: config.governor.paused, plans: knownPlans(PLANNER_DIR) });
   for (const i of issues) console.log(`  ${i.level === "error" ? "FAIL " : "warn "} ${i.rule} ${file}:${i.line} ${i.message}`);
   const errors = issues.filter((i) => i.level === "error").length;
   const counts = STATUSES.map((s) => `${s} ${rows.filter((r) => r.status === s).length}`).filter((t) => !t.endsWith(" 0"));

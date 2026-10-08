@@ -13,7 +13,20 @@ process.env.CHECK_CONTENT_FACTS = `${FIX}/facts`;
 process.env.CHECK_CONTENT_BRIEFS = `${FIX}/briefs`;
 
 let ctx: Ctx;
-before(async () => { ctx = await loadContext(); });
+/** The engine's tests use their own word lists and limits, so they pass in any project. */
+function testContext(base: Ctx): Ctx {
+  return {
+    ...base,
+    config: { ...base.config, name: "ExampleCo", limits: { ...base.config.limits, titleSuffix: " | ExampleCo", faqItemsByPlan: { "01": [4, 8] } } },
+    rules: {
+      ...base.rules,
+      bannedPhrases: ["world-class", ...base.rules.bannedPhrases], idioms: ["go the extra mile"], bannedCtaLabels: ["get started"],
+      featureWords: [{ pattern: "zorbleflux", claim: "zorble" }], forbiddenChannels: ["carrier pigeon", "smoke signal"], forbiddenClaims: ["our moon base"],
+      brandSuffixPattern: "(\\s[|]\\s*ExampleCo)", disclosureLine: "Drafted with AI assistance, then edited, fact-checked and approved by",
+    },
+  };
+}
+before(async () => { ctx = testContext(await loadContext()); });
 const tmp = mkdtempSync(join(tmpdir(), "cc-"));
 let n = 0;
 
@@ -103,7 +116,7 @@ test("Facts: strict mode needs a project-file source; guide mode accepts a verif
 });
 
 test("Facts: a feature word about the business needs a rendering claim", () => {
-  assert.ok(failedIds(guide((t) => t + "\nOur servers use NVMe storage.\n")).includes("F2"));
+  assert.ok(failedIds(guide((t) => t + "\nOur ovens give zorbleflux heat.\n")).includes("F2"));
 });
 
 test("People: author, reviewer, dates and the AI disclosure line", () => {
@@ -158,7 +171,7 @@ test("Schema: FAQPage needs a visible FAQ; a rating needs linked reviews", () =>
 
 test("Policy: unsupported channel, forbidden claim, ranking guarantee", () => {
   assert.ok(failedIds(guide((t) => t + `\nChat to us on ${ctx.rules.forbiddenChannels[0]} any time.\n`)).includes("PO1"));
-  assert.ok(failedIds(guide((t) => t + "\nOur data centre is close to you.\n")).includes("PO2"));
+  assert.ok(failedIds(guide((t) => t + "\nOur moon base is close to you.\n")).includes("PO2"));
   assert.ok(failedIds(guide((t) => t + "\nWe guarantee a top ranking.\n")).includes("PO3"));
   assert.ok(!failedIds(guide((t) => t + `\nWe do not offer ${ctx.rules.forbiddenChannels[0]} support.\n`)).includes("PO1"));
 });
@@ -174,4 +187,10 @@ test("Overlap: two pages cannot share a title or a description", () => {
 
 test("Flags: an open flag fails a page that is not a Draft", () => {
   assert.ok(failedIds(guide((t) => t + "\n[HUMAN REVIEW: add a source]\n")).includes("G1"));
+});
+
+test("a project with no forbidden channels, claims or feature words passes policy and fact rules (regression: an empty list once matched every line)", () => {
+  const bare = { ...ctx, rules: { ...ctx.rules, forbiddenChannels: [], forbiddenClaims: [], featureWords: [], bannedPhrases: [], idioms: [] } };
+  const failing = checkDoc(bare, loadDoc(bare, `${FIX}/pass-guide.md`), { overlap: false }).filter((r) => !r.ok).map((r) => r.id);
+  assert.deepEqual(failing, []);
 });

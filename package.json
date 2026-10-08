@@ -38,7 +38,7 @@
     "content:refresh-queue": "tsx docs/content-planner/tools/refresh-queue.ts",
     "content:install": "tsx docs/content-planner/tools/install.ts",
     "content:init-project": "tsx docs/content-planner/tools/init-project.ts",
-    "test:tools": "tsx --test docs/content-planner/tools/*.test.ts",
+    "test:tools": "tsx docs/content-planner/tools/run-tests.ts",
     "eval": "tsx docs/content-planner/tools/eval.ts",
     "content:resolve": "tsx docs/content-planner/tools/resolve.ts",
     "content:links": "tsx docs/content-planner/tools/check-links.ts",
@@ -48,7 +48,9 @@
     "content:ci": "tsx docs/content-planner/tools/ci.ts",
     "content:changed": "tsx docs/content-planner/tools/check-changed.ts",
     "content:posts": "tsx docs/content-planner/tools/wp-posts.ts",
-    "content:webhook": "tsx docs/content-planner/tools/wp-webhook.ts"
+    "content:webhook": "tsx docs/content-planner/tools/wp-webhook.ts",
+    "test:project": "tsx docs/content-planner/tools/run-tests.ts --project",
+    "test:reuse": "tsx --test docs/content-planner/tools/reuse.test.ts"
   },
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.1146.0",

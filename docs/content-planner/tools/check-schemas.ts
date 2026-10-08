@@ -4,7 +4,7 @@
  * Also validates the real config files and the two JSON templates. Usage: npx tsx docs/content-planner/tools/check-schemas.ts [--help]
  */
 import { readFileSync, readdirSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { join } from "node:path";
 import { PLANNER_DIR, loadConfig } from "./load-config";
 import { KINDS, validateFile } from "./validate-schema-file";
 
@@ -40,10 +40,11 @@ try {
   report("config files validate", false, [(e as Error).message]);
 }
 
-const ledgerDir = resolve(PLANNER_DIR, "project/facts");
+const loaded = loadConfig();
+const ledgerDir = loaded.resolvePath(loaded.config.paths.facts);
 for (const name of readdirSync(ledgerDir).filter((n) => n.endsWith(".json")).sort()) {
   const r = KINDS.ledger.schema.safeParse(JSON.parse(readFileSync(join(ledgerDir, name), "utf8")));
-  report(`project/facts/${name} validates`, r.success, r.success ? [] : r.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`));
+  report(`${name} (project ledger) validates`, r.success, r.success ? [] : r.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`));
 }
 console.log(failures ? `\n${failures} schema check(s) failed.` : "\nAll schema checks passed.");
 process.exit(failures ? 1 : 0);

@@ -26,7 +26,7 @@ function walk(dir: string): string[] {
 }
 
 const escape = (s: string): string => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-/** An all-capitals term such as AWS or GST is matched exactly; other terms ignore case. Both need word boundaries. */
+/** An all-capitals term (an acronym) is matched exactly; other terms ignore case. Both need word boundaries. */
 const termRegex = (t: string): RegExp => new RegExp(`(^|[^A-Za-z0-9])${escape(t)}($|[^A-Za-z0-9])`, t === t.toUpperCase() ? "" : "i");
 
 const { rules } = loadConfig();

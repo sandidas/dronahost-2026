@@ -2,7 +2,8 @@
  * Creates the project/ folder, the config and the register skeleton for a new host project. Never overwrites a file.
  * Usage: npx tsx docs/content-planner/tools/init-project.ts [--out dir] --name "ExampleCo" --domain example.com --owner "Sam Example" --locale en-US [--yes]
  */
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { DEFAULT_IDIOMS, DEFAULT_PLAN_ROUTING, DEFAULT_WORDPRESS } from "./defaults";
+import { existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { createInterface } from "node:readline/promises";
 import { fileURLToPath } from "node:url";
@@ -24,7 +25,7 @@ export function buildConfig(o: InitOptions) {
     $comment: "Host integration. Every path is relative to this file. Schema: schemas/config.ts",
     name: o.name, locale: o.locale,
     paths: { register: "project/keyword-register.md", pricing: "project/pricing.json", claims: "project/claims.json", company: "project/company.json", pages: "project/pages", posts: null, briefs: "project/briefs", facts: "project/facts", drafts: "project/drafts", rulesConfig: "project/rules.config.json" },
-    adapters: { claims: "json", pricing: "json", posts: "files", pageSpec: null },
+    adapters: { claims: "json", pricing: "json", posts: "files", pageSpec: null, wordpress: DEFAULT_WORDPRESS },
     governor: { maxInFlight: 3, monthlyNewPages: 4, paused: false },
     cta: { bannedLabels: [], cardLabelTemplate: "Choose {plan}" },
     limits: {
@@ -46,9 +47,23 @@ export function buildRules(o: InitOptions) {
     disclosureLine: "Drafted with AI assistance, then edited, fact-checked and approved by",
     brandSuffixPattern: `(\\s[|\\-–:]\\s*${brand}|${brand}\\s*[|\\-–:])`,
     noBrand: { terms: [o.name, o.domain, o.owner], patterns: [], allowFiles: ["tools/check-no-brand.ts"] },
-    planRouting: [],
+    idioms: DEFAULT_IDIOMS,
+    planRouting: DEFAULT_PLAN_ROUTING,
     intentByPlan: { "01": "Buy", "02": "Compare", "03": "Learn", "04": "Solve", "05": "Buy", "06": "Buy", "07": "Learn", "08": "Buy", "09": "Find", "10": "Learn", "14": "Solve", "15": "Find" },
   });
+}
+
+/** One project-specifics slot per plan, because the plans link to them, plus the parked billing plan's project copy. */
+function planSlots(): Record<string, string> {
+  const out: Record<string, string> = {};
+  const dir = join(PLANNER_DIR, "plans");
+  if (existsSync(dir)) {
+    for (const f of readdirSync(dir).filter((n) => /^\d{2}-.*\.md$/.test(n)).sort()) {
+      out[`project/plan-specifics/${f}`] = `# Plan ${f.slice(0, 2)}: project specifics\n\nNothing recorded yet. Put the facts, dated owner decisions, named providers and channels that belong to this plan here, not in the plan. [HUMAN REVIEW: add when the plan is first used]\n`;
+    }
+  }
+  out["project/later/12-billing-system-integration.md"] = "# Plan 12: project billing system data\n\nNothing recorded yet. Fill this in when the project reaches billing work. See `later/12-billing-system-integration.md` for the outline. [HUMAN REVIEW: add when needed]\n";
+  return out;
 }
 
 function files(o: InitOptions): Record<string, string> {
@@ -66,6 +81,7 @@ function files(o: InitOptions): Record<string, string> {
     "project/brand.md": `# ${o.name}: voice and terms\n\n## Voice\n\n- ${review("three words that describe the tone")}\n\n## Words we use\n\n${table(["Say", "Do not say"])}\n## Words we avoid\n\n- ${review("phrases to ban")}\n`,
     "project/keyword-register.md": `# Keyword Register\n\nOne primary keyword per URL, per locale. Update this file in the same change that publishes or edits a page.\n\n## Columns\n\n${table(["Column", "Meaning"])}${COLUMNS.map((c) => `| ${c} | ${review("describe")} |`).join("\n")}\n\n${plans}\n## Excluded keywords (do not target)\n\n${table(["Keyword", "Reason"])}`,
     "project/learning-log.md": `# Learning log\n\nOne row per change and what happened. A result is a note, not proof.\n\n${table(["date", "page", "change", "result", "rule"])}`,
+    ...planSlots(),
     ...Object.fromEntries(EMPTY_FOLDERS.map((f) => [`project/${f}/.gitkeep`, ""])),
   };
 }

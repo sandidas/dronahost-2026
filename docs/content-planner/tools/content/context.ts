@@ -4,6 +4,7 @@ import { basename, extname, join } from "node:path";
 import { pathToFileURL } from "node:url";
 import type { Config } from "../../schemas/config";
 import type { RulesConfig } from "../../schemas/rules-config";
+import { DEFAULT_LABEL_KEYS, DEFAULT_NON_COPY_KEYS } from "../defaults";
 import { loadConfig } from "../load-config";
 import { parseFrontMatter } from "../front-matter";
 import { parseRegister, type ParsedRegister, type Row } from "../register";
@@ -54,7 +55,7 @@ export async function loadContext(): Promise<Ctx> {
   const pricingFile = resolvePath(config.paths.pricing);
   return {
     config, rules, resolvePath,
-    copy: { nonCopyKeys: config.adapters.pageSpec?.nonCopyKeys ?? [], labelKeys: config.adapters.pageSpec?.labelKeys ?? [] },
+    copy: { nonCopyKeys: config.adapters.pageSpec?.nonCopyKeys ?? DEFAULT_NON_COPY_KEYS, labelKeys: config.adapters.pageSpec?.labelKeys ?? DEFAULT_LABEL_KEYS },
     claims: await loadClaims(config, resolvePath),
     register: existsSync(registerPath) ? parseRegister(readFileSync(registerPath, "utf8")) : null,
     briefsDir: process.env.CHECK_CONTENT_BRIEFS ?? resolvePath(config.paths.briefs),

@@ -4,14 +4,14 @@ import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { before, test } from "node:test";
-import { type Ctx, checkDoc, loadContext, loadDoc } from "./check-content";
-import { collectPriceNumbers } from "./content/context";
+import { type Ctx, checkDoc, loadContext, loadDoc } from "../../tools/check-content";
+import { collectPriceNumbers } from "../../tools/content/context";
 
 let ctx: Ctx;
 before(async () => { ctx = await loadContext(); });
 
 test("every claim's rendering state is what the host's claimRenders() says", async () => {
-  const mod = await import("../../../content/claims");
+  const mod = await import("../../../../content/claims");
   assert.ok(ctx.claims.length > 0, "the claims registry was read");
   for (const c of ctx.claims) {
     const record = (mod.CLAIMS as readonly { id: string }[]).find((x) => x.id === c.id);

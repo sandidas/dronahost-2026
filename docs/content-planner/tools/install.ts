@@ -14,7 +14,7 @@ export const SCRIPT_FILES: Record<string, string> = {
   "content:check": "check-content", "content:register": "check-register", "content:governor": "governor", "content:eval": "eval",
   "content:gen-schema": "gen-schema", "content:suggest-links": "suggest-links", "content:similarity": "similarity",
   "content:gsc-report": "gsc-report", "content:refresh-queue": "refresh-queue", "content:install": "install", "content:init-project": "init-project",
-  "content:links": "check-links", "content:no-brand": "check-no-brand", "content:config": "check-config", "content:schemas": "check-schemas", "content:resolve": "resolve",
+  "content:links": "check-links", "content:no-brand": "check-no-brand", "content:config": "check-config", "content:schemas": "check-schemas", "content:resolve": "resolve", "content:ci": "ci", "content:changed": "check-changed", "content:posts": "wp-posts", "content:webhook": "wp-webhook",
 };
 export const scriptMap = (plannerRel: string): Record<string, string> =>
   Object.fromEntries(Object.entries(SCRIPT_FILES).map(([k, f]) => [k, `tsx ${plannerRel}/tools/${f}.ts`]));

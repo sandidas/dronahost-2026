@@ -29,8 +29,8 @@ jobs:
       - run: npm run check:contrast
       - name: Page specs, content lint and keyword register
         run: npm run check:pages && npm run lint:content && npm run check:register && npm run check:vs
-      - name: Content engine tests
-        run: npm run test:tools
+      - name: Content engine tests (against the sample project), this project's own tests, and the reuse proof
+        run: npm run test:tools && npm run test:project && npm run test:reuse
       - name: Content engine checks (a failure blocks the merge)
         # config, no-brand, links, schemas, register + governor cap, check-content on the changed files, posts, evaluation set.
         # Posts are checked only when the repository variable CONTENT_POSTS_API_URL is set (and, for drafts, the two secrets).

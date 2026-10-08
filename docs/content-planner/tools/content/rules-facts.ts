@@ -65,14 +65,15 @@ export function factRules(ctx: Ctx, doc: Doc): RuleResult[] {
 
 export function policyRules(ctx: Ctx, doc: Doc): RuleResult[] {
   const prose = [...proseLines(doc), ...doc.labels];
-  const channel = new RegExp(ctx.rules.forbiddenChannels.map(esc).join("|"), "i");
+  // An empty list must match nothing (an empty pattern would match every line).
+  const channel = ctx.rules.forbiddenChannels.length ? new RegExp(ctx.rules.forbiddenChannels.map(esc).join("|"), "i") : null;
   const allow = ctx.rules.channelAllowlistFiles.some((a) => doc.file.includes(a));
   const p1: Finding[] = [];
   const p2: Finding[] = [];
   const p3: Finding[] = [];
   for (const l of prose) {
     const t = strip(l.text);
-    if (channel.test(t) && !/\b(do not|does not|not offer|no )\b/i.test(t) && !allow) p1.push({ line: l.n, message: `mentions a channel the project does not offer (${t.match(channel)?.[0]}) as if offered` });
+    if (channel && channel.test(t) && !/\b(do not|does not|not offer|no )\b/i.test(t) && !allow) p1.push({ line: l.n, message: `mentions a channel the project does not offer (${channel ? t.match(channel)?.[0] : ""}) as if offered` });
     const claim = ctx.rules.forbiddenClaims.find((c) => t.toLowerCase().includes(c.toLowerCase()));
     if (claim) p2.push({ line: l.n, message: `forbidden wording "${claim}" (project/rules.config.json)` });
     if (/\b(guarantee|guaranteed)\b[^.]*\b(rank|ranking|top|first page)/i.test(t)) p3.push({ line: l.n, message: "ranking guarantee" });
