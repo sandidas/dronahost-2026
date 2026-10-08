@@ -17,7 +17,10 @@
     "qa": "npm run check:contrast && npm run qa:axe && npm run qa:links && npm run qa:jsonld && npm run qa:entities",
     "test:e2e": "playwright test",
     "check:pages": "tsx scripts/validate-pages.ts",
-    "lint:content": "tsx scripts/lint-content.ts"
+    "lint:content": "tsx scripts/lint-content.ts",
+    "check:register": "tsx docs/content-planner/tools/check-register.ts",
+    "check:content": "tsx docs/content-planner/tools/check-content.ts",
+    "test:content": "tsx --test docs/content-planner/tools/check-content.test.ts"
   },
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.1146.0",

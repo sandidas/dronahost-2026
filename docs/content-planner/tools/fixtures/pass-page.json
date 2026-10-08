@@ -1,0 +1,74 @@
+{
+  "id": "fixture-landing",
+  "path": "/fixture-landing",
+  "primaryKeyword": "fixture landing page",
+  "seo": {
+    "title": "Fixture Landing Page",
+    "description": "A small page used to test the content checker, with a plain answer and a short list of questions."
+  },
+  "rules": {
+    "reviewedOn": "2026-10-08"
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "type": "ProductHero",
+      "content": {
+        "h1": "A fixture landing page for the checker",
+        "lead": "A short lead for a test page.",
+        "ctaPrimary": {
+          "label": "See plans",
+          "href": "/pricing"
+        },
+        "ctaSecondary": {
+          "label": "Talk to us",
+          "href": "/contact"
+        }
+      }
+    },
+    {
+      "id": "answer",
+      "type": "AnswerBlock",
+      "content": {
+        "h2": "What is this page?",
+        "answer": "You can check which WordPress version your site runs from the dashboard, the Updates screen or the page source. The dashboard shows it at the bottom of every admin page and on the Updates screen. Knowing your version tells you whether security fixes are waiting, and whether your plugins support the version you run."
+      }
+    },
+    {
+      "id": "links",
+      "type": "CTABand",
+      "content": {
+        "h2": "Where next?",
+        "ctaPrimary": {
+          "label": "WordPress hosting",
+          "href": "/wordpress-hosting"
+        }
+      }
+    },
+    {
+      "id": "faq",
+      "type": "FAQSection",
+      "content": {
+        "h2": "Questions",
+        "items": [
+          {
+            "q": "Where is the WordPress version shown in the dashboard?",
+            "a": "Log in and look at the bottom right of any admin page. The version number is printed there. You can also open Dashboard, then Updates, which shows the version you run and whether a newer one is available. Both places read the same number, so use whichever is faster for you."
+          },
+          {
+            "q": "Can I see the version without logging in?",
+            "a": "Often yes. Open the site, view the page source and search for the word generator in the head. Many themes print the version there. Some sites hide it on purpose, so a missing tag does not mean the site is out of date. If you own the site, the dashboard is the reliable place."
+          },
+          {
+            "q": "Why does my WordPress version matter?",
+            "a": "Each release fixes bugs and closes security holes. An old version can miss those fixes, and some plugins stop supporting it. Check the version before you add a plugin or change your PHP version, so you know what you are working with and what to update first."
+          },
+          {
+            "q": "Should I update WordPress straight away?",
+            "a": "Take a backup first, then update. If you can, try the update on a staging copy and check your key pages. Small security releases are usually safe to apply quickly. Larger releases can change how a theme or plugin behaves, so give yourself time to test them."
+          }
+        ]
+      }
+    }
+  ]
+}

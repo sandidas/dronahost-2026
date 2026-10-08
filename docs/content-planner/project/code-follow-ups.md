@@ -1,0 +1,29 @@
+# Code and data follow-ups
+
+The planner is documentation. These changes live in the repo. Give this list to the developer or to Claude Code as separate,
+small tasks. Nothing here changes a price value.
+
+| # | Change | Where | Why (planner source) |
+|---|---|---|---|
+| 1 | Remove `live-chat` and `phone` from every plan's `support.channels`. Channels are `ticket` and `email` only | `data/pricing.json` | Decision 22 |
+| 2 | Define what "24/7" means before the claim renders. Until then keep `support-24-7` hidden | `content/claims.ts`, `/support-policy` | Plan 07 |
+| 3 | Point claim terms pages to the new URLs: `support-24-7` to `/support-policy`, `free-migration` to `/migration-terms`, `renewal-price-same` to `/pricing-policy`. Keep `termsPageStatus: "draft"` until published | `content/claims.ts` | Plan 07, claims table |
+| 4 | Add unverified claim entries for: `litespeed`, `nvme`, `cpanel`, `free-ssl`, `cloudflare-cdn`, `daily-backups`, `backup-retention`, `staging`, `object-cache`, `fair-use` | `content/claims.ts` | `pricing.json` `includedWithEveryPlan` carries `claimId` for each |
+| 5 | Remove WhatsApp, live chat and any phone line from the header banner, footer, contact page, `SupportChannels`, the home page, JSON-LD `contactPoint`, and `llms.txt`. **Done 2026-10-07:** `SupportChannels`, the home page, the announcement bar, footer, contact page, JSON-LD `contactPoint` (URL only), `llms.txt`, the dead `WhatsAppButton` and company fields (removed), and the `data/vs/*` support rows. The linter now fails any WhatsApp, live chat or phone-support mention | components, content, schema | Decision 22 |
+| 6 | `SupportChannels` shows only ticket and email, with hours from the published support policy. **Done 2026-10-07** (hours text still waits for the published support policy) | `/v2` component | Decision 22 |
+| 7 | Plan card buttons read "Choose [plan]" with no price inside. Product page hero reads "See [product] plans" | pricing components | Decision 25 |
+| 8 | Never render "Unlimited" for a null limit. Show "Fair use" with a link when `trafficType` is `fair-use`, and hide null fields | `PricingPlans`, comparison table | Plan 01 |
+| 9 | Add routes (draft notice until published): `/email`, `/migration-terms`, `/support-policy`, `/pricing-policy`, `/fair-use-policy`, `/backup-policy`, `/acceptable-use-policy`, `/data-retention`, `/sub-processors` | app routes | Plan 07, Plan 14 |
+| 10 | Content linter: fail when a feature word (LiteSpeed, NVMe, free SSL, daily backups, uptime, CDN) appears in a title, H1 or description and its claim does not render | `lib/content/` | content rules section 7 |
+| 11 | Content linter: fail when a page JSON `primaryKeyword` is not the register's primary keyword for that URL | `lib/content/`, register | Home keyword clash |
+| 12 | FAQ linter: answers 40 to 80 words, at most one link | `lib/content/` | content rules section 7 |
+| 13 | Run the same checks on WordPress posts at build time (`check:posts`) and block publish on failure | WordPress webhook, CI | `rules/wordpress-content-model.md` |
+| 14 | Redirect map from the URL inventory, tested in CI | `next.config` or the proxy file | `url-inventory.md` |
+| 15 | Metadata title template and separator: choose one and align the layout (pipe vs em dash) | layout, `buildMetadata()` | content rules section 7 |
+| 16 | Home page spec: primary keyword is the brand plus "wordpress and vps hosting for small business", not "managed wordpress hosting". **Done 2026-10-07** | `content/pages/home.json` | Register |
+| 17 | Email notice for existing email customers: banner in the client area and an email from WHMCS | WHMCS, `/email` | Plan 14 |
+| 18 | Events from `measurement.md` | analytics layer | Measurement |
+| 19 | `check:register` path in `package.json`: `tsx docs/content-planner/tools/check-register.ts` | `package.json` | Tool fix |
+| 20 | **Comparison data rewritten 2026-10-07.** `data/vs/*.ts` now holds only competitor facts with a source URL and retrieval date (no invented DronaHost facts; A2 Hosting dropped because its site now redirects to hosting.com). DronaHost's side is built from `pricing.json` and rendering claims (`lib/vs/compare.ts`). The page follows Plan 02 and has no made-up author. `npm run check:vs` runs in CI. **Still blocking `FEATURES.comparisonPages`:** a person must open each source URL, confirm every fact and set `checkedAtSource: true` (the check fails if the flag is on while any is false). The facts came from an automated page read, so treat them as unverified. Also fill the gaps the check lists (`storage`, `sites`) and add a FAQ and the "price in plain terms" section from Plan 02 | `data/vs/*`, `lib/vs/compare.ts`, `FEATURES.comparisonPages` | Plan 02 honesty rules |
+| 21 | `data/pricing2.0.json` (untracked) is an old draft that still lists live chat, phone, Slack and dedicated-engineer channels. Delete it or move it out of `data/` so nothing imports it | `data/pricing2.0.json` | Decision 22 |
+| 22 | **Fixed 2026-10-07:** `proxy.ts` treated any two-letter first path segment as a locale, so every `/vs/...` URL returned 404 even with the flag on, and a planned `/kb/...` would have too. The pattern now matches language-region codes and a list of real language codes only | `proxy.ts` | Routing bug |
