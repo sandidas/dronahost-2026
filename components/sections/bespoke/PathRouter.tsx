@@ -4,6 +4,7 @@ import { useId } from "react";
 import FeatureIcon, { type FeatureIconName } from "@/components/ui/FeatureIcon";
 import { visibleItems, type Gated } from "@/lib/sections/gated";
 import { reveal } from "@/lib/motion";
+import { UI } from "@/content/strings";
 import { cn } from "@/utils/cn";
 import SectionHeader from "../SectionHeader";
 
@@ -64,7 +65,7 @@ export default function PathRouter({ eyebrow, title, description, paths, compact
                     <ArrowRight className="arrow-nudge size-5 rtl:rotate-180" aria-hidden="true" strokeWidth={2} />
                   </Link>
                 </div>
-                {showSamples && path.claim && <p className="mt-3 text-xs font-semibold text-warning">Sample: hidden until &ldquo;{path.claim}&rdquo; is confirmed</p>}
+                {showSamples && path.claim && <p className="mt-3 text-xs font-semibold text-warning">{UI.sample.hiddenUntil(path.claim)}</p>}
               </div>
             </li>
           ))}

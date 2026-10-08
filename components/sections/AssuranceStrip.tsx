@@ -2,6 +2,7 @@ import { Link } from "@/i18n/link";
 import { useId } from "react";
 import FeatureIcon from "@/components/ui/FeatureIcon";
 import { CLAIMS, verifiedClaims, type Claim } from "@/content/claims";
+import { UI } from "@/content/strings";
 import { cn } from "@/utils/cn";
 
 type AssuranceStripProps = {
@@ -20,7 +21,7 @@ type AssuranceStripProps = {
  * measured numbers only (StatsBar). A claim appears only when it passes the gate in content/claims.ts
  * (verified AND its terms page is published), so the link target always exists and has been reviewed.
  */
-export default function AssuranceStrip({ ids, label = "Our commitments", claims, className }: AssuranceStripProps) {
+export default function AssuranceStrip({ ids, label = UI.assurance.region, claims, className }: AssuranceStripProps) {
   const headingId = useId();
   const items = (claims ?? verifiedClaims(ids).filter((c) => c.kind === "assurance")).slice(0, 4);
   if (items.length === 0) return null;
@@ -39,10 +40,10 @@ export default function AssuranceStrip({ ids, label = "Our commitments", claims,
                 <p className="text-base font-semibold text-foreground">{c.text}</p>
                 {c.termsPage && (
                   <Link href={c.termsPage} className="mt-2 inline-flex min-h-9 items-center text-sm font-semibold text-link underline underline-offset-4">
-                    {c.termsLabel ?? "Read the terms"}
+                    {c.termsLabel ?? UI.generic.readTerms}
                   </Link>
                 )}
-                {!c.verified && <p className="mt-2 text-xs font-semibold text-warning">Sample, hidden in production</p>}
+                {!c.verified && <p className="mt-2 text-xs font-semibold text-warning">{UI.sample.hiddenInProduction}</p>}
               </div>
             </li>
           ))}

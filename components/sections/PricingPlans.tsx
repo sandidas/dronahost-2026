@@ -8,6 +8,7 @@ import { renewalLine } from "@/lib/pricing/renewal";
 import { cn } from "@/utils/cn";
 import SectionHeader from "./SectionHeader";
 import type { PlanCardData } from "@/lib/pricing/plans";
+import { UI } from "@/content/strings";
 
 type Cycle = "annual" | "monthly";
 
@@ -96,13 +97,13 @@ function PlanCard({
         <div className="mt-6 min-h-[6.5rem]">
           {plan.custom ? (
             <>
-              <p className="font-[family-name:var(--font-heading)] text-3xl font-semibold tracking-tight text-foreground">Custom pricing</p>
-              <p className="t-small mt-2 text-muted-foreground">Contact us for a quote.</p>
+              <p className="font-[family-name:var(--font-heading)] text-3xl font-semibold tracking-tight text-foreground">{UI.pricing.customTitle}</p>
+              <p className="t-small mt-2 text-muted-foreground">{UI.pricing.customLine}</p>
             </>
           ) : !showPrices ? (
             <>
-              <p className="font-[family-name:var(--font-heading)] text-3xl font-semibold tracking-tight text-foreground">Price on request</p>
-              <p className="t-small mt-2 text-muted-foreground">Ask the team for current pricing.</p>
+              <p className="font-[family-name:var(--font-heading)] text-3xl font-semibold tracking-tight text-foreground">{UI.pricing.onRequestTitle}</p>
+              <p className="t-small mt-2 text-muted-foreground">{UI.pricing.onRequestLine}</p>
             </>
           ) : (
             (["annual", "monthly"] as const).map((c) => (
@@ -183,13 +184,13 @@ export default function PricingPlans({
 
         {showPrices && process.env.NODE_ENV === "development" && (
           <p role="note" className="mx-auto mt-6 max-w-xl rounded-xl border border-warning/40 bg-warning-surface px-4 py-2 text-center text-sm font-medium text-warning">
-            Draft prices from data/pricing.json (unconfirmed). Hidden in production until FEATURES.pricesConfirmed is set.
+            {UI.sample.draftPrices}
           </p>
         )}
 
         {showToggle && (
           <div className="mt-10 flex justify-center">
-            <div role="group" aria-label="Billing period" className="inline-flex rounded-xl border border-border-strong bg-muted p-1">
+            <div role="group" aria-label={UI.pricing.billingPeriod} className="inline-flex rounded-xl border border-border-strong bg-muted p-1">
               {cycles.map((c) => (
                 <button
                   key={c}
@@ -212,7 +213,7 @@ export default function PricingPlans({
         )}
 
         {plans.length === 0 ? (
-          <p className="t-body mt-12 text-center text-muted-foreground">Plans are not available right now. Please contact the team.</p>
+          <p className="t-body mt-12 text-center text-muted-foreground">{UI.pricing.unavailable}</p>
         ) : (
           <ul data-swapped={swapped || undefined} className={cn("grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3", title || showToggle ? "mt-10" : "")}>
             {plans.map((plan, index) => (

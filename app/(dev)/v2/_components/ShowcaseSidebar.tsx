@@ -82,6 +82,8 @@ const categories: Category[] = [
     label: "Home page (new)",
     items: [
       { id: "path-router", label: "PathRouter" },
+      { id: "meaning-section", label: "MeaningSection" },
+      { id: "help-and-policies", label: "HelpAndPolicies" },
       { id: "responsibility-split", label: "ResponsibilitySplit" },
       { id: "answer-block", label: "AnswerBlock" },
     ],

@@ -31,6 +31,8 @@ export const ProductHero = z.strictObject({
     ctaSecondary: Cta.optional(),
     /** Plain text or `claim:` refs. A claim that does not render is dropped. */
     highlights: z.array(z.union([ClaimRef, z.string().min(4).max(80)])).max(4).optional(),
+    /** Text of the decorative dashboard. The caption must say it is an example. */
+    mockup: z.strictObject({ address: z.string().max(40).optional(), status: z.string().max(20).optional(), tiles: z.array(z.string().max(16)).length(3).optional(), caption: z.string().min(7).max(40).optional() }).optional(),
   })
     .refine((c) => !c.accent || c.h1.endsWith(c.accent), { message: "accent must be the end of the h1", path: ["accent"] })
     .refine((c) => !c.h1Requires || Boolean(c.h1Fallback), { message: "h1Fallback is required with h1Requires", path: ["h1Fallback"] })
@@ -89,6 +91,41 @@ export const ResponsibilitySplit = z.strictObject({
     weLookAfter: z.array(gatedText).min(1).max(6),
     youKeep: z.array(gatedText).min(1).max(6),
     note: z.string().max(160).optional(),
+  }),
+});
+
+/** AnswerBlock and ResponsibilitySplit as one section (blueprint section "Meaning"). One H2; the answer and each line gate on their own. */
+export const Meaning = z.strictObject({
+  ...sectionBase,
+  type: z.literal("Meaning"),
+  content: z.strictObject({
+    eyebrow,
+    h2: z.string().min(8).max(80),
+    /** 40 to 80 words. Hidden until `answerRequiresClaim` renders, when that is set. */
+    answer: z.string().refine((a) => wordCount(a) >= 40 && wordCount(a) <= 80, "the direct answer must be 40 to 80 words").optional(),
+    answerRequiresClaim: ClaimRef.optional(),
+    /** The heading when the answer is hidden. */
+    h2Fallback: z.string().min(8).max(80).optional(),
+    weLookAfter: z.array(gatedText).min(1).max(6),
+    youKeep: z.array(gatedText).min(1).max(6),
+    lookAfterLabel: z.string().max(30).optional(),
+    keepLabel: z.string().max(30).optional(),
+    note: z.string().max(160).optional(),
+  }),
+});
+
+/** SupportChannels and TrustSignals as one section (blueprint section "Help and policies"). */
+export const HelpAndPolicies = z.strictObject({
+  ...sectionBase,
+  type: z.literal("HelpAndPolicies"),
+  content: z.strictObject({
+    eyebrow,
+    h2: z.string().min(8).max(80),
+    description,
+    supportLabel: z.string().min(3).max(40),
+    policiesLabel: z.string().min(3).max(40),
+    links: z.array(Href).min(1).max(8),
+    onlyPublished: z.boolean(),
   }),
 });
 
@@ -182,8 +219,8 @@ export const CTABand = z.strictObject({
 });
 
 export const Section = z.discriminatedUnion("type", [
-  ProductHero, AssuranceStrip, PathRouter, AnswerBlock, ResponsibilitySplit, ProcessTimeline, BentoGrid, PricingPlans,
-  SupportChannels, Testimonials, TrustSignals, FAQSection, CTABand,
+  ProductHero, AssuranceStrip, PathRouter, AnswerBlock, ResponsibilitySplit, Meaning, ProcessTimeline, BentoGrid, PricingPlans,
+  SupportChannels, HelpAndPolicies, Testimonials, TrustSignals, FAQSection, CTABand,
 ]);
 
 export type SectionSpec = z.infer<typeof Section>;

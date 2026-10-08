@@ -2,6 +2,7 @@ import { Check, UserRound } from "lucide-react";
 import { useId } from "react";
 import { visibleItems, type Gated } from "@/lib/sections/gated";
 import { reveal } from "@/lib/motion";
+import { UI } from "@/content/strings";
 import { cn } from "@/utils/cn";
 import SectionHeader from "../SectionHeader";
 
@@ -22,9 +23,15 @@ type ResponsibilitySplitProps = {
   minItems?: number;
   /** Showcase only: show gated items too, with a visible label. */
   showSamples?: boolean;
+  /** Render only the two columns and the note, with no section, heading or container. For use inside another section (MeaningSection). */
+  bare?: boolean;
   headingLevel?: "h2" | "h3";
   className?: string;
 };
+
+/** True when both columns have at least `minItems` visible lines, so the split would render. */
+export const splitHasContent = (weLookAfter: readonly SplitItem[], youKeep: readonly SplitItem[], minItems = 2, showSamples = false): boolean =>
+  visibleItems(weLookAfter, { showAll: showSamples }).length >= minItems && visibleItems(youKeep, { showAll: showSamples }).length >= minItems;
 
 /**
  * "What we look after, and what stays with you." Removes the "what am I buying" confusion with two plain lists side by
@@ -37,11 +44,12 @@ export default function ResponsibilitySplit({
   description,
   weLookAfter,
   youKeep,
-  lookAfterLabel = "We look after",
-  keepLabel = "You keep",
+  lookAfterLabel = UI.split.lookAfter,
+  keepLabel = UI.split.keep,
   note,
   minItems = 2,
   showSamples = false,
+  bare = false,
   headingLevel = "h2",
   className,
 }: ResponsibilitySplitProps) {
@@ -54,11 +62,9 @@ export default function ResponsibilitySplit({
   // when the lists differ by two or more items each card keeps its own height instead.
   const uneven = Math.abs(left.length - right.length) >= 2;
 
-  return (
-    <section aria-labelledby={headingId} className={cn("section-y", className)}>
-      <div className="container-site">
-        <SectionHeader id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} />
-        <div className={cn("mt-12 grid gap-4 sm:mt-14 sm:gap-5 lg:grid-cols-2", uneven && "lg:items-start")}>
+  const columns = (
+    <>
+        <div className={cn("grid gap-4 sm:gap-5 lg:grid-cols-2", !bare && "mt-12 sm:mt-14", uneven && "lg:items-start")}>
           <div className="surface surface-raised relative overflow-hidden !border-accent/30 bg-[color-mix(in_srgb,var(--accent)_7%,var(--surface-raised))] p-6 sm:p-8" {...reveal(0)}>
             <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent" />
             <Column className="t-eyebrow">{lookAfterLabel}</Column>
@@ -70,7 +76,7 @@ export default function ResponsibilitySplit({
                   </span>
                   <span className="t-body text-foreground">
                     {item.text}
-                    {showSamples && item.claim && <span className="mt-1 block text-xs font-semibold text-warning">Sample: hidden until &ldquo;{item.claim}&rdquo; is confirmed</span>}
+                    {showSamples && item.claim && <span className="mt-1 block text-xs font-semibold text-warning">{UI.sample.hiddenUntil(item.claim)}</span>}
                   </span>
                 </li>
               ))}
@@ -86,7 +92,7 @@ export default function ResponsibilitySplit({
                   </span>
                   <span className="t-body text-foreground">
                     {item.text}
-                    {showSamples && item.claim && <span className="mt-1 block text-xs font-semibold text-warning">Sample: hidden until &ldquo;{item.claim}&rdquo; is confirmed</span>}
+                    {showSamples && item.claim && <span className="mt-1 block text-xs font-semibold text-warning">{UI.sample.hiddenUntil(item.claim)}</span>}
                   </span>
                 </li>
               ))}
@@ -94,6 +100,16 @@ export default function ResponsibilitySplit({
           </div>
         </div>
         {note && <p className="t-small mt-6 text-center text-muted-foreground">{note}</p>}
+    </>
+  );
+  if (bare) return columns;
+
+  return (
+    <section aria-labelledby={headingId} className={cn("section-y", className)}>
+      <div className="container-site">
+        <SectionHeader id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} />
+
+        {columns}
       </div>
     </section>
   );

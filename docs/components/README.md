@@ -48,6 +48,8 @@ Shared props: `eyebrow`, `title`, `titleAccent`, `description`, `primaryCta`, `s
 | `ResourceGrid` | Blog/resource cards | no image required, unambiguous dates |
 | `FAQSection` | Accordion on native `<details>` | answers in the initial HTML, works without JS; pair with `faqPageSchema` |
 | `CTABand` | Closing call to action | one primary action |
+| `MeaningSection` | Blueprint section "Meaning": the direct answer under one question heading, then who looks after what (replaces AnswerBlock plus ResponsibilitySplit) |
+| `HelpAndPolicies` | Blueprint section "Help and policies": live support channels beside a policy list (replaces SupportChannels plus TrustSignals) |
 | `SupportChannels` | Ticket and email only; `layout="split"` puts the heading beside the cards | email renders only if `COMPANY.supportEmail` is set; ticket is always real |
 | `NewsletterSignup` (**client**) | Email capture | off until `FEATURES.newsletter` and an `endpoint` exist |
 

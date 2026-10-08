@@ -4,6 +4,7 @@ import { useId } from "react";
 import { reveal } from "@/lib/motion";
 import { cn } from "@/utils/cn";
 import SectionHeader from "./SectionHeader";
+import { UI } from "@/content/strings";
 
 export type TestimonialItem = {
   quote: string;
@@ -78,10 +79,10 @@ export default function Testimonials({ eyebrow, title, description, items, showS
                     </span>
                     {t.sourceUrl ? (
                       <Link href={t.sourceUrl} rel="noopener noreferrer" target="_blank" className="mt-0.5 inline-block text-xs font-semibold text-link underline underline-offset-4">
-                        Verify on {t.sourceUrl.includes("linkedin.com") ? "LinkedIn" : "their site"}
+                        {UI.generic.verifyOn} {t.sourceUrl.includes("linkedin.com") ? UI.generic.linkedIn : UI.generic.theirSite}
                       </Link>
                     ) : (
-                      <span className="mt-0.5 block text-xs font-semibold text-warning">Sample, unverified</span>
+                      <span className="mt-0.5 block text-xs font-semibold text-warning">{UI.sample.unverified}</span>
                     )}
                   </span>
                 </figcaption>

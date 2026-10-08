@@ -1,11 +1,12 @@
 import { Check } from "lucide-react";
 import type { CSSProperties } from "react";
+import { UI } from "@/content/strings";
 import { cn } from "@/utils/cn";
 
 /**
  * Illustrative interface mockups for heroes. Pure CSS/SVG, theme-aware, no data:
  * bars and shapes stand in for content so nothing here reads as a metric or claim.
- * Both are aria-hidden; the hero copy carries the meaning.
+ * The picture is aria-hidden and the hero copy carries the meaning; a visible caption says it is an example.
  */
 
 function Bar({ className }: { className?: string }) {
@@ -26,11 +27,27 @@ function WindowChrome({ label }: { label: string }) {
 }
 
 /** A site-management dashboard: navigation rail, trend chart and status tiles. */
-export function SiteDashboardMockup({ className, tiles = ["Site", "Backups", "Support"] }: { className?: string; /** Three tile labels. Keep them to things the page can back up: the mockup is decoration, so it must not hint at an unverified feature such as speed or security scores. */ tiles?: readonly string[] }) {
+export function SiteDashboardMockup({
+  className,
+  address = UI.mockup.address,
+  status = UI.mockup.status,
+  tiles = UI.mockup.tiles,
+  caption = UI.mockup.caption,
+}: {
+  className?: string;
+  /** Fake address bar text. */
+  address?: string;
+  /** Text of the status pill. */
+  status?: string;
+  /** Three tile labels. Keep them to things the page can back up: the mockup is decoration, so it must not hint at an unverified feature such as speed or security scores. */
+  tiles?: readonly string[];
+  /** Visible label that says this is an example, not a real customer's site. */
+  caption?: string;
+}) {
   return (
-    <div aria-hidden="true" className={cn("relative", className)}>
-      <div className="surface surface-raised overflow-hidden !rounded-2xl shadow-xl">
-        <WindowChrome label="yoursite.com" />
+    <figure className={cn("relative", className)}>
+      <div aria-hidden="true" className="surface surface-raised overflow-hidden !rounded-2xl shadow-xl">
+        <WindowChrome label={address} />
         <div className="grid grid-cols-[3.5rem_1fr]">
           <div className="space-y-3 border-e border-border bg-muted/60 p-3">
             <span className="block size-8 rounded-lg bg-accent/25 ring-1 ring-accent/40" />
@@ -45,7 +62,7 @@ export function SiteDashboardMockup({ className, tiles = ["Site", "Backups", "Su
                 <Bar className="w-20" />
               </div>
               <span className="hero-pill rounded-full border border-success/30 bg-success-surface px-2.5 py-1 text-[0.6875rem] font-semibold text-success">
-                Online
+                {status}
               </span>
             </div>
 
@@ -90,23 +107,20 @@ export function SiteDashboardMockup({ className, tiles = ["Site", "Backups", "Su
           </div>
         </div>
       </div>
-    </div>
+      <figcaption className="t-small mt-3 text-center text-subtle-foreground">{caption}</figcaption>
+    </figure>
   );
 }
 
-const STEPS = [
-  { label: "Clone your live site to staging", done: true },
-  { label: "Update plugins and themes safely", done: true },
-  { label: "Review the changes", done: true },
-  { label: "Push to your live site", done: false },
-];
+/** All steps but the last are shown as done. */
+const STEPS = UI.mockup.stagingSteps.map((label, i, all) => ({ label, done: i < all.length - 1 }));
 
 /** A staging-to-live workflow: a private copy, a checklist and a final push step. */
-export function StagingFlowMockup({ className }: { className?: string }) {
+export function StagingFlowMockup({ className, caption = UI.mockup.caption }: { className?: string; /** Visible label that says this is an example. */ caption?: string }) {
   return (
-    <div aria-hidden="true" className={cn("relative", className)}>
-      <div className="surface surface-raised overflow-hidden !rounded-2xl shadow-xl">
-        <WindowChrome label="staging.yoursite.com" />
+    <figure className={cn("relative", className)}>
+      <div aria-hidden="true" className="surface surface-raised overflow-hidden !rounded-2xl shadow-xl">
+        <WindowChrome label={UI.mockup.stagingAddress} />
         <div className="space-y-5 p-5 sm:p-6">
           <div className="flex items-center justify-between gap-3">
             <div className="space-y-2">
@@ -114,7 +128,7 @@ export function StagingFlowMockup({ className }: { className?: string }) {
               <Bar className="w-24" />
             </div>
             <span className="rounded-full border border-accent/30 bg-accent/12 px-2.5 py-1 text-[0.6875rem] font-semibold text-link">
-              Private copy
+              {UI.mockup.stagingBadge}
             </span>
           </div>
 
@@ -144,10 +158,11 @@ export function StagingFlowMockup({ className }: { className?: string }) {
 
           <div className="flex items-center justify-between gap-3 border-t border-border pt-4">
             <Bar className="w-24" />
-            <span className="go-live relative inline-flex h-9 items-center rounded-lg bg-(--action-fill) px-4 text-sm font-semibold text-(--on-action)">Go live</span>
+            <span className="go-live relative inline-flex h-9 items-center rounded-lg bg-(--action-fill) px-4 text-sm font-semibold text-(--on-action)">{UI.mockup.goLive}</span>
           </div>
         </div>
       </div>
-    </div>
+      <figcaption className="t-small mt-3 text-center text-subtle-foreground">{caption}</figcaption>
+    </figure>
   );
 }

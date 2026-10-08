@@ -47,6 +47,8 @@ import ResourceGrid from "@/components/sections/ResourceGrid";
 import AnswerBlock, { wordCount } from "@/components/sections/AnswerBlock";
 import AssuranceStrip, { SAMPLE_ASSURANCES } from "@/components/sections/AssuranceStrip";
 import PathRouter from "@/components/sections/bespoke/PathRouter";
+import HelpAndPolicies from "@/components/sections/bespoke/HelpAndPolicies";
+import MeaningSection from "@/components/sections/bespoke/MeaningSection";
 import ResponsibilitySplit from "@/components/sections/bespoke/ResponsibilitySplit";
 import StatsBar from "@/components/sections/StatsBar";
 import SupportChannels from "@/components/sections/SupportChannels";
@@ -640,6 +642,42 @@ export default function V2ShowcasePage() {
                 <p className="text-sm text-muted-foreground">Only one path has no claim, so the router is omitted. Nothing is rendered above this sentence.</p>
               </div>
             </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="meaning-section"
+            title="MeaningSection (bespoke)"
+            status="needs-verification"
+            notes="Blueprint section 'Meaning': the direct answer (40 to 80 words) under one question heading, then who looks after what. It replaces an AnswerBlock followed by a ResponsibilitySplit. The answer and each line gate on their own; with neither left the section is omitted."
+            verify={["What managed hosting covers (managed-hosting-tasks)", "We look after the servers (managed-server-care)"]}
+          >
+            <div className="space-y-12">
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">With the answer, samples forced on</p>
+                <MeaningSection
+                  title="What does managed hosting mean?"
+                  answer="Managed hosting means your host looks after the technical work behind your website: the servers, the backups and the updates. You keep control of your content and your business. It suits owners who want a reliable site without learning server administration, and who would rather ask a team than search for answers alone."
+                  weLookAfter={SAMPLE_SPLIT_LOOK_AFTER}
+                  youKeep={SAMPLE_SPLIT_KEEP}
+                  showSamples
+                  headingLevel="h3"
+                  className="!py-0"
+                />
+              </div>
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Without the answer (its claim is not verified): the heading is the fallback and the split still shows</p>
+                <MeaningSection title="What we look after, and what stays with you" weLookAfter={SAMPLE_SPLIT_UNEVEN_LEFT} youKeep={SAMPLE_SPLIT_UNEVEN_RIGHT} headingLevel="h3" className="!py-0" />
+              </div>
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="help-and-policies"
+            title="HelpAndPolicies (bespoke)"
+            status="built"
+            notes="Blueprint section 'Help and policies': the live support channels beside a plain-language policy list, under one heading. It replaces a SupportChannels section followed by a TrustSignals section. Only live channels show, and only published policy pages are listed."
+          >
+            <HelpAndPolicies title="Help when you need it, and the terms behind our promises" supportLabel="Reach the team" policiesLabel="Our policies, in plain language" policies={TRUST_ITEMS} showSamples headingLevel="h3" className="!py-0" />
           </ShowcaseSection>
 
           <ShowcaseSection

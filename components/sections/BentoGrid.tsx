@@ -5,6 +5,7 @@ import Surface from "@/components/ui/Surface";
 import { reveal } from "@/lib/motion";
 import { cn } from "@/utils/cn";
 import SectionHeader from "./SectionHeader";
+import { UI } from "@/content/strings";
 
 export type BentoItem = {
   title: string;
@@ -71,7 +72,7 @@ export default function BentoGrid({ eyebrow, title, description, items, headingL
                       href={item.href}
                       className="btn btn-link mt-3 static self-start after:absolute after:inset-0 after:content-['']"
                     >
-                      {item.linkLabel ?? "Learn more"}
+                      {item.linkLabel ?? UI.generic.learnMore}
                       <span aria-hidden="true"> →</span>
                     </Link>
                   )}

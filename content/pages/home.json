@@ -1,5 +1,6 @@
 {
   "id": "home",
+  "blueprint": "C1",
   "path": "/",
   "archetype": "product",
   "intent": "navigational-commercial",
@@ -12,8 +13,8 @@
     "ProductHero:dashboard",
     "AssuranceStrip",
     "PathRouter",
-    "AnswerBlock",
-    "ResponsibilitySplit"
+    "Meaning",
+    "ProcessTimeline"
   ],
   "seo": {
     "title": "Managed WordPress Hosting for Small Businesses",
@@ -32,9 +33,10 @@
     "requiredSections": [
       "hero",
       "router",
-      "answer",
-      "plans",
-      "faq"
+      "meaning",
+      "help",
+      "faq",
+      "cta"
     ],
     "mustLinkTo": [
       "/pricing",
@@ -69,7 +71,10 @@
         "leadFallback": "DronaHost is a focused team in India that offers managed WordPress hosting for small businesses, freelancers and agencies worldwide. You can reach the team by support ticket or email.",
         "leadRequiresClaims": [
           "claim:free-migration"
-        ]
+        ],
+        "mockup": {
+          "caption": "Example dashboard"
+        }
       }
     },
     {
@@ -125,19 +130,13 @@
       }
     },
     {
-      "id": "answer",
-      "type": "AnswerBlock",
-      "requiresClaim": "claim:managed-hosting-tasks",
+      "id": "meaning",
+      "type": "Meaning",
       "content": {
-        "h2": "What is managed WordPress hosting?",
-        "answer": "Managed WordPress hosting means your host looks after the technical work behind your website: the servers, backups, security and updates. You keep control of your content and your business. It suits owners who want a reliable site without learning server administration."
-      }
-    },
-    {
-      "id": "split",
-      "type": "ResponsibilitySplit",
-      "content": {
-        "h2": "What we look after, and what stays with you",
+        "h2": "What does managed WordPress hosting mean?",
+        "answer": "Managed WordPress hosting means your host looks after the technical work behind your website: the servers, backups, security and updates. You keep control of your content and your business. It suits owners who want a reliable site without learning server administration.",
+        "answerRequiresClaim": "claim:managed-hosting-tasks",
+        "h2Fallback": "What we look after, and what stays with you",
         "weLookAfter": [
           {
             "text": "The servers your site runs on",
@@ -158,7 +157,9 @@
           "Which plugins and themes you choose",
           "Your domain and your accounts",
           "Your business decisions"
-        ]
+        ],
+        "lookAfterLabel": "We look after",
+        "keepLabel": "You keep"
       }
     },
     {
@@ -169,11 +170,11 @@
         "h2": "Moving to DronaHost, step by step",
         "steps": [
           {
-            "title": "Tell us where your site is",
+            "title": "Tell us your host",
             "text": "Share your current host details."
           },
           {
-            "title": "We copy it",
+            "title": "We copy your site",
             "text": "Your site is copied to DronaHost."
           },
           {
@@ -222,31 +223,12 @@
       }
     },
     {
-      "id": "support",
-      "type": "SupportChannels",
+      "id": "help",
+      "type": "HelpAndPolicies",
       "content": {
-        "h2": "Reach a person when you need one",
-        "channels": [
-          "ticket",
-          "email"
-        ],
-        "layout": "split"
-      }
-    },
-    {
-      "id": "proof",
-      "type": "Testimonials",
-      "hideIfEmpty": true,
-      "requires": "verifiedReviews",
-      "content": {
-        "source": "reviews.json"
-      }
-    },
-    {
-      "id": "policies",
-      "type": "TrustSignals",
-      "content": {
-        "h2": "Our policies, in plain language",
+        "h2": "Help when you need it, and the terms behind our promises",
+        "supportLabel": "Reach the team",
+        "policiesLabel": "Our policies, in plain language",
         "links": [
           "/refund-policy",
           "/support-policy",
@@ -256,8 +238,16 @@
           "/terms",
           "/privacy"
         ],
-        "onlyPublished": true,
-        "variant": "list"
+        "onlyPublished": true
+      }
+    },
+    {
+      "id": "proof",
+      "type": "Testimonials",
+      "hideIfEmpty": true,
+      "requires": "verifiedReviews",
+      "content": {
+        "source": "reviews.json"
       }
     },
     {
@@ -272,7 +262,7 @@
           },
           {
             "q": "Do I need technical skills to use DronaHost?",
-            "a": "No. You manage your site in WordPress as usual, and we handle the technical side."
+            "a": "No. You manage your site in WordPress as usual, and we handle the technical side. If you get stuck, you can open a support ticket or write to the team by email, and the team will help with the next step. You do not need to know how servers work to run your site here."
           },
           {
             "q": "Does DronaHost host email?",
@@ -295,12 +285,12 @@
           },
           {
             "q": "What if I am not happy with my plan?",
-            "a": "DronaHost offers a 30-day money-back guarantee. The refund policy sets out the exact terms, so please read it before you buy. If you have a question about the guarantee, contact the team by support ticket or email.",
+            "a": "DronaHost offers a 30-day money-back guarantee. The refund policy sets out the exact terms, so please read it before you buy. If you have a question about the guarantee, contact the team by support ticket or email, and the team will explain how it applies to your plan.",
             "requiresClaim": "claim:money-back"
           },
           {
             "q": "How do I reach support?",
-            "a": "You can reach the team by support ticket or email. Tickets and email are the only support channels we offer. The support policy explains how support works, so read it for the details."
+            "a": "You can reach the team by support ticket or email. Tickets and email are the only support channels we offer. The support policy explains how support works and what to include in your request, so read it before you write. Open a ticket from the contact page, or write to the team by email."
           }
         ]
       }

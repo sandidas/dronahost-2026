@@ -5,6 +5,8 @@ import AnswerBlock from "@/components/sections/AnswerBlock";
 import AssuranceStrip from "@/components/sections/AssuranceStrip";
 import BentoGrid, { type BentoItem } from "@/components/sections/BentoGrid";
 import PathRouter from "@/components/sections/bespoke/PathRouter";
+import HelpAndPolicies from "@/components/sections/bespoke/HelpAndPolicies";
+import MeaningSection from "@/components/sections/bespoke/MeaningSection";
 import ResponsibilitySplit from "@/components/sections/bespoke/ResponsibilitySplit";
 import CTABand from "@/components/sections/CTABand";
 import FAQSection from "@/components/sections/FAQSection";
@@ -51,6 +53,7 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
         description={c.leadRequiresClaims && !c.leadRequiresClaims.every((r) => resolveClaimRef(r, ctx)) ? (c.leadFallback ?? c.lead) : c.lead}
         primaryCta={c.ctaPrimary}
         secondaryCta={c.ctaSecondary}
+        mockup={c.mockup}
         highlights={(c.highlights ?? []).flatMap((h) => {
           if (!h.startsWith("claim:")) return [h];
           const claim = CLAIMS.find((x) => x.id === claimId(h));
@@ -92,6 +95,39 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
       return <ResponsibilitySplit eyebrow={c.eyebrow} title={c.h2} description={c.description} weLookAfter={norm(c.weLookAfter)} youKeep={norm(c.youKeep)} note={c.note} />;
     },
   },
+  Meaning: {
+    schema: S.Meaning,
+    render: ({ content: c }, ctx) => {
+      const norm = (items: typeof c.weLookAfter) =>
+        items.flatMap((i) => (typeof i === "string" ? [{ text: i }] : !i.requiresClaim || resolveClaimRef(i.requiresClaim, ctx) ? [{ text: i.text }] : []));
+      // The answer shows only while the claim behind it renders; the heading follows the answer.
+      const answerOk = Boolean(c.answer) && (!c.answerRequiresClaim || resolveClaimRef(c.answerRequiresClaim, ctx));
+      return (
+        <MeaningSection
+          eyebrow={c.eyebrow}
+          title={answerOk ? c.h2 : (c.h2Fallback ?? c.h2)}
+          answer={answerOk ? c.answer : undefined}
+          weLookAfter={norm(c.weLookAfter)}
+          youKeep={norm(c.youKeep)}
+          lookAfterLabel={c.lookAfterLabel}
+          keepLabel={c.keepLabel}
+          note={c.note}
+        />
+      );
+    },
+  },
+  HelpAndPolicies: {
+    schema: S.HelpAndPolicies,
+    render: ({ content: c }) => {
+      const policies: TrustItem[] = c.links
+        .filter((href) => !c.onlyPublished || PUBLISHED_PAGES.has(href))
+        .flatMap((href) => {
+          const p = POLICY_LINKS[href];
+          return p ? [{ id: href, icon: p.icon, title: p.title, description: p.description, href, linkLabel: p.linkLabel, verified: true }] : [];
+        });
+      return <HelpAndPolicies eyebrow={c.eyebrow} title={c.h2} description={c.description} supportLabel={c.supportLabel} policiesLabel={c.policiesLabel} policies={policies} />;
+    },
+  },
   ProcessTimeline: {
     schema: S.ProcessTimeline,
     render: ({ content: c }) => <ProcessTimeline eyebrow={c.eyebrow} title={c.h2} description={c.description} steps={c.steps.map((s) => ({ title: s.title, description: s.text }))} />,
@@ -123,7 +159,7 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
           plans={plans}
           showPrices={showPrices()}
           vatDisplay={VAT_DISPLAY}
-          guaranteeNote={ctx.claimRenders("money-back") ? "30-day money-back guarantee." : null}
+          guaranteeNote={ctx.claimRenders("money-back") ? `${CLAIMS.find((x) => x.id === "money-back")?.text ?? ""}.` : null}
           renewalPromise={ctx.claimRenders("renewal-price-same")}
         >
           {c.link && (

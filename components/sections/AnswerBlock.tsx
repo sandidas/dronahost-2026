@@ -2,6 +2,7 @@ import { Link } from "@/i18n/link";
 import { useId } from "react";
 import { isVerified } from "@/content/claims";
 import { reveal } from "@/lib/motion";
+import { UI } from "@/content/strings";
 import { cn } from "@/utils/cn";
 
 type AnswerBlockProps = {
@@ -52,7 +53,7 @@ export default function AnswerBlock({ eyebrow, title, answer, detail, link, clai
               {link.label}
             </Link>
           )}
-          {showSamples && claim && <p className="mt-4 text-xs font-semibold text-warning">Sample: hidden until &ldquo;{claim}&rdquo; is confirmed</p>}
+          {showSamples && claim && <p className="mt-4 text-xs font-semibold text-warning">{UI.sample.hiddenUntil(claim)}</p>}
         </div>
       </div>
     </section>

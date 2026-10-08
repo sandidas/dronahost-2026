@@ -34,6 +34,8 @@ export const PageSpec = z
   .strictObject({
     id: Slug,
     path: Href,
+    /** The page blueprint this page follows (project/blueprints.json), for example "C1". check-content enforces it. */
+    blueprint: z.string().regex(/^C\d{1,2}[a-z]?$/, 'must look like "C1" or "C10a"').optional(),
     archetype: z.enum(["product", "decision", "trust", "landing"]),
     intent: z.string().min(3),
     audience: z.string().min(10),

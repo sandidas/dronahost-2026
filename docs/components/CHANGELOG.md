@@ -7,6 +7,10 @@ Branch `polish/design-system`. Each batch is one commit.
 
 - `PathRouter` gets `compact` (shown in `/v2`). `SiteDashboardMockup` takes `tiles`, and its default labels are now Site, Backups and Support: the old Speed and Security tiles hinted at features that are not verified.
 
+## Page blueprints: home (2026-10-08)
+- New `MeaningSection` and `HelpAndPolicies` (shown in `/v2`); `SupportChannels`, `TrustSignals` and `ResponsibilitySplit` get a `bare` mode so a composite can hold them. The support button is secondary. The hero mockup (`SiteDashboardMockup`, `StagingFlowMockup`) shows a visible "Example dashboard" caption, and its text comes from the page JSON or `content/strings.ts`.
+- `content/strings.ts` holds the shared UI text. `npm run check:copy-source` fails on a text literal in a section component.
+
 ## Baseline
 - Snapshot of in-progress work before the polish (`c82d00b`).
 
