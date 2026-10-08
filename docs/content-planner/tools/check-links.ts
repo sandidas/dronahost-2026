@@ -3,7 +3,8 @@
  * External links (http, https, mailto) and same-page anchors are not fetched. Links inside code fences are ignored.
  * Usage: npx tsx docs/content-planner/tools/check-links.ts [file or folder ...]   Default: the planner folder, CLAUDE.md, docs/rules.
  */
-import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { readLf } from "./eol";
+import { existsSync, readdirSync, statSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 
 if (process.argv.includes("--help")) {
@@ -23,7 +24,7 @@ const files = (args.length ? args : ["docs/content-planner", "CLAUDE.md", "docs/
 let broken = 0;
 for (const file of files) {
   let fence = false;
-  readFileSync(file, "utf8").split("\n").forEach((text, i) => {
+  readLf(file).split("\n").forEach((text, i) => {
     if (text.trim().startsWith("```")) fence = !fence;
     if (fence) return;
     for (const m of text.replace(/`[^`]*`/g, "").matchAll(/\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g)) {

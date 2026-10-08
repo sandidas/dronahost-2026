@@ -1,6 +1,7 @@
+import { lf } from "./eol";
 /** Reads the flat `key: value` front matter used by briefs and post drafts. Not a YAML parser: one line per key. */
 export function parseFrontMatter(text: string): { front: Record<string, string>; body: string } {
-  const lines = text.split("\n");
+  const lines = lf(text).split("\n");
   if (lines[0]?.trim() !== "---") return { front: {}, body: text };
   const front: Record<string, string> = {};
   let i = 1;

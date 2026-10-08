@@ -4,9 +4,9 @@
  * WordPress API is configured), and the evaluation set. Every step runs; the exit code is 1 if any failed.
  * Usage: npx tsx docs/content-planner/tools/ci.ts [--base <git ref>] [--files a,b] [--help]
  */
-import { spawnSync } from "node:child_process";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { runTsx } from "./run-node";
 
 const TOOLS = fileURLToPath(new URL(".", import.meta.url));
 export type Step = { name: string; file: string; args: string[] };
@@ -32,7 +32,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     const failed: string[] = [];
     for (const s of steps(extra)) {
       console.log(`\n=== ${s.name} ===`);
-      const r = spawnSync("npx", ["tsx", join(TOOLS, s.file), ...s.args], { stdio: "inherit" });
+      const r = runTsx([join(TOOLS, s.file), ...s.args], { stdio: "inherit" });
       if (r.status !== 0) failed.push(s.name);
     }
     console.log(failed.length ? `\nContent checks FAILED: ${failed.join(", ")}.` : "\nAll content checks passed.");

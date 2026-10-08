@@ -3,7 +3,7 @@
  * project's docs/content-planner folder. It never copies project/ or the config. Plain Node, so it works the same on macOS,
  * Linux and Windows. Usage: npx tsx docs/content-planner/tools/copy-engine.ts --to <project folder> [--with-sample] [--dry-run] [--help]
  */
-import { cpSync, existsSync, mkdirSync, readdirSync, statSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, statSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { PLANNER_DIR } from "./load-config";

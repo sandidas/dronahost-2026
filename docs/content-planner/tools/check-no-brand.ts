@@ -3,8 +3,9 @@
  * its owner, its channels, its location, its providers or any price. The word lists come from project/rules.config.json.
  * Usage: npx tsx docs/content-planner/tools/check-no-brand.ts [--help]
  */
-import { readFileSync, readdirSync, statSync } from "node:fs";
-import { join, relative } from "node:path";
+import { readLf } from "./eol";
+import { readdirSync, statSync } from "node:fs";
+import { join, relative, sep } from "node:path";
 import { PLANNER_DIR, loadConfig } from "./load-config";
 
 if (process.argv.includes("--help")) {
@@ -33,6 +34,8 @@ const { rules } = loadConfig();
 const terms = rules.noBrand.terms.map((t) => ({ label: t, re: termRegex(t) }));
 const patterns = rules.noBrand.patterns.map((p) => ({ label: p, re: new RegExp(p) }));
 const allow = rules.noBrand.allowFiles;
+const allowTerms = rules.noBrand.allowTerms ?? [];
+const allowed = (rel: string, label: string): boolean => allowTerms.some((a) => a.file === rel && a.term.toLowerCase() === label.toLowerCase());
 
 let hits = 0;
 let files = 0;
@@ -44,11 +47,11 @@ for (const dir of CORE) {
     continue;
   }
   for (const file of list) {
-    const rel = relative(PLANNER_DIR, file);
+    const rel = relative(PLANNER_DIR, file).split(sep).join("/");
     if (allow.some((a) => rel === a || rel.startsWith(`${a}/`))) continue;
     files++;
-    readFileSync(file, "utf8").split("\n").forEach((text, i) => {
-      for (const t of terms) if (t.re.test(text)) { hits++; console.log(`  FAIL ${rel}:${i + 1} names "${t.label}". Fix: use a placeholder such as [Brand] or move it to project/.`); }
+    readLf(file).split("\n").forEach((text, i) => {
+      for (const t of terms) if (t.re.test(text) && !allowed(rel, t.label)) { hits++; console.log(`  FAIL ${rel}:${i + 1} names "${t.label}". Fix: use a placeholder such as [Brand] or move it to project/.`); }
       for (const p of patterns) if (p.re.test(text)) { hits++; console.log(`  FAIL ${rel}:${i + 1} matches pattern ${p.label} (a price). Fix: use [Price] or move it to project/.`); }
     });
   }

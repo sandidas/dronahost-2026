@@ -3,6 +3,7 @@
  * spec JSON and returns headings, paragraphs, FAQ items, links and plain text. Page JSON copy is found generically with
  * config.adapters.pageSpec.nonCopyKeys and labelKeys. No project names live here.
  */
+import { lf } from "./eol";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, extname, join, resolve } from "node:path";
 import { ConfigSchema, type Config } from "../schemas/config";
@@ -44,7 +45,7 @@ export function lineOfText(raw: string[], needle: string, probeWords = 3): numbe
 }
 
 function parseMarkdown(file: string, text: string): TextDoc {
-  const raw = text.split("\n");
+  const raw = lf(text).split("\n");
   const { front, body } = parseFrontMatter(text);
   const offset = raw.length - body.split("\n").length;
   const headings: TextDoc["headings"] = [];
@@ -88,7 +89,7 @@ function parseMarkdown(file: string, text: string): TextDoc {
 type Json = Record<string, unknown>;
 
 function parseJson(file: string, text: string, ctx: Ctx): TextDoc {
-  const raw = text.split("\n");
+  const raw = lf(text).split("\n");
   const spec = JSON.parse(text) as Json;
   const ps = ctx.config.adapters.pageSpec;
   const skip = new Set(ps?.nonCopyKeys ?? []);

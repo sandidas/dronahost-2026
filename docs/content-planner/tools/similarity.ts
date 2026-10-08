@@ -4,7 +4,8 @@
  * Method: lower-case word shingles of limits.similarity.shingleWords words. containment = shared / doc shingles. FAIL above limits.similarity.threshold.
  * --against replaces the default own-page set (drafts, pages, posts); SERP notes in briefs are always checked.
  */
-import { existsSync, readFileSync } from "node:fs";
+import { readLf } from "./eol";
+import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { fail, listDocs, loadCtx, loadText, lineOfText, parseArgs, words, type Ctx } from "./text";
@@ -28,7 +29,7 @@ function sharedPhrase(w: string[], k: number, shared: Set<string>): string {
 }
 
 export function serpNotes(briefFile: string): string {
-  const lines = readFileSync(briefFile, "utf8").split("\n");
+  const lines = readLf(briefFile).split("\n");
   const start = lines.findIndex((l) => /^#{2,}\s.*SERP snapshot/i.test(l));
   if (start < 0) return "";
   const end = lines.findIndex((l, i) => i > start && /^## /.test(l));

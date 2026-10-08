@@ -1,4 +1,5 @@
 /** Parses the keyword register (Markdown tables) for every tool that needs it. One parser, one set of column names. */
+import { lf } from "./eol";
 import { existsSync, readFileSync } from "node:fs";
 
 export const STATUSES = ["unvalidated", "validated", "briefed", "drafting", "review", "published", "refresh", "dropped"] as const;
@@ -21,7 +22,7 @@ export function parseRegister(text: string): ParsedRegister {
   let plan = "";
   let inRegisterTable = false;
   let inExcluded = false;
-  text.split("\n").forEach((line, i) => {
+  lf(text).split("\n").forEach((line, i) => {
     const n = i + 1;
     const planHeading = line.match(/^## (Plan (\d+)[^\n]*)$/);
     if (/^## /.test(line)) out.headings.push({ line: n, text: line.slice(3) });

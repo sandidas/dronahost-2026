@@ -4,10 +4,12 @@
  * Run: npm run test:reuse
  */
 import assert from "node:assert/strict";
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, statSync, symlinkSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
 import { spawnSync } from "node:child_process";
+import { dirname } from "node:path";
+import { runTsx } from "./run-node";
 import { before, test } from "node:test";
 import { BriefFrontMatter } from "../schemas/brief";
 import { copyEngine } from "./copy-engine";
@@ -32,11 +34,19 @@ const sample = sampleFacts();
 let host = "";
 let planner = "";
 
+/** Runs npm without a shell where possible (npm_execpath is the npm that started this test), so quoting is the same on every platform. */
+function npmRun(args: string[], cwd: string, env: NodeJS.ProcessEnv) {
+  let cli = process.env.npm_execpath ?? "";
+  if (/npx-cli/.test(cli)) cli = join(dirname(cli), "npm-cli.js");
+  if (/\.(c|m)?js$/.test(cli) && existsSync(cli)) return spawnSync(process.execPath, [cli, ...args], { cwd, env, encoding: "utf8" });
+  return spawnSync("npm", args, { cwd, env, encoding: "utf8", shell: process.platform === "win32" });
+}
+
 function run(args: string[]): { status: number | null; out: string } {
   const env = { ...process.env, NO_COLOR: "1" } as Record<string, string | undefined>;
   delete env.CONTENT_PLANNER_CONFIG;
   for (const k of ["CHECK_CONTENT_REGISTER", "CHECK_CONTENT_FACTS", "CHECK_CONTENT_BRIEFS", "WORDPRESS_API_URL"]) delete env[k];
-  const r = spawnSync("npm", ["run", "-s", ...args], { cwd: host, env: env as NodeJS.ProcessEnv, encoding: "utf8" });
+  const r = npmRun(["run", "-s", ...args], host, env as NodeJS.ProcessEnv);
   return { status: r.status, out: `${r.stdout}${r.stderr}` };
 }
 const ok = (args: string[], expect?: RegExp): string => {
@@ -60,7 +70,7 @@ before(() => {
   mkdirSync(planner, { recursive: true });
   copyEngine({ toPlanner: planner }); // the same function the README's `npm run content:copy` runs
   writeFileSync(join(host, "package.json"), JSON.stringify({ name: "bakery-site", private: true, scripts: { build: "echo build" } }, null, 2));
-  symlinkSync(join(REPO, "node_modules"), join(host, "node_modules"));
+  symlinkSync(join(REPO, "node_modules"), join(host, "node_modules"), "junction"); // a junction needs no admin rights on Windows
 });
 
 test("the core copy contains no project folder and no config", () => {
@@ -70,15 +80,15 @@ test("the core copy contains no project folder and no config", () => {
 });
 
 test("install adds the commands, the agents and the npm scripts, and a second run changes nothing", () => {
-  const r = spawnSync("npx", ["tsx", "docs/content-planner/tools/install.ts", "--host", ".", "--planner", "docs/content-planner"], { cwd: host, encoding: "utf8", stdin: "ignore" } as never);
-  assert.equal(r.status, 0, r.stdout + r.stderr);
+  const r = runTsx(["docs/content-planner/tools/install.ts", "--host", ".", "--planner", "docs/content-planner"], { cwd: host, encoding: "utf8" });
+  assert.equal(r.status, 0, String(r.stdout) + String(r.stderr));
   assert.equal(readdirSync(join(host, ".claude/commands")).length, 6);
   assert.equal(readdirSync(join(host, ".claude/agents")).length, 4);
   const scripts = JSON.parse(readFileSync(join(host, "package.json"), "utf8")).scripts as Record<string, string>;
   for (const s of ["content:ci", "content:check", "content:eval", "content:register", "content:init-project", "content:posts"]) assert.ok(scripts[s], `script ${s}`);
   assert.equal(scripts.build, "echo build", "an existing script is kept");
-  const again = spawnSync("npx", ["tsx", "docs/content-planner/tools/install.ts", "--host", ".", "--planner", "docs/content-planner"], { cwd: host, encoding: "utf8" });
-  assert.match(again.stdout, /Nothing changed/);
+  const again = runTsx(["docs/content-planner/tools/install.ts", "--host", ".", "--planner", "docs/content-planner"], { cwd: host, encoding: "utf8" });
+  assert.match(String(again.stdout), /Nothing changed/);
 });
 
 test("init-project builds a project that already passes config, no-brand, register and the evaluation set", () => {
@@ -138,15 +148,36 @@ test("a first brief can be built from the template and passes the brief schema",
   assert.equal(parsed.success, true, parsed.success ? "" : JSON.stringify(parsed.error.issues));
 });
 
+test("a Windows checkout (every text file with CRLF line endings) passes the same checks", () => {
+  const toCrlf = (dir: string): void => {
+    for (const n of readdirSync(dir)) {
+      const p = join(dir, n);
+      if (statSync(p).isDirectory()) toCrlf(p);
+      else if (/\.(md|json|ts)$/.test(n)) writeFileSync(p, readFileSync(p, "utf8").replace(/\r?\n/g, "\r\n"));
+    }
+  };
+  rmSync(join(planner, "project/drafts/bad-draft.md"), { force: true });
+  toCrlf(planner);
+  assert.match(readFileSync(join(planner, "project/keyword-register.md"), "utf8"), /\r\n/, "the files really have CRLF endings now");
+  ok(["content:register"], /Register check passed/);
+  ok(["content:check"], /2 file\(s\) checked, 0 with failures/);
+  ok(["content:links"]);
+  ok(["content:no-brand"], /passed/);
+  ok(["content:schemas"], /All schema checks passed/);
+  ok(["content:eval"], /All 10 evaluation cases match/);
+  ok(["content:resolve", "--", sample.guide.keyword], /Decision:\s+accept/);
+});
+
 test("nothing from the real project is in the temporary host", () => {
-  const real = JSON.parse(readFileSync(join(PLANNER_DIR, "project/rules.config.json"), "utf8")) as { noBrand: { terms: string[] } };
+  const real = JSON.parse(readFileSync(join(PLANNER_DIR, "project/rules.config.json"), "utf8")) as { noBrand: { terms: string[]; allowTerms?: { file: string; term: string }[] } };
+  const allowedHere = (rel: string, term: string): boolean => (real.noBrand.allowTerms ?? []).some((a) => a.file === rel.split("\\").join("/").replace(/^docs\/content-planner\//, "") && a.term === term);
   const esc = (t: string): string => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const res = real.noBrand.terms.map((t) => ({ t, re: new RegExp(`(^|[^A-Za-z0-9])${esc(t)}($|[^A-Za-z0-9])`, t === t.toUpperCase() ? "" : "i") }));
   const hits: string[] = [];
   for (const f of files(host)) {
     const rel = relative(host, f);
     const text = readFileSync(f, "utf8");
-    for (const { t, re } of res) if (re.test(rel) || re.test(text)) hits.push(`${rel} names "${t}"`);
+    for (const { t, re } of res) if ((re.test(rel) || re.test(text)) && !allowedHere(rel, t)) hits.push(`${rel} names "${t}"`);
   }
   assert.deepEqual(hits, []);
 });

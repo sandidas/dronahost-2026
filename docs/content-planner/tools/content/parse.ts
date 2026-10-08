@@ -1,4 +1,5 @@
 /** Reads a Markdown draft (front matter + body) or a page spec JSON into one Doc shape that the rules check. */
+import { lf } from "../eol";
 import { readFileSync } from "node:fs";
 import { extname } from "node:path";
 import { parseFrontMatter } from "../front-matter";
@@ -58,6 +59,7 @@ export function copyStrings(value: unknown, opts: CopyOptions, path = ""): { whe
 }
 
 function parseMarkdown(file: string, text: string): Doc {
+  text = lf(text);
   const raw = text.split("\n");
   const { front } = parseFrontMatter(text);
   const bodyStart = raw[0]?.trim() === "---" ? raw.findIndex((l, i) => i > 0 && l.trim() === "---") + 1 : 0;
@@ -106,6 +108,7 @@ function parseMarkdown(file: string, text: string): Doc {
 
 type Json = Record<string, unknown>;
 function parseJson(file: string, text: string, copy: CopyOptions): Doc {
+  text = lf(text);
   const raw = text.split("\n");
   const spec = JSON.parse(text) as Json;
   const sections = (Array.isArray(spec.sections) ? spec.sections : []) as Json[];

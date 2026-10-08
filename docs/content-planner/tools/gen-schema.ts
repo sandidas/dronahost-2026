@@ -4,6 +4,7 @@
  * Rules: SC1 generated from visible fields; SC2 schema and content agree; SC3 no rating or review markup without real linked reviews.
  * It never emits AggregateRating or Review. Exits 1 on any FAIL.
  */
+import { lf } from "./eol";
 import { readFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { fail, isPlaceholder, isRealDate, loadCtx, loadText, normSpace, parseArgs, type Ctx, type TextDoc } from "./text";
@@ -112,7 +113,7 @@ export function run(argv: string[], ctx: Ctx = loadCtx()): number {
   const check_ = flags["--check"]?.[0];
   if (check_) {
     const raw = readFileSync(check_, "utf8");
-    const failures = check(doc, JSON.parse(raw), check_, raw.split("\n"));
+    const failures = check(doc, JSON.parse(raw), check_, lf(raw).split("\n"));
     failures.forEach((x) => console.log(x));
     console.log(failures.length ? `${failures.length} problem(s) in ${check_}` : `OK ${check_} agrees with ${files[0]}`);
     return failures.length ? 1 : 0;

@@ -30,8 +30,8 @@ jobs:
       - name: check-content on every page spec and draft (also runs the app's page-spec check), and the comparison data
         # check:pages and lint:content are aliases of the same command. The app's Zod and layout checks run inside it as the host adapter.
         run: npm run check:content && npm run check:vs
-      - name: Content engine tests (against the sample project), this project's own tests, and the reuse proof
-        run: npm run test:tools && npm run test:project && npm run test:reuse
+      - name: Content engine tests (against the sample project) and this project's own tests
+        run: npm run test:tools && npm run test:project
       - name: Content engine checks (a failure blocks the merge)
         # config, no-brand, links, schemas, register + governor cap, check-content on the changed files, posts, evaluation set.
         # Posts are checked only when the repository variable CONTENT_POSTS_API_URL is set (and, for drafts, the two secrets).
@@ -40,6 +40,22 @@ jobs:
           WORDPRESS_API_URL: ${{ vars.CONTENT_POSTS_API_URL }}
           WORDPRESS_USER: ${{ secrets.WORDPRESS_USER }}
           WORDPRESS_APP_PASSWORD: ${{ secrets.WORDPRESS_APP_PASSWORD }}
+
+  reuse:
+    # The reuse proof: copy only the reusable engine into a temporary project, install it, set it up, run every check, and
+    # prove nothing from this project is in the copy. On Windows the checkout has CRLF line endings, as a real Windows user's has.
+    name: Reuse proof (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - run: npm run test:reuse
 
   e2e:
     name: Build, Playwright, axe, links, JSON-LD
