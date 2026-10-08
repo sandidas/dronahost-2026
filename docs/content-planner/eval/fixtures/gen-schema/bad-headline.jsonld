@@ -1,0 +1,11 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "Ten amazing speed tricks",
+      "author": { "@type": "Person", "name": "Sam Example" },
+      "dateModified": "2026-10-08"
+    }
+  ]
+}

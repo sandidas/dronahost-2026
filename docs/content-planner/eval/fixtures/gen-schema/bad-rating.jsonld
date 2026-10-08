@@ -1,0 +1,12 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "How to check your site speed",
+      "author": { "@type": "Person", "name": "Sam Example" },
+      "dateModified": "2026-10-08",
+      "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "120" }
+    }
+  ]
+}

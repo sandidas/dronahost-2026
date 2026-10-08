@@ -1,0 +1,18 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "How to check your site speed",
+      "author": { "@type": "Person", "name": "Pat Stranger" },
+      "dateModified": "2026-10-08",
+      "datePublished": "2026-01-01"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "Which number matters most?", "acceptedAnswer": { "@type": "Answer", "text": "Whatever the tool shows in red." } }
+      ]
+    }
+  ]
+}

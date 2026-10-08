@@ -1,0 +1,7 @@
+{
+  "name": "host-app",
+  "scripts": {
+    "build": "echo build",
+    "content:check": "echo mine"
+  }
+}
