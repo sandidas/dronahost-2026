@@ -342,3 +342,12 @@ What the aliases are now:
 | `npm run check:content` | `check-content` on the drafts and pages folders |
 
 Nothing in `lib/content/lint.ts`, `scripts/lint-content.ts` or `project/tests/parity.test.ts` is used by any other tool. They stay until the owner approves their removal (hold, 2026-10-09).
+
+## 10. Deletions approved by the owner (2026-10-09), with proof
+
+Two files, removed in one commit of their own (`chore: remove superseded planner files`) so it can be reverted alone. Nothing else was deleted. `lib/content/lint.ts`, `scripts/lint-content.ts` and `project/tests/parity.test.ts` are on hold (section 9).
+
+| File | Superseded by | Proof |
+|---|---|---|
+| `docs/reference/content-writer-workflow.md` | `docs/content-planner/rules/content-writer-workflow.md` | The planner copy is a superset (Phase 0 diff: 8 hunks, all newer wording; the one field only the old copy held, "one original element", is in the brief template, the schema and rule E3). `npm run check:links` reports no broken links in 131 Markdown files before the deletion. The only remaining mentions of the old path are in section 2 of this file and in the original build prompt, as plain text (code spans), not links, and no script reads it |
+| `docs/content-planner/project/facts/improve-ttfb-wordpress.md` | `project/facts/improve-ttfb-wordpress.json` | The JSON ledger was rebuilt on 2026-10-09 from sources, validates against `schemas/fact-ledger.ts` (`npm run check:schemas`), and is the file `check-content` reads (`ledgerFor` prefers JSON). The Markdown ledger had 7 facts, 5 of them unchecked; the JSON has 10. The brief states that the Markdown ledger is superseded |
