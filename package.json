@@ -39,7 +39,12 @@
     "content:install": "tsx docs/content-planner/tools/install.ts",
     "content:init-project": "tsx docs/content-planner/tools/init-project.ts",
     "test:tools": "tsx --test docs/content-planner/tools/*.test.ts",
-    "eval": "tsx docs/content-planner/tools/eval.ts"
+    "eval": "tsx docs/content-planner/tools/eval.ts",
+    "content:resolve": "tsx docs/content-planner/tools/resolve.ts",
+    "content:links": "tsx docs/content-planner/tools/check-links.ts",
+    "content:no-brand": "tsx docs/content-planner/tools/check-no-brand.ts",
+    "content:config": "tsx docs/content-planner/tools/check-config.ts",
+    "content:schemas": "tsx docs/content-planner/tools/check-schemas.ts"
   },
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.1146.0",

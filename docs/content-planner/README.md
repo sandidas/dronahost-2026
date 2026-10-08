@@ -21,7 +21,7 @@ Copy the folder into any project, fill in `project/`, and it works (see "Reuse")
 ## 5-minute quick start (for a person)
 
 1. Open `project/keyword-register.md`, pick a row (status `validated`), or add one (one keyword, one URL).
-2. Ask Claude: `/write-content <keyword or title>`. A first version of the command already exists and stops at APPROVAL 1; the full command arrives in Phase 4.
+2. Ask Claude: `/write-content <keyword or title>`. It resolves, classifies, researches, builds the fact ledger and the brief, interviews you one question at a time, and stops at APPROVAL 1.
 3. Answer the interview questions, one at a time. Say "none" if you have no answer. Gaps are recorded, never invented.
 4. Read the brief and the interview read-back. Approve, or say what to change. This is APPROVAL 1.
 5. Read the draft and the handoff. Fix the open flags that need your facts. Run the checks below.
@@ -58,7 +58,9 @@ docs/content-planner/
   schemas/                     Zod: config, rules-config, brief, fact-ledger, page-envelope, front-matter
   eval/                        fixtures now; the evaluation set arrives in Phase 3
   later/                       parked plans: 11 locales and currency, 12 billing system, 13 search and AI launch standard
-  claude/                      source for .claude/commands and .claude/agents (installer in Phase 3)
+  claude/                      source for .claude/commands and .claude/agents (copied by `npm run content:install`)
+    commands/  write-content  plan-keywords  refresh-content  audit-page  monthly-review  init-project
+    agents/    researcher  fact-checker  drafter  editor   (roles with allowed and forbidden actions)
   tools/                       TypeScript run with tsx; read the config; exit non-zero on failure
 ```
 

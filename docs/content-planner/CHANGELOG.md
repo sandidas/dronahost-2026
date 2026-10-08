@@ -4,6 +4,15 @@ Versioned changes to the engine (rules, plans, tools). Business decisions are in
 
 ## 1.0.0 (in progress, begins with Phase 1 on 2026-10-08)
 
+### Phase 4: Claude Code assets
+
+- Added six commands in `claude/commands/`: `/write-content` (stages 0 to 7, stops at APPROVAL 1), `/plan-keywords` (proposes register rows within the governor caps), `/refresh-content`, `/audit-page`, `/monthly-review`, `/init-project`. Each is a short list of steps that points at the workflow and the tools; none copies the rules.
+- Added four role agents in `claude/agents/`: `researcher`, `fact-checker`, `drafter`, `editor`, each with allowed and forbidden actions and the least tools it needs. If the host has no subagents, the command runs the four roles in order.
+- Added `tools/resolve.ts` as a command (`npm run content:resolve`): Stage 0 and 1 in code (title to keyword, excluded list, cannibalization, plan, intent, governor). The installer now also adds `content:resolve`.
+- `npm run content:install` copied the assets into this repo's `.claude/`; the old `.claude/commands/write-content.md` was replaced by the new one (it is the same file the installer now keeps in sync).
+- Test: `tools/claude-assets.test.ts` (front matter, allowed and forbidden sections, tool access, scripts exist, `/write-content` stops before drafting).
+- Acceptance run: `/write-content "how to improve ttfb on wordpress"` produced a dated SERP snapshot, a verified fact ledger (`project/facts/improve-ttfb-wordpress.json`), a brief in the new template and the first interview question, then stopped. No article was written.
+
 ### Phase 3: tools
 
 - `check-content` v2 (`tools/check-content.ts` and `tools/content/`): twelve groups (Structure, Keyword, Voice, Facts, People, Experience, Sources, Metadata, Schema, Policy, Overlap, Flags), 50 rules, pass or fail with file, line and fix, no score. It reproduces every check of `lint:content` (proved by `tools/parity.test.ts`) and every v1 rule. It reads limits, lists and the claims adapter from the config; it no longer imports app code except the claims registry through the adapter. Rule ids changed: v1 M3 and M4 are now K1 and K2; v1 F3 is now PO1 to PO3.

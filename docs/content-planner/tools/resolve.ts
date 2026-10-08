@@ -59,3 +59,23 @@ export function resolveInput(input: string, opts: { config: Config; rules: Rules
   if (governor && !governor.allowed) return { ...res, decision: "refused", reasons: [...res.reasons, ...governor.reasons] };
   return res;
 }
+
+// ---- CLI: `resolve "<keyword or title>"` prints the Stage 0 and Stage 1 result and exits 1 unless the decision is accept or confirm.
+import { fileURLToPath } from "node:url";
+const invoked = process.argv[1] ? fileURLToPath(import.meta.url) === process.argv[1] : false;
+async function main(): Promise<void> {
+  if (process.argv.includes("--help") || process.argv.length < 3) {
+    console.log('resolve "<keyword or title>": Stage 0 and 1 of the workflow. Prints the keyword (derived from a title if needed), the register owner, the plan, the intent and the governor result. Exits 1 when the decision is reject, merge or refused.');
+    return;
+  }
+  const { loadContext } = await import("./content/context");
+  const { governorStatus } = await import("./governor");
+  const ctx = await loadContext();
+  const gov = governorStatus({ config: ctx.config, registerFile: ctx.resolvePath(ctx.config.paths.register), briefsDir: ctx.briefsDir, today: new Date().toISOString().slice(0, 10) });
+  const r = resolveInput(process.argv.slice(2).filter((a) => !a.startsWith("--")).join(" "), { config: ctx.config, rules: ctx.rules, register: ctx.register, governor: gov });
+  console.log(`Input:     ${r.input} (${r.kind})\nKeyword:   ${r.keyword}\nPlan:      ${r.plan}\nIntent:    ${r.intent}\nDecision:  ${r.decision}`);
+  for (const reason of r.reasons) console.log(`  - ${reason}`);
+  console.log(`Governor:  ${gov.inFlight} of ${gov.maxInFlight} in flight, ${gov.monthCount} of ${gov.monthCap} new briefs this month, pause ${gov.paused ? "ON" : "off"}`);
+  process.exitCode = r.decision === "accept" || r.decision === "confirm" ? 0 : 1;
+}
+if (invoked) void main();
