@@ -1,13 +1,13 @@
 /**
  * Markdown link checker: every relative link in the scanned .md files must point to a file or folder that exists.
  * External links (http, https, mailto) and same-page anchors are not fetched. Links inside code fences are ignored.
- * Usage: npx tsx docs/content-planner/tools/check-links.ts [file or folder ...]   Default: the planner folder, claude.md, docs/rules.
+ * Usage: npx tsx docs/content-planner/tools/check-links.ts [file or folder ...]   Default: the planner folder, CLAUDE.md, docs/rules.
  */
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 
 if (process.argv.includes("--help")) {
-  console.log("check-links [file or folder ...]: fail on any relative Markdown link whose target does not exist. Default: docs/content-planner, claude.md, docs/rules.");
+  console.log("check-links [file or folder ...]: fail on any relative Markdown link whose target does not exist. Default: docs/content-planner, CLAUDE.md, docs/rules.");
   process.exit(0);
 }
 
@@ -19,7 +19,7 @@ function collect(p: string): string[] {
 }
 
 const args = process.argv.slice(2).filter((a) => !a.startsWith("--"));
-const files = (args.length ? args : ["docs/content-planner", "claude.md", "docs/rules"]).flatMap(collect);
+const files = (args.length ? args : ["docs/content-planner", "CLAUDE.md", "docs/rules"]).flatMap(collect);
 let broken = 0;
 for (const file of files) {
   let fence = false;
