@@ -19,7 +19,7 @@ The single list of keywords the site targets. **One primary keyword per URL, per
 | Next review | `YYYY-MM-DD`. Required for `published` rows. |
 | AI cited | `yes`, `no` or blank (from the monthly spot-check in [Plan 10](../plans/10-ai-search-queries.md)) |
 
-Valid plans are the section titles below (Plans 01 to 10 and Plan 14). A concrete URL (one with no `[ ]` and not `planned`) may be the target of **one** row per locale. Extra phrases for the same page go in Secondary.
+Valid plans are the section titles below (Plans 01 to 10 and Plan 14). Plan 15 (off-site) has no rows here; it is tracked in [roadmap.md](roadmap.md). A concrete URL (one with no `[ ]` and not `planned`) may be the target of **one** row per locale. Extra phrases for the same page go in Secondary.
 
 ## Plan 01: Money pages
 

@@ -29,9 +29,21 @@ unlock them, and every money page is stronger once they do. So the policies come
 | Redirects | Build and test the old-to-new URL map before any page goes live | `url-inventory.md` |
 | Measurement | Events and Search Console set up before launch | `measurement.md` |
 | Keyword validation | Validate each plan's keywords before its pages are briefed | Register |
-| Off-site | Claim review profiles, start asking real customers for reviews | Plan 15 |
+| Off-site | Tracked in "Off-site work" below, not in the keyword register | Plan 15 |
 | AI spot-check | Monthly, 30 minutes | Plan 10 |
 | Email notice | Notice and move guide for existing email customers | Plan 14 |
+
+## Off-site work (Plan 15)
+
+Owner decision 2026-10-09: Plan 15 has **no rows in the keyword register**. Off-site work is tracked here. Never invent a review, a rating, a partner or a quote ([Plan 15](../plans/15-off-site-reviews-and-links.md)).
+
+| Item | Status | Next step | Who | Target date |
+|---|---|---|---|---|
+| Claim the review-platform profiles named in `plan-specifics/15-off-site-reviews-and-links.md` | not started | Owner claims each profile with the real business details | Owner | |
+| Ask real customers for reviews | not started | Needs real customers and the owner's wording; Claude never writes a review | Owner | |
+| Directory and listing entries | not started | List the directories worth the effort, with the evidence needed for each | Owner | |
+| Partnerships and press | not started | Only real partners and real coverage; record each with its URL and date | Owner | |
+| Brand monitoring (monthly) | not started | Search the brand name and "is [brand] legit" monthly; record the result in `learning-log.md` | Claude and owner | |
 
 ## Limits
 

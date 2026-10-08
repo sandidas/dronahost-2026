@@ -1,5 +1,7 @@
 # Super Content Planner: spec
 
+> **Superseded by `docs/content-planner/`, kept for history.** The spec was built out in six phases (see `docs/content-planner/CHANGELOG.md`, version 1.0.0). The workflow, rules, templates, schemas and tools there are the current source. Where this file and the planner differ, the planner wins. Owner decision, 2026-10-09.
+
 Goal: you give a keyword or a page title. The planner researches, classifies the intent, builds the brief, interviews you for the
 real experience, drafts, checks, and hands back a page that is ready for your review. Save as `docs/reference/SUPER_CONTENT_PLANNER_SPEC.md`.
 It extends the existing planner (`docs/content-planner/`) and `content-writer-workflow.md`. Nothing here replaces the claims, pricing or approval rules.

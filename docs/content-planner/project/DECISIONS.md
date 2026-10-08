@@ -31,6 +31,9 @@ Decisions that shape what is written. Do not reopen without the owner. Date form
 | 25 | CTA labels | Plan cards read "Choose [plan]". Product page heroes read "See [product] plans". The price sits above the button, never inside the label. "Get started" stays banned. Aligned with the shipped code and design rules (2026-10-07 review) |
 | 26 | Email | Email is not hosted by DronaHost. `/email` explains the options (Google Workspace or premium email). Existing email customers get a dated notice and a move guide (Plan 14) |
 | 27 | Build order | Tier A policy pages, then core money pages, trust pages, services, comparisons, guides, regional locales (see `roadmap.md`). Proposed in the 2026-10-07 review and applied with the fixes |
+| 28 | Off-site tracking | Plan 15 has no rows in the keyword register. Off-site work is tracked in `roadmap.md` (owner, 2026-10-09) |
+| 29 | FAQ limits | FAQ item counts are set per archetype in the config: money and pricing pages 6 to 8, guides and brand pages 4 to 6 (owner, 2026-10-09) |
+| 30 | Spec file | `docs/reference/SUPER_CONTENT_PLANNER_SPEC.md` stays in `docs/reference/` with a "superseded, kept for history" note (owner, 2026-10-09) |
 
 ## Open (waiting on the owner)
 

@@ -50,3 +50,7 @@ next-env.d.ts
 # Playwright
 /test-results/
 /playwright-report/
+
+# Backups and generated review screenshots stay out of git
+*.zip
+/docs/reference/after/
