@@ -144,6 +144,11 @@ function parseJson(file: string, text: string, copy: CopyOptions): Doc {
   };
 }
 
+/** A Doc from text that is not a file yet (for example a WordPress post), labelled with a name for messages. */
+export function docFromText(label: string, text: string, kind: "md" | "json", copy: CopyOptions): Doc {
+  return kind === "json" ? parseJson(label, text, copy) : parseMarkdown(label, text);
+}
+
 export function loadDoc(file: string, copy: CopyOptions): Doc {
   const text = readFileSync(file, "utf8");
   return extname(file) === ".json" ? parseJson(file, text, copy) : parseMarkdown(file, text);

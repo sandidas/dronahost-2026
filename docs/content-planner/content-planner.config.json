@@ -17,7 +17,7 @@
   "adapters": {
     "claims": "ts-export",
     "pricing": "json",
-    "posts": "files",
+    "posts": "wordpress",
     "pageSpec": {
       "$comment": "App-specific Zod page-spec and layout-signature checks stay in the app (owner decision, Q9). check-content calls this command; it is not copied into schemas/.",
       "command": "npm run check:pages",
@@ -45,6 +45,39 @@
         "label",
         "cta"
       ]
+    },
+    "wordpress": {
+      "apiUrlEnv": "WORDPRESS_API_URL",
+      "userEnv": "WORDPRESS_USER",
+      "passwordEnv": "WORDPRESS_APP_PASSWORD",
+      "webhookSecretEnv": "CONTENT_WEBHOOK_SECRET",
+      "urlTemplate": "/kb/{slug}",
+      "fields": {
+        "title": "title.rendered",
+        "slug": "slug",
+        "content": "content.rendered",
+        "author": "_embedded.author.0.name",
+        "seo_title": "meta.seo_title",
+        "meta_description": "meta.meta_description",
+        "primary_keyword": "meta.primary_keyword",
+        "plan": "meta.plan",
+        "locale": "meta.locale",
+        "reviewer": "meta.reviewer",
+        "ai_assisted": "meta.ai_assisted",
+        "reviewed_on": "meta.reviewed_on",
+        "next_review_on": "meta.next_review_on",
+        "author_page": "meta.author_page",
+        "reviews_source": "meta.reviews_source",
+        "url_path": "meta.url_path"
+      },
+      "stateMap": {
+        "draft": "Draft",
+        "auto-draft": "Draft",
+        "pending": "Ready for owner review",
+        "future": "Ready for owner review",
+        "publish": "Published",
+        "private": "Published"
+      }
     }
   },
   "governor": {

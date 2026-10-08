@@ -23,6 +23,21 @@ export const ConfigSchema = z.object({
     claims: z.enum(["ts-export", "json"]),
     pricing: z.literal("json"),
     posts: z.enum(["files", "wordpress"]),
+    /** Used when posts is "wordpress": how a REST post maps to the fields check-content needs. No credentials here; they come from the environment. */
+    wordpress: z
+      .object({
+        apiUrlEnv: z.string().min(1),
+        userEnv: z.string().min(1),
+        passwordEnv: z.string().min(1),
+        webhookSecretEnv: z.string().min(1),
+        /** Public path of a post, for example "/kb/{slug}". The register's Target URL decides the real match. */
+        urlTemplate: z.string().includes("{slug}"),
+        /** Dotted paths into the REST post object. Only title, slug, content and excerpt are WordPress core; the rest are custom fields (see rules/wordpress-content-model.md). */
+        fields: z.record(z.string(), z.string()),
+        /** WordPress status -> the state check-content sees. */
+        stateMap: z.record(z.string(), z.string()),
+      })
+      .optional(),
     pageSpec: z
       .object({
         $comment: z.string().optional(),

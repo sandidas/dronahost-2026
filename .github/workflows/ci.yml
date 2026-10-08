@@ -16,10 +16,11 @@ env:
 
 jobs:
   static:
-    name: Types, lint, contrast
+    name: Types, lint, contrast, content engine
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
       - uses: actions/setup-node@v4
         with: { node-version: 20, cache: npm }
       - run: npm ci
@@ -28,6 +29,16 @@ jobs:
       - run: npm run check:contrast
       - name: Page specs, content lint and keyword register
         run: npm run check:pages && npm run lint:content && npm run check:register && npm run check:vs
+      - name: Content engine tests
+        run: npm run test:tools
+      - name: Content engine checks (a failure blocks the merge)
+        # config, no-brand, links, schemas, register + governor cap, check-content on the changed files, posts, evaluation set.
+        # Posts are checked only when the repository variable CONTENT_POSTS_API_URL is set (and, for drafts, the two secrets).
+        run: npm run content:ci -- --base ${{ github.event.pull_request.base.sha || github.event.before }}
+        env:
+          WORDPRESS_API_URL: ${{ vars.CONTENT_POSTS_API_URL }}
+          WORDPRESS_USER: ${{ secrets.WORDPRESS_USER }}
+          WORDPRESS_APP_PASSWORD: ${{ secrets.WORDPRESS_APP_PASSWORD }}
 
   e2e:
     name: Build, Playwright, axe, links, JSON-LD

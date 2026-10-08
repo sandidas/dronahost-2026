@@ -44,7 +44,11 @@
     "content:links": "tsx docs/content-planner/tools/check-links.ts",
     "content:no-brand": "tsx docs/content-planner/tools/check-no-brand.ts",
     "content:config": "tsx docs/content-planner/tools/check-config.ts",
-    "content:schemas": "tsx docs/content-planner/tools/check-schemas.ts"
+    "content:schemas": "tsx docs/content-planner/tools/check-schemas.ts",
+    "content:ci": "tsx docs/content-planner/tools/ci.ts",
+    "content:changed": "tsx docs/content-planner/tools/check-changed.ts",
+    "content:posts": "tsx docs/content-planner/tools/wp-posts.ts",
+    "content:webhook": "tsx docs/content-planner/tools/wp-webhook.ts"
   },
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.1146.0",

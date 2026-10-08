@@ -29,6 +29,8 @@ export function factRules(ctx: Ctx, doc: Doc): RuleResult[] {
     if (num === "24/7" && claimRenders(ctx, "support-24-7")) continue;
     const squash = (s: string) => s.replace(/\s+/g, "");
     const inText = ledger.text.includes(num) || squash(ledger.text).includes(squash(num));
+    const amount = Number(text.match(/[$£€₹]\s?(\d[\d,]*(?:\.\d+)?)/)?.[1]?.replace(/,/g, ""));
+    if (amount && ctx.priceNumbers.has(amount)) { nf.push({ line: l.n, message: `"${num}" is a price from the pricing file typed into the copy; render it from the pricing file, never type a price` }); continue; }
     if (!ledger.found) { nf.push({ line: l.n, message: `"${num}" is not in the fact ledger (no ledger file found)` }); continue; }
     if (!inText) { nf.push({ line: l.n, message: `"${num}" is not in the fact ledger` }); continue; }
     const fact = ledger.facts.find((f) => f.fact.includes(num) || squash(f.fact).includes(squash(num)));

@@ -16,7 +16,22 @@ export type Brief = { path: string; front: Record<string, string>; text: string 
 export type Ctx = {
   config: Config; rules: RulesConfig; resolvePath: (p: string) => string; copy: CopyOptions;
   claims: ClaimInfo[]; register: ParsedRegister | null; briefsDir: string; factsDir: string; pricingText: string;
+  /** Every price in the pricing file's "pricing" and "renewal" blocks, as plain numbers, so a typed price can be named as a hard-coded price. */
+  priceNumbers: Set<number>;
 };
+
+/** Pricing adapter (`json`): collects the numbers under any "pricing" or "renewal" key of the pricing file. */
+export function collectPriceNumbers(pricingText: string): Set<number> {
+  const out = new Set<number>();
+  if (!pricingText) return out;
+  const walk = (v: unknown, inPrice: boolean): void => {
+    if (typeof v === "number" && inPrice && v > 0) out.add(v);
+    else if (Array.isArray(v)) v.forEach((x) => walk(x, inPrice));
+    else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) walk(x, inPrice || k === "pricing" || k === "renewal");
+  };
+  try { walk(JSON.parse(pricingText), false); } catch { /* an unreadable pricing file only removes the hint */ }
+  return out;
+}
 
 /** Claims adapter. `ts-export`: the module exports CLAIMS (or a default export) as records with id, verified and status. */
 async function loadClaims(config: Config, resolvePath: (p: string) => string): Promise<ClaimInfo[]> {
@@ -27,8 +42,10 @@ async function loadClaims(config: Config, resolvePath: (p: string) => string): P
     return Array.isArray(data) ? data : [];
   }
   const mod = (await import(pathToFileURL(file).href)) as Record<string, unknown>;
-  const list = (mod.CLAIMS ?? mod.default ?? []) as ClaimInfo[];
-  return list.map((c) => ({ id: c.id, verified: Boolean(c.verified), status: String(c.status ?? "") }));
+  const list = (mod.CLAIMS ?? mod.default ?? []) as (ClaimInfo & Record<string, unknown>)[];
+  // A claim renders only when the host's own claimRenders() says so (verified AND its terms page published). Use it when the module exports it.
+  const renders = typeof mod.claimRenders === "function" ? (mod.claimRenders as (c: unknown) => boolean) : null;
+  return list.map((c) => ({ id: c.id, verified: renders ? Boolean(renders(c)) : Boolean(c.verified), status: String(c.status ?? "") }));
 }
 
 export async function loadContext(): Promise<Ctx> {
@@ -43,6 +60,7 @@ export async function loadContext(): Promise<Ctx> {
     briefsDir: process.env.CHECK_CONTENT_BRIEFS ?? resolvePath(config.paths.briefs),
     factsDir: process.env.CHECK_CONTENT_FACTS ?? resolvePath(config.paths.facts),
     pricingText: existsSync(pricingFile) ? readFileSync(pricingFile, "utf8") : "",
+    priceNumbers: collectPriceNumbers(existsSync(pricingFile) ? readFileSync(pricingFile, "utf8") : ""),
   };
 }
 

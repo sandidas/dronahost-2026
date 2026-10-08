@@ -80,3 +80,75 @@ The checks use the same rules as the page linter, applied to the post fields and
 ## Security reminder (content side)
 
 WordPress HTML is sanitised on the server before rendering. Editors cannot add scripts, iframes or inline styles. Preview uses Draft Mode with a secret. A webhook with a shared secret triggers revalidation.
+
+## Publish check: posts adapter and webhook
+
+Two read-only tools answer one question: does this post pass every content rule? They never create, edit or publish anything in WordPress. The owner alone holds the publish permission. A passing check does not publish a post; it only allows the owner to.
+
+### Commands
+
+| Command | What it does |
+|---|---|
+| `npm run content:posts` | Reads posts over the REST API and runs every rule on each. Options: `--id N`, `--status publish,draft,pending`, `--fixture file.json` (a JSON array of REST posts, no network), `--optional` (exit 0 with a skip message when the adapter is not configured; without it a missing setting is a failure). |
+| `npm run content:webhook` | Starts a small server for `POST /check`. Options: `--port 4010`, `--host 127.0.0.1`. |
+
+Both need `adapters.posts` set to `"wordpress"` and the `adapters.wordpress` block in the config.
+
+### Environment variables
+
+The names live in `adapters.wordpress`; the values live only in the environment. Nothing prints or stores them.
+
+| Config key | Holds |
+|---|---|
+| `apiUrlEnv` | The REST base URL, for example `https://example.com/wp-json/wp/v2` |
+| `userEnv`, `passwordEnv` | A WordPress user and an application password with read access (Basic auth is sent only when both are set) |
+| `webhookSecretEnv` | The shared secret for the webhook, 16 characters or more |
+
+### Field map
+
+`adapters.wordpress.fields` maps each field the rules need to a dotted path in the REST post, such as `meta.primary_keyword` or `_embedded.author.0.name` (array indexes are allowed). `urlTemplate` (for example `/kb/{slug}`) gives the public path unless the map supplies `url_path`. `stateMap` turns a WordPress status into a workflow state. Only the title, slug, content and excerpt are WordPress core fields. Every custom field must be exposed in the REST API by the WordPress side (for example with `register_post_meta` and `show_in_rest`). This tool does not change WordPress. A field that is missing is left out, and the matching rule then fails; no value is invented.
+
+### Webhook contract
+
+`POST /check` with the header `x-planner-secret` set to the shared secret. The body is JSON: `{ "id": 123 }` (the tool reads that post) or `{ "post": { ... } }` (a REST post, no read).
+
+| Status | Meaning |
+|---|---|
+| 200 | `{ "ok": true, "checked": 1 }`. Every rule passes |
+| 422 | `{ "ok": false, "failures": [{ "rule", "line", "message" }] }`. At least one rule fails |
+| 401 | Missing or wrong secret, no detail |
+| 400 | Invalid JSON, or neither `id` nor `post` |
+| 404 / 405 | Another path / another method |
+| 413 | Body over 1 MB |
+| 502 | The post could not be read from WordPress |
+
+The server will not start if the secret variable is unset or shorter than 16 characters. It listens on `127.0.0.1` unless `--host` says otherwise; put it behind HTTPS if it is reachable from another machine.
+
+### Example hook (for the WordPress developer to adapt)
+
+This is an example only. We do not install it. It asks the endpoint before a post becomes published and keeps the post in its current state when the answer is not 200.
+
+```php
+<?php
+// Example only. Adapt, review and install on the WordPress side.
+add_filter( 'wp_insert_post_data', function ( $data, $postarr ) {
+    if ( 'post' !== $data['post_type'] || 'publish' !== $data['post_status'] || empty( $postarr['ID'] ) ) {
+        return $data;
+    }
+    $response = wp_remote_post( 'https://planner.example.com/check', array(
+        'timeout' => 15,
+        'headers' => array(
+            'Content-Type'     => 'application/json',
+            'x-planner-secret' => getenv( 'CONTENT_WEBHOOK_SECRET' ),
+        ),
+        'body'    => wp_json_encode( array( 'id' => (int) $postarr['ID'] ) ),
+    ) );
+    if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+        $data['post_status'] = 'pending'; // block the change to publish
+        set_transient( 'planner_check_failed_' . $postarr['ID'], wp_remote_retrieve_body( $response ), 60 );
+    }
+    return $data;
+}, 10, 2 );
+```
+
+The hook sends the saved post by id, so the author must save the latest text before publishing. The owner reads the failures, fixes the post and publishes it.

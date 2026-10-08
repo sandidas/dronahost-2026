@@ -96,14 +96,8 @@ function collect(paths: string[]): string[] {
 }
 
 const invoked = process.argv[1] ? resolve(process.argv[1]) === fileURLToPath(import.meta.url) : false;
-async function main(): Promise<void> {
-  if (process.argv.includes("--help")) {
-    console.log("check-content [file or folder ...]: run every content rule (pass or fail, no score) on page specs and Markdown drafts. Default: the drafts and pages folders in content-planner.config.json.");
-    process.exit(0);
-  }
-  const ctx = await loadContext();
-  const args = process.argv.slice(2).filter((a) => !a.startsWith("--"));
-  const files = collect(args.length ? args : [ctx.resolvePath(ctx.config.paths.drafts), ctx.resolvePath(ctx.config.paths.pages)]);
+/** Loads, checks and reports each file (plus the cross-page duplicate rules). Returns the number of files with failures. */
+export function runChecks(ctx: Ctx, files: string[]): number {
   const docs: Doc[] = [];
   const unreadable: string[] = [];
   for (const f of files) {
@@ -118,7 +112,20 @@ async function main(): Promise<void> {
     if (!report(d.file, all)) failed++;
   }
   console.log(`\n${files.length} file(s) checked, ${failed} with failures.`);
-  process.exit(failed ? 1 : 0);
+  return failed;
+}
+
+export { collect as collectFiles };
+
+async function main(): Promise<void> {
+  if (process.argv.includes("--help")) {
+    console.log("check-content [file or folder ...]: run every content rule (pass or fail, no score) on page specs and Markdown drafts. Default: the drafts and pages folders in content-planner.config.json.");
+    process.exit(0);
+  }
+  const ctx = await loadContext();
+  const args = process.argv.slice(2).filter((a) => !a.startsWith("--"));
+  const files = collect(args.length ? args : [ctx.resolvePath(ctx.config.paths.drafts), ctx.resolvePath(ctx.config.paths.pages)]);
+  process.exit(runChecks(ctx, files) ? 1 : 0);
 }
 
 if (invoked) void main();
