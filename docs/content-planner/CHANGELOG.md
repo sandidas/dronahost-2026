@@ -4,6 +4,17 @@ Versioned changes to the engine (rules, plans, tools). Business decisions are in
 
 ## 1.0.0 (in progress, begins with Phase 1 on 2026-10-08)
 
+### Phase 5: integration
+
+- Root npm scripts: every tool has a `content:*` script (see the README "Tools" table), plus `content:changed`, `content:ci`, `content:posts` and `content:webhook`. The `check:*` names stay as aliases.
+- CI (`.github/workflows/ci.yml`, job `static`): full git history, then `npm run test:tools`, then `npm run content:ci -- --base <PR base>`: config, no-brand, links, schemas, register with the governor cap, `check-content` on the changed content files, posts (when `CONTENT_POSTS_API_URL` is set), and the evaluation set. A failure fails the job, and the other jobs need it. Making the job a required check is a GitHub setting (follow-up 26).
+- `tools/check-changed.ts`: selects page specs, drafts and file-based posts from `git diff base...HEAD`; if the base cannot be read it checks everything. Tests prove exit 0 on a clean file and exit 1 on a deliberately bad fixture.
+- WordPress: `tools/wp-posts.ts` reads posts through the REST API (paging, optional application-password auth from the environment, no cross-host redirects), maps them to Markdown with front matter through `adapters.wordpress` in the config, and runs the same checks. `tools/wp-webhook.ts` answers `POST /check` for a publish hook: 200 when every rule passes, 422 with the failing rules otherwise, 401 without the shared secret, 502 if the post cannot be read. It only reads; it changes nothing in WordPress. `tools/html-to-md.ts` converts post HTML. Contract and an example hook: `rules/wordpress-content-model.md`.
+- Adapters: claims are read through the host's own `claimRenders()`; prices are read from `data/pricing.json`, and a price typed into copy is reported as such (`adapters.test.ts`). `lib/pricing` is not imported (follow-up 27).
+- `check-content` gained `runChecks` so the CI tools share one run path, and `docFromText` so a post that is not a file can be checked.
+- Follow-ups 24 to 27 added to `project/code-follow-ups.md` (WordPress fields and hook, GitHub settings, pricing adapter note).
+- Fixed: the README tool list was lost in the Phase 2 rewrite; the "Tools" table restores it.
+
 ### Phase 4: Claude Code assets
 
 - Added six commands in `claude/commands/`: `/write-content` (stages 0 to 7, stops at APPROVAL 1), `/plan-keywords` (proposes register rows within the governor caps), `/refresh-content`, `/audit-page`, `/monthly-review`, `/init-project`. Each is a short list of steps that points at the workflow and the tools; none copies the rules.

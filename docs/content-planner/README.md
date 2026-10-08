@@ -64,6 +64,30 @@ docs/content-planner/
   tools/                       TypeScript run with tsx; read the config; exit non-zero on failure
 ```
 
+## Tools
+
+All are TypeScript run with `tsx`, read `content-planner.config.json`, print `FAIL <rule> <file>:<line> <what>. Fix: <what to do>`, and exit non-zero on failure. None gives a score. Each has `--help`.
+
+| Tool | npm script | Purpose |
+|---|---|---|
+| `check-register` | `content:register` | The keyword register: duplicates, values, plan numbers, and the in-flight cap |
+| `check-content` | `content:check` | The one checker for page specs and Markdown: 12 rule groups |
+| `check-changed` | `content:changed` | `check-content` on the files changed in a branch (the CI gate) |
+| `ci` | `content:ci` | Every check in order, as CI runs them |
+| `governor` | `content:governor` | In flight, new briefs this month, pause switch |
+| `resolve` | `content:resolve` | Title to keyword, excluded and cannibalization check, plan and intent |
+| `eval` | `content:eval` | The evaluation set: fails when a rule change breaks an expectation |
+| `gen-schema` | `content:gen-schema` | JSON-LD from visible fields; fails if schema and content disagree |
+| `suggest-links` | `content:suggest-links` | Internal links (anchor, target, reason) from the register and the page inventory |
+| `similarity` | `content:similarity` | Overlap with our own pages and the stored SERP notes |
+| `gsc-report` | `content:gsc-report` | 28-day report from a Search Console CSV, with proposed changes |
+| `refresh-queue` | `content:refresh-queue` | What is due for review, by date and by performance |
+| `wp-posts`, `wp-webhook` | `content:posts`, `content:webhook` | Check WordPress posts; a publish-check endpoint (see `rules/wordpress-content-model.md`) |
+| `install`, `init-project` | `content:install`, `content:init-project` | Install into a host project; set up a new project |
+| `check-config`, `check-schemas`, `check-no-brand`, `check-links` | `content:config`, `content:schemas`, `content:no-brand`, `content:links` | Self-checks of the engine |
+
+The older names `check:register`, `check:content`, `check:schemas`, `check:config`, `check:no-brand`, `check:links` and `lint:content` still work. `check:pages` is the app's own page-spec check and stays in the app.
+
 Reusable core = `rules/ plans/ templates/ schemas/ eval/ tools/ claude/ later/`. It names no brand, price, claim, location, channel or owner (`npm run check:no-brand` proves it). Everything specific to the business is in `project/` and the config.
 
 ## How it works
