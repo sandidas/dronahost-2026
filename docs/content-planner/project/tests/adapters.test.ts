@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { before, test } from "node:test";
 import { type Ctx, checkDoc, loadContext, loadDoc } from "../../tools/check-content";
-import { collectPriceNumbers } from "../../tools/content/context";
+import { collectPriceNumbers, numbersFromPrices } from "../../tools/content/context";
 
 let ctx: Ctx;
 before(async () => { ctx = await loadContext(); });
@@ -20,14 +20,24 @@ test("every claim's rendering state is what the host's claimRenders() says", asy
   assert.equal(ctx.claims.filter((c) => c.verified).length, mod.CLAIMS.filter((c: { verified: boolean }) => c.verified).length);
 });
 
-test("prices are collected from the pricing and renewal blocks only", () => {
+test("prices come from the app's typed loader, in every currency, as the numbers the site shows", async () => {
+  const { prices } = await import("../adapters/pricing");
+  const { buildPlanCards } = await import("../../../../lib/pricing/plans");
+  const shown = prices();
+  assert.ok(shown.length > 0, "the loader returned prices");
+  assert.ok(shown.includes(buildPlanCards("USD")[0].monthly ?? ""), "the first USD plan's monthly price is among them");
+  assert.deepEqual([...numbersFromPrices(["$24.99", "₹1,299", "AED 25", "free"])].sort((a, b) => a - b), [25, 24.99, 1299].sort((a, b) => a - b));
+  assert.equal(ctx.config.adapters.pricing, "module");
+  assert.ok(ctx.priceNumbers.size > 0);
+});
+
+test("the json pricing adapter collects the pricing and renewal blocks only, for projects without a loader", () => {
   const set = collectPriceNumbers(JSON.stringify({ limits: { sites: 3 }, plans: [{ pricing: { monthly: { USD: 5.99 } }, renewal: { USD: 7.5 } }] }));
   assert.deepEqual([...set].sort(), [5.99, 7.5]);
   assert.equal(collectPriceNumbers("not json").size, 0);
 });
 
-test("the real pricing file yields prices, and a typed price is named as one", () => {
-  assert.ok(ctx.priceNumbers.size > 0, "the real pricing file was read");
+test("a price typed into copy is named as a price from the loader", () => {
   const price = [...ctx.priceNumbers][0];
   const dir = mkdtempSync(join(tmpdir(), "adp-"));
   const file = join(dir, "page.json");

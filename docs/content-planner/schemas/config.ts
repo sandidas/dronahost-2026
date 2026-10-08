@@ -10,6 +10,7 @@ export const ConfigSchema = z.object({
   paths: z.object({
     register: z.string().min(1),
     pricing: z.string().min(1),
+    pricingModule: z.string().min(1).optional(),
     claims: z.string().min(1),
     company: z.string().min(1),
     pages: z.string().min(1),
@@ -21,7 +22,8 @@ export const ConfigSchema = z.object({
   }),
   adapters: z.object({
     claims: z.enum(["ts-export", "json"]),
-    pricing: z.literal("json"),
+    /** json: read the pricing file generically. module: call prices() exported by paths.pricingModule (a project-side module that uses the host's typed loader). */
+    pricing: z.enum(["json", "module"]),
     posts: z.enum(["files", "wordpress"]),
     /** Used when posts is "wordpress": how a REST post maps to the fields check-content needs. No credentials here; they come from the environment. */
     wordpress: z
@@ -71,8 +73,12 @@ export const ConfigSchema = z.object({
       faqAnswerWarnBelow: z.number().int(),
       faqAnswerFailAbove: z.number().int(),
       internalLinksMin: z.number().int().nonnegative(),
-      /** Page-type exceptions to faqItems, keyed by plan number such as "01". */
-      faqItemsByPlan: z.record(z.string(), z.tuple([z.number().int(), z.number().int()])).default({}),
+      /** FAQ item counts by page archetype (for example money, guide). A page's own `archetype` wins, then the plan's archetype, then faqItems. */
+      faqItemsByArchetype: z.record(z.string(), z.tuple([z.number().int(), z.number().int()])).default({}),
+      /** Which archetype each plan belongs to, keyed by plan number such as "01". */
+      archetypeByPlan: z.record(z.string(), z.string()).default({}),
+      /** Maps another system's archetype names (a page spec's own) to the keys of faqItemsByArchetype. */
+      archetypeAliases: z.record(z.string(), z.string()).default({}),
       similarity: z.object({ shingleWords: z.number().int().min(2), threshold: z.number().min(0).max(1) }).default({ shingleWords: 5, threshold: 0.3 }),
       linksSuggested: z.number().int().positive().default(3),
     })

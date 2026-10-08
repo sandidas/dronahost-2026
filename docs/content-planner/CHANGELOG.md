@@ -2,6 +2,16 @@
 
 Versioned changes to the engine (rules, plans, tools). Business decisions are in `project/DECISIONS.md`.
 
+## 1.0.1 (2026-10-09), owner review
+
+- FAQ item counts are set per archetype in the config (`limits.faqItemsByArchetype`, `archetypeByPlan`, `archetypeAliases`): money and pricing pages 6 to 8, guides and brand pages 4 to 6. A page's own `archetype` field wins; the app's `product` and `landing` count as money, `decision` as guide, `trust` as brand. This replaces `faqItemsByPlan`.
+- `check:pages` and `lint:content` are thin aliases of `check-content`. The app's own page-spec check (Zod section schemas, layout signatures) now runs inside `check-content` as the host adapter (`adapters.pageSpec.command`, rule SC2), so no check was lost. CI runs `check-content` on every page spec and draft.
+- The pricing adapter reads prices through the app's typed loader (`project/adapters/pricing.ts`, built on `lib/pricing`), in every currency. It never reads the pricing file's schema. Projects without a loader keep the generic `json` adapter (`adapters.pricing`).
+- `npm run content:copy` (`tools/copy-engine.ts`) replaces the shell copy command in the README: plain Node, the same on macOS, Linux and Windows. The reuse proof uses it.
+- The README's "10 minutes" is marked as an untimed estimate.
+- Plan 15 has no register rows; off-site work is tracked in `project/roadmap.md`. The spec file is marked superseded. `*.zip` files and `docs/reference/after/` are ignored by git.
+- Interview banks for regional, policy, domain, brand and off-site pages are not added yet: the owner is sending the text.
+
 ## 1.0.0 (2026-10-09)
 
 The first release: a reusable, standalone content engine. A keyword or a title goes in; a brief, a fact ledger, an interview and, after the owner approves, a checked draft come out, always "Ready for owner review", never "publish-ready". The engine invents no fact, runs offline checks in CI, and works in a project that has nothing to do with the one it was built in (see Phase 6).

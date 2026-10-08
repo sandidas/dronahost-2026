@@ -2,7 +2,7 @@
  * Creates the project/ folder, the config and the register skeleton for a new host project. Never overwrites a file.
  * Usage: npx tsx docs/content-planner/tools/init-project.ts [--out dir] --name "ExampleCo" --domain example.com --owner "Sam Example" --locale en-US [--yes]
  */
-import { DEFAULT_IDIOMS, DEFAULT_PLAN_ROUTING, DEFAULT_WORDPRESS } from "./defaults";
+import { DEFAULT_ARCHETYPE_ALIASES, DEFAULT_ARCHETYPE_BY_PLAN, DEFAULT_FAQ_BY_ARCHETYPE, DEFAULT_IDIOMS, DEFAULT_PLAN_ROUTING, DEFAULT_WORDPRESS } from "./defaults";
 import { existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { createInterface } from "node:readline/promises";
@@ -31,7 +31,7 @@ export function buildConfig(o: InitOptions) {
     limits: {
       titleSuffix: "", titleWarnAbove: 60, titleFailAbove: 70, descriptionWarnAbove: 160, sentenceMax: 28, averageSentenceMax: 20,
       gradeTarget: [8, 10], gradeWarnAbove: 10, gradeFailAbove: 11, answerBlockWords: [40, 80], faqItems: [4, 6], faqAnswerWarnBelow: 40, faqAnswerFailAbove: 80,
-      internalLinksMin: 3, faqItemsByPlan: {}, similarity: { shingleWords: 5, threshold: 0.3 }, linksSuggested: 3,
+      internalLinksMin: 3, faqItemsByArchetype: DEFAULT_FAQ_BY_ARCHETYPE, archetypeByPlan: DEFAULT_ARCHETYPE_BY_PLAN, archetypeAliases: DEFAULT_ARCHETYPE_ALIASES, similarity: { shingleWords: 5, threshold: 0.3 }, linksSuggested: 3,
     },
     web: { serpSource: "claude-web", gscSource: "csv" },
   });

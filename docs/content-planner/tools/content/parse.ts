@@ -22,6 +22,8 @@ export type Doc = {
   state: string;
   schemaTypes: string[];
   rulesBlock: Record<string, unknown>;
+  /** The page's own archetype (front matter `archetype` or the page spec's `archetype`), if it names one. */
+  archetype?: string;
 };
 export type CopyOptions = { nonCopyKeys: string[]; labelKeys: string[] };
 
@@ -98,7 +100,7 @@ function parseMarkdown(file: string, text: string): Doc {
   return {
     file, kind: "md", front, lines, labels: [], raw, h1, headings, paragraphs, links, faq, answer,
     title: front.seo_title, description: front.meta_description, state: front.state ?? "",
-    schemaTypes: (front.schema ?? "").split(";").map((s) => s.trim()).filter(Boolean), rulesBlock: {},
+    schemaTypes: (front.schema ?? "").split(";").map((s) => s.trim()).filter(Boolean), rulesBlock: {}, archetype: front.archetype || undefined,
   };
 }
 
@@ -141,6 +143,7 @@ function parseJson(file: string, text: string, copy: CopyOptions): Doc {
     lines, labels, raw, h1, headings, paragraphs: [], links, faq, answer, title: seo.title as string | undefined,
     description: seo.description as string | undefined, state: "",
     schemaTypes: Array.isArray(seo.schema) ? (seo.schema as unknown[]).map(String) : [], rulesBlock: rules,
+    archetype: typeof spec.archetype === "string" ? spec.archetype : undefined,
   };
 }
 

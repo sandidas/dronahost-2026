@@ -66,6 +66,14 @@
           {
             "q": "Should I update WordPress straight away?",
             "a": "Take a backup first, then update. If you can, try the update on a staging copy and check your key pages. Small security releases are usually safe to apply quickly. Larger releases can change how a theme or plugin behaves, so give yourself time to test them."
+          },
+          {
+            "q": "Can I change my answer later?",
+            "a": "Yes. You can change an answer at any time before you submit the form, and you can ask for a correction afterwards. We keep the earlier version so that you can see what changed. If you would like help, write to the team and we will reply by email with the next steps."
+          },
+          {
+            "q": "How long does a reply take?",
+            "a": "We reply by email, usually within a working day. Questions that need a person to check a detail can take longer, and we say so in our first reply. If your question is urgent, say so in the subject line and we will read it first."
           }
         ]
       }

@@ -10,12 +10,12 @@ import { join, relative } from "node:path";
 import { spawnSync } from "node:child_process";
 import { before, test } from "node:test";
 import { BriefFrontMatter } from "../schemas/brief";
+import { copyEngine } from "./copy-engine";
 import { parseFrontMatter } from "./front-matter";
 import { PLANNER_DIR } from "./load-config";
 import { parseRegister } from "./register";
 
 const REPO = join(PLANNER_DIR, "..", "..");
-const CORE_DIRS = ["rules", "plans", "templates", "schemas", "eval", "tools", "claude", "later"];
 const SAMPLE = join(PLANNER_DIR, "eval/sample-project");
 /** Everything the test needs to know about the sample project is read from the sample's own files. */
 function sampleFacts() {
@@ -58,8 +58,7 @@ before(() => {
   host = mkdtempSync(join(tmpdir(), "reuse-"));
   planner = join(host, "docs/content-planner");
   mkdirSync(planner, { recursive: true });
-  for (const d of CORE_DIRS) cpSync(join(PLANNER_DIR, d), join(planner, d), { recursive: true, filter: (src) => !/[\\/](sample-project|\.DS_Store)$/.test(src) });
-  for (const f of ["README.md", "CHANGELOG.md"]) cpSync(join(PLANNER_DIR, f), join(planner, f));
+  copyEngine({ toPlanner: planner }); // the same function the README's `npm run content:copy` runs
   writeFileSync(join(host, "package.json"), JSON.stringify({ name: "bakery-site", private: true, scripts: { build: "echo build" } }, null, 2));
   symlinkSync(join(REPO, "node_modules"), join(host, "node_modules"));
 });

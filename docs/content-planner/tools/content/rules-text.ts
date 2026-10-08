@@ -60,12 +60,14 @@ export function structureRules(ctx: Ctx, doc: Doc): RuleResult[] {
   } else out.push(rule("S3", "Structure", `Answer block of ${aMin} to ${aMax} words under the H1`, [{ line: doc.h1[0]?.n ?? 1, message: "no answer block found under the H1" }]));
 
   const plan = (rowBySlug(ctx, doc.front.slug ?? "") ?? rowByKeyword(ctx, doc.front.primary_keyword ?? ""))?.planNumber ?? "";
-  const [fMin, fMax] = L.faqItemsByPlan[plan] ?? L.faqItems;
+  const own = doc.archetype ? (L.archetypeAliases[doc.archetype] ?? doc.archetype) : "";
+  const archetype = L.faqItemsByArchetype[own] ? own : L.archetypeByPlan[plan] ?? "";
+  const [fMin, fMax] = L.faqItemsByArchetype[archetype] ?? L.faqItems;
   if (doc.faq.length === 0) out.push(skipped("S4", "Structure", "FAQ item count, answer length and links", "no FAQ on this page"));
   else {
     const f: Finding[] = [];
     const w: Finding[] = [];
-    if (doc.faq.length < fMin || doc.faq.length > fMax) f.push({ line: doc.faq[0].n, message: `FAQ has ${doc.faq.length} items, needs ${fMin} to ${fMax}` });
+    if (doc.faq.length < fMin || doc.faq.length > fMax) f.push({ line: doc.faq[0].n, message: `FAQ has ${doc.faq.length} items, needs ${fMin} to ${fMax}${archetype ? ` (${archetype} pages)` : ""}` });
     for (const q of doc.faq) {
       if (/^\{\{[^}]*\}\}$/.test(q.a.trim())) continue; // a filled-in token such as {{pricing.summary}}
       const n = wc(strip(q.a));

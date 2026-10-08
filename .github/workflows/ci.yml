@@ -27,8 +27,9 @@ jobs:
       - run: npx tsc --noEmit
       - run: npm run lint
       - run: npm run check:contrast
-      - name: Page specs, content lint and keyword register
-        run: npm run check:pages && npm run lint:content && npm run check:register && npm run check:vs
+      - name: check-content on every page spec and draft (also runs the app's page-spec check), and the comparison data
+        # check:pages and lint:content are aliases of the same command. The app's Zod and layout checks run inside it as the host adapter.
+        run: npm run check:content && npm run check:vs
       - name: Content engine tests (against the sample project), this project's own tests, and the reuse proof
         run: npm run test:tools && npm run test:project && npm run test:reuse
       - name: Content engine checks (a failure blocks the merge)

@@ -306,3 +306,39 @@ Recorded from the owner review. Phase 1 has not started.
 | Extra | Limits: title plus suffix warns above 60, fails above 70, missing or duplicate. Description warns above 160, fails only if missing or duplicate. Any sentence over 28 words fails. Average sentence under 20 | Accepted. Resolves C5. With the 12-character suffix, a page title warns above 48 characters and fails above 58 |
 | Extra | Number rules: money pages use strict provenance (claims, pricing or ledger only). Guides also allow version numbers, step numbers and sourced figures that are in the ledger | Accepted. Splits C8 into a strict and a guide mode, chosen by plan |
 | Q4 to Q8, Q12, Q13 | Wait for the owner | Open. Phase 1 does not start |
+
+## 9. Linter parity report (final run, 2026-10-09)
+
+Run after `lint:content` and `check:pages` became aliases of `check-content`. Command: `npx tsx --test docs/content-planner/project/tests/parity.test.ts`. The test feeds the same input to the old page linter (`lib/content/lint.ts`) and to `check-content`, and requires both to fail. L8 to L11 are inside the test bodies; the list shows one line per test.
+
+```
+✔ the real home page passes both linters
+✔ L1: the old linter and check-content V1 both fail
+✔ L2: the old linter and check-content V2 both fail
+✔ L3: the old linter and check-content PO1 both fail
+✔ L4: the old linter and check-content PO1 both fail
+✔ L5: the old linter and check-content PO1 both fail
+✔ L6: the old linter and check-content V6 both fail
+✔ L7: the old linter and check-content F1 both fail
+✔ L9: the old linter and check-content V3 both fail
+✔ L10: the old linter and check-content V7 both fail
+✔ L12: the old linter and check-content F3 both fail
+✔ L8: a banned CTA label fails in both
+✔ L11: fewer than 3 internal links fails in both
+✔ L13: a short FAQ answer warns in both and fails in neither
+✔ L14 and L15: duplicate title and description across pages fail
+✔ L16: claims referenced but not rendering are reported, not failed
+ℹ tests 16
+ℹ pass 16
+ℹ fail 0
+```
+
+What the aliases are now:
+
+| Script | Runs |
+|---|---|
+| `npm run lint:content` | `check-content` on `content/pages` |
+| `npm run check:pages` | `check-content` on `content/pages`, which also runs the app's own page-spec check (`scripts/validate-pages.ts`: Zod section schemas and layout signatures) as the host adapter, rule SC2 |
+| `npm run check:content` | `check-content` on the drafts and pages folders |
+
+Nothing in `lib/content/lint.ts`, `scripts/lint-content.ts` or `project/tests/parity.test.ts` is used by any other tool. They stay until the owner approves their removal (hold, 2026-10-09).

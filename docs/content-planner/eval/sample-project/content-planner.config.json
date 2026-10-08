@@ -86,12 +86,49 @@
     "faqAnswerWarnBelow": 40,
     "faqAnswerFailAbove": 80,
     "internalLinksMin": 3,
-    "faqItemsByPlan": {},
     "similarity": {
       "shingleWords": 5,
       "threshold": 0.3
     },
-    "linksSuggested": 3
+    "linksSuggested": 3,
+    "faqItemsByArchetype": {
+      "money": [
+        6,
+        8
+      ],
+      "pricing": [
+        6,
+        8
+      ],
+      "guide": [
+        4,
+        6
+      ],
+      "brand": [
+        4,
+        6
+      ]
+    },
+    "archetypeByPlan": {
+      "01": "money",
+      "02": "guide",
+      "03": "guide",
+      "04": "guide",
+      "05": "money",
+      "06": "money",
+      "07": "guide",
+      "08": "money",
+      "09": "brand",
+      "10": "guide",
+      "14": "guide",
+      "15": "brand"
+    },
+    "archetypeAliases": {
+      "product": "money",
+      "landing": "money",
+      "decision": "guide",
+      "trust": "brand"
+    }
   },
   "web": {
     "serpSource": "claude-web",

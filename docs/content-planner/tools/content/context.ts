@@ -21,6 +21,24 @@ export type Ctx = {
   priceNumbers: Set<number>;
 };
 
+/** Numbers in price strings such as "$24.99" or "₹1,299". */
+export function numbersFromPrices(values: (number | string)[]): Set<number> {
+  const out = new Set<number>();
+  for (const v of values) {
+    const n = typeof v === "number" ? v : Number(String(v).match(/\d[\d,]*(?:\.\d+)?/)?.[0]?.replace(/,/g, ""));
+    if (n > 0) out.add(n);
+  }
+  return out;
+}
+
+/** Pricing adapter (`module`): the project's own module exports prices(), built on the host's typed loader. */
+async function loadPriceModule(config: Config, resolvePath: (p: string) => string): Promise<Set<number>> {
+  const file = config.paths.pricingModule ? resolvePath(config.paths.pricingModule) : "";
+  if (!file || !existsSync(file)) return new Set();
+  const mod = (await import(pathToFileURL(file).href)) as { prices?: () => (number | string)[] };
+  return typeof mod.prices === "function" ? numbersFromPrices(mod.prices()) : new Set();
+}
+
 /** Pricing adapter (`json`): collects the numbers under any "pricing" or "renewal" key of the pricing file. */
 export function collectPriceNumbers(pricingText: string): Set<number> {
   const out = new Set<number>();
@@ -61,7 +79,7 @@ export async function loadContext(): Promise<Ctx> {
     briefsDir: process.env.CHECK_CONTENT_BRIEFS ?? resolvePath(config.paths.briefs),
     factsDir: process.env.CHECK_CONTENT_FACTS ?? resolvePath(config.paths.facts),
     pricingText: existsSync(pricingFile) ? readFileSync(pricingFile, "utf8") : "",
-    priceNumbers: collectPriceNumbers(existsSync(pricingFile) ? readFileSync(pricingFile, "utf8") : ""),
+    priceNumbers: config.adapters.pricing === "module" ? await loadPriceModule(config, resolvePath) : collectPriceNumbers(existsSync(pricingFile) ? readFileSync(pricingFile, "utf8") : ""),
   };
 }
 

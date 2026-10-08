@@ -9,6 +9,7 @@
  * In a Draft (front matter `state` starts with "Draft"), the readiness rules (S4, S5, E1, E3, SO1) report warnings instead of
  * failures, and open [HUMAN REVIEW] flags are allowed. They fail once the state is not Draft.
  */
+import { spawnSync } from "node:child_process";
 import { existsSync, readdirSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -96,6 +97,21 @@ function collect(paths: string[]): string[] {
 }
 
 const invoked = process.argv[1] ? resolve(process.argv[1]) === fileURLToPath(import.meta.url) : false;
+/**
+ * The host page-spec adapter: the project's own checks of a page spec that the engine cannot know (section schemas, layout rules).
+ * `adapters.pageSpec.command` runs once per run when a page spec is among the files. It must exit 0 to pass.
+ */
+export function hostPageSpecCheck(ctx: Ctx, docs: Doc[]): { ran: boolean; ok: boolean } {
+  const command = ctx.config.adapters.pageSpec?.command;
+  if (!command || !docs.some((d) => d.kind === "json")) return { ran: false, ok: true };
+  console.log("\nHost page-spec check");
+  const r = spawnSync(command, { shell: true, encoding: "utf8" });
+  const ok = r.status === 0;
+  console.log(`    ${ok ? "PASS" : "FAIL"} SC2 Page specs satisfy the host's own schema and layout checks (${command})`);
+  if (!ok) for (const l of `${r.stdout}${r.stderr}`.split("\n").filter(Boolean).slice(0, 12)) console.log(`         ${l}`);
+  return { ran: true, ok };
+}
+
 /** Loads, checks and reports each file (plus the cross-page duplicate rules). Returns the number of files with failures. */
 export function runChecks(ctx: Ctx, files: string[]): number {
   const docs: Doc[] = [];
@@ -111,6 +127,8 @@ export function runChecks(ctx: Ctx, files: string[]): number {
     const all = [...checkDoc(ctx, d), ...(dupes.get(d.file) ?? [])].sort((a, b) => order.indexOf(a.group) - order.indexOf(b.group));
     if (!report(d.file, all)) failed++;
   }
+  const host = hostPageSpecCheck(ctx, docs);
+  if (!host.ok) failed++;
   console.log(`\n${files.length} file(s) checked, ${failed} with failures.`);
   return failed;
 }

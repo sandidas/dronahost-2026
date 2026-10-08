@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { before, test } from "node:test";
 import { readFileSync } from "node:fs";
-import { type Ctx, checkDoc, duplicateRules, loadContext, loadDoc } from "./check-content";
+import { type Ctx, checkDoc, duplicateRules, hostPageSpecCheck, loadContext, loadDoc } from "./check-content";
 
 const FIX = "docs/content-planner/eval/fixtures";
 process.env.CHECK_CONTENT_REGISTER = `${FIX}/register.md`;
@@ -17,7 +17,7 @@ let ctx: Ctx;
 function testContext(base: Ctx): Ctx {
   return {
     ...base,
-    config: { ...base.config, name: "ExampleCo", limits: { ...base.config.limits, titleSuffix: " | ExampleCo", faqItemsByPlan: { "01": [4, 8] } } },
+    config: { ...base.config, name: "ExampleCo", limits: { ...base.config.limits, titleSuffix: " | ExampleCo" } },
     rules: {
       ...base.rules,
       bannedPhrases: ["world-class", ...base.rules.bannedPhrases], idioms: ["go the extra mile"], bannedCtaLabels: ["get started"],
@@ -80,10 +80,14 @@ test("Structure: FAQ count, answer limits and generic anchors", () => {
   assert.ok((short?.warnings.length ?? 0) > 0);
 });
 
-test("Structure: a money page may have up to 8 FAQ items", () => {
-  const items = Array.from({ length: 8 }, (_, i) => ({ q: `Question ${i}?`, a: "word ".repeat(50) }));
-  const ok = page((p) => p.sections.find((s: { type: string }) => s.type === "FAQSection").content.items = items);
-  assert.equal(result(ok, "S4")?.ok, true);
+test("Structure: a money page needs 6 to 8 FAQ items, a guide 4 to 6, and a page's own archetype wins", () => {
+  const items = (n: number) => Array.from({ length: n }, (_, i) => ({ q: `Question ${i}?`, a: "word ".repeat(50) }));
+  const withItems = (n: number, archetype?: string) => page((p) => { p.sections.find((s: { type: string }) => s.type === "FAQSection").content.items = items(n); if (archetype) p.archetype = archetype; });
+  assert.equal(result(withItems(8), "S4")?.ok, true, "8 items on a money page");
+  assert.equal(result(withItems(5), "S4")?.ok, false, "5 items on a money page");
+  assert.equal(result(withItems(5, "decision"), "S4")?.ok, true, "the page's own archetype (a guide) allows 5");
+  assert.equal(result(withItems(7, "product"), "S4")?.ok, true, "the app's 'product' archetype is a money page");
+  assert.equal(result(withItems(7, "trust"), "S4")?.ok, false, "a brand page allows at most 6");
 });
 
 test("Keyword: the register must own the URL and the keyword", () => {
@@ -193,4 +197,14 @@ test("a project with no forbidden channels, claims or feature words passes polic
   const bare = { ...ctx, rules: { ...ctx.rules, forbiddenChannels: [], forbiddenClaims: [], featureWords: [], bannedPhrases: [], idioms: [] } };
   const failing = checkDoc(bare, loadDoc(bare, `${FIX}/pass-guide.md`), { overlap: false }).filter((r) => !r.ok).map((r) => r.id);
   assert.deepEqual(failing, []);
+});
+
+test("the host page-spec adapter passes when its command passes, fails when it fails, and only runs for page specs", () => {
+  const withCommand = (command: string): Ctx => ({ ...ctx, config: { ...ctx.config, adapters: { ...ctx.config.adapters, pageSpec: { command, nonCopyKeys: [], labelKeys: [] } } } });
+  const spec = loadDoc(ctx, `${FIX}/pass-page.json`);
+  const article = loadDoc(ctx, `${FIX}/pass-guide.md`);
+  assert.deepEqual(hostPageSpecCheck(withCommand('node -e "process.exit(0)"'), [spec]), { ran: true, ok: true });
+  assert.deepEqual(hostPageSpecCheck(withCommand('node -e "process.exit(1)"'), [spec]), { ran: true, ok: false });
+  assert.deepEqual(hostPageSpecCheck(withCommand('node -e "process.exit(1)"'), [article]), { ran: false, ok: true }, "an article is not a page spec");
+  assert.deepEqual(hostPageSpecCheck({ ...ctx, config: { ...ctx.config, adapters: { ...ctx.config.adapters, pageSpec: null } } }, [spec]), { ran: false, ok: true });
 });

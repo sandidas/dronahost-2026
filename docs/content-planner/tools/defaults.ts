@@ -33,3 +33,10 @@ export const DEFAULT_WORDPRESS = {
   },
   stateMap: { draft: "Draft", "auto-draft": "Draft", pending: "Ready for owner review", future: "Ready for owner review", publish: "Published", private: "Published" },
 };
+
+/** FAQ item counts by page archetype, which plan belongs to which archetype, and how another system's archetype names map to ours. */
+export const DEFAULT_FAQ_BY_ARCHETYPE: Record<string, [number, number]> = { money: [6, 8], pricing: [6, 8], guide: [4, 6], brand: [4, 6] };
+export const DEFAULT_ARCHETYPE_BY_PLAN: Record<string, string> = {
+  "01": "money", "02": "guide", "03": "guide", "04": "guide", "05": "money", "06": "money", "07": "guide", "08": "money", "09": "brand", "10": "guide", "14": "guide", "15": "brand",
+};
+export const DEFAULT_ARCHETYPE_ALIASES: Record<string, string> = { product: "money", landing: "money", decision: "guide", trust: "brand" };

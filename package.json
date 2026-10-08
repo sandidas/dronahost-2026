@@ -16,8 +16,8 @@
     "qa:entities": "tsx scripts/qa/entities.ts",
     "qa": "npm run check:contrast && npm run qa:axe && npm run qa:links && npm run qa:jsonld && npm run qa:entities",
     "test:e2e": "playwright test",
-    "check:pages": "tsx scripts/validate-pages.ts",
-    "lint:content": "tsx scripts/lint-content.ts",
+    "check:pages": "tsx docs/content-planner/tools/check-content.ts content/pages",
+    "lint:content": "tsx docs/content-planner/tools/check-content.ts content/pages",
     "check:register": "tsx docs/content-planner/tools/check-register.ts",
     "check:vs": "tsx scripts/check-vs.ts",
     "check:content": "tsx docs/content-planner/tools/check-content.ts",
@@ -50,7 +50,8 @@
     "content:posts": "tsx docs/content-planner/tools/wp-posts.ts",
     "content:webhook": "tsx docs/content-planner/tools/wp-webhook.ts",
     "test:project": "tsx docs/content-planner/tools/run-tests.ts --project",
-    "test:reuse": "tsx --test docs/content-planner/tools/reuse.test.ts"
+    "test:reuse": "tsx --test docs/content-planner/tools/reuse.test.ts",
+    "content:copy": "tsx docs/content-planner/tools/copy-engine.ts"
   },
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.1146.0",
