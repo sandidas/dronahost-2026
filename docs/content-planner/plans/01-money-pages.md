@@ -70,7 +70,7 @@ Order matters. Each block must work if the reader reads only that block.
 | 5 | How it works | `ProcessSteps` | Order, set up, migrate, go live. Plain steps, no invented timings. |
 | 6 | Proof | `Testimonials`, `CaseStudy`, `StatsBar` | Real, named, with permission. Renders only when `verifiedReviews` and claims allow. Otherwise the block is dropped, not faked. |
 | 7 | Compare | link block | Link to the matching `/vs/[competitor]` and `/pricing`. |
-| 8 | FAQ | `FAQSection` | 6 to 8 questions, first sentence answers, 40 to 80 words, at most one link per answer. |
+| 8 | FAQ | `FAQSection` | 4 to 8 questions (the limit for this plan in the config), first sentence answers, 40 to 80 words, at most one link per answer. |
 | 9 | Closing CTA | `CTASection` | Same CTA as the hero. Guarantee line only if `money-back` renders. |
 
 **Extra blocks (rules in `docs/content-planner/rules/content-writing-rules.md`, sections 9 to 12):**

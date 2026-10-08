@@ -28,8 +28,10 @@ Copy the folder into any project, fill in `project/`, and it works (see "Reuse")
 6. Publish it yourself. Update the register row (status, owner, next review date).
 
 ```
-npm run check:register   the keyword register
-npm run check:content    drafts and page specs
+npm run check:register   the keyword register and the in-flight cap
+npm run check:content    drafts and page specs (also: npm run lint:content for page specs)
+npm run content:governor in flight, new briefs this month, pause switch
+npm run eval             the evaluation set: fails when a rule change breaks an expectation
 npm run check:schemas    the schemas against their fixtures
 npm run check:config     the two config files
 npm run check:no-brand   the reusable core names no business

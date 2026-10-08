@@ -4,6 +4,17 @@ Versioned changes to the engine (rules, plans, tools). Business decisions are in
 
 ## 1.0.0 (in progress, begins with Phase 1 on 2026-10-08)
 
+### Phase 3: tools
+
+- `check-content` v2 (`tools/check-content.ts` and `tools/content/`): twelve groups (Structure, Keyword, Voice, Facts, People, Experience, Sources, Metadata, Schema, Policy, Overlap, Flags), 50 rules, pass or fail with file, line and fix, no score. It reproduces every check of `lint:content` (proved by `tools/parity.test.ts`) and every v1 rule. It reads limits, lists and the claims adapter from the config; it no longer imports app code except the claims registry through the adapter. Rule ids changed: v1 M3 and M4 are now K1 and K2; v1 F3 is now PO1 to PO3.
+- New limits are enforced: title measured with the suffix (warn above 60, fail above 70), description warn above 160, FAQ answers warn under 40 and fail over 80, FAQ item count by plan (`limits.faqItemsByPlan`), reading grade warn above 10 and fail above 11 with an owner-approved override (`grade_override_reason` and `grade_override_approved_by`, or `rules.gradeOverride`), strict number provenance on money pages and ledger-sourced figures in guides.
+- Draft behavior: in a Draft, the readiness rules S4, S5, E1, E3 and SO1 warn instead of failing. They fail once the state is not Draft.
+- `check-register` v2 on a shared register parser (`tools/register.ts`): all 16 checks kept; added plan-number validation (R16) and the in-flight cap (GV1). An empty register is a warning.
+- New tools: `governor`, `eval` (10 cases in `eval/cases/`), `resolve` (title to keyword, gate, routing), `gen-schema`, `suggest-links`, `similarity`, `gsc-report`, `refresh-queue`, `install`, `init-project`. 94 tests (`npm run test:tools`).
+- `npm run lint:content` is now an alias of `check-content` on `content/pages`. `check:pages` stays as the host page-spec check.
+- Brief template and schema gain `created_on` (the governor counts briefs by month). Config schema gains `faqItemsByPlan`, `similarity`, `linksSuggested` and the page-copy keys; rules schema gains `idioms`, `planRouting`, `intentByPlan`. All have defaults, so older configs stay valid.
+- Fixed a misreading in the Phase 1 note: the FAQ failure was `content/pages/home.json`, not the ttfb draft.
+
 ### Phase 2: workflow, templates, schemas, rules
 
 - Rewrote `rules/content-writer-workflow.md` as the master workflow: a keyword **or a title** (a title is turned into a keyword that the owner confirms), the governor in the gate, the interview and APPROVAL 1 in Stage 3, the intent table, outline patterns, CTA by intent and the handoff. The brief field list now lives only in `templates/brief.md`.
@@ -23,4 +34,3 @@ Versioned changes to the engine (rules, plans, tools). Business decisions are in
 - Moved `tools/fixtures/` to `eval/fixtures/`, `project/tier-a-briefs.md` to `project/briefs/`. A copy of `/write-content` is in `claude/commands/`; `.claude/commands/` keeps its copy until the installer exists (Phase 3).
 - `check-content` reads its lists, paths and brand name from the config files instead of hard-coding them. Behavior change: the channel check no longer skips file paths containing the letters "vs"; it uses `channelAllowlistFiles`.
 - New tools: `check-config`, `check-no-brand`, `check-links`. Added `ORIGINAL ELEMENT` to the brief template.
-- Known: `check:content` reports 7 FAQ items in the ttfb draft (limit 6). This predates Phase 1.

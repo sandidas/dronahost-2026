@@ -173,7 +173,7 @@ A missing first-hand answer has one outcome, in this order: the question is a `G
 
 | State | Allowed open flags | Allowed to publish |
 |---|---|---|
-| Draft | Any, each listed in the handoff | No |
+| Draft | Any, each listed in the handoff. `check-content` reports the readiness rules (FAQ count and links, interview, original element, two sources) as warnings | No |
 | Ready for owner review | Only flags that need the owner's own facts (for example a reviewer's name), each listed with who can fill it. No gap on the experience questions, gain confirmed, original element present | No. The owner publishes after clearing the flags |
 | Published | None | Owner only (and a qualified human first for Tier B) |
 
