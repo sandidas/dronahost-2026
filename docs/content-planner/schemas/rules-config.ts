@@ -10,6 +10,8 @@ export const RulesConfigSchema = z.object({
   forbiddenChannels: z.array(z.string().min(1)),
   forbiddenClaims: z.array(z.string().min(1)),
   channelAllowlistFiles: z.array(z.string()),
+  /** Wording that says where the business is based. It is allowed only on the listed pages (for example the About page). Patterns are regular expressions, case-insensitive. */
+  locationClaims: z.object({ patterns: z.array(z.string().min(1)), allowedPages: z.array(z.string().min(1)) }).optional(),
   disclosureLine: z.string().min(1),
   brandSuffixPattern: z.string().min(1),
   /** Ordered: the first plan whose pattern matches the keyword owns it. Brand-name queries are matched first by the tool. */

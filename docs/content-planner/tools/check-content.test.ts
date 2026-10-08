@@ -230,3 +230,17 @@ test("Overlap: a Markdown draft and the page spec for the same URL do not clash 
   const dupes = duplicateRules([a, b]);
   assert.ok((dupes.get(b.file) ?? []).every((r) => r.ok));
 });
+
+test("Policy: where the business is based may be said only on the allowed pages (PO4)", () => {
+  const rules = { ...ctx.rules, locationClaims: { patterns: ["\\bbased in springfield\\b"], allowedPages: ["/about-us"] } };
+  const withRules = { ...ctx, rules };
+  const text = (t: string) => t + "\nWe are a team based in Springfield.\n";
+  const bad = checkDoc(withRules, loadDoc(withRules, guide(text)), { overlap: false }).find((r) => r.id === "PO4");
+  assert.equal(bad?.ok, false);
+  assert.match(bad?.failures[0].message ?? "", /says where we are based/);
+  const allowed = checkDoc(withRules, loadDoc(withRules, guide((t) => text(t).replace("slug: /kb/check-wordpress-version", "slug: /about-us"))), { overlap: false }).find((r) => r.id === "PO4");
+  assert.equal(allowed?.ok, true);
+  const noRule = { ...ctx, rules: { ...ctx.rules, locationClaims: undefined } };
+  const unset = checkDoc(noRule, loadDoc(noRule, guide(text)), { overlap: false }).find((r) => r.id === "PO4");
+  assert.equal(unset?.skipped, true, "a project with no locationClaims skips the rule");
+});

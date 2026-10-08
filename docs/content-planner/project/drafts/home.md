@@ -14,13 +14,13 @@ waive_approved_by: Sandipan Das (owner)
 reviewed_on: "[HUMAN REVIEW: set when a person rechecks the whole page]"
 next_review_on: 2027-04-08
 seo_title: Managed WordPress Hosting for Small Businesses
-meta_description: DronaHost is a focused team in India offering managed WordPress hosting for small businesses, freelancers and agencies worldwide. See the plans and policies.
+meta_description: DronaHost is a focused team offering managed WordPress hosting for small businesses, freelancers and agencies worldwide. See the plans and policies.
 claims_used: money-back; free-migration; renewal-price-same; backups
 ---
 
 # Managed WordPress hosting without the technical worry
 
-DronaHost is a focused team in India that offers managed WordPress hosting for small businesses, freelancers and agencies worldwide. We move your site for free, and you can reach us by ticket or email. A 30-day money-back guarantee backs your first month, and the renewal price equals the signup price.
+DronaHost is a focused team that offers managed WordPress hosting for small businesses, freelancers and agencies worldwide. We move your site for free, and you can reach us by ticket or email. A 30-day money-back guarantee backs your first month, and the renewal price equals the signup price.
 
 Editor note: the paragraph above is the hero lead plus the highlights list that shows under it. The lead is limited to 220 characters in the page spec, so the highlights carry the last sentence.
 

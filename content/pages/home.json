@@ -18,7 +18,7 @@
   ],
   "seo": {
     "title": "Managed WordPress Hosting for Small Businesses",
-    "description": "DronaHost is a focused team in India offering managed WordPress hosting for small businesses, freelancers and agencies worldwide. See the plans and policies.",
+    "description": "DronaHost is a focused team offering managed WordPress hosting for small businesses, freelancers and agencies worldwide. See the plans and policies.",
     "ogImage": "/og/home.jpg",
     "schema": [
       "Organization",
@@ -58,7 +58,7 @@
       "content": {
         "eyebrow": "Managed WordPress hosting",
         "h1": "Managed WordPress hosting without the technical worry",
-        "lead": "DronaHost is a focused team in India that offers managed WordPress hosting for small businesses, freelancers and agencies worldwide. We move your site for free, and you can reach us by ticket or email.",
+        "lead": "DronaHost is a focused team that offers managed WordPress hosting for small businesses, freelancers and agencies worldwide. We move your site for free, and you can reach us by ticket or email.",
         "ctaPrimary": {
           "label": "See WordPress hosting plans",
           "href": "/wordpress-hosting"
@@ -68,7 +68,7 @@
           "href": "/contact"
         },
         "accent": "without the technical worry",
-        "leadFallback": "DronaHost is a focused team in India that offers managed WordPress hosting for small businesses, freelancers and agencies worldwide. You can reach the team by support ticket or email.",
+        "leadFallback": "DronaHost is a focused team that offers managed WordPress hosting for small businesses, freelancers and agencies worldwide. You can reach the team by support ticket or email.",
         "leadRequiresClaims": [
           "claim:free-migration"
         ],

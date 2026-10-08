@@ -63,6 +63,22 @@ export function factRules(ctx: Ctx, doc: Doc): RuleResult[] {
   return out;
 }
 
+/** Where the business is based may be said only on the pages the project lists (`locationClaims.allowedPages`). */
+function locationRule(ctx: Ctx, doc: Doc, prose: { n: number; text: string }[]): RuleResult {
+  const lc = ctx.rules.locationClaims;
+  const name = "Only the allowed pages say where the business is based";
+  if (!lc || !lc.patterns.length) return skipped("PO4", "Policy", name, "no locationClaims in project/rules.config.json");
+  const slug = (doc.front.slug ?? "").replace(/\/+$/, "") || "/";
+  if (lc.allowedPages.includes(slug)) return rule("PO4", "Policy", name, [], { note: `${slug} may say where we are based` });
+  const re = new RegExp(lc.patterns.join("|"), "i");
+  const fails: Finding[] = [];
+  for (const l of prose) {
+    const m = strip(l.text).match(re);
+    if (m) fails.push({ line: l.n, message: `says where we are based ("${m[0]}"). Only ${lc.allowedPages.join(", ")} may` });
+  }
+  return rule("PO4", "Policy", name, fails);
+}
+
 export function policyRules(ctx: Ctx, doc: Doc): RuleResult[] {
   const prose = [...proseLines(doc), ...doc.labels];
   // An empty list must match nothing (an empty pattern would match every line).
@@ -82,6 +98,7 @@ export function policyRules(ctx: Ctx, doc: Doc): RuleResult[] {
     rule("PO1", "Policy", "No channel the project does not offer", p1),
     rule("PO2", "Policy", "No forbidden claim, location or tax wording", p2),
     rule("PO3", "Policy", "No ranking guarantee", p3),
+    locationRule(ctx, doc, prose),
   ];
 }
 

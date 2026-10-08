@@ -45,14 +45,14 @@ When a missing fact is given, add it to `content/company.ts` (rendering) and to 
 
 ## 3. What the business is
 
-- A focused team **based in India**, serving small-business owners, freelancers and agencies worldwide.
+- A focused team serving small-business owners, freelancers and agencies worldwide. Where the team is based is a fact for `/about` only (decision 34): no other page says it.
 - **Owns no servers or data centres.** Buys servers from AWS, Google Cloud, DigitalOcean, Hetzner and similar providers, in various locations, and resells hosting on them. There is no fixed provider per city or plan.
 - Billing runs on WHMCS on a server in Europe (provider and country to be recorded).
 - Payments: Stripe (cards) and PayPal. Nothing else is shown as accepted until it is live.
 - Years of trading with existing customers in many countries and several currencies.
 
 **What the copy may and may not say about this**
-- Say: "a team in India", "runs on infrastructure from leading cloud providers", "for UK businesses".
+- Say: "a focused team" (never where it is based, except on `/about`), "runs on infrastructure from leading cloud providers", "for UK businesses".
 - Do not say: "our data centre", "our servers", "UK servers", "powered by [provider]", "partner of [provider]".
 - Name the cloud providers only in the sub-processor list, the DPA and the privacy policy.
 - A city is named only if the infrastructure registry (to be built) confirms it for that plan.

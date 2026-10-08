@@ -37,6 +37,8 @@ Decisions that shape what is written. Do not reopen without the owner. Date form
 | 31 | Home, About and Trust pages | The home page (`product` archetype) is a money page: 6 to 8 FAQ items, and 7 is fine. About and Trust pages are the brand archetype: 4 to 6 (owner, 2026-10-09) |
 | 32 | Interview banks | The interview questions for regional (Plan 05), policy (07), domain (08), brand and trust (09) and off-site (15) pages are the owner's exact wording, asked one at a time, answers recorded word for word, "none" drops the section. Domain question 1 was later reworded by the owner to "Which registrar or billing system sells these domains, and who supports transfers?" so the no-brand list needs no exception (owner, 2026-10-09) |
 | 33 | Reuse proof in CI | `npm run test:reuse` runs on ubuntu-latest and windows-latest in CI (owner, 2026-10-09) |
+| 34 | Location | No page says where the business is based except `/about` (owner, 2026-10-08). The company serves customers worldwide, so no title, description, headline or lead says "India" or "a team in India". The tax line ("Customers in India pay GST") is a tax rule, not a location claim, and stays. Enforced by check PO4 (`locationClaims` in `rules.config.json`) |
+| 35 | Titles | Page titles give a reason to choose us, so a visitor feels the benefit before clicking (owner, 2026-10-08). The reason must come from a claim that renders, a fact in the ledger, or the plain job of the page, never from a location or an unverified promise |
 
 ## Open (waiting on the owner)
 

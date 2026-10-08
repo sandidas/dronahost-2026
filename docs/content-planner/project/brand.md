@@ -161,7 +161,7 @@ Bad FAQ questions:
 
 ### Regional page (Plan 05)
 
-- Honest location: "DronaHost is a team based in India. We work with businesses in the UK from our time zone, and we share the hours when we are online."
+- Honest location (About page only, decision 34): "DronaHost is a team based in India. We work with businesses in the UK from our time zone, and we share the hours when we are online."
 - Rule sentence: "UK GDPR applies if you collect personal data from people in the UK, wherever your host is. You are the controller. We act as your processor and we sign a data processing agreement." `[HUMAN REVIEW: legal read]`
 - Tax line: "Prices exclude tax. Customers in India pay GST at checkout."
 - Currency line: "We show prices in pounds because you are in the UK. You can change the currency."
@@ -185,7 +185,7 @@ Bad FAQ questions:
 
 ### Navigational page (Plan 09)
 
-- Entity line: "DronaHost is a web hosting and web design company based in India, working with clients worldwide." (single source in the company registry)
+- Entity line (About page only; other pages leave out the location): "DronaHost is a web hosting and web design company based in India, working with clients worldwide." (single source in the company registry)
 - Verify us: "You can check us in three places: our company registration, our profile on `[review site]` and our team on LinkedIn."
 
 ### FAQ answers (Plan 10)

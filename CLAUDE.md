@@ -74,6 +74,8 @@ Guard bullets, non-negotiable even if you skip the folder:
 - Prices come only from `data/pricing.json`; same plans and prices for every country; only the currency changes.
 - Tax: customers in India pay GST, everyone else pays none. Never "+ VAT" or "VAT included".
 - No location claims and no cloud provider names on marketing pages. Write "for UK businesses", never "UK servers".
+- Where we are based is said on `/about` only (decision 34). No title, description, headline or lead on any other page says "India" or "a team in India". The GST line is a tax rule and stays. `npm run check:content` enforces it (PO4).
+- Page titles carry a reason to choose us (decision 35), from a rendering claim, a ledger fact or the page's plain job.
 - One keyword, one URL. Run `npm run check:register` after changing the register.
 - A person fills the brief (reader's question, our angle, first-hand knowledge, one original element) before any AI draft. Show the brief before long copy.
 - Never use AI for testimonials, reviews, team bios, case-study results or unreviewed legal text.

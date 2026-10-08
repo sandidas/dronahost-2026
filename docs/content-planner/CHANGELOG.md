@@ -2,6 +2,10 @@
 
 Versioned changes to the engine (rules, plans, tools). Business decisions are in `project/DECISIONS.md`.
 
+## 1.0.5 (2026-10-08)
+
+- Rule PO4: where the business is based may be said only on the pages the project lists (`locationClaims` in `project/rules.config.json`). A project without the setting skips it. A test covers it.
+
 ## 1.0.4 (2026-10-08)
 
 - Owner waivers. A page's front matter can name rules the owner has overruled: `waive_rules: K2, P2`, `waive_reason`, `waive_approved_by`. Their failures show as warnings that name the approver. Without a reason and an approver the waiver is ignored. A test covers it.

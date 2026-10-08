@@ -25,7 +25,9 @@ test.describe("home page (rendered from content/pages/home.json)", () => {
       expect(text, `main shows "${hidden}"`).not.toContain(hidden);
     }
     // The lead names DronaHost and uses the free-migration claim, which renders.
-    expect(text).toContain("dronahost is a focused team in india");
+    expect(text).toContain("dronahost is a focused team that offers managed wordpress hosting");
+    // Where we are based is said on /about only (decision 34). The GST line names India as a tax rule, which is fine.
+    expect(text.replace(/customers in india pay gst/g, "")).not.toMatch(/india|based in/);
     expect(text).toContain("we move your site for free");
   });
 
@@ -95,7 +97,7 @@ test.describe("home page (rendered from content/pages/home.json)", () => {
   test("metadata comes from the spec: title, description and a canonical for the home page", async ({ page }) => {
     await page.goto("/");
     await expect(page).toHaveTitle(/Managed WordPress Hosting for Small Businesses/);
-    await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /DronaHost is a focused team in India/);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /DronaHost is a focused team offering managed WordPress hosting/);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /dronahost\.com\/?$/);
   });
 });

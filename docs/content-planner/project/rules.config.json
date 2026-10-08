@@ -92,6 +92,18 @@
     "VAT included"
   ],
   "channelAllowlistFiles": [],
+  "locationClaims": {
+    "patterns": [
+      "\\b(based|located|headquartered|registered|run|runs|operate[sd]?|working)\\s+(in|from|out of)\\s+india\\b",
+      "\\b(team|company|studio|business|firm)\\s+(in|from)\\s+india\\b",
+      "\\bfrom\\s+india\\b",
+      "\\bmade in india\\b",
+      "\\bindian\\s+(company|team|business)\\b"
+    ],
+    "allowedPages": [
+      "/about"
+    ]
+  },
   "disclosureLine": "Drafted with AI assistance, then edited, fact-checked and approved by",
   "brandSuffixPattern": "(\\s[|\\-–:]\\s*DronaHost|DronaHost\\s*[|\\-–:])",
   "noBrand": {
