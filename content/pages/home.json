@@ -120,7 +120,8 @@
             "icon": "server",
             "requiresClaim": "claim:managed-vps-scope"
           }
-        ]
+        ],
+        "compact": true
       }
     },
     {

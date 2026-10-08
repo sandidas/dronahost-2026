@@ -76,7 +76,7 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
     render: ({ content: c }, ctx) => {
       // Gate with the resolve context, then drop the claim ids so the component does not gate a second time.
       const paths = c.paths.filter((p) => !p.requiresClaim || resolveClaimRef(p.requiresClaim, ctx)).map((p) => ({ title: p.title, line: p.line, href: p.href, cta: p.cta, icon: p.icon }));
-      return <PathRouter eyebrow={c.eyebrow} title={c.h2} description={c.description} paths={paths} />;
+      return <PathRouter eyebrow={c.eyebrow} title={c.h2} description={c.description} paths={paths} compact={c.compact} />;
     },
   },
   AnswerBlock: {

@@ -23,6 +23,8 @@ type PathRouterProps = {
   title: string;
   description?: string;
   paths: readonly RouterPath[];
+  /** Smaller cards with the icon beside the text. Use when each path has one short line and the full-size cards would look empty. */
+  compact?: boolean;
   /** Showcase only: show gated paths too, with a visible label. */
   showSamples?: boolean;
   /** Heading level of the section title; path titles sit one level below. Default "h2". */
@@ -36,7 +38,7 @@ type PathRouterProps = {
  * so the destination text stays descriptive and crawlable). A path whose `claim` is not rendering is left out, and with
  * fewer than two paths left the whole section is omitted, because a router with one choice is not a router.
  */
-export default function PathRouter({ eyebrow, title, description, paths, showSamples = false, headingLevel = "h2", className }: PathRouterProps) {
+export default function PathRouter({ eyebrow, title, description, paths, compact = false, showSamples = false, headingLevel = "h2", className }: PathRouterProps) {
   const headingId = useId();
   const Item = headingLevel === "h2" ? "h3" : "h4";
   const shown = visibleItems(paths, { showAll: showSamples });
@@ -49,17 +51,19 @@ export default function PathRouter({ eyebrow, title, description, paths, showSam
         <ul className="mt-12 grid gap-4 sm:mt-14 sm:gap-5 md:grid-cols-2">
           {shown.map((path, i) => (
             <li key={path.href + path.title} className="flex" {...reveal(i)}>
-              <div className="surface surface-interactive relative flex w-full flex-col p-6 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-4 has-[a:focus-visible]:outline-solid has-[a:focus-visible]:outline-(--ring) sm:p-8">
-                {path.icon && <FeatureIcon name={path.icon} size="lg" className="mb-6" />}
-                <Item className="t-h3 text-balance text-foreground">{path.title}</Item>
-                <p className="t-body mt-3 flex-1 text-muted-foreground">{path.line}</p>
-                <Link
-                  href={path.href}
-                  className="mt-6 inline-flex min-h-11 items-center gap-2 self-start text-base font-semibold text-link after:absolute after:inset-0 after:content-[''] focus-visible:!outline-none"
-                >
-                  {path.cta}
-                  <ArrowRight className="arrow-nudge size-5 rtl:rotate-180" aria-hidden="true" strokeWidth={2} />
-                </Link>
+              <div className={cn("surface surface-interactive relative flex w-full has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-4 has-[a:focus-visible]:outline-solid has-[a:focus-visible]:outline-(--ring)", compact ? "items-start gap-4 p-5 sm:gap-5 sm:p-6" : "flex-col p-6 sm:p-8")}>
+                {path.icon && <FeatureIcon name={path.icon} size={compact ? "md" : "lg"} className={cn(compact ? "shrink-0" : "mb-6")} />}
+                <div className={cn("flex min-w-0 flex-1 flex-col", !compact && "w-full")}>
+                  <Item className={cn("text-balance text-foreground", compact ? "t-h4" : "t-h3")}>{path.title}</Item>
+                  <p className={cn("t-body flex-1 text-muted-foreground", compact ? "mt-1.5" : "mt-3")}>{path.line}</p>
+                  <Link
+                    href={path.href}
+                    className={cn("inline-flex min-h-11 items-center gap-2 self-start text-base font-semibold text-link after:absolute after:inset-0 after:content-[''] focus-visible:!outline-none", compact ? "mt-3" : "mt-6")}
+                  >
+                    {path.cta}
+                    <ArrowRight className="arrow-nudge size-5 rtl:rotate-180" aria-hidden="true" strokeWidth={2} />
+                  </Link>
+                </div>
                 {showSamples && path.claim && <p className="mt-3 text-xs font-semibold text-warning">Sample: hidden until &ldquo;{path.claim}&rdquo; is confirmed</p>}
               </div>
             </li>

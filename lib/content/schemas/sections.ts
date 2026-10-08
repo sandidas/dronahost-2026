@@ -50,6 +50,7 @@ export const PathRouter = z.strictObject({
     eyebrow,
     h2: z.string().min(8).max(60),
     description,
+    compact: z.boolean().optional(),
     paths: z
       .array(
         z.strictObject({

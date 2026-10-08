@@ -26,7 +26,7 @@ function WindowChrome({ label }: { label: string }) {
 }
 
 /** A site-management dashboard: navigation rail, trend chart and status tiles. */
-export function SiteDashboardMockup({ className }: { className?: string }) {
+export function SiteDashboardMockup({ className, tiles = ["Site", "Backups", "Support"] }: { className?: string; /** Three tile labels. Keep them to things the page can back up: the mockup is decoration, so it must not hint at an unverified feature such as speed or security scores. */ tiles?: readonly string[] }) {
   return (
     <div aria-hidden="true" className={cn("relative", className)}>
       <div className="surface surface-raised overflow-hidden !rounded-2xl shadow-xl">
@@ -78,7 +78,7 @@ export function SiteDashboardMockup({ className }: { className?: string }) {
             </div>
 
             <div className="grid grid-cols-3 gap-3">
-              {["Speed", "Backups", "Security"].map((label, i) => (
+              {tiles.slice(0, 3).map((label, i) => (
                 <div key={label} className="rounded-xl border border-border bg-card p-3">
                   <p className="text-[0.6875rem] font-semibold uppercase tracking-wider text-subtle-foreground">{label}</p>
                   <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-border">

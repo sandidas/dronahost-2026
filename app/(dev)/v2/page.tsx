@@ -627,6 +627,10 @@ export default function V2ShowcasePage() {
                 <PathRouter eyebrow="Start here" title="Where are you starting from?" description="Pick the line that sounds like you and we will point you to the right place." paths={SAMPLE_PATHS} showSamples headingLevel="h3" className="!py-0" />
               </div>
               <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Compact: smaller cards with the icon beside the text, for two short paths</p>
+                <PathRouter title="Where are you starting from?" paths={SAMPLE_PATHS.slice(0, 2)} showSamples compact headingLevel="h3" className="!py-0" />
+              </div>
+              <div>
                 <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Edge case: two paths, very long text</p>
                 <PathRouter title="Where are you starting from?" paths={SAMPLE_PATHS_LONG} headingLevel="h3" className="!py-0" />
               </div>

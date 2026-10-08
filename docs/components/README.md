@@ -28,7 +28,7 @@ Import the design tokens from `app/styles/tokens.css` (color, radius, shadow, ty
 
 | Component | Use |
 |---|---|
-| `ProductHero` | Homepage/flagship: display headline, highlights, dashboard mockup |
+| `ProductHero` | Homepage/flagship: display headline, highlights, dashboard mockup (decorative; three neutral tile labels) |
 | `SplitHero` | Service/feature pages: text beside a staging-workflow mockup (`reverse` swaps sides) |
 | `CenteredHero` | Text-led pages (About, SEO, blog, contact, regions) |
 

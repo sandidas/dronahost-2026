@@ -5,6 +5,8 @@ Branch `polish/design-system`. Each batch is one commit.
 ## Home page design pass (2026-10-08)
 - `TrustSignals` gets `variant="list"` and `SupportChannels` gets `layout="split"`, both shown in `/v2`. The page-spec schema takes `variant` and `layout`. The home page uses them so the same three claims no longer appear as three card grids.
 
+- `PathRouter` gets `compact` (shown in `/v2`). `SiteDashboardMockup` takes `tiles`, and its default labels are now Site, Backups and Support: the old Speed and Security tiles hinted at features that are not verified.
+
 ## Baseline
 - Snapshot of in-progress work before the polish (`c82d00b`).
 
