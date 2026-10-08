@@ -1,0 +1,92 @@
+{
+  "id": "home",
+  "path": "/",
+  "primaryKeyword": "crumb and co",
+  "secondaryKeywords": [],
+  "seo": {
+    "title": "Fresh Bread Boxes, Delivered Weekly",
+    "description": "Crumb and Co bakes bread each morning and brings a weekly box to your door in one town. See the boxes, or ask about a wedding cake.",
+    "schema": [
+      "Organization",
+      "BreadcrumbList"
+    ]
+  },
+  "rules": {
+    "reviewedOn": "2026-10-08"
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "type": "Hero",
+      "content": {
+        "h1": "Fresh bread, brought to your door each week",
+        "lead": "We bake in the morning and deliver the same day in one town.",
+        "cta": {
+          "label": "See the bread boxes",
+          "href": "/subscription"
+        }
+      }
+    },
+    {
+      "id": "answer",
+      "type": "AnswerBlock",
+      "content": {
+        "answer": "Crumb and Co is a small bakery in one town. We bake bread each morning and deliver a weekly box to your door the same day. You choose a box size, skip any week you like, and cancel at any time. We also bake wedding cakes to order, planned with you in advance."
+      }
+    },
+    {
+      "id": "claims",
+      "type": "AssuranceStrip",
+      "content": {
+        "claims": [
+          "claim:fresh-daily"
+        ]
+      }
+    },
+    {
+      "id": "links",
+      "type": "LinkList",
+      "content": {
+        "items": [
+          {
+            "label": "Weekly bread boxes",
+            "href": "/subscription"
+          },
+          {
+            "label": "Wedding cakes",
+            "href": "/wedding-cakes"
+          },
+          {
+            "label": "How to store sourdough bread",
+            "href": "/kb/store-sourdough-bread"
+          }
+        ]
+      }
+    },
+    {
+      "id": "faq",
+      "type": "FAQSection",
+      "content": {
+        "h2": "Questions about our boxes",
+        "items": [
+          {
+            "q": "Where do you deliver?",
+            "a": "We deliver in one town only. We do not ship to other areas, because the bread is baked in the morning and needs to arrive the same day. If you live outside our delivery area, the order form will tell you before you pay, so there are no surprises later."
+          },
+          {
+            "q": "Can I skip a week?",
+            "a": "Yes. You can skip any week from your account before the baking day starts. Nothing is charged for a skipped week, and your box returns the week after. If you want to stop completely, you can cancel from the same page at any time without a fee."
+          },
+          {
+            "q": "How do I order a wedding cake?",
+            "a": "Wedding cakes are made to order and planned well before the date. Send us the date, the number of guests and any food needs through the contact page. We reply by email with a plan and a price, and you decide whether to go ahead."
+          },
+          {
+            "q": "How should I store the bread?",
+            "a": "Keep a cut loaf in a paper bag or a bread bin, away from heat. Do not put it in the fridge, because it goes stale faster there. Our guide on storing sourdough bread explains each method and when to freeze a loaf for later."
+          }
+        ]
+      }
+    }
+  ]
+}

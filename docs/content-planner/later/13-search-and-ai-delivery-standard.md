@@ -5,7 +5,7 @@
 
 > **What this does and does not promise.** No one can make a site "100% SEO optimized" or guarantee a ranking or an AI citation. Search engines and AI tools change and do not publish their rules. What we can do is remove every technical obstacle, publish clear, true, well-sourced pages, and measure. This standard defines that. Where a claim about a search or AI system is uncertain, it is marked as an assumption to re-check.
 
-Related: [docs/rules/seo-rules.md](../../rules/seo-rules.md) holds the implementation code. This file holds the **gates** and does not repeat the code.
+Related: the host project's SEO rules (for example `docs/rules/seo-rules.md`) hold the implementation code. This file holds the **gates** and does not repeat the code.
 
 ## 1. Crawl and index gates
 

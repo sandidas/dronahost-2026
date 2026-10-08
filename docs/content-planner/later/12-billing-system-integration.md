@@ -3,7 +3,7 @@
 **Purpose:** decide what the billing system owns, what the website owns, how the two stay in agreement, and which content and search tasks the billing system can automate.
 **Not an intent plan.** It supports Plans 01, 05, 08 and 11 and is the content side of a billing integration. It does not change code.
 
-This file is the reusable outline. The facts, owner decisions, audit results and price rules for this project are in the project copy: [project/later/12-whmcs-data-and-automation.md](../project/later/12-whmcs-data-and-automation.md).
+This file is the reusable outline. The facts, owner decisions, audit results and price rules for this project are in the project copy: [project/later/12-billing-system-integration.md](../project/later/12-billing-system-integration.md).
 
 ## Sections to fill in for a new project
 

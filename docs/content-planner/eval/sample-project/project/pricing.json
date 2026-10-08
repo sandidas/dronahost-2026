@@ -1,0 +1,31 @@
+{
+  "_meta": {
+    "note": "Fictional prices for the sample project."
+  },
+  "plans": [
+    {
+      "id": "weekly-box",
+      "name": "Weekly bread box",
+      "pricing": {
+        "monthly": {
+          "USD": 24
+        }
+      },
+      "renewal": {
+        "USD": 24
+      }
+    },
+    {
+      "id": "family-box",
+      "name": "Family bread box",
+      "pricing": {
+        "monthly": {
+          "USD": 39.5
+        }
+      },
+      "renewal": {
+        "USD": 39.5
+      }
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "$comment": "Host integration. Every path is relative to this file. Schema: schemas/config.ts",
+  "name": "Crumb and Co",
+  "locale": "en-US",
+  "paths": {
+    "register": "project/keyword-register.md",
+    "pricing": "project/pricing.json",
+    "claims": "project/claims.json",
+    "company": "project/company.json",
+    "pages": "project/pages",
+    "posts": null,
+    "briefs": "project/briefs",
+    "facts": "project/facts",
+    "drafts": "project/drafts",
+    "rulesConfig": "project/rules.config.json"
+  },
+  "adapters": {
+    "claims": "json",
+    "pricing": "json",
+    "posts": "files",
+    "wordpress": {
+      "apiUrlEnv": "WORDPRESS_API_URL",
+      "userEnv": "WORDPRESS_USER",
+      "passwordEnv": "WORDPRESS_APP_PASSWORD",
+      "webhookSecretEnv": "CONTENT_WEBHOOK_SECRET",
+      "urlTemplate": "/kb/{slug}",
+      "fields": {
+        "title": "title.rendered",
+        "slug": "slug",
+        "content": "content.rendered",
+        "author": "_embedded.author.0.name",
+        "seo_title": "meta.seo_title",
+        "meta_description": "meta.meta_description",
+        "primary_keyword": "meta.primary_keyword",
+        "plan": "meta.plan",
+        "locale": "meta.locale",
+        "reviewer": "meta.reviewer",
+        "ai_assisted": "meta.ai_assisted",
+        "reviewed_on": "meta.reviewed_on",
+        "next_review_on": "meta.next_review_on",
+        "author_page": "meta.author_page",
+        "reviews_source": "meta.reviews_source",
+        "url_path": "meta.url_path"
+      },
+      "stateMap": {
+        "draft": "Draft",
+        "auto-draft": "Draft",
+        "pending": "Ready for owner review",
+        "future": "Ready for owner review",
+        "publish": "Published",
+        "private": "Published"
+      }
+    },
+    "pageSpec": null
+  },
+  "governor": {
+    "maxInFlight": 3,
+    "monthlyNewPages": 4,
+    "paused": false
+  },
+  "cta": {
+    "bannedLabels": [],
+    "cardLabelTemplate": "Choose {plan}"
+  },
+  "limits": {
+    "titleSuffix": " | Crumb and Co",
+    "titleWarnAbove": 60,
+    "titleFailAbove": 70,
+    "descriptionWarnAbove": 160,
+    "sentenceMax": 28,
+    "averageSentenceMax": 20,
+    "gradeTarget": [
+      8,
+      10
+    ],
+    "gradeWarnAbove": 10,
+    "gradeFailAbove": 11,
+    "answerBlockWords": [
+      40,
+      80
+    ],
+    "faqItems": [
+      4,
+      6
+    ],
+    "faqAnswerWarnBelow": 40,
+    "faqAnswerFailAbove": 80,
+    "internalLinksMin": 3,
+    "faqItemsByPlan": {},
+    "similarity": {
+      "shingleWords": 5,
+      "threshold": 0.3
+    },
+    "linksSuggested": 3
+  },
+  "web": {
+    "serpSource": "claude-web",
+    "gscSource": "csv"
+  }
+}

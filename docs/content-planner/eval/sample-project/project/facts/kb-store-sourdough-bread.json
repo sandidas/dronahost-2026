@@ -1,0 +1,33 @@
+{
+  "$comment": "Fictional sample ledger: the sources are example.com pages, not real.",
+  "slug": "/kb/store-sourdough-bread",
+  "updated": "2026-10-05",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "A paper bag lets a loaf breathe and keeps the crust crisp (fictional sample fact)",
+      "kind": "claim",
+      "source": {
+        "type": "url",
+        "ref": "https://example.com/sample-bread-storage",
+        "pageDate": "2026-09-01"
+      },
+      "retrievedOn": "2026-10-05",
+      "checkedBy": "Jo Baker",
+      "status": "verified"
+    },
+    {
+      "id": "F2",
+      "fact": "Slicing before freezing lets a person take out single slices (fictional sample fact)",
+      "kind": "claim",
+      "source": {
+        "type": "url",
+        "ref": "https://example.com/sample-freezing-guide",
+        "pageDate": "2026-09-01"
+      },
+      "retrievedOn": "2026-10-05",
+      "checkedBy": "Jo Baker",
+      "status": "verified"
+    }
+  ]
+}

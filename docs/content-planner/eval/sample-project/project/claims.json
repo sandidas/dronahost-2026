@@ -1,0 +1,17 @@
+[
+  {
+    "id": "fresh-daily",
+    "verified": true,
+    "status": "verified"
+  },
+  {
+    "id": "gluten-free",
+    "verified": false,
+    "status": "unverified"
+  },
+  {
+    "id": "stone-baked",
+    "verified": false,
+    "status": "unverified"
+  }
+]
