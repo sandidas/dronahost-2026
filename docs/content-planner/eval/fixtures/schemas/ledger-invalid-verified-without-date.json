@@ -1,0 +1,22 @@
+{
+  "slug": "/kb/check-wordpress-version",
+  "updated": "2026-10-08",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "The Updates screen in the dashboard shows the installed version number.",
+      "kind": "procedure",
+      "source": { "type": "url", "ref": "https://wordpress.org/documentation/article/dashboard-updates-screen/" },
+      "status": "verified"
+    },
+    {
+      "id": "F1",
+      "fact": "A second fact that reuses the id.",
+      "kind": "claim",
+      "source": { "type": "unresolved", "ref": "somewhere" },
+      "status": "verified",
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Sam Example"
+    }
+  ]
+}

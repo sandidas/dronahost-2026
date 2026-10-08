@@ -1,0 +1,19 @@
+{
+  "$comment": "Minimum envelope for a page spec. Section types and their content are validated by the host adapter (adapters.pageSpec in the config), not here. Schema: schemas/page-envelope.ts",
+  "id": "example-page",
+  "path": "/example-page",
+  "primaryKeyword": "<register keyword>",
+  "secondaryKeywords": [],
+  "seo": {
+    "title": "<page title without the brand suffix>",
+    "description": "<outcome, difference, next step>"
+  },
+  "rules": {
+    "reviewedOn": "2026-01-01"
+  },
+  "sections": [
+    { "id": "hero", "type": "<HeroType>", "content": {} },
+    { "id": "answer", "type": "AnswerBlock", "content": {} },
+    { "id": "faq", "type": "FAQSection", "content": {} }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "fixture-envelope",
+  "path": "/fixture-envelope",
+  "primaryKeyword": "fixture envelope page",
+  "seo": { "title": "Fixture Envelope Page", "description": "A small page used to test the page envelope schema." },
+  "rules": { "reviewedOn": "2026-10-08" },
+  "sections": [
+    { "id": "hero", "type": "SomeHero", "content": { "h1": "Fixture" } },
+    { "id": "faq", "type": "FAQSection", "content": { "items": [] } }
+  ]
+}

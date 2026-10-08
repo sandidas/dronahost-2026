@@ -1,0 +1,22 @@
+{
+  "slug": "/kb/check-wordpress-version",
+  "updated": "2026-10-08",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "The Updates screen in the dashboard shows the installed version number.",
+      "kind": "procedure",
+      "source": { "type": "url", "ref": "https://wordpress.org/documentation/article/dashboard-updates-screen/", "pageDate": "2025-01-15" },
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Claude (fetch), owner to confirm",
+      "status": "verified"
+    },
+    {
+      "id": "F2",
+      "fact": "The page source of a default install lists the version in a generator meta tag.",
+      "kind": "procedure",
+      "source": { "type": "unresolved", "ref": "WordPress developer documentation, not read yet" },
+      "status": "needs-check"
+    }
+  ]
+}

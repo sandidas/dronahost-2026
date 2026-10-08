@@ -24,7 +24,9 @@
     "test:content": "tsx --test docs/content-planner/tools/check-content.test.ts",
     "check:config": "tsx docs/content-planner/tools/check-config.ts",
     "check:no-brand": "tsx docs/content-planner/tools/check-no-brand.ts",
-    "check:links": "tsx docs/content-planner/tools/check-links.ts"
+    "check:links": "tsx docs/content-planner/tools/check-links.ts",
+    "check:schemas": "tsx docs/content-planner/tools/check-schemas.ts",
+    "test:schemas": "tsx --test docs/content-planner/tools/check-schemas.test.ts"
   },
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.1146.0",

@@ -1,0 +1,17 @@
+{
+  "$comment": "One fact ledger per page. The draft may use only facts listed here, interview answers and claims that render. Schema: schemas/fact-ledger.ts",
+  "slug": "/kb/example-page",
+  "updated": "2026-01-01",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "<the exact fact the page may state, with its number and unit>",
+      "kind": "number",
+      "source": { "type": "url", "ref": "https://example.com/source-page", "title": "<page title>", "pageDate": "2026-01-01" },
+      "retrievedOn": "2026-01-01",
+      "checkedBy": "<name, or Claude (fetch) with the owner to confirm>",
+      "status": "needs-check",
+      "usedIn": ["<outline section>"]
+    }
+  ]
+}

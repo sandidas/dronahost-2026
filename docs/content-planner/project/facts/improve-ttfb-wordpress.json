@@ -1,0 +1,14 @@
+{
+  "$comment": "Converted from improve-ttfb-wordpress.md in Phase 2. The .md copy is deleted only after the owner approves and F1 reads this file (Phase 3).",
+  "slug": "/kb/improve-ttfb-wordpress",
+  "updated": "2026-10-08",
+  "facts": [
+    { "id": "F1", "fact": "Good TTFB is 0.8 seconds or less", "kind": "number", "source": { "type": "url", "ref": "https://web.dev/articles/ttfb", "pageDate": "2025-11-18" }, "retrievedOn": "2026-10-08", "checkedBy": "Claude (fetch), owner to confirm", "status": "verified" },
+    { "id": "F2", "fact": "Poor TTFB is more than 1.8 seconds", "kind": "number", "source": { "type": "url", "ref": "https://web.dev/articles/ttfb", "pageDate": "2025-11-18" }, "retrievedOn": "2026-10-08", "checkedBy": "Claude (fetch), owner to confirm", "status": "verified" },
+    { "id": "F3", "fact": "DevTools shows \"Waiting for server response\" under Network, Timing", "kind": "procedure", "source": { "type": "unresolved", "ref": "Chrome DevTools Network panel documentation, not read yet" }, "status": "needs-check" },
+    { "id": "F4", "fact": "TTFB is not one of the three Core Web Vitals (LCP, INP, CLS)", "kind": "definition", "source": { "type": "unresolved", "ref": "web.dev Core Web Vitals page, not read yet" }, "status": "needs-check" },
+    { "id": "F5", "fact": "A CDN that serves only static files does not lower page TTFB; full-page caching can", "kind": "claim", "source": { "type": "unresolved", "ref": "a CDN vendor's documentation, not read yet" }, "status": "needs-check" },
+    { "id": "F6", "fact": "Newer supported PHP versions usually run WordPress faster", "kind": "claim", "source": { "type": "unresolved", "ref": "php.net or WordPress documentation, not read yet" }, "status": "needs-check" },
+    { "id": "F7", "fact": "Query Monitor is a plugin that shows slow queries", "kind": "definition", "source": { "type": "unresolved", "ref": "wordpress.org plugin page, not read yet" }, "status": "needs-check" }
+  ]
+}

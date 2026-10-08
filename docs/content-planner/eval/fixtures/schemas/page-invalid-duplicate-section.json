@@ -1,0 +1,22 @@
+{
+  "id": "fixture-envelope",
+  "path": "/fixture-envelope",
+  "primaryKeyword": "fixture envelope page",
+  "seo": {
+    "title": "Fixture Envelope Page",
+    "description": "Repeats a section id so the envelope check fails."
+  },
+  "rules": {
+    "reviewedOn": "2026-10-08"
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "type": "SomeHero"
+    },
+    {
+      "id": "hero",
+      "type": "FAQSection"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": "fixture-envelope",
+  "path": "/fixture-envelope",
+  "primaryKeyword": "fixture envelope page",
+  "seo": {
+    "title": "Fixture Envelope Page",
+    "description": "Missing the review date."
+  },
+  "rules": {},
+  "sections": [
+    {
+      "id": "hero",
+      "type": "SomeHero"
+    }
+  ]
+}
