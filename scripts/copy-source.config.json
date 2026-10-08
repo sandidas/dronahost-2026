@@ -1,0 +1,27 @@
+{
+  "$comment": "Files that render page sections. check-copy-source.ts fails on any visible text literal in them. Page copy lives in content/pages/*.json, claims in content/claims.ts, and UI text in content/strings.ts.",
+  "files": [
+    "components/sections/ProductHero.tsx",
+    "components/sections/hero/HeroContent.tsx",
+    "components/sections/hero/mockups.tsx",
+    "components/sections/AssuranceStrip.tsx",
+    "components/sections/SectionHeader.tsx",
+    "components/sections/AnswerBlock.tsx",
+    "components/sections/bespoke/PathRouter.tsx",
+    "components/sections/bespoke/ResponsibilitySplit.tsx",
+    "components/sections/ProcessTimeline.tsx",
+    "components/sections/BentoGrid.tsx",
+    "components/sections/PricingPlans.tsx",
+    "components/sections/SupportChannels.tsx",
+    "components/sections/Testimonials.tsx",
+    "components/sections/TrustSignals.tsx",
+    "components/sections/FAQSection.tsx",
+    "components/sections/CTABand.tsx",
+    "lib/content/registry.tsx",
+    "lib/content/published-pages.ts"
+  ],
+  "textAttributes": ["aria-label", "alt", "title", "placeholder", "label", "description", "eyebrow", "caption", "summary"],
+  "textKeys": ["title", "description", "label", "text", "cta", "linkLabel", "heading", "eyebrow", "caption", "line", "question", "answer", "note", "message", "name"],
+  "$allow": "Exact strings that may stay in a component: structure, not copy.",
+  "allow": []
+}

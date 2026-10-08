@@ -13,7 +13,8 @@
     "facts": "project/facts",
     "drafts": "project/drafts",
     "rulesConfig": "project/rules.config.json",
-    "pricingModule": "project/adapters/pricing.ts"
+    "pricingModule": "project/adapters/pricing.ts",
+    "blueprints": "project/blueprints.json"
   },
   "adapters": {
     "claims": "ts-export",
@@ -79,6 +80,14 @@
         "publish": "Published",
         "private": "Published"
       }
+    },
+    "pageVisibility": {
+      "$comment": "Prints which sections of each page are visible after gating (JSON). Blueprint checks BP2 to BP4, BP10 and BP11 use it.",
+      "command": "npx tsx scripts/page-visibility.ts"
+    },
+    "copySource": {
+      "$comment": "Fails on page copy in a section component instead of the page JSON, claims or content/strings.ts. Blueprint check BP9.",
+      "command": "npx tsx scripts/check-copy-source.ts"
     }
   },
   "governor": {

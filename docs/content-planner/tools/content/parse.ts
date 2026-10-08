@@ -122,7 +122,7 @@ function parseJson(file: string, text: string, copy: CopyOptions): Doc {
     const c = (sec.content ?? {}) as Json;
     add(c.h1 as string, (n) => h1.push({ n, text: c.h1 as string }));
     add(c.h2 as string, (n) => headings.push({ n, level: 2, text: c.h2 as string }));
-    if (sec.type === "AnswerBlock" && typeof c.answer === "string") answer = { n: lineOf(raw, c.answer), text: c.answer };
+    if (typeof c.answer === "string" && !answer) answer = { n: lineOf(raw, c.answer), text: c.answer };
     if (sec.type === "FAQSection" && Array.isArray(c.items)) {
       for (const it of c.items as Json[]) if (typeof it.q === "string" && typeof it.a === "string") faq.push({ n: lineOf(raw, it.q), q: it.q, a: it.a });
     }

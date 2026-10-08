@@ -16,6 +16,8 @@
     "qa:entities": "tsx scripts/qa/entities.ts",
     "qa": "npm run check:contrast && npm run qa:axe && npm run qa:links && npm run qa:jsonld && npm run qa:entities",
     "test:e2e": "playwright test",
+    "check:copy-source": "tsx scripts/check-copy-source.ts",
+    "content:page-map": "tsx scripts/page-map.ts",
     "check:pages": "tsx docs/content-planner/tools/check-content.ts content/pages",
     "lint:content": "tsx docs/content-planner/tools/check-content.ts content/pages",
     "check:register": "tsx docs/content-planner/tools/check-register.ts",
