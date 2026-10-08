@@ -9,6 +9,7 @@
 - **Workflow:** [content-writer-workflow.md](../rules/content-writer-workflow.md), Stages 0 to 3 and 5 to 7 (page spec). This plan supplies the outline (Stage 3), the CTA and the checklist (Stage 6).
 - **Intent:** Buy.
 - **Interview:** The **Money page** bank in [interview-questions.md](../rules/interview-questions.md).
+- **Page blueprint:** the section count, required sections, order and per-section limits for this page type are in [page-blueprints.md](../rules/page-blueprints.md). The blueprint this project uses for each URL is in `project/page-map.md`; a page spec names it in its `blueprint` field.
 - **Brief and limits:** [brief.md](../templates/brief.md) holds the field list, including the information gain and the original element. [governor.md](../rules/governor.md) holds the caps. Length, title, description and reading limits are in the config, not in this plan.
 - **Schema:** FAQ and HowTo markup give no Google rich result ([sources.md](../rules/sources.md), item 5). Use them only when they match the visible content and help the reader.
 

@@ -11,7 +11,7 @@ Copy the folder into any project, fill in `project/`, and it works (see "Reuse")
 1. Read this file, then `project/PROJECT.md` (business facts), `project/DECISIONS.md` (owner decisions) and `project/brand.md` (voice and terms).
 2. Follow [rules/content-writer-workflow.md](rules/content-writer-workflow.md), stages 0 to 7. If you were given a **title**, derive the keyword, show it with your reason, and ask the owner to confirm before continuing.
 3. Find the keyword's plan with "Which plan owns a keyword" below and read that file in `plans/`. If `project/plan-specifics/<same name>.md` exists, read it too (only plans that held business facts have one).
-4. Read [rules/voice.md](rules/voice.md). Open [rules/content-writing-rules.md](rules/content-writing-rules.md) for the section you need.
+4. For a page (not an article), open [rules/page-blueprints.md](rules/page-blueprints.md) and the project's [page map](project/page-map.md): the blueprint fixes the section count, the required sections, their order and their limits. Read [rules/voice.md](rules/voice.md). Open [rules/content-writing-rules.md](rules/content-writing-rules.md) for the section you need.
 5. Check `project/keyword-register.md` for an existing owner of the keyword, and the governor ([rules/governor.md](rules/governor.md)): stop if a cap is reached or the pause switch is on.
 6. Build the brief from [templates/brief.md](templates/brief.md), interview the owner with [rules/interview-questions.md](rules/interview-questions.md), and **stop at APPROVAL 1**. No long copy before it.
 7. Never invent a fact, a quote, a customer, a review, or first-hand experience. Anything not in `project/PROJECT.md`, the claims registry, the pricing file or the interview becomes a `[HUMAN REVIEW: ...]` note.
@@ -50,7 +50,7 @@ docs/content-planner/
     PROJECT.md  DECISIONS.md  keyword-register.md  roadmap.md  team-and-workflow.md  url-inventory.md
     measurement.md  learning-log.md  code-follow-ups.md  brand.md  rules.config.json
     plan-specifics/  briefs/  drafts/  facts/  later/
-  rules/                       reusable rules, no business facts
+  rules/                       reusable rules, no business facts (page-blueprints.md: sections by search intent)
     content-writer-workflow.md  content-writing-rules.md  voice.md  eeat-and-people-first.md  ai-search.md
     governor.md  information-gain.md  interview-questions.md  quality-rubric.md  sources.md  wordpress-content-model.md
   plans/                       one plan per search intent: 01 to 10, 14, 15
