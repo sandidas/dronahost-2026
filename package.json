@@ -21,7 +21,7 @@
     "check:register": "tsx docs/content-planner/tools/check-register.ts",
     "check:vs": "tsx scripts/check-vs.ts",
     "check:content": "tsx docs/content-planner/tools/check-content.ts",
-    "test:content": "tsx --test docs/content-planner/tools/check-content.test.ts",
+    "test:content": "tsx --test docs/content-planner/tools/check-content.test.ts docs/content-planner/tools/check-blueprints.test.ts",
     "check:config": "tsx docs/content-planner/tools/check-config.ts",
     "check:no-brand": "tsx docs/content-planner/tools/check-no-brand.ts",
     "check:links": "tsx docs/content-planner/tools/check-links.ts",

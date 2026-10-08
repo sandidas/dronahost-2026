@@ -1,0 +1,89 @@
+{
+  "id": "twin",
+  "path": "/twin",
+  "blueprint": "B1",
+  "primaryKeyword": "example",
+  "archetype": "product",
+  "seo": {
+    "title": "Example page title",
+    "description": "A short description of the example page for tests.",
+    "schema": []
+  },
+  "rules": {
+    "reviewedOn": "2026-10-08"
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "type": "ProductHero",
+      "variant": "dash",
+      "content": {
+        "eyebrow": "Example",
+        "h1": "A clear heading for the page",
+        "lead": "One short sentence that says who this is for.",
+        "ctaPrimary": {
+          "label": "See the plans",
+          "href": "/plans"
+        },
+        "ctaSecondary": {
+          "label": "Talk to the team",
+          "href": "/contact"
+        }
+      }
+    },
+    {
+      "id": "assurance",
+      "type": "AssuranceStrip",
+      "content": {
+        "claims": [
+          "claim:alpha"
+        ]
+      }
+    },
+    {
+      "id": "router",
+      "type": "PathRouter",
+      "content": {
+        "h2": "Where do you start?",
+        "paths": [
+          {
+            "title": "I have a site",
+            "line": "We move it for you.",
+            "href": "/a",
+            "cta": "See how"
+          },
+          {
+            "title": "I need a site",
+            "line": "Start from scratch here.",
+            "href": "/b",
+            "cta": "See plans"
+          }
+        ]
+      }
+    },
+    {
+      "id": "faq",
+      "type": "FAQSection",
+      "content": {
+        "h2": "Questions before you choose",
+        "items": [
+          {
+            "q": "What is this thing exactly?",
+            "a": "It is a plain example answer that has enough words."
+          }
+        ]
+      }
+    },
+    {
+      "id": "cta",
+      "type": "CTABand",
+      "content": {
+        "h2": "Ready to start?",
+        "ctaPrimary": {
+          "label": "See the plans",
+          "href": "/plans"
+        }
+      }
+    }
+  ]
+}

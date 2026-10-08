@@ -19,6 +19,8 @@ export const ConfigSchema = z.object({
     facts: z.string().min(1),
     drafts: z.string().min(1),
     rulesConfig: z.string().min(1),
+    /** Blueprint data (schemas/blueprints.ts). Without it the Blueprint checks are skipped. */
+    blueprints: z.string().min(1).optional(),
   }),
   adapters: z.object({
     claims: z.enum(["ts-export", "json"]),
@@ -50,6 +52,10 @@ export const ConfigSchema = z.object({
         labelKeys: z.array(z.string()).default([]),
       })
       .nullable(),
+    /** Prints which sections of each page are visible after gating, as JSON on stdout (schemas/blueprints.ts, VisibilitySchema). */
+    pageVisibility: z.object({ command: z.string().min(1) }).nullable().optional(),
+    /** Exits 1 and prints a line for each piece of page copy found in a component instead of the page JSON or the shared strings file. */
+    copySource: z.object({ command: z.string().min(1) }).nullable().optional(),
   }),
   governor: z.object({
     maxInFlight: z.number().int().positive(),

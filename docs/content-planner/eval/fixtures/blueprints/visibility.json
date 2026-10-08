@@ -1,0 +1,838 @@
+{
+  "pages": {
+    "/pass": {
+      "sections": [
+        {
+          "id": "hero",
+          "type": "ProductHero",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 10
+        },
+        {
+          "id": "assurance",
+          "type": "AssuranceStrip",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 5
+        },
+        {
+          "id": "router",
+          "type": "PathRouter",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 8
+        },
+        {
+          "id": "faq",
+          "type": "FAQSection",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 20
+        },
+        {
+          "id": "cta",
+          "type": "CTABand",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 4
+        }
+      ]
+    },
+    "/twin": {
+      "sections": [
+        {
+          "id": "hero",
+          "type": "ProductHero",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 10
+        },
+        {
+          "id": "assurance",
+          "type": "AssuranceStrip",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 5
+        },
+        {
+          "id": "router",
+          "type": "PathRouter",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 8
+        },
+        {
+          "id": "faq",
+          "type": "FAQSection",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 20
+        },
+        {
+          "id": "cta",
+          "type": "CTABand",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 4
+        }
+      ]
+    },
+    "/fail-bp1": {
+      "sections": [
+        {
+          "id": "hero",
+          "type": "ProductHero",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 10
+        },
+        {
+          "id": "assurance",
+          "type": "AssuranceStrip",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 5
+        },
+        {
+          "id": "router",
+          "type": "PathRouter",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 8
+        },
+        {
+          "id": "faq",
+          "type": "FAQSection",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 20
+        },
+        {
+          "id": "cta",
+          "type": "CTABand",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 4
+        }
+      ]
+    },
+    "/fail-bp1b": {
+      "sections": [
+        {
+          "id": "hero",
+          "type": "ProductHero",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 10
+        },
+        {
+          "id": "assurance",
+          "type": "AssuranceStrip",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 5
+        },
+        {
+          "id": "router",
+          "type": "PathRouter",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 8
+        },
+        {
+          "id": "faq",
+          "type": "FAQSection",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 20
+        },
+        {
+          "id": "cta",
+          "type": "CTABand",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 4
+        }
+      ]
+    },
+    "/fail-bp2-low": {
+      "sections": [
+        {
+          "id": "hero",
+          "type": "ProductHero",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 10
+        },
+        {
+          "id": "assurance",
+          "type": "AssuranceStrip",
+          "visible": false,
+          "reason": "gated",
+          "missing": [
+            "claim:beta"
+          ],
+          "gatesOk": true,
+          "words": 0
+        },
+        {
+          "id": "router",
+          "type": "PathRouter",
+          "visible": false,
+          "reason": "gated",
+          "missing": [
+            "claim:beta"
+          ],
+          "gatesOk": true,
+          "words": 0
+        },
+        {
+          "id": "faq",
+          "type": "FAQSection",
+          "visible": false,
+          "reason": "gated",
+          "missing": [
+            "claim:beta"
+          ],
+          "gatesOk": true,
+          "words": 0
+        },
+        {
+          "id": "cta",
+          "type": "CTABand",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 4
+        }
+      ]
+    },
+    "/fail-bp2-high": {
+      "sections": [
+        {
+          "id": "hero",
+          "type": "ProductHero",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 10
+        },
+        {
+          "id": "assurance",
+          "type": "AssuranceStrip",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 5
+        },
+        {
+          "id": "router",
+          "type": "PathRouter",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 8
+        },
+        {
+          "id": "s0",
+          "type": "FeatureGrid",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 5
+        },
+        {
+          "id": "s1",
+          "type": "FeatureGrid",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 5
+        },
+        {
+          "id": "s2",
+          "type": "FeatureGrid",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 5
+        },
+        {
+          "id": "faq",
+          "type": "FAQSection",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 20
+        },
+        {
+          "id": "cta",
+          "type": "CTABand",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 4
+        }
+      ]
+    },
+    "/warn-bp2": {
+      "sections": [
+        {
+          "id": "hero",
+          "type": "ProductHero",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 10
+        },
+        {
+          "id": "assurance",
+          "type": "AssuranceStrip",
+          "visible": false,
+          "reason": "gated",
+          "missing": [
+            "claim:beta"
+          ],
+          "gatesOk": true,
+          "words": 0
+        },
+        {
+          "id": "router",
+          "type": "PathRouter",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 8
+        },
+        {
+          "id": "faq",
+          "type": "FAQSection",
+          "visible": false,
+          "reason": "gated",
+          "missing": [
+            "claim:beta"
+          ],
+          "gatesOk": true,
+          "words": 0
+        },
+        {
+          "id": "cta",
+          "type": "CTABand",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 4
+        }
+      ]
+    },
+    "/fail-bp3": {
+      "sections": [
+        {
+          "id": "hero",
+          "type": "ProductHero",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 10
+        },
+        {
+          "id": "assurance",
+          "type": "AssuranceStrip",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 5
+        },
+        {
+          "id": "router",
+          "type": "PathRouter",
+          "visible": false,
+          "reason": "gated",
+          "missing": [
+            "claim:beta"
+          ],
+          "gatesOk": true,
+          "words": 0
+        },
+        {
+          "id": "faq",
+          "type": "FAQSection",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 20
+        },
+        {
+          "id": "cta",
+          "type": "CTABand",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 4
+        }
+      ]
+    },
+    "/fail-bp4": {
+      "sections": [
+        {
+          "id": "hero",
+          "type": "ProductHero",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 10
+        },
+        {
+          "id": "assurance",
+          "type": "AssuranceStrip",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 5
+        },
+        {
+          "id": "router",
+          "type": "PathRouter",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 8
+        },
+        {
+          "id": "cta",
+          "type": "CTABand",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 4
+        },
+        {
+          "id": "faq",
+          "type": "FAQSection",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 20
+        }
+      ]
+    },
+    "/fail-bp5": {
+      "sections": [
+        {
+          "id": "hero",
+          "type": "ProductHero",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 10
+        },
+        {
+          "id": "assurance",
+          "type": "AssuranceStrip",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 5
+        },
+        {
+          "id": "router",
+          "type": "PathRouter",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 8
+        },
+        {
+          "id": "faq",
+          "type": "FAQSection",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 20
+        },
+        {
+          "id": "cta",
+          "type": "CTABand",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 4
+        }
+      ]
+    },
+    "/fail-bp6": {
+      "sections": [
+        {
+          "id": "hero",
+          "type": "ProductHero",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 10
+        },
+        {
+          "id": "assurance",
+          "type": "AssuranceStrip",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 5
+        },
+        {
+          "id": "router",
+          "type": "PathRouter",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 8
+        },
+        {
+          "id": "faq",
+          "type": "FAQSection",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 20
+        },
+        {
+          "id": "faq2",
+          "type": "FAQSection",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 20
+        },
+        {
+          "id": "cta",
+          "type": "CTABand",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 4
+        }
+      ]
+    },
+    "/fail-bp7": {
+      "sections": [
+        {
+          "id": "hero",
+          "type": "ProductHero",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 10
+        },
+        {
+          "id": "assurance",
+          "type": "AssuranceStrip",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 5
+        },
+        {
+          "id": "router",
+          "type": "PathRouter",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 8
+        },
+        {
+          "id": "faq",
+          "type": "FAQSection",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 20
+        },
+        {
+          "id": "cta",
+          "type": "CTABand",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 4
+        }
+      ]
+    },
+    "/fail-bp7b": {
+      "sections": [
+        {
+          "id": "hero",
+          "type": "ProductHero",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 10
+        },
+        {
+          "id": "assurance",
+          "type": "AssuranceStrip",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 5
+        },
+        {
+          "id": "router",
+          "type": "PathRouter",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 8
+        },
+        {
+          "id": "faq",
+          "type": "FAQSection",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 20
+        },
+        {
+          "id": "cta",
+          "type": "CTABand",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 4
+        }
+      ]
+    },
+    "/fail-bp10": {
+      "sections": [
+        {
+          "id": "hero",
+          "type": "ProductHero",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 10
+        },
+        {
+          "id": "assurance",
+          "type": "AssuranceStrip",
+          "visible": true,
+          "reason": "ok",
+          "missing": [
+            "claim:alpha"
+          ],
+          "gatesOk": false,
+          "words": 5
+        },
+        {
+          "id": "router",
+          "type": "PathRouter",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 8
+        },
+        {
+          "id": "faq",
+          "type": "FAQSection",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 20
+        },
+        {
+          "id": "cta",
+          "type": "CTABand",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 4
+        }
+      ]
+    },
+    "/thin": {
+      "sections": [
+        {
+          "id": "hero",
+          "type": "ProductHero",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 1
+        },
+        {
+          "id": "assurance",
+          "type": "AssuranceStrip",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 1
+        },
+        {
+          "id": "router",
+          "type": "PathRouter",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 1
+        },
+        {
+          "id": "faq",
+          "type": "FAQSection",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 1
+        },
+        {
+          "id": "cta",
+          "type": "CTABand",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 1
+        }
+      ]
+    },
+    "/long": {
+      "sections": [
+        {
+          "id": "hero",
+          "type": "ProductHero",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 100
+        },
+        {
+          "id": "assurance",
+          "type": "AssuranceStrip",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 100
+        },
+        {
+          "id": "router",
+          "type": "PathRouter",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 100
+        },
+        {
+          "id": "faq",
+          "type": "FAQSection",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 100
+        },
+        {
+          "id": "cta",
+          "type": "CTABand",
+          "visible": true,
+          "reason": "ok",
+          "missing": [],
+          "gatesOk": true,
+          "words": 100
+        }
+      ]
+    }
+  }
+}

@@ -2,6 +2,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { basename, extname, join } from "node:path";
 import { pathToFileURL } from "node:url";
+import type { Blueprints, Visibility } from "../../schemas/blueprints";
 import type { Config } from "../../schemas/config";
 import type { RulesConfig } from "../../schemas/rules-config";
 import { DEFAULT_LABEL_KEYS, DEFAULT_NON_COPY_KEYS } from "../defaults";
@@ -19,6 +20,10 @@ export type Ctx = {
   claims: ClaimInfo[]; register: ParsedRegister | null; briefsDir: string; factsDir: string; pricingText: string;
   /** Every price in the pricing file's "pricing" and "renewal" blocks, as plain numbers, so a typed price can be named as a hard-coded price. */
   priceNumbers: Set<number>;
+  /** Blueprint data (paths.blueprints), the host's visibility result and its copy-source result. Absent means the Blueprint group is skipped. */
+  blueprints?: Blueprints | null;
+  visibility?: Visibility | null;
+  copySource?: { ran: boolean; ok: boolean; lines: string[] } | null;
 };
 
 /** Numbers in price strings such as "$24.99" or "₹1,299". */

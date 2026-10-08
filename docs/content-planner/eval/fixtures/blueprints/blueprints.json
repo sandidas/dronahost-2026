@@ -1,0 +1,97 @@
+{
+  "$comment": "Test blueprint data. Generic: no business names.",
+  "heroTypes": [
+    "ProductHero",
+    "SplitHero",
+    "CenteredHero"
+  ],
+  "duplicateAllowance": {
+    "CTABand": 2
+  },
+  "ctaKeys": {
+    "primary": [
+      "ctaPrimary",
+      "primaryCta"
+    ],
+    "secondary": [
+      "ctaSecondary",
+      "secondaryCta"
+    ]
+  },
+  "blueprints": {
+    "B1": {
+      "name": "Landing",
+      "stage": "decide",
+      "sections": [
+        4,
+        6
+      ],
+      "publishMinimum": 3,
+      "words": [
+        20,
+        200
+      ],
+      "required": [
+        "Hero",
+        "PathRouter",
+        "FAQSection",
+        "CTABand"
+      ],
+      "order": [
+        "Hero",
+        "AssuranceStrip",
+        "PathRouter",
+        "FAQSection",
+        "CTABand"
+      ]
+    }
+  },
+  "sectionLimits": {
+    "ProductHero": [
+      {
+        "path": "content.h1",
+        "unit": "chars",
+        "max": 40,
+        "what": "H1"
+      },
+      {
+        "path": "content.lead",
+        "unit": "chars",
+        "max": 120,
+        "what": "lead"
+      }
+    ],
+    "PathRouter": [
+      {
+        "path": "content.paths",
+        "unit": "items",
+        "min": 2,
+        "max": 4,
+        "what": "cards"
+      },
+      {
+        "path": "content.paths[*].line",
+        "unit": "words",
+        "max": 10,
+        "what": "card line"
+      }
+    ],
+    "CTABand": [
+      {
+        "path": "content.h2",
+        "unit": "words",
+        "max": 8,
+        "what": "heading"
+      }
+    ],
+    "FAQSection": [
+      {
+        "path": "content.items[*].a",
+        "unit": "words",
+        "min": 5,
+        "max": 30,
+        "what": "FAQ answer"
+      }
+    ]
+  }
+}

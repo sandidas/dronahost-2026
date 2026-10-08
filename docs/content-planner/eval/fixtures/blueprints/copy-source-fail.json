@@ -1,0 +1,7 @@
+{
+  "ran": true,
+  "ok": false,
+  "lines": [
+    "components/sections/Example.tsx:12 page copy \"Hello there\" is in a component. Move it to the page JSON or content/strings.ts"
+  ]
+}
