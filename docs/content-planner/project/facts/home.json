@@ -1,0 +1,324 @@
+{
+  "$comment": "Fact ledger for the home page rewrite, built by /write-content on 2026-10-08. Every fact comes from a project file read on that date. Claim facts are read from content/claims.ts through claimRenders(); the wording there is what may be said. A person confirms the ledger at APPROVAL 1.",
+  "slug": "/",
+  "updated": "2026-10-08",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "In prose the name is written DronaHost; the logo wordmark is dronahost in lowercase; the domain is dronahost.com. Never Drona Host, DRONAHOST or Dronahost",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "docs/content-planner/project/PROJECT.md section 1"
+      },
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Claude (read of the project file), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Entity sentence",
+        "All sections"
+      ]
+    },
+    {
+      "id": "F2",
+      "fact": "DronaHost is a focused team based in India",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "docs/content-planner/project/PROJECT.md section 3"
+      },
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Claude (read of the project file), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Entity sentence",
+        "Who runs it"
+      ]
+    },
+    {
+      "id": "F3",
+      "fact": "DronaHost serves small-business owners, freelancers and agencies worldwide",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "docs/content-planner/project/PROJECT.md sections 3 and 5"
+      },
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Claude (read of the project file), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Entity sentence",
+        "Who it is for"
+      ]
+    },
+    {
+      "id": "F4",
+      "fact": "The copy may say sites run on infrastructure from leading cloud providers. It must not say our servers, our data centre, a location, or name a provider",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "docs/content-planner/project/PROJECT.md section 3"
+      },
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Claude (read of the project file), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "What we look after"
+      ]
+    },
+    {
+      "id": "F5",
+      "fact": "Services offered: managed WordPress hosting (/wordpress-hosting), business hosting (/business-hosting), VPS hosting (/vps-hosting), cloud hosting (/cloud-hosting), domain registration (/domains), website design (/web-design), SEO services (/seo-services), free migration (/migration)",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "docs/content-planner/project/PROJECT.md section 4"
+      },
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Claude (read of the project file), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Service router"
+      ]
+    },
+    {
+      "id": "F6",
+      "fact": "Business Hosting is the Web hosting plans (cPanel, any site type). It is not managed and not WordPress-specific. Email is not included",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "docs/content-planner/project/PROJECT.md sections 4 and 11 (owner, 2026-10-07)"
+      },
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Claude (read of the project file), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Service router",
+        "FAQ"
+      ]
+    },
+    {
+      "id": "F7",
+      "fact": "VPS and cloud hosting have no plans in the pricing file yet. The copy says talk to the team and shows no price",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "docs/content-planner/project/PROJECT.md section 4"
+      },
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Claude (read of the project file), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Service router"
+      ]
+    },
+    {
+      "id": "F8",
+      "fact": "Email is not hosted on DronaHost servers",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "docs/content-planner/project/PROJECT.md section 4"
+      },
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Claude (read of the project file), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "FAQ"
+      ]
+    },
+    {
+      "id": "F9",
+      "fact": "Claim money-back: \"30-day money-back guarantee\". Renders (verified, terms page /refund-policy published)",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "content/claims.ts id money-back; owner approved /refund-policy 2026-10-08"
+      },
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Claude (claimRenders() run on 2026-10-08), second reading of content/claims.ts and the route by the fact-checker role, owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Assurance strip",
+        "FAQ"
+      ]
+    },
+    {
+      "id": "F10",
+      "fact": "Claim support-24-7: \"24/7 support, with a reply within 5 minutes\". Renders (terms page /support-policy published)",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "content/claims.ts id support-24-7; owner approved /support-policy 2026-10-08"
+      },
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Claude (claimRenders() run on 2026-10-08), second reading of content/claims.ts and the route by the fact-checker role, owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Assurance strip",
+        "Support section"
+      ]
+    },
+    {
+      "id": "F11",
+      "fact": "Claim free-migration: \"Free migration to DronaHost\". Free on every package, one website per package, up to 10 on a VPS. Renders (terms page /migration-terms published)",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "content/claims.ts id free-migration; docs/content-planner/project/PROJECT.md section 7"
+      },
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Claude (claimRenders() run on 2026-10-08), second reading of content/claims.ts and the route by the fact-checker role, owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Assurance strip",
+        "Migration steps",
+        "FAQ"
+      ]
+    },
+    {
+      "id": "F12",
+      "fact": "Claim renewal-price-same: \"Renewal price equals the signup price\". The hosting price does not change on renewal. Renders (terms page /pricing-policy published)",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "content/claims.ts id renewal-price-same; docs/content-planner/project/PROJECT.md section 7"
+      },
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Claude (claimRenders() run on 2026-10-08), second reading of content/claims.ts and the route by the fact-checker role, owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Assurance strip",
+        "FAQ"
+      ]
+    },
+    {
+      "id": "F13",
+      "fact": "Claim backups: \"Automatic backups of your site\". Renders (terms page /backup-policy published). Retention per plan does not render",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "content/claims.ts id backups"
+      },
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Claude (claimRenders() run on 2026-10-08), second reading of content/claims.ts and the route by the fact-checker role, owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "What we look after"
+      ]
+    },
+    {
+      "id": "F14",
+      "fact": "Support channels are support ticket and email only. WhatsApp, live chat and phone are not offered and are never mentioned",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "docs/content-planner/project/DECISIONS.md decision 22"
+      },
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Claude (read of the project file), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Support section",
+        "FAQ"
+      ]
+    },
+    {
+      "id": "F15",
+      "fact": "Payments accepted: Stripe (cards) and PayPal. Nothing else is shown as accepted. Caution: ACCEPTED_PAYMENT_METHODS in content/claims.ts has both as unverified, so the page does not name them until the owner flips the flag",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "docs/content-planner/project/PROJECT.md section 3"
+      },
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Claude (read of the project file), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Pricing note"
+      ]
+    },
+    {
+      "id": "F16",
+      "fact": "Same plans and prices in every country; only the currency changes. The tax line is: \"Prices exclude tax. Customers in India pay GST at checkout.\"",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "docs/content-planner/project/PROJECT.md section 6"
+      },
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Claude (read of the project file), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Pricing section"
+      ]
+    },
+    {
+      "id": "F17",
+      "fact": "Prices are read from data/pricing.json and are hidden in production until FEATURES.pricesConfirmed is true. The copy never types a price",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "lib/flags.ts; docs/content-planner/project/PROJECT.md section 6; CLAUDE.md (pricing rule)"
+      },
+      "retrievedOn": "2026-10-08",
+      "checkedBy": "Claude (read of the project file), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Pricing section"
+      ]
+    },
+    {
+      "id": "F18",
+      "fact": "The owner says about 7 years of trading. Older notes show 2019 and 2022 as the founding year",
+      "kind": "date",
+      "source": {
+        "type": "unresolved",
+        "ref": "PROJECT.md section 2: founding year is Reported, unconfirmed"
+      },
+      "status": "needs-check",
+      "usedIn": [
+        "Entity sentence (only if confirmed)"
+      ]
+    },
+    {
+      "id": "F19",
+      "fact": "Legal entity name (older notes mention Alphabet Force), registration number and registered address",
+      "kind": "business",
+      "source": {
+        "type": "unresolved",
+        "ref": "PROJECT.md section 2: entity name Reported (Alphabet Force), registration number and address Missing"
+      },
+      "status": "needs-check",
+      "usedIn": [
+        "Who runs it (only if confirmed)"
+      ]
+    },
+    {
+      "id": "F20",
+      "fact": "Public support email address (older notes show hello@ and sales@)",
+      "kind": "business",
+      "source": {
+        "type": "unresolved",
+        "ref": "PROJECT.md section 2: Reported, unconfirmed (hello@ and sales@)"
+      },
+      "status": "needs-check",
+      "usedIn": [
+        "Support section (only if confirmed)"
+      ]
+    },
+    {
+      "id": "F21",
+      "fact": "Team names, roles, photos, LinkedIn links, customer counts, review scores, awards, uptime figures, response-time figures and feature claims (LiteSpeed, NVMe, SSH, malware scanning, staging) have no verified source",
+      "kind": "business",
+      "source": {
+        "type": "unresolved",
+        "ref": "PROJECT.md sections 2 and 7; content/claims.ts unverified entries; content/trust.ts entries (not yet read by the fact-checker role)"
+      },
+      "status": "needs-check",
+      "usedIn": [
+        "Nowhere: do not render"
+      ]
+    }
+  ]
+}
