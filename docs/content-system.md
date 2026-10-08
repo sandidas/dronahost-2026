@@ -17,9 +17,9 @@ lib/content/
   render.tsx             renderPage(spec): visible sections through the registry
   published-pages.ts     which policy pages are reviewed and published (empty today)
   reviews.ts             verified customer reviews (empty today)
-scripts/validate-pages.ts   npm run check:pages: validates content/pages/*.json and layout signatures
+scripts/validate-pages.ts   the app's own page-spec check: section schemas and layout signatures. check-content runs it as the host adapter
 content/pages/home.json   the home page spec (source of the / route), from docs/reference/pages/HOME_PAGE_DESIGN.md
-lib/content/lint.ts, scripts/lint-content.ts   npm run lint:content
+docs/content-planner/tools/check-content.ts   npm run check:pages, lint:content and check:content (all the same command)
 ```
 
 ## Rules the schemas enforce
@@ -27,7 +27,7 @@ lib/content/lint.ts, scripts/lint-content.ts   npm run lint:content
 - Copy limits: H1 20 to 70 characters, direct answers 40 to 80 words, FAQ answers at most 80 words, titles at most 60, descriptions at most 160.
 - Links are site paths only. Icons are from the icon set.
 - Page rules: unique section ids, the first section is a hero, every `requiredSections` id exists, every `mustLinkTo` target is linked on the page, no `forbiddenClaims` word appears anywhere in the copy, and the declared `layoutSignature` matches the sections.
-- Hard maximums only for FAQ answer length. The 40-word minimum is a guideline: `npm run check:pages` prints a warning.
+- Hard maximums only for FAQ answer length. The 40-word minimum is a guideline: `check-content` prints a warning (rule S4).
 
 ## References and gates
 | Reference | Renders when |
@@ -44,15 +44,17 @@ A section that fails its conditions is dropped before rendering, and a renderer 
 page never has an empty gap. Everything a page may depend on is looked up through one `ResolveContext`, which tests can replace.
 
 ## Content lint
-`npm run lint:content` fails on: banned phrases and CTA labels, exclamation marks, raw HTML, numbers in copy that should come from
-`claims.ts` or `pricing.json` (digits with a unit, currency amounts, "24/7"), sentences over 28 words, a reading grade above 11,
-fewer than three internal links, claim refs missing from `claims.ts`, duplicate titles or descriptions across pages, and any
-mention of WhatsApp or live chat while `content/company.ts` has neither. It also prints which referenced claims are not rendering.
-CI runs `check:pages` and `lint:content` in the static job.
+`npm run check:pages`, `npm run lint:content` and `npm run check:content` all run `check-content` (`docs/content-planner/tools/check-content.ts`),
+which reads `docs/content-planner/content-planner.config.json` and `project/rules.config.json`. It fails on: banned phrases and CTA labels,
+exclamation marks, raw HTML, numbers in copy that should come from `claims.ts` or the pricing loader (digits with a unit, currency amounts,
+"24/7"), sentences over 28 words, a reading grade above 11, fewer than three internal links, claim refs missing from `claims.ts`,
+duplicate titles or descriptions across pages, FAQ counts outside the archetype's range, and any channel listed in `forbiddenChannels`.
+It prints which referenced claims are not rendering. The app's own page-spec check (`scripts/validate-pages.ts`) runs inside it as rule SC2.
+CI runs `check:content` in the static job. The rule list is in `docs/content-planner/README.md`.
 
 ## Layout signature
 A page's signature is its hero as `Type:variant` plus the next four section types. Two pages with the same signature fail
-`check:pages`, so money pages never share a template.
+`check:pages` (the host page-spec check), so money pages never share a template.
 
 ## Adding a section type
 1. Add its Zod schema to `schemas/sections.ts` and to the union.

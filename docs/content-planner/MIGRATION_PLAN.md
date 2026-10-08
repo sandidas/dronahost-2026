@@ -351,3 +351,17 @@ Two files, removed in one commit of their own (`chore: remove superseded planner
 |---|---|---|
 | `docs/reference/content-writer-workflow.md` | `docs/content-planner/rules/content-writer-workflow.md` | The planner copy is a superset (Phase 0 diff: 8 hunks, all newer wording; the one field only the old copy held, "one original element", is in the brief template, the schema and rule E3). `npm run check:links` reports no broken links in 131 Markdown files before the deletion. The only remaining mentions of the old path are in section 2 of this file and in the original build prompt, as plain text (code spans), not links, and no script reads it |
 | `docs/content-planner/project/facts/improve-ttfb-wordpress.md` | `project/facts/improve-ttfb-wordpress.json` | The JSON ledger was rebuilt on 2026-10-09 from sources, validates against `schemas/fact-ledger.ts` (`npm run check:schemas`), and is the file `check-content` reads (`ledgerFor` prefers JSON). The Markdown ledger had 7 facts, 5 of them unchecked; the JSON has 10. The brief states that the Markdown ledger is superseded |
+
+## 11. Linter files removed (owner approved, 2026-10-09)
+
+Removed in a commit of their own (`chore: remove superseded linter files`): `lib/content/lint.ts`, `scripts/lint-content.ts`, `docs/content-planner/project/tests/parity.test.ts`.
+
+Checks run first:
+
+| Check | Result |
+|---|---|
+| Final parity run (section 9) | 16 of 16 pass |
+| `git grep` for `lib/content/lint`, `lint-content`, `parity.test`, `lintPage`, `claimUsage`, `BANNED_PHRASES` and the old `copyStrings` | Only the three files themselves, comments, one live document (`docs/content-system.md`, updated) and follow-up 21 (updated). No import from any other code file. `docs/content-planner/tools/content/parse.ts` has its own `copyStrings` |
+| `npm run check:content` and all test suites after removal | See the commit message and the report |
+
+The parity report in section 9 stays as the record of what the old linter checked and where each check now lives.

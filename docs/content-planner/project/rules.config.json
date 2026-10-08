@@ -1,5 +1,5 @@
 {
-  "$comment": "Machine-readable project rules. One home for each list. Until Phase 3, lib/content/lint.ts and check-content.ts still carry copies; they are replaced by reads from this file. Schema: schemas/rules-config.ts",
+  "$comment": "Machine-readable project rules. One home for each list. Schema: schemas/rules-config.ts",
   "bannedPhrases": [
     "don't fret",
     "don't worry",
