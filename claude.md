@@ -64,23 +64,20 @@ See **[docs/content-planner/rules/content-writing-rules.md](docs/content-planner
 
 ## Content Work: ALWAYS follow the Content Planner
 
-**Trigger.** Whenever you are asked to write, edit, review, translate or plan any content (page copy, blog or guide, FAQ, CTA, headline, metadata, microcopy, comparison table, keyword plan, maintenance or service text), **first read `docs/content-planner/README.md`** and do what its "For the AI assistant" section says. Do not write content from memory or from other files in this repo.
+**Trigger.** Whenever you are asked to write, edit, review, translate or plan any content (page copy, blog or guide, FAQ, CTA, headline, metadata, microcopy, comparison table, keyword plan, maintenance or service text), **first read `docs/content-planner/README.md`** and do what its "For the AI assistant" section says. Do not write content from memory or from other files in this repo. Run `/write-content <keyword or title>` to plan a page; it stops at the brief for approval. Where this file and the planner differ, stop and ask.
 
-**Shortcut.** Run `/write-content <primary keyword> [notes]` to plan content. It follows `docs/content-planner/rules/content-writer-workflow.md` and stops after the brief (Stage 3) for approval.
+The planner is a reusable engine: `rules/`, `plans/` and `tools/` hold no business facts; `project/` and `content-planner.config.json` hold everything about DronaHost (facts, `brand.md`, `rules.config.json`, owner decisions, the keyword register).
 
-The folder is self-contained: `project/` (business facts, owner decisions, keyword register), `rules/` (writing rules and sentence examples), `plans/` (one plan per search intent), `later/` (parked) and `tools/`. It conflicts with nothing here. Where this file and the planner differ, stop and ask.
-
-Non-negotiable, even if you skip the folder:
+Guard bullets, non-negotiable even if you skip the folder:
 
 - Business facts come only from `docs/content-planner/project/PROJECT.md` and the registries it names. A missing fact becomes `[HUMAN REVIEW: ...]`. Never invent an address, number, name, location, guarantee or review.
 - Prices come only from `data/pricing.json`; same plans and prices for every country; only the currency changes.
-- Tax: customers in India pay GST, everyone else pays none. Show "Prices exclude tax. Customers in India pay GST at checkout." Never "+ VAT" or "VAT included".
-- No location claims. DronaHost is a team in India that runs hosting on rented servers. Write "for UK businesses", never "UK servers" or "our data centre". Do not name cloud providers on marketing pages.
-- One keyword, one URL. Check `project/keyword-register.md` first and run `npm run check:register` after changing it.
+- Tax: customers in India pay GST, everyone else pays none. Never "+ VAT" or "VAT included".
+- No location claims and no cloud provider names on marketing pages. Write "for UK businesses", never "UK servers".
+- One keyword, one URL. Run `npm run check:register` after changing the register.
 - A person fills the brief (reader's question, our angle, first-hand knowledge, one original element) before any AI draft. Show the brief before long copy.
 - Never use AI for testimonials, reviews, team bios, case-study results or unreviewed legal text.
-- Maintenance, VPS, cloud and domain pages must not state inclusions, times or prices that are not in the claims or `pricing.json`.
-- After publishing, update the register and run `npm run check:pages`, `npm run lint:content` and `npm run check:register`. Those checks cover only `content/pages/*.json`; other copy needs the manual self-check in `rules/voice.md`.
+- After publishing, update the register and run `npm run check:pages`, `npm run lint:content`, `npm run check:content` and `npm run check:register`.
 
 ---
 

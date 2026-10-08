@@ -20,31 +20,32 @@ Everything about planning, writing and checking content lives in this folder: th
 
 ```
 docs/content-planner/
-  README.md                 this file: how it works and where things are
-  project/                  facts about THIS business (replace for another project)
-    PROJECT.md              business profile: name, address, products, markets, tax, tools
-    DECISIONS.md            owner decisions that shape content, with dates
-    keyword-register.md     every keyword, its one page, owner, status
-    roadmap.md              what to write and in what order, with gates
-    tier-a-briefs.md        briefs and owner questions for the policy pages
-    team-and-workflow.md    roles, the page workflow, review tiers, capacity
-    url-inventory.md        old URL, new URL, redirect and keep-or-drop decisions
-    measurement.md          events, Search Console, dashboards, review rhythm
-    code-follow-ups.md      code and data changes that the planner now needs
-  rules/                    how to write (reusable)
-    content-writing-rules.md   tone, terms, headings, CTAs, errors, SEO copy, human-first, tools, tables
-    voice.md                   sentence examples to copy the shape of
-    wordpress-content-model.md fields and checks for blog and guide posts
-    content-writer-workflow.md stages 0 to 7: gate, intent, SERP, brief, draft, metadata, checks, handoff
-    sources.md                 Google's own pages, summarised and dated (re-check each quarter)
-    interview-questions.md     the questions Claude asks the owner, by page type
-    information-gain.md        how to find and state what the page adds
-  plans/                    one plan per search intent (reusable)
-    01 to 10, 14, 15        (numbers 11 to 13 are in later/)
-  later/                    not needed to start: multi-country, billing automation, technical SEO launch standard
+  README.md                    this file: how it works and where things are
+  CHANGELOG.md                 versioned changes to the engine
+  MIGRATION_PLAN.md            the Phase 0 plan and the owner's answers (history)
+  content-planner.config.json  host integration: paths, adapters, governor, limits (schema: schemas/config.ts)
+  project/                     facts and decisions about THIS business (replace for another project)
+    PROJECT.md  DECISIONS.md  keyword-register.md  roadmap.md  team-and-workflow.md  url-inventory.md
+    measurement.md  learning-log.md  code-follow-ups.md
+    brand.md                   voice, terminology and avoid-list for this brand
+    rules.config.json          banned phrases, CTA labels, feature words, forbidden channels and claims, disclosure line, no-brand terms
+    plan-specifics/            the facts and owner decisions taken out of each plan (same file names as plans/)
+    briefs/                    one brief per page; tier-a-briefs.md; briefs/golden/ holds exemplar pages later
+    drafts/                    drafts in progress
+    facts/                     one fact ledger per page
+    later/                     project copy of parked plans (billing system)
+  rules/                       how to write (reusable, no business facts)
+    content-writing-rules.md   tone, headings, CTAs, errors, SEO copy, human-first, tools, tables
+    voice.md  content-writer-workflow.md  sources.md  interview-questions.md  information-gain.md  wordpress-content-model.md
+  plans/                       one plan per search intent: 01 to 10, 14, 15 (reusable structure)
+  later/                       parked plans: 11 locales and currency, 12 billing system, 13 search and AI launch standard
+  templates/  schemas/  claude/  eval/   built in later phases (schemas/ holds the config schemas; eval/fixtures/ holds test fixtures)
   tools/
-    check-register.ts       checks the keyword register (npm run check:register)
-    check-content.ts        checks page JSON and drafts (npm run check:content); fixtures/ and a test
+    check-register.ts          the keyword register (npm run check:register)
+    check-content.ts           page JSON and drafts (npm run check:content)
+    check-config.ts            the two config files (npm run check:config)
+    check-no-brand.ts          the reusable core names no brand (npm run check:no-brand)
+    check-links.ts             Markdown links resolve (npm run check:links)
 ```
 
 ## How it works
@@ -156,13 +157,13 @@ APPROVAL 1: owner approves the brief and the interview answers (no draft before 
 ## Reuse in another project
 
 1. Copy this whole folder into the new project's `docs/`.
-2. Replace everything in `project/`: write a new `PROJECT.md` (use the existing one as the template), an empty `DECISIONS.md` and an empty register.
-3. In `rules/content-writing-rules.md`, update the brand, terminology and region tables (sections 1 and 2). Sections 3 to 12 are general.
-4. In `plans/`, replace product names, URLs and examples. The structure and checklists stay.
-5. Add a short block to the new project's `CLAUDE.md` that points here (copy the block from this project's `CLAUDE.md`).
-6. Add the script: `"check:register": "tsx docs/content-planner/tools/check-register.ts"`.
+2. Replace everything in `project/`: new `PROJECT.md` (use the existing one as the template), `brand.md`, `rules.config.json`, an empty `DECISIONS.md`, an empty register, and empty `briefs/`, `drafts/`, `facts/`, `plan-specifics/`, `later/`.
+3. Edit `content-planner.config.json` (name, paths, limits, governor).
+4. Run `npm run check:config` and `npm run check:no-brand`. The second must pass before and after the swap: it proves the reusable core names no business.
+5. Add a short block to the new project's `CLAUDE.md` that points here (copy the block from this project's `claude.md`).
+6. Add the scripts from this project's `package.json`: `check:register`, `check:content`, `check:config`, `check:no-brand`, `check:links`.
 
-Stack-specific code and checks (page JSON linter, metadata helper, sitemap code) are not in this folder. They live in the project (`lib/content/`, `docs/rules/seo-rules.md`) and are referenced from here.
+The installer and the sample project arrive in Phases 3 and 6. Stack-specific code (page JSON linter, metadata helper, sitemap code) is not in this folder; it lives in the host project and is registered in the config.
 
 ## Not in this folder (by design)
 
