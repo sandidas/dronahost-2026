@@ -441,7 +441,7 @@ export default function V2ShowcasePage() {
             title="ComparisonTable"
             status="needs-verification"
             notes="Real <table> with caption, row/column headers, sticky first column and a keyboard-scrollable wrapper. Top: hosting types (homepage). Bottom: plans, built from data/pricing.json."
-            verify={["Every plan row comes from data/pricing.json: limits, “Unlimited” resources, backup retention, DDoS protection, staging, priority support, dedicated account manager"]}
+            verify={["Every plan row comes from data/pricing.json: limits, “Fair use” traffic, backup retention, DDoS protection, staging, priority support"]}
           >
             <div className="space-y-6">
               <ComparisonTable {...HOME_COMPARE} headingLevel="h3" rowHeader="Hosting type" className="!py-0" />
@@ -461,7 +461,7 @@ export default function V2ShowcasePage() {
             title="PricingPlans"
             status="needs-verification"
             notes="Billing toggle (only because pricing.json offers monthly and annual), highlighted plan, renewal line under the price, 'Price on request' when prices are hidden, add-ons, and a native <details> full feature table. Prices are draft and hidden in production until FEATURES.pricesConfirmed."
-            verify={["Prices and the annual total (12 x the per-month annual price)", "“Same price, no increase” renewal line", "“Unlimited” sites and storage on higher plans", "Staging, free migration, priority support, performance tuning per plan", "Plan names and badges (“Pop”, “Most Popular”, “High Power”)", "30-day guarantee note (hidden until verified)"]}
+            verify={["Prices and the annual total (12 x the per-month annual price)", "“Same price, no increase” renewal line", "Capped site counts (no “unlimited” wording)", "Staging, free migration, priority support, performance tuning per plan", "Plan names and the “Recommended” badge", "30-day guarantee note (hidden until verified)"]}
           >
             <PricingPlans
               title="Choose your plan"
@@ -603,8 +603,8 @@ export default function V2ShowcasePage() {
             id="support-channels"
             title="SupportChannels"
             status="needs-verification"
-            notes="WhatsApp / live chat / ticket. A channel shows only when it exists (number set, widget installed); ticket is always real. Samples forced on here."
-            verify={["WhatsApp number (hidden until set)", "Live chat: is a widget installed and staffed?", "Ticket system exists"]}
+            notes="Ticket and email only (owner decision 22). Email shows only when a support address is set in content/company.ts; ticket is always real. Samples forced on here."
+            verify={["Support email address (hidden until set)", "Ticket system exists", "Hours text comes from the published support policy"]}
           >
             <SupportChannels title="Reach the team" headingLevel="h3" showSamples className="!py-0" />
           </ShowcaseSection>

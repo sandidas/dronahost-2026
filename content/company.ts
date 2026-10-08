@@ -16,10 +16,6 @@ export const COMPANY = {
   /** Physical business address, honest about where the team is based. Unconfirmed. */
   address: null as string | null,
   supportEmail: null as string | null,
-  /** WhatsApp number in international format, e.g. "+1 555 0100". Unconfirmed; region-specific numbers can be added later. */
-  whatsappNumber: null as string | null,
-  /** True once a live-chat widget is installed. */
-  liveChatEnabled: false,
   /** Only real, owned profile URLs. The old footer.json placeholders (twitter.com etc.) were removed. */
   socials: [] as SocialLink[],
   summary: "Managed WordPress, cloud and VPS hosting, plus web design and SEO.",

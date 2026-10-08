@@ -26,8 +26,8 @@ jobs:
       - run: npx tsc --noEmit
       - run: npm run lint
       - run: npm run check:contrast
-      - name: Page specs and content lint
-        run: npm run check:pages && npm run lint:content
+      - name: Page specs, content lint and keyword register
+        run: npm run check:pages && npm run lint:content && npm run check:register && npm run check:vs
 
   e2e:
     name: Build, Playwright, axe, links, JSON-LD

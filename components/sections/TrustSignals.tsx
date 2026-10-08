@@ -35,9 +35,9 @@ export default function TrustSignals({ eyebrow, title, description, items = TRUS
     <section aria-labelledby={title ? headingId : undefined} className={cn("section-y", className)}>
       <div className="container-site">
         {title && <SectionHeader id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} />}
-        <ul className={cn("grid gap-4 sm:grid-cols-2 lg:grid-cols-3", title && "mt-12 sm:mt-14")}>
+        <ul className={cn("flex flex-wrap justify-center gap-4", title && "mt-12 sm:mt-14")}>
           {shown.map((item, i) => (
-            <li key={item.id} className="surface flex gap-4 p-6" {...reveal(i)}>
+            <li key={item.id} className="surface flex w-full gap-4 p-6 sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.667rem)]" {...reveal(i)}>
               <FeatureIcon name={item.icon} />
               <div className="min-w-0">
                 <Item className="t-h4 text-foreground">{item.title}</Item>

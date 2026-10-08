@@ -10,7 +10,7 @@ import { PRICING_HERO } from "@/content/heroes";
 import { HOME_CTA } from "@/content/home";
 import { showPrices } from "@/lib/flags";
 import { startingPriceLabel } from "@/lib/pricing";
-import { buildPlanCards, VAT_DISPLAY } from "@/lib/pricing/plans";
+import { buildFamilyCards, buildPlanCards, HIGH_TRAFFIC, PLAN_FAMILIES, VAT_DISPLAY } from "@/lib/pricing/plans";
 import { breadcrumbSchema, faqPageSchema, hostingPlansSchema } from "@/lib/seo/jsonld";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   return buildMetadata({ locale,
     title: "Pricing: Managed WordPress and Cloud Hosting Plans | DronaHost",
-    description: `Compare DronaHost managed hosting plans, with the renewal price shown beside the signup price${startingPriceLabel() ? `. Plans from ${startingPriceLabel()}` : ""}.`,
+    description: `Compare DronaHost hosting plans, with the renewal price shown beside the signup price${startingPriceLabel() ? `. Plans from ${startingPriceLabel()}` : ""}.`,
     path: "/pricing",
   });
 }
@@ -41,17 +41,26 @@ export default function PricingPage() {
     <>
       <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs("/pricing")), faqPageSchema(PRICING_FAQ), ...(schema ? [schema] : [])]} />
       <CenteredHero {...PRICING_HERO} />
-      <PricingPlans
-        title="Choose your plan"
-        description="Every plan is managed. Compare resources below, or open the full feature table."
-        plans={plans}
-        showPrices={prices}
-        vatDisplay={VAT_DISPLAY}
-        guaranteeNote={isVerified("money-back") ? "30-day money-back guarantee." : null}
-        renewalPromise={isVerified("renewal-price-same")}
-      >
-        <PricingExtras showPrices={prices} />
-      </PricingPlans>
+      {PLAN_FAMILIES.map((family, i) => (
+        <PricingPlans
+          key={family.id}
+          title={family.label}
+          description={family.description}
+          plans={buildFamilyCards(family.id)}
+          showPrices={prices}
+          vatDisplay={VAT_DISPLAY}
+          guaranteeNote={isVerified("money-back") ? "30-day money-back guarantee." : null}
+          renewalPromise={isVerified("renewal-price-same")}
+        >
+          {i === PLAN_FAMILIES.length - 1 && <PricingExtras showPrices={prices} />}
+        </PricingPlans>
+      ))}
+      <CTABand
+        title={HIGH_TRAFFIC.name}
+        description={HIGH_TRAFFIC.description}
+        primaryCta={{ label: HIGH_TRAFFIC.ctaLabel, href: HIGH_TRAFFIC.ctaHref }}
+        headingLevel="h2"
+      />
       <FAQSection eyebrow="Billing" title="Pricing questions" items={PRICING_FAQ} />
       <CTABand {...HOME_CTA} title="Not sure which plan fits?" />
     </>

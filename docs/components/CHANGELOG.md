@@ -72,7 +72,7 @@ Not localized yet: page copy (`content/*.ts`), JSON-LD URLs (they point at the d
 
 ## Batch G completion: remaining primitives
 - `Tabs` (ARIA tabs, keyboard, RTL-aware), `Tooltip` (WCAG 1.4.13), `Toast` (`ToastProvider` + `useToast`, not mounted site-wide yet).
-- `WhatsAppButton` is built but parked: not mounted in any layout and not in the showcase (owner decision: no WhatsApp for now). To enable it, set `COMPANY.whatsappNumber` and add it back to the marketing layout.
+- `WhatsAppButton` was built but parked. **Removed 2026-10-07** (owner decision 22: WhatsApp, live chat and phone are not offered), together with `COMPANY.whatsappNumber` and `COMPANY.liveChatEnabled`.
 - Branded 500: shared `ErrorState`, with a `(marketing)/error.tsx` boundary that keeps header and footer.
 - `TextSkeleton` / `CardGridSkeleton` for in-page Suspense fallbacks (no route-level `loading.tsx`).
 - Showcase entries in `/v2`.
@@ -102,6 +102,24 @@ Not localized yet: page copy (`content/*.ts`), JSON-LD URLs (they point at the d
 - Updated stale notes: site width, contact form status (now needs verification: SES and retention), and WhatsApp or live chat mentions in the verify lists.
 - Skeletons are more visible on dark cards (`bg-foreground/10`); price amounts no longer have a minimum width that left a gap before "/month".
 
+## Comparison data rewrite (2026-10-07)
+- **Data model:** `data/vs/types.ts`. Every competitor fact has `{ value, source: { url, retrieved } }`; `value: null` means "not stated on the page we checked". `checkedAtSource` stays false until a person confirms the source.
+- **Competitors:** SiteGround, Kinsta, WP Engine, Bluehost, Hostinger, Cloudways. A2 Hosting removed (its site redirects to hosting.com).
+- **DronaHost's side:** built in `lib/vs/compare.ts` from `data/pricing.json` (prices only when `showPrices()`) and claims that render. Rows with no showable DronaHost value are left out.
+- **Page `/vs/[competitor]`:** rewritten to the Plan 02 template with `CenteredHero`, `ComparisonTable`, "Where {name} is stronger", "Where DronaHost is stronger" (needs a rendering claim), "Which one should you choose?", sources with dates, and `CTABand`. The made-up "DronaHost Editorial Team" author, the "which host is better in 2025" title and the raw palette classes are gone.
+- **Check:** `npm run check:vs` (`scripts/check-vs.ts`) validates sources, dates, strengths and token fills, and fails when `FEATURES.comparisonPages` is on while any competitor is not checked at source. It runs in CI.
+- **Routing fix:** `proxy.ts` no longer treats `/vs` or other two-letter route segments as locales.
+- The page is still closed by `FEATURES.comparisonPages`.
+
+## Home Phase 1 re-review and planner alignment (2026-10-07)
+- **SupportChannels:** ticket and email only (owner decision 22). WhatsApp and live chat removed from the component, the `SupportChannels` Zod enum (`["ticket", "email"]`), the `/v2` notes and `content/pages/home.json`. Email renders only once `COMPANY.supportEmail` is set.
+- **ResponsibilitySplit:** when the two lists differ by two or more items (likely once claims hide some left-hand items), each card keeps its own height on desktop instead of stretching into a hollow box.
+- **Home spec (`content/pages/home.json`):** primary keyword is the brand, secondary keyword "wordpress and vps hosting for small business" (register); the third router card is now "I need simple hosting for a business site" (Web hosting plans, email not included); a "Does DronaHost host email?" FAQ was added; FAQ answer about skills mentions ticket or email; `reviewedOn` 2026-10-07.
+- **Claims:** `business-hosting-scope` text describes the Web hosting plans, not email. Still unverified.
+- **Review tooling:** `scripts/screenshot-phase1.ts` takes clean 1440 and 390, dark and light screenshots of the three components in `/v2/phase1-preview` and `/v2` (cookie banner and fixed chrome hidden, scroll reveals forced on). Output: `docs/reference/after/phase1-review/`.
+- **Follow-up #5 audit:** the announcement bar, footer, contact page, JSON-LD `contactPoint` (URL only) and `llms.txt` were already clean. Removed the dead `WhatsAppButton` and the `whatsappNumber` and `liveChatEnabled` company fields. The content linter now fails any mention of WhatsApp, live chat or phone support. The Support row in `data/vs/*` now says "Support ticket and email".
+- **Design doc:** the two copies of the home design doc were merged into `docs/reference/pages/HOME_PAGE_DESIGN.md`; the old path is a stub.
+
 ## Home page Phase 1: new components (per `docs/reference/pages/HOME_PAGE_DESIGN.md`)
 - `components/sections/bespoke/PathRouter` and `ResponsibilitySplit` (bespoke tier), plus a reusable `components/sections/AnswerBlock`. All three are server components, reveal once below the fold, use logical properties and tokens, and omit themselves (no empty gaps) when their claims are not rendering.
 - `lib/sections/gated.ts` (`visibleItems`): claim-gated list items. `content/claims.ts` gains kind `feature` and twelve unverified capability entries from section 7 of the design doc; none renders until confirmed, verified and published.
@@ -123,3 +141,19 @@ Not localized yet: page copy (`content/*.ts`), JSON-LD URLs (they point at the d
 - A single support channel now shows as one centred card instead of a full-width bar.
 - Home e2e: one h1, only confirmed content, no empty sections, FAQ answers in the HTML without JavaScript, structured data and metadata.
 
+
+## Pricing v3.0.0 (`data/pricing.json`)
+- Plans are now two families: WordPress (`starter`, `growth`, `pro`) and Web (`essential`, `plus`). `pop` is now `pro`; Scale, Dedicated Core and Enterprise are one contact-only `highTraffic` tier with no published price.
+- `/pricing` renders one plans section per family plus a high-traffic contact band. `/wordpress-hosting` shows the WordPress family only. Home spec uses `pro`.
+- `lib/pricing/plans.ts`: `PLAN_FAMILIES`, `buildFamilyCards`, `HIGH_TRAFFIC`; headline features say "managed WordPress site(s)" or "website(s)", never "unlimited". Offsite backup is one add-on with `options`.
+- `lib/pricing/compare.ts`: mailboxes row removed (email hosting discontinued); traffic shows "Fair use" instead of "Unlimited"; added hosting type and three capability rows.
+- "Included with every plan" now lists only items whose `claimId` is verified. Added `nvme` and `cpanel` claims (unverified) to `content/claims.ts`.
+- Regional facts moved from `pricing.regions` to `content/regions.ts` (non-price data). Datacenter city names were dropped until confirmed. India region entry was not carried over.
+- `tests/e2e/pricing-v3.spec.ts` guards the new shape.
+
+## Home page completion pass (2026-10-08)
+
+- `money-back`, `support-24-7`, `renewal-price-same` and `backups` now render (their policy pages are published), so the hero, assurance strip, split list, support section and FAQ show them.
+- `AssuranceStrip` and `TrustSignals` centre their cards when fewer than a full row shows. The policies section lists the four published policies (`POLICY_LINKS` extended; `/sla` removed from the home list because no SLA exists).
+- `BentoGrid` section on the home page waits until two or more tiles can render (one lone tile looked unfinished).
+- Still hidden until the owner confirms the capability facts: the answer block, router paths 2 to 4, "Moving to DronaHost" (needs `/migration-terms` approved), platform tiles, plans (needs `pricesConfirmed`), reviews.

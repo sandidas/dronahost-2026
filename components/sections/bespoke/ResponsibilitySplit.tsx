@@ -50,12 +50,15 @@ export default function ResponsibilitySplit({
   const left = visibleItems(weLookAfter, { showAll: showSamples });
   const right = visibleItems(youKeep, { showAll: showSamples });
   if (left.length < minItems || right.length < minItems) return null;
+  // Claim gating can leave the columns uneven. A card stretched to match a much longer one would be a hollow box, so
+  // when the lists differ by two or more items each card keeps its own height instead.
+  const uneven = Math.abs(left.length - right.length) >= 2;
 
   return (
     <section aria-labelledby={headingId} className={cn("section-y", className)}>
       <div className="container-site">
         <SectionHeader id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} />
-        <div className="mt-12 grid gap-4 sm:mt-14 sm:gap-5 lg:grid-cols-2">
+        <div className={cn("mt-12 grid gap-4 sm:mt-14 sm:gap-5 lg:grid-cols-2", uneven && "lg:items-start")}>
           <div className="surface surface-raised relative overflow-hidden !border-accent/30 bg-[color-mix(in_srgb,var(--accent)_7%,var(--surface-raised))] p-6 sm:p-8" {...reveal(0)}>
             <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent" />
             <Column className="t-eyebrow">{lookAfterLabel}</Column>

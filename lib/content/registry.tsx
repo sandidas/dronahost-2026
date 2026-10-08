@@ -38,11 +38,16 @@ const BENTO_VISUALS = { cache: <CacheVisual />, growth: <GrowthVisual />, restor
 export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
   ProductHero: {
     schema: S.ProductHero,
-    render: ({ content: c }, ctx) => (
+    render: ({ content: c }, ctx) => {
+      // The reason-led headline shows only while the claims behind its reason render. The fallback is the plain version.
+      const reasonOk = !c.h1Requires || c.h1Requires.every((r) => resolveClaimRef(r, ctx));
+      const h1 = reasonOk ? c.h1 : (c.h1Fallback ?? c.h1);
+      const accent = reasonOk ? c.accent : c.accentFallback;
+      return (
       <ProductHero
         eyebrow={c.eyebrow}
-        title={c.accent && c.h1.endsWith(c.accent) ? c.h1.slice(0, -c.accent.length).trimEnd() : c.h1}
-        titleAccent={c.accent && c.h1.endsWith(c.accent) ? c.accent : undefined}
+        title={accent && h1.endsWith(accent) ? h1.slice(0, -accent.length).trimEnd() : h1}
+        titleAccent={accent && h1.endsWith(accent) ? accent : undefined}
         description={c.leadRequiresClaims && !c.leadRequiresClaims.every((r) => resolveClaimRef(r, ctx)) ? (c.leadFallback ?? c.lead) : c.lead}
         primaryCta={c.ctaPrimary}
         secondaryCta={c.ctaSecondary}
@@ -52,7 +57,8 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
           return claim && resolveClaimRef(h, ctx) ? [claim.text] : [];
         })}
       />
-    ),
+      );
+    },
   },
   AssuranceStrip: {
     schema: S.AssuranceStrip,
@@ -99,7 +105,8 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
         const { visual, ...tile } = feature.tile;
         return [{ ...tile, visual: visual ? BENTO_VISUALS[visual] : undefined }];
       });
-      return items.length ? <BentoGrid eyebrow={c.eyebrow} title={c.h2} description={c.description} items={items} /> : null;
+      // One lonely tile looks unfinished, so the section waits until two or more tiles can show.
+      return items.length >= 2 ? <BentoGrid eyebrow={c.eyebrow} title={c.h2} description={c.description} items={items} /> : null;
     },
   },
   PricingPlans: {

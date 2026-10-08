@@ -1,35 +1,30 @@
-import type { ComparisonRow, CompetitorData } from "./types";
+import type { CompetitorData } from "./types";
+
+const SOURCE = { url: "https://www.bluehost.com/hosting/shared", retrieved: "2026-10-07" };
 
 const data: CompetitorData = {
   slug: "bluehost",
   name: "Bluehost",
-  tagline: "DronaHost vs Bluehost — Which Shared Host Is Worth Your Money?",
-  intro:
-    "Bluehost is one of the most heavily marketed shared hosting providers, officially recommended by WordPress.org. However, it is owned by EIG (Endurance International Group) and has faced criticism for performance and renewal pricing. DronaHost is a modern alternative with NVMe SSD storage, competitive renewal rates, and data centers in the UK and UAE.",
-  table: [
-    { feature: "Starter Price", dronahost: "$0.99/mo", competitor: "$2.95/mo", winner: "dronahost" },
-    { feature: "Renewal Price", dronahost: "$2.99/mo", competitor: "$10.99/mo", winner: "dronahost" },
-    { feature: "Free Domain", dronahost: "No", competitor: "Year 1 only", winner: "competitor" },
-    { feature: "Free SSL", dronahost: "Yes — wildcard", competitor: "Yes — basic", winner: "dronahost" },
-    { feature: "Storage Type", dronahost: "NVMe SSD", competitor: "HDD (standard tier)", winner: "dronahost" },
-    { feature: "Daily Backups", dronahost: "Yes", competitor: "Paid add-on", winner: "dronahost" },
-    { feature: "Uptime SLA", dronahost: "99.9%", competitor: "No published SLA", winner: "dronahost" },
-    { feature: "Support", dronahost: "24/7 live chat", competitor: "24/7 phone + chat", winner: "competitor" },
-  ] satisfies ComparisonRow[],
-  dronahostPros: [
-    "NVMe SSD storage vs HDD on Bluehost's standard tier — significantly faster",
-    "Transparent renewal pricing — no shock renewal bills",
-    "Daily backups included, not sold as an add-on",
-    "99.9% uptime SLA with financial credits",
-  ],
-  competitorPros: [
-    "Free domain for year one",
-    "Phone support available 24/7",
-    "Officially recommended by WordPress.org",
-  ],
-  verdict:
-    "Bluehost's first-year pricing looks attractive but renewal rates are 3-4× higher. Combined with HDD storage and backups sold as paid add-ons, the total cost of ownership is higher than it first appears. DronaHost offers better long-term value with NVMe SSD, included backups, and predictable pricing. The only reason to choose Bluehost is if a free first-year domain is your top priority.",
-  datePublished: "2025-01-15",
+  plan: { name: "Starter (shared hosting)", source: SOURCE },
+  dronahostPlanId: "essential",
+  productNote: "Bluehost's Starter is shared hosting, not managed WordPress hosting. The closest DronaHost plan is Essential, which is also unmanaged web hosting.",
+  facts: {
+    price: { value: "$3.99/mo on a 36-month term", source: SOURCE },
+    renewal: { value: "$9.99/mo", source: SOURCE },
+    sites: { value: "10 websites", source: SOURCE },
+    storage: { value: "10 GB NVMe SSD", source: SOURCE },
+    backups: { value: "Weekly website backups", source: SOURCE },
+    support: { value: "24/7 chat support; phone support not included", source: SOURCE },
+    moneyBack: { value: "30-day money-back guarantee", source: SOURCE },
+    uptime: { value: "99.99% uptime SLA", source: SOURCE },
+    migration: { value: "Free site migration tool; no limit stated", source: SOURCE },
+  },
+  strengths: ["sites", "moneyBack", "uptime", "support"],
+  chooseCompetitor: "Choose {name} if you want {sites} on the entry plan, a stated uptime SLA and 24/7 chat support, and you accept {renewal} after the first term.",
+  chooseDronahost: "Choose DronaHost if you want the renewal price shown next to the signup price on every plan, and a team you can reach by support ticket or email.",
+  // [HUMAN REVIEW: open the source URL and confirm every fact above before turning FEATURES.comparisonPages on]
+  checkedAtSource: false,
+  reviewedOn: "2026-10-07",
 };
 
 export default data;

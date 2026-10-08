@@ -1,6 +1,6 @@
 # DronaHost home page: research, concept and build spec
 
-Status: Phases 1 to 3 built (PathRouter, ResponsibilitySplit, AnswerBlock, the page system, and `/` from `content/pages/home.json`). Sections whose claims are not yet verified and published stay hidden; see `docs/content-system.md`. Copy in `home.json` differs from this draft where an unconfirmed capability had to be gated.
+Status: Phases 1 to 3 built (PathRouter, ResponsibilitySplit, AnswerBlock, the page system, and `/` from `content/pages/home.json`). Sections whose claims are not yet verified and published stay hidden; see `docs/content-system.md`. Copy in `home.json` differs from this draft where an unconfirmed capability had to be gated. Support copy, the Business hosting card and the keyword were aligned with the content planner on 2026-10-07 (decisions 16, 22, 26).
 Rules that apply: `docs/rules/*` (updated), `content/claims.ts` (claim gating), `POLISH_BRIEF.md`, `MOTION_AND_LUXURY_BRIEF.md`.
 
 ---
@@ -33,7 +33,7 @@ local shop gets a page full of platform language. We can be the premium host tha
 
 1. **Plain-language clarity.** Say what we look after and what stays with you, in words a non-technical owner understands.
 2. **Honest pricing on the home page.** Price, renewal price and what is included, visible without a click (once prices are confirmed).
-3. **A real person, in a channel you already use.** WhatsApp, chat and ticket are all first-class.
+3. **A real person, by ticket or email.** Support is ticket and email only (owner decision 22). Promise only what the support policy says, in plain words.
 4. **Proof you can check.** Every claim links to the page where its terms are published. Competitors ask for faith; we show the policy.
 5. **Calm, premium design.** Quiet confidence, not logo walls and gradients.
 
@@ -81,7 +81,7 @@ a decision-first page.
 | 6 | Moving to DronaHost | ProcessTimeline | Remove the fear of migration | `free-migration` |
 | 7 | The platform | BentoGrid | Staging, backups, security, performance, tools, each with a small UI mockup | feature facts confirmed |
 | 8 | Plans | PricingPlans (3 of 5 plans) | Price, renewal price, what is included, link to compare all | `pricesConfirmed` |
-| 9 | Support | SupportChannels | WhatsApp, live chat, ticket | `support-24-7` for hours |
+| 9 | Support | SupportChannels | Ticket and email only | `support-24-7` for hours |
 | 10 | Customer proof | Testimonials, CaseStudy | Real names, roles, companies, links | hidden until real |
 | 11 | Trust and policies | TrustSignals | Links to refund, terms, SLA, privacy, status | pages published |
 | 12 | FAQ | FAQSection | 7 questions, answer first, 40 to 80 words | claim-dependent answers |
@@ -117,7 +117,7 @@ Items marked ⚠ must be confirmed by you before they go live (capabilities, not
 |---|---|---|
 | I already have a WordPress site | We move it to DronaHost and look after it. | WordPress hosting |
 | I need a website built | We design a new WordPress site, then host it. ⚠ design service | Website design |
-| I need email and hosting for my business | Hosting and professional email together. ⚠ confirm Business Hosting scope | Business hosting |
+| I need simple hosting for a business site | Web hosting with a cPanel dashboard, for any kind of site. Email is not included (see /email). | Business hosting (Web hosting plans: Essential, Plus) |
 | I want full control of my server | Managed VPS with root access. ⚠ confirm | Managed VPS hosting |
 
 ### What is managed WordPress hosting? (AnswerBlock)
@@ -149,7 +149,7 @@ H2: Plans and pricing. Shows Starter, Growth and Pop, price, **renewal price on 
 plans, and "Choose {plan name}". "Same price at renewal" appears only when `renewal-price-same` renders.
 
 ### Support
-H2: Reach a person in the channel you already use. WhatsApp, live chat and support ticket cards. Hours and
+H2: Get help from the team. Support ticket and email cards (no chat, WhatsApp or phone). Hours and
 availability text come from `support-24-7` once its terms page is published.
 
 ### FAQ (answer first, 40 to 80 words)
@@ -186,6 +186,8 @@ H2: Ready to see which plan fits? Primary: See WordPress hosting plans. Secondar
 
 ## 6. JSON page spec (first page in the new system)
 
+> Updated 2026-10-07 to match the content planner: the home page owns the brand keyword (`dronahost`) plus "wordpress and vps hosting for small business". "managed wordpress hosting" belongs to `/wordpress-hosting` in the keyword register. Support is ticket and email only. Business hosting means the Web hosting plans.
+
 ```json
 {
   "id": "home",
@@ -193,8 +195,8 @@ H2: Ready to see which plan fits? Primary: See WordPress hosting plans. Secondar
   "archetype": "product",
   "intent": "navigational-commercial",
   "audience": "Small business owners who run or need a WordPress site and want fewer technical worries",
-  "primaryKeyword": "managed wordpress hosting",
-  "secondaryKeywords": ["wordpress hosting for small business", "managed vps hosting", "wordpress hosting with migration"],
+  "primaryKeyword": "dronahost",
+  "secondaryKeywords": ["wordpress and vps hosting for small business"],
   "layoutSignature": ["ProductHero:dashboard", "AssuranceStrip", "PathRouter", "AnswerBlock", "ResponsibilitySplit"],
   "seo": {
     "title": "Managed WordPress & VPS Hosting",
@@ -226,7 +228,7 @@ H2: Ready to see which plan fits? Primary: See WordPress hosting plans. Secondar
       "paths": [
         { "title": "I already have a WordPress site", "line": "We move it to DronaHost and look after it.", "href": "/wordpress-hosting", "cta": "See WordPress hosting" },
         { "title": "I need a website built", "line": "We design a new WordPress site, then host it.", "href": "/web-design", "cta": "See website design" },
-        { "title": "I need email and hosting for my business", "line": "Hosting and professional email together.", "href": "/business-hosting", "cta": "See business hosting" },
+        { "title": "I need simple hosting for a business site", "line": "Web hosting with a cPanel dashboard, for any kind of site. Email is not included.", "href": "/business-hosting", "cta": "See business hosting" },
         { "title": "I want full control of my server", "line": "Managed VPS with root access.", "href": "/vps-hosting", "cta": "See managed VPS" } ] } },
 
     { "id": "answer", "type": "AnswerBlock", "content": {
@@ -256,8 +258,8 @@ H2: Ready to see which plan fits? Primary: See WordPress hosting plans. Secondar
       "showRenewalPrice": true, "link": { "label": "Compare all plans", "href": "/pricing" } } },
 
     { "id": "support", "type": "SupportChannels", "content": {
-      "h2": "Reach a person in the channel you already use",
-      "channels": ["whatsapp", "live-chat", "ticket"], "hoursFrom": "claim:support-24-7" } },
+      "h2": "Get help from the team",
+      "channels": ["ticket", "email"], "hoursFrom": "claim:support-24-7" } },
 
     { "id": "proof", "type": "Testimonials", "hideIfEmpty": true, "requires": "verifiedReviews", "content": { "source": "reviews.json" } },
 
@@ -269,7 +271,8 @@ H2: Ready to see which plan fits? Primary: See WordPress hosting plans. Secondar
       "h2": "Questions before you choose",
       "items": [
         { "q": "What is managed WordPress hosting?", "a": "Managed WordPress hosting means the host looks after the technical side of your site, including servers, backups and security, while you keep control of your content." },
-        { "q": "Do I need technical skills to use DronaHost?", "a": "No. You manage your site in WordPress as usual, and the technical work behind it is handled for you. If you get stuck, you can contact our team by chat, WhatsApp or ticket." },
+        { "q": "Do I need technical skills to use DronaHost?", "a": "No. You manage your site in WordPress as usual, and the technical work behind it is handled for you. If you get stuck, you can contact our team by support ticket or email." },
+        { "q": "Does DronaHost host email?", "a": "No. Email is not hosted on DronaHost servers. You can use Google Workspace or another email service with your domain, and we show you the DNS records to add." },
         { "q": "Can I move my existing WordPress site to DronaHost?", "a": "Yes. Share your current host details and we copy your site across. You review it before you switch, and your current site stays live until you do." },
         { "q": "How much does WordPress hosting cost at DronaHost?", "a": "{{from pricing.json: starting price, billing period and renewal price}}", "requires": "FEATURES.pricesConfirmed" },
         { "q": "Will the price go up when my plan renews?", "a": "No. Your renewal price is the same as your signup price.", "requiresClaim": "claim:renewal-price-same" },
@@ -305,10 +308,10 @@ unverified in `claims.ts` and the related tiles do not render.
 4. **QA:** content linter, contrast check, axe, Lighthouse (median of 3 mobile runs), JS-disabled and reduced-motion runs, claim-gating e2e.
 5. **Staging only.** No merge to main until you approve screenshots.
 
-### Prompt to send
+### Prompt that was sent (Phase 1 is built; kept for reference)
 
 ```
-Read /reference/HOME_PAGE_DESIGN.md and the updated rules in docs/rules/.
+Read docs/reference/pages/HOME_PAGE_DESIGN.md and the content planner in docs/content-planner/ (README first).
 Do Phase 1 only: build PathRouter and ResponsibilitySplit as new components in /v2
 (bespoke tier), plus AnswerBlock if missing. Follow the /v2 review workflow. Take
 viewport screenshots at 1440 and 390 in dark and light, review them yourself, and fix

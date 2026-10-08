@@ -7,27 +7,25 @@ import FeatureGrid from "@/components/sections/FeatureGrid";
 import JsonLd from "@/components/sections/JsonLd";
 import { HOME_CTA } from "@/content/home";
 import { REGION_FAQ } from "@/content/services";
-import pricing from "@/data/pricing.json";
+import { REGION_KEYS as REGIONS, REGIONS_META, type RegionKey } from "@/content/regions";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 import { SITE_URL } from "@/lib/seo/config";
 import { breadcrumbSchema, faqPageSchema } from "@/lib/seo/jsonld";
 import { buildMetadata } from "@/lib/seo/metadata";
 
-type RegionKey = "us" | "uk" | "eu" | "uae";
-const REGIONS: RegionKey[] = ["us", "uk", "eu", "uae"];
-const isRegion = (v: string): v is RegionKey => (REGIONS as string[]).includes(v);
+const isRegion = (v: string): v is RegionKey => (REGIONS as readonly string[]).includes(v);
 
 export function generateStaticParams(): { region: string }[] {
   return REGIONS.map((region) => ({ region }));
 }
 
 /** Every regional page lists its siblings so search engines can pair language/region variants. */
-const hreflang = Object.fromEntries(REGIONS.map((r) => [pricing.regions[r].hreflang, `${SITE_URL}/hosting/${r}`]));
+const hreflang = Object.fromEntries(REGIONS.map((r) => [REGIONS_META[r].hreflang, `${SITE_URL}/hosting/${r}`]));
 
 export async function generateMetadata({ params }: { params: Promise<{ region: string; locale: string }> }): Promise<Metadata> {
   const { region, locale } = await params;
   if (!isRegion(region)) return buildMetadata({ locale, title: "Hosting | DronaHost", description: "Managed hosting.", path: `/hosting/${region}`, noIndex: true });
-  const label = pricing.regions[region].label;
+  const label = REGIONS_META[region].label;
   return buildMetadata({
     locale,
     title: `Web Hosting for ${label} Businesses | DronaHost`,
@@ -40,7 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ region: s
 export default async function RegionPage({ params }: { params: Promise<{ region: string }> }) {
   const { region } = await params;
   if (!isRegion(region)) notFound();
-  const meta = pricing.regions[region];
+  const meta = REGIONS_META[region];
   const faq = REGION_FAQ(meta.label);
   const regimes = meta.compliance.join(", ").replace(/-/g, " ");
 

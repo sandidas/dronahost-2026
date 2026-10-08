@@ -111,7 +111,7 @@ const legal = () =>
 
 const comparisons = () =>
   FEATURES.comparisonPages
-    ? `## Competitor comparisons\n\n${["siteground", "kinsta", "wp-engine", "bluehost", "hostinger", "a2-hosting", "cloudways"]
+    ? `## Competitor comparisons\n\n${["siteground", "kinsta", "wp-engine", "bluehost", "hostinger", "cloudways"]
         .map((s) => `- ${url(`/vs/${s}`)}`)
         .join("\n")}\n\n`
     : "";

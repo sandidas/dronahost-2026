@@ -19,6 +19,7 @@
     "check:pages": "tsx scripts/validate-pages.ts",
     "lint:content": "tsx scripts/lint-content.ts",
     "check:register": "tsx docs/content-planner/tools/check-register.ts",
+    "check:vs": "tsx scripts/check-vs.ts",
     "check:content": "tsx docs/content-planner/tools/check-content.ts",
     "test:content": "tsx --test docs/content-planner/tools/check-content.test.ts"
   },

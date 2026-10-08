@@ -1,5 +1,4 @@
 import { CLAIMS } from "@/content/claims";
-import { COMPANY } from "@/content/company";
 import { collectHrefs } from "./schemas/page";
 import type { PageSpecData } from "./schemas/page";
 
@@ -78,9 +77,10 @@ export function lintPage(spec: PageSpecData): LintIssue[] {
       if (new RegExp(`(^|[^a-z])${phrase.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}([^a-z]|$)`).test(lower)) issues.push({ level: "error", where, message: `banned phrase "${phrase}"` });
     }
     if (text.includes("!")) issues.push({ level: "error", where, message: "exclamation mark in marketing copy" });
-    // Never advertise a support channel that does not exist yet (see content/company.ts).
-    if (/whats\s?app/i.test(text) && !COMPANY.whatsappNumber) issues.push({ level: "error", where, message: "mentions WhatsApp, but no WhatsApp number is set in content/company.ts" });
-    if (/live[\s-]?chat/i.test(text) && !COMPANY.liveChatEnabled) issues.push({ level: "error", where, message: "mentions live chat, but live chat is not enabled in content/company.ts" });
+    // Support is ticket and email only (owner decision 22). Never mention any other channel.
+    if (/whats\s?app/i.test(text)) issues.push({ level: "error", where, message: "mentions WhatsApp, which is not offered (support is ticket and email only)" });
+    if (/live[\s-]?chat/i.test(text)) issues.push({ level: "error", where, message: "mentions live chat, which is not offered (support is ticket and email only)" });
+    if (/\b(phone support|phone number|phone line|call us|call our)\b/i.test(text)) issues.push({ level: "error", where, message: "mentions phone support, which is not offered (support is ticket and email only)" });
     if (/&[a-z]+;|<[a-z/][^>]*>/i.test(text)) issues.push({ level: "error", where, message: "raw HTML or entity in copy" });
     if (UNCLAIMED_NUMBER.test(text)) issues.push({ level: "error", where, message: `a number in copy must come from claims.ts or pricing.json: "${text.slice(0, 60)}"` });
     if (label && BANNED_CTAS.includes(lower.trim())) issues.push({ level: "error", where, message: `banned CTA label "${text}"` });

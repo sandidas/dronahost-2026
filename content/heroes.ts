@@ -59,5 +59,5 @@ export const PRICING_HERO: HeroCopy = {
   title: "Plans for every stage of",
   titleAccent: "your site",
   description:
-    "Choose a managed hosting plan and compare what each one includes. Not sure which fits? Ask the team and we will recommend one.",
+    "Choose a hosting plan and compare what each one includes. Not sure which fits? Ask the team and we will recommend one.",
 };

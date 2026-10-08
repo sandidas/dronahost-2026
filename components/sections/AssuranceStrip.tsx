@@ -31,9 +31,9 @@ export default function AssuranceStrip({ ids, label = "Our commitments", claims,
         {label}
       </h2>
       <div className="container-site">
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="flex flex-wrap justify-center gap-4">
           {items.map((c) => (
-            <li key={c.id} data-claim={c.id} className="surface flex items-start gap-4 p-5">
+            <li key={c.id} data-claim={c.id} className="surface flex w-full items-start gap-4 p-5 sm:w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)]">
               {c.icon && <FeatureIcon name={c.icon} />}
               <div className="min-w-0">
                 <p className="text-base font-semibold text-foreground">{c.text}</p>

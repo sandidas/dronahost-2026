@@ -9,6 +9,8 @@ type RawPlan = (typeof pricing.plans)[number];
 export type PlanCardData = {
   id: string;
   name: string;
+  /** Plan family id from pricing.families ("wordpress" or "web"). */
+  family: string;
   badge: string | null;
   highlight: boolean;
   description: string;
@@ -40,12 +42,14 @@ const CAPABILITY_LABELS: [keyof RawPlan["capabilities"], string][] = [
 
 const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 
-/** Headline features: resources first, then the first included capabilities. Null limit means unlimited. */
+/** Headline features: resources first, then the first included capabilities. Site counts are capped, so no "unlimited" wording. */
 export function planHighlights(plan: RawPlan): string[] {
   const { limits, capabilities } = plan;
   const items: string[] = [
-    limits.wordPressSites == null ? "Unlimited WordPress sites" : plural(limits.wordPressSites, "WordPress site", "WordPress sites"),
-    limits.diskSpaceGB == null ? "Unlimited storage" : `${limits.diskSpaceGB.toLocaleString("en-US")} GB storage`,
+    plan.family === "wordpress"
+      ? plural(limits.wordPressSites ?? limits.sites, "managed WordPress site", "managed WordPress sites")
+      : plural(limits.sites, "website", "websites"),
+    `${limits.diskSpaceGB.toLocaleString("en-US")} GB storage`,
     `${limits.ramGB} GB memory`,
     `${limits.backupRetentionDays}-day backup retention`,
   ];
@@ -65,6 +69,7 @@ export function buildPlanCards(currency: CurrencyCode = DEFAULT_CURRENCY): PlanC
     return {
       id: p.id,
       name: p.name,
+      family: p.family,
       badge: p.badge ?? null,
       highlight: Boolean(p.highlight),
       description: p.description,
@@ -84,27 +89,35 @@ export function buildPlanCards(currency: CurrencyCode = DEFAULT_CURRENCY): PlanC
 
 export const VAT_DISPLAY = pricing.currencies[DEFAULT_CURRENCY].vatDisplay;
 
-const toAddon = (a: (typeof pricing.addons)[number]) => ({
-  id: a.id,
-  name: a.name,
-  description: a.description,
-  monthly: formatPrice(a.pricing.monthly[DEFAULT_CURRENCY]),
-});
+/** Plan families (WordPress hosting, Web hosting) in display order, each with its plan ids. */
+export const PLAN_FAMILIES = pricing.families.map((f) => ({ id: f.id, label: f.label, description: f.description, planIds: f.planIds as readonly string[] }));
 
-const isBackup = (a: { id: string }) => a.id.startsWith("backup-");
+/** Cards for one family, in the order pricing.json lists them. */
+export const buildFamilyCards = (familyId: string, currency: CurrencyCode = DEFAULT_CURRENCY): PlanCardData[] =>
+  buildPlanCards(currency).filter((c) => c.family === familyId);
 
-/** Add-ons other than offsite backup (those are one card with a size selector). */
-export const ADDONS = pricing.addons.filter((a) => !isBackup(a)).map(toAddon);
+/** The contact-only tier (Scale, Dedicated Core and Enterprise folded in). No price, resource numbers or "unlimited" are published. */
+export const HIGH_TRAFFIC = {
+  name: pricing.highTraffic.name,
+  description: pricing.highTraffic.description,
+  ctaLabel: pricing.highTraffic.cta.label,
+  ctaHref: pricing.highTraffic.cta.href,
+};
 
-/** Offsite backup sizes, from pricing.json. The size comes from the add-on name, e.g. "Offsite Backup — 5 GB". */
+const monthlyOf = (pricingBlock: { monthly: Partial<Record<CurrencyCode, number>> }) => formatPrice(pricingBlock.monthly[DEFAULT_CURRENCY] ?? 0);
+
+/** Single-price add-ons. Add-ons with size options (offsite backup) are one card with a selector, below. */
+export const ADDONS = pricing.addons.flatMap((a) =>
+  "pricing" in a && a.pricing ? [{ id: a.id, name: a.name, description: a.description, monthly: monthlyOf(a.pricing) }] : [],
+);
+
+/** Offsite backup sizes, from the add-on's `options` in pricing.json. */
 export const BACKUP_ADDON = (() => {
-  const tiers = pricing.addons.filter(isBackup).map((a) => ({ ...toAddon(a), size: a.name.split("—").pop()?.trim() ?? a.name }));
-  return tiers.length > 0
-    ? { name: "Offsite Backup", description: pricing.addons.find(isBackup)?.description ?? "", tiers }
-    : null;
+  const addon = pricing.addons.find((a) => "options" in a && Array.isArray(a.options) && a.options.length > 0);
+  if (!addon || !("options" in addon) || !addon.options) return null;
+  const tiers = addon.options.map((o) => ({ id: o.id, name: `${addon.name} — ${o.label}`, description: addon.description, monthly: monthlyOf(o.pricing), size: o.label }));
+  return { name: addon.name, description: addon.description, tiers };
 })();
 
-/** The guarantee is listed in pricing.json but only shown once it is verified in content/claims.ts. */
-export const INCLUDED_WITH_EVERY_PLAN: string[] = pricing.includedWithEveryPlan
-  .filter((i) => i.id !== "money-back" || isVerified("money-back"))
-  .map((i) => i.label);
+/** Each item is gated by its claim in content/claims.ts when it names one, so nothing unverified is listed. */
+export const INCLUDED_WITH_EVERY_PLAN: string[] = pricing.includedWithEveryPlan.filter((i) => i.claimId != null && isVerified(i.claimId)).map((i) => i.label);

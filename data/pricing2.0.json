@@ -1,0 +1,747 @@
+{
+  "_meta": {
+    "version": "2.0.0",
+    "lastUpdated": "2026-05-26",
+    "category": "Business Hosting (Web + Email)",
+    "description": "Source of truth for all hosting plan pricing across the DronaHost website. Import this file in components, generateMetadata(), and JSON-LD schemas.",
+    "verifyPrices": "USD prices extracted from docs/pricing/pricing.png — verify all values before publishing. Non-USD prices are market-competitive estimates — set exact regional prices.",
+    "renewalPolicy": "All renewal prices are identical to signup prices. DronaHost does not use introductory pricing that increases at renewal.",
+    "billingCycles": ["monthly", "annual"],
+    "annualSavings": "2 months free when billed annually (~16.7% discount)"
+  },
+
+  "currencies": {
+    "USD": {
+      "code": "USD",
+      "symbol": "$",
+      "name": "US Dollar",
+      "locale": "en-US",
+      "vatBehavior": "excluded",
+      "vatDisplay": null,
+      "default": true
+    },
+    "GBP": {
+      "code": "GBP",
+      "symbol": "£",
+      "name": "British Pound",
+      "locale": "en-GB",
+      "vatBehavior": "excluded",
+      "vatDisplay": "+ VAT"
+    },
+    "EUR": {
+      "code": "EUR",
+      "symbol": "€",
+      "name": "Euro",
+      "locale": "de-DE",
+      "vatBehavior": "excluded",
+      "vatDisplay": "+ VAT"
+    },
+    "AED": {
+      "code": "AED",
+      "symbol": "د.إ",
+      "name": "UAE Dirham",
+      "locale": "en-AE",
+      "vatBehavior": "excluded",
+      "vatDisplay": null
+    },
+    "INR": {
+      "code": "INR",
+      "symbol": "₹",
+      "name": "Indian Rupee",
+      "locale": "en-IN",
+      "vatBehavior": "excluded",
+      "vatDisplay": null
+    }
+  },
+
+  "plans": [
+    {
+      "id": "starter",
+      "name": "Starter",
+      "slug": "starter",
+      "badge": null,
+      "highlight": false,
+      "description": "For startups, personal brands, and small businesses that want fast, secure hosting while launching and testing their website idea.",
+      "cta": {
+        "label": "Start Starter",
+        "href": "/checkout?plan=starter"
+      },
+      "pricing": {
+        "monthly": {
+          "USD": 14.99,
+          "GBP": 11.99,
+          "EUR": 13.99,
+          "AED": 54.99,
+          "INR": 999
+        },
+        "annual": {
+          "USD": 9.99,
+          "GBP": 7.99,
+          "EUR": 8.99,
+          "AED": 36.99,
+          "INR": 699
+        },
+        "renewal": {
+          "USD": 9.99,
+          "GBP": 7.99,
+          "EUR": 8.99,
+          "AED": 36.99,
+          "INR": 699
+        }
+      },
+      "limits": {
+        "diskSpaceGB": 200,
+        "trafficGB": 200,
+        "trafficType": "metered",
+        "domains": 1,
+        "mailboxes": 3,
+        "databases": 2,
+        "wordPressSites": 3,
+        "ftpAccounts": 5,
+        "ramGB": 2,
+        "backupRetentionDays": 1,
+        "dedicatedResources": false
+      },
+      "capabilities": {
+        "freeSSL": true,
+        "ddosProtection": true,
+        "cloudflare": true,
+        "freeMigration": true,
+        "stagingEnvironment": false,
+        "performanceTuning": false,
+        "serverMonitoring": false,
+        "advancedCaching": false,
+        "trafficSpikeHandling": false,
+        "prioritySupportQueue": false,
+        "onClickScaling": false,
+        "dedicatedAccount": false
+      },
+      "support": {
+        "tier": "Standard",
+        "channels": ["ticket", "email"],
+        "availability": "Business hours",
+        "avgFirstResponse": "4 hours"
+      },
+      "php": {
+        "memoryLimitMB": 512,
+        "maxExecutionTimeSec": 120,
+        "maxInputTimeSec": 240,
+        "postMaxSizeMB": 512,
+        "uploadMaxFilesizeMB": 512,
+        "pmMaxChildren": 10,
+        "pmMaxRequests": 900
+      }
+    },
+
+    {
+      "id": "growth",
+      "name": "Growth",
+      "slug": "growth",
+      "badge": "Most Popular",
+      "highlight": true,
+      "description": "For growing businesses, WooCommerce stores, and high-traffic blogs that need more resources and priority support.",
+      "cta": {
+        "label": "Start Growth",
+        "href": "/checkout?plan=growth"
+      },
+      "pricing": {
+        "monthly": {
+          "USD": 24.99,
+          "GBP": 19.99,
+          "EUR": 22.99,
+          "AED": 91.99,
+          "INR": 1999
+        },
+        "annual": {
+          "USD": 19.99,
+          "GBP": 15.99,
+          "EUR": 17.99,
+          "AED": 73.99,
+          "INR": 1499
+        },
+        "renewal": {
+          "USD": 19.99,
+          "GBP": 15.99,
+          "EUR": 17.99,
+          "AED": 73.99,
+          "INR": 1499
+        }
+      },
+      "limits": {
+        "diskSpaceGB": 500,
+        "trafficGB": 500,
+        "trafficType": "metered",
+        "domains": 3,
+        "mailboxes": 5,
+        "databases": 5,
+        "wordPressSites": 5,
+        "ftpAccounts": 10,
+        "ramGB": 4,
+        "backupRetentionDays": 7,
+        "dedicatedResources": false
+      },
+      "capabilities": {
+        "freeSSL": true,
+        "ddosProtection": true,
+        "cloudflare": true,
+        "freeMigration": true,
+        "stagingEnvironment": true,
+        "performanceTuning": false,
+        "serverMonitoring": true,
+        "advancedCaching": false,
+        "trafficSpikeHandling": false,
+        "prioritySupportQueue": true,
+        "onClickScaling": false,
+        "dedicatedAccount": false
+      },
+      "support": {
+        "tier": "Priority",
+        "channels": ["ticket", "email", "live-chat"],
+        "availability": "24/7",
+        "avgFirstResponse": "18 minutes"
+      },
+      "php": {
+        "memoryLimitMB": 1024,
+        "maxExecutionTimeSec": 240,
+        "maxInputTimeSec": 300,
+        "postMaxSizeMB": 512,
+        "uploadMaxFilesizeMB": 1024,
+        "pmMaxChildren": 10,
+        "pmMaxRequests": 900
+      }
+    },
+
+    {
+      "id": "pop",
+      "name": "Pop",
+      "slug": "pop",
+      "badge": "High Power",
+      "highlight": false,
+      "description": "For high-power, heavy sites — SaaS platforms, large WooCommerce stores, and content-heavy WordPress with heavy plugin usage.",
+      "cta": {
+        "label": "Start Pop",
+        "href": "/checkout?plan=pop"
+      },
+      "pricing": {
+        "monthly": {
+          "USD": 49.99,
+          "GBP": 39.99,
+          "EUR": 45.99,
+          "AED": 183.99,
+          "INR": 3999
+        },
+        "annual": {
+          "USD": 39.99,
+          "GBP": 31.99,
+          "EUR": 36.99,
+          "AED": 147.99,
+          "INR": 2999
+        },
+        "renewal": {
+          "USD": 39.99,
+          "GBP": 31.99,
+          "EUR": 36.99,
+          "AED": 147.99,
+          "INR": 2999
+        }
+      },
+      "limits": {
+        "diskSpaceGB": 1000,
+        "trafficGB": null,
+        "trafficType": "semi-dedicated",
+        "domains": null,
+        "mailboxes": null,
+        "databases": 25,
+        "wordPressSites": 25,
+        "ftpAccounts": null,
+        "ramGB": 6,
+        "backupRetentionDays": 7,
+        "dedicatedResources": false
+      },
+      "capabilities": {
+        "freeSSL": true,
+        "ddosProtection": true,
+        "cloudflare": true,
+        "freeMigration": true,
+        "stagingEnvironment": true,
+        "performanceTuning": true,
+        "serverMonitoring": true,
+        "advancedCaching": true,
+        "trafficSpikeHandling": false,
+        "prioritySupportQueue": true,
+        "onClickScaling": false,
+        "dedicatedAccount": false
+      },
+      "support": {
+        "tier": "24/7",
+        "channels": ["ticket", "email", "live-chat", "phone"],
+        "availability": "24/7",
+        "avgFirstResponse": "18 minutes"
+      },
+      "php": {
+        "memoryLimitMB": 2048,
+        "maxExecutionTimeSec": 300,
+        "maxInputTimeSec": 600,
+        "postMaxSizeMB": 512,
+        "uploadMaxFilesizeMB": 512,
+        "pmMaxChildren": 20,
+        "pmMaxRequests": 1000
+      }
+    },
+
+    {
+      "id": "scale",
+      "name": "Scale",
+      "slug": "scale",
+      "badge": null,
+      "highlight": false,
+      "description": "Unlimited resources for high-traffic production sites. Built for businesses that cannot afford slowdowns or downtime.",
+      "cta": {
+        "label": "Start Scale",
+        "href": "/checkout?plan=scale"
+      },
+      "pricing": {
+        "monthly": {
+          "USD": 149.99,
+          "GBP": 119.99,
+          "EUR": 135.99,
+          "AED": 549.99,
+          "INR": 9999
+        },
+        "annual": {
+          "USD": 99.99,
+          "GBP": 79.99,
+          "EUR": 89.99,
+          "AED": 367.99,
+          "INR": 7499
+        },
+        "renewal": {
+          "USD": 99.99,
+          "GBP": 79.99,
+          "EUR": 89.99,
+          "AED": 367.99,
+          "INR": 7499
+        }
+      },
+      "limits": {
+        "diskSpaceGB": null,
+        "trafficGB": null,
+        "trafficType": "unlimited",
+        "domains": null,
+        "mailboxes": null,
+        "databases": null,
+        "wordPressSites": null,
+        "ftpAccounts": null,
+        "ramGB": 8,
+        "backupRetentionDays": 14,
+        "dedicatedResources": false
+      },
+      "capabilities": {
+        "freeSSL": true,
+        "ddosProtection": true,
+        "cloudflare": true,
+        "freeMigration": true,
+        "stagingEnvironment": true,
+        "performanceTuning": true,
+        "serverMonitoring": true,
+        "advancedCaching": true,
+        "trafficSpikeHandling": true,
+        "prioritySupportQueue": true,
+        "onClickScaling": true,
+        "dedicatedAccount": false
+      },
+      "support": {
+        "tier": "24/7",
+        "channels": ["ticket", "email", "live-chat", "phone"],
+        "availability": "24/7",
+        "avgFirstResponse": "18 minutes"
+      },
+      "php": {
+        "memoryLimitMB": 2048,
+        "maxExecutionTimeSec": 300,
+        "maxInputTimeSec": 600,
+        "postMaxSizeMB": 512,
+        "uploadMaxFilesizeMB": 512,
+        "pmMaxChildren": 20,
+        "pmMaxRequests": 1000
+      }
+    },
+
+    {
+      "id": "dedicated-core",
+      "name": "Dedicated Core",
+      "slug": "dedicated-core",
+      "badge": "WooCommerce / Large Store",
+      "highlight": false,
+      "description": "Dedicated infrastructure built for high-traffic, mission-critical platforms. Isolated resources — no shared neighbors.",
+      "cta": {
+        "label": "Start Dedicated Core",
+        "href": "/checkout?plan=dedicated-core"
+      },
+      "pricing": {
+        "monthly": {
+          "USD": 249.99,
+          "GBP": 199.99,
+          "EUR": 229.99,
+          "AED": 919.99,
+          "INR": 17999
+        },
+        "annual": {
+          "USD": 199.99,
+          "GBP": 159.99,
+          "EUR": 184.99,
+          "AED": 735.99,
+          "INR": 14999
+        },
+        "renewal": {
+          "USD": 199.99,
+          "GBP": 159.99,
+          "EUR": 184.99,
+          "AED": 735.99,
+          "INR": 14999
+        }
+      },
+      "limits": {
+        "diskSpaceGB": null,
+        "trafficGB": null,
+        "trafficType": "dedicated",
+        "domains": null,
+        "mailboxes": null,
+        "databases": null,
+        "wordPressSites": null,
+        "ftpAccounts": null,
+        "ramGB": 16,
+        "backupRetentionDays": 30,
+        "dedicatedResources": true
+      },
+      "capabilities": {
+        "freeSSL": true,
+        "ddosProtection": true,
+        "cloudflare": true,
+        "freeMigration": true,
+        "stagingEnvironment": true,
+        "performanceTuning": true,
+        "serverMonitoring": true,
+        "advancedCaching": true,
+        "trafficSpikeHandling": true,
+        "prioritySupportQueue": true,
+        "onClickScaling": true,
+        "dedicatedAccount": true
+      },
+      "support": {
+        "tier": "Dedicated 24/7",
+        "channels": ["ticket", "email", "live-chat", "phone", "dedicated-slack"],
+        "availability": "24/7",
+        "avgFirstResponse": "5 minutes"
+      },
+      "php": {
+        "memoryLimitMB": 4096,
+        "maxExecutionTimeSec": 400,
+        "maxInputTimeSec": 600,
+        "postMaxSizeMB": 1024,
+        "uploadMaxFilesizeMB": 1024,
+        "pmMaxChildren": 20,
+        "pmMaxRequests": 2000
+      }
+    },
+
+    {
+      "id": "enterprise",
+      "name": "Enterprise",
+      "slug": "enterprise",
+      "badge": null,
+      "highlight": false,
+      "description": "Custom infrastructure for platforms that need top performance, strong security, and dedicated engineering support. Pricing on request.",
+      "cta": {
+        "label": "Talk to the team",
+        "href": "/contact?inquiry=enterprise"
+      },
+      "pricing": {
+        "monthly": {
+          "USD": null,
+          "GBP": null,
+          "EUR": null,
+          "AED": null,
+          "INR": null
+        },
+        "annual": {
+          "USD": null,
+          "GBP": null,
+          "EUR": null,
+          "AED": null,
+          "INR": null
+        },
+        "renewal": {
+          "USD": null,
+          "GBP": null,
+          "EUR": null,
+          "AED": null,
+          "INR": null
+        },
+        "customPricing": true,
+        "pricingNote": "Custom quote — contact us at hello@dronahost.com"
+      },
+      "limits": {
+        "diskSpaceGB": null,
+        "trafficGB": null,
+        "trafficType": "dedicated",
+        "domains": null,
+        "mailboxes": null,
+        "databases": null,
+        "wordPressSites": null,
+        "ftpAccounts": null,
+        "ramGB": 32,
+        "backupRetentionDays": 30,
+        "dedicatedResources": true
+      },
+      "capabilities": {
+        "freeSSL": true,
+        "ddosProtection": true,
+        "cloudflare": true,
+        "freeMigration": true,
+        "stagingEnvironment": true,
+        "performanceTuning": true,
+        "serverMonitoring": true,
+        "advancedCaching": true,
+        "trafficSpikeHandling": true,
+        "prioritySupportQueue": true,
+        "onClickScaling": true,
+        "dedicatedAccount": true
+      },
+      "support": {
+        "tier": "Expert Team",
+        "channels": ["ticket", "email", "live-chat", "phone", "dedicated-slack", "dedicated-engineer"],
+        "availability": "24/7",
+        "avgFirstResponse": "5 minutes"
+      },
+      "php": {
+        "memoryLimitMB": 8192,
+        "maxExecutionTimeSec": 600,
+        "maxInputTimeSec": 600,
+        "postMaxSizeMB": 2048,
+        "uploadMaxFilesizeMB": 2048,
+        "pmMaxChildren": 20,
+        "pmMaxRequests": 2000
+      }
+    }
+  ],
+
+  "addons": [
+    {
+      "id": "extra-layer-security",
+      "name": "Extra Layer Security",
+      "description": "Web Application Firewall (WAF) with custom rule sets, brute-force protection, and real-time threat intelligence.",
+      "pricing": {
+        "monthly": {
+          "USD": 10,
+          "GBP": 8,
+          "EUR": 9,
+          "AED": 36,
+          "INR": 699
+        }
+      }
+    },
+    {
+      "id": "page-speed-boost",
+      "name": "Page Speed Boost",
+      "description": "Advanced image optimization (AVIF/WebP conversion), critical CSS extraction, and JS deferral tuned for Core Web Vitals.",
+      "pricing": {
+        "monthly": {
+          "USD": 10,
+          "GBP": 8,
+          "EUR": 9,
+          "AED": 36,
+          "INR": 699
+        }
+      }
+    },
+    {
+      "id": "malware-scanning",
+      "name": "Automatic Malware Scanning",
+      "description": "Daily automated malware scan with instant email alert and one-click quarantine.",
+      "pricing": {
+        "monthly": {
+          "USD": 2,
+          "GBP": 1.99,
+          "EUR": 1.99,
+          "AED": 7.99,
+          "INR": 149
+        }
+      }
+    },
+    {
+      "id": "backup-5gb",
+      "name": "Offsite Backup — 5 GB",
+      "description": "Daily off-server backups stored in an independent data center. 30-day retention.",
+      "pricing": {
+        "monthly": {
+          "USD": 3,
+          "GBP": 2.49,
+          "EUR": 2.79,
+          "AED": 10.99,
+          "INR": 249
+        }
+      }
+    },
+    {
+      "id": "backup-10gb",
+      "name": "Offsite Backup — 10 GB",
+      "description": "Daily off-server backups stored in an independent data center. 30-day retention.",
+      "pricing": {
+        "monthly": {
+          "USD": 5,
+          "GBP": 3.99,
+          "EUR": 4.49,
+          "AED": 18.99,
+          "INR": 399
+        }
+      }
+    },
+    {
+      "id": "backup-30gb",
+      "name": "Offsite Backup — 30 GB",
+      "description": "Daily off-server backups stored in an independent data center. 30-day retention.",
+      "pricing": {
+        "monthly": {
+          "USD": 9,
+          "GBP": 7.49,
+          "EUR": 8.29,
+          "AED": 32.99,
+          "INR": 699
+        }
+      }
+    },
+    {
+      "id": "backup-60gb",
+      "name": "Offsite Backup — 60 GB",
+      "description": "Daily off-server backups stored in an independent data center. 30-day retention.",
+      "pricing": {
+        "monthly": {
+          "USD": 13,
+          "GBP": 10.49,
+          "EUR": 11.99,
+          "AED": 47.99,
+          "INR": 999
+        }
+      }
+    },
+    {
+      "id": "backup-100gb",
+      "name": "Offsite Backup — 100 GB",
+      "description": "Daily off-server backups stored in an independent data center. 30-day retention.",
+      "pricing": {
+        "monthly": {
+          "USD": 25,
+          "GBP": 19.99,
+          "EUR": 22.99,
+          "AED": 91.99,
+          "INR": 1899
+        }
+      }
+    },
+    {
+      "id": "backup-250gb",
+      "name": "Offsite Backup — 250 GB",
+      "description": "Daily off-server backups stored in an independent data center. 30-day retention.",
+      "pricing": {
+        "monthly": {
+          "USD": 35,
+          "GBP": 27.99,
+          "EUR": 31.99,
+          "AED": 128.99,
+          "INR": 2699
+        }
+      }
+    }
+  ],
+
+  "includedWithEveryPlan": [
+    {
+      "id": "free-ssl",
+      "label": "Free SSL Certificate",
+      "detail": "Auto-renewed. Never see an SSL invoice."
+    },
+    {
+      "id": "litespeed",
+      "label": "LiteSpeed Web Server",
+      "detail": "Up to 3× faster than Apache for WordPress."
+    },
+    {
+      "id": "nvme",
+      "label": "NVMe SSD Storage",
+      "detail": "7× faster read speeds than standard SSD."
+    },
+    {
+      "id": "cloudflare",
+      "label": "Cloudflare DDoS Protection",
+      "detail": "Network-level attack absorption, always on."
+    },
+    {
+      "id": "cpanel",
+      "label": "cPanel Dashboard",
+      "detail": "Industry-standard. No proprietary lock-in."
+    },
+    {
+      "id": "one-click-wp",
+      "label": "One-Click WordPress Install",
+      "detail": "Live in under 4 minutes."
+    },
+    {
+      "id": "migration",
+      "label": "Free Migration",
+      "detail": "We move your site. Zero-downtime target."
+    },
+    {
+      "id": "money-back",
+      "label": "30-Day Money-Back Guarantee",
+      "detail": "Full refund. No questions asked."
+    }
+  ],
+
+  "regions": {
+    "us": {
+      "label": "United States",
+      "flag": "🇺🇸",
+      "datacenter": "New York / Chicago / Los Angeles",
+      "defaultCurrency": "USD",
+      "compliance": ["CCPA"],
+      "hreflang": "en-US"
+    },
+    "uk": {
+      "label": "United Kingdom",
+      "flag": "🇬🇧",
+      "datacenter": "London",
+      "defaultCurrency": "GBP",
+      "vatRate": 0.20,
+      "compliance": ["UK-GDPR", "ICO"],
+      "hreflang": "en-GB"
+    },
+    "eu": {
+      "label": "European Union",
+      "flag": "🇪🇺",
+      "datacenter": "Frankfurt / Amsterdam",
+      "defaultCurrency": "EUR",
+      "vatNote": "VAT rate varies by EU member state. Charged at checkout.",
+      "compliance": ["GDPR", "GDPR-Art3"],
+      "hreflang": "de-DE"
+    },
+    "uae": {
+      "label": "United Arab Emirates",
+      "flag": "🇦🇪",
+      "datacenter": "Dubai",
+      "defaultCurrency": "AED",
+      "compliance": ["UAE-PDPL"],
+      "hreflang": "en-AE"
+    },
+    "in": {
+      "label": "India",
+      "flag": "🇮🇳",
+      "datacenter": "Mumbai",
+      "defaultCurrency": "INR",
+      "vatNote": "GST applicable at checkout.",
+      "compliance": ["DPDP"],
+      "hreflang": "en-IN",
+      "note": "De-prioritised market per product strategy. Pricing set for completeness."
+    }
+  }
+}

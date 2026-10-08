@@ -15,7 +15,7 @@ import { HOME_CTA, HOME_SPLITS } from "@/content/home";
 import { WORDPRESS_FEATURES, WORDPRESS_PRICING } from "@/content/wordpress";
 import { showPrices } from "@/lib/flags";
 import { startingPriceLabel } from "@/lib/pricing";
-import { buildPlanCards, VAT_DISPLAY } from "@/lib/pricing/plans";
+import { buildFamilyCards, VAT_DISPLAY } from "@/lib/pricing/plans";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 import { breadcrumbSchema, faqPageSchema, serviceSchema } from "@/lib/seo/jsonld";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -68,7 +68,7 @@ export default function WordPressHostingPage() {
       <ProcessTimeline eyebrow="Migration" title="How moving your site works" steps={MIGRATION_STEPS} />
       <PricingPlans
         {...WORDPRESS_PRICING}
-        plans={buildPlanCards()}
+        plans={buildFamilyCards("wordpress")}
         showPrices={prices}
         vatDisplay={VAT_DISPLAY}
         guaranteeNote={isVerified("money-back") ? "30-day money-back guarantee." : null}

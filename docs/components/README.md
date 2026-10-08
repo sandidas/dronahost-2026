@@ -48,7 +48,7 @@ Shared props: `eyebrow`, `title`, `titleAccent`, `description`, `primaryCta`, `s
 | `ResourceGrid` | Blog/resource cards | no image required, unambiguous dates |
 | `FAQSection` | Accordion on native `<details>` | answers in the initial HTML, works without JS; pair with `faqPageSchema` |
 | `CTABand` | Closing call to action | one primary action |
-| `SupportChannels` | WhatsApp / live chat / ticket | a channel renders only if it exists (`content/company.ts`) |
+| `SupportChannels` | Ticket and email only | email renders only if `COMPANY.supportEmail` is set; ticket is always real |
 | `NewsletterSignup` (**client**) | Email capture | off until `FEATURES.newsletter` and an `endpoint` exist |
 
 ## Social proof and trust (all hidden unless verified)

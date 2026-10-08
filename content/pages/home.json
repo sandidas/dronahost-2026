@@ -4,11 +4,9 @@
   "archetype": "product",
   "intent": "navigational-commercial",
   "audience": "Small business owners who run or need a WordPress site and want fewer technical worries",
-  "primaryKeyword": "managed wordpress hosting",
+  "primaryKeyword": "dronahost",
   "secondaryKeywords": [
-    "wordpress hosting for small business",
-    "managed vps hosting",
-    "wordpress hosting with migration"
+    "wordpress and vps hosting for small business"
   ],
   "layoutSignature": [
     "ProductHero:dashboard",
@@ -48,7 +46,7 @@
       "best",
       "fastest"
     ],
-    "reviewedOn": "2026-10-06"
+    "reviewedOn": "2026-10-07"
   },
   "sections": [
     {
@@ -57,7 +55,12 @@
       "variant": "dashboard",
       "content": {
         "eyebrow": "Managed WordPress, cloud and VPS hosting",
-        "h1": "Managed WordPress hosting without the technical worry",
+        "h1": "WordPress hosting you can leave to us, because we always reply",
+        "h1Requires": [
+          "claim:support-24-7"
+        ],
+        "h1Fallback": "Managed WordPress hosting without the technical worry",
+        "accentFallback": "without the technical worry",
         "lead": "We run the servers, back up your site and move it across for you, so you can get on with your business.",
         "ctaPrimary": {
           "label": "See WordPress hosting plans",
@@ -72,7 +75,7 @@
           "claim:support-24-7",
           "claim:money-back"
         ],
-        "accent": "without the technical worry",
+        "accent": "because we always reply",
         "leadRequiresClaims": [
           "claim:managed-server-care",
           "claim:backups",
@@ -116,11 +119,11 @@
             "requiresClaim": "claim:website-design-service"
           },
           {
-            "title": "I need email and hosting for my business",
-            "line": "Hosting and professional email together.",
+            "title": "I need simple hosting for a business site",
+            "line": "Web hosting with a cPanel dashboard, for any kind of site. Email is not included.",
             "href": "/business-hosting",
             "cta": "See business hosting",
-            "icon": "mail",
+            "icon": "globe",
             "requiresClaim": "claim:business-hosting-scope"
           },
           {
@@ -174,7 +177,7 @@
     {
       "id": "moving",
       "type": "ProcessTimeline",
-      "requiresClaim": "claim:free-migration",
+      "requiresClaim": "claim:migration-process",
       "content": {
         "h2": "Moving to DronaHost, step by step",
         "steps": [
@@ -221,7 +224,7 @@
         "show": [
           "starter",
           "growth",
-          "pop"
+          "pro"
         ],
         "highlight": "growth",
         "showRenewalPrice": true,
@@ -237,9 +240,8 @@
       "content": {
         "h2": "Reach a person when you need one",
         "channels": [
-          "whatsapp",
-          "live-chat",
-          "ticket"
+          "ticket",
+          "email"
         ],
         "hoursFrom": "claim:support-24-7"
       }
@@ -260,8 +262,11 @@
         "h2": "Our policies, in plain language",
         "links": [
           "/refund-policy",
+          "/support-policy",
+          "/pricing-policy",
+          "/backup-policy",
+          "/migration-terms",
           "/terms",
-          "/sla",
           "/privacy"
         ],
         "onlyPublished": true
@@ -275,15 +280,19 @@
         "items": [
           {
             "q": "What is managed WordPress hosting?",
-            "a": "Managed WordPress hosting means the host looks after the technical side of your site, while you keep control of your content and your business."
+            "a": "Managed WordPress hosting means your host looks after the technical work behind your website, while you keep control of your content and your business. It suits owners who want a reliable site without learning how servers work, and who would rather ask a team than search for answers alone."
           },
           {
             "q": "Do I need technical skills to use DronaHost?",
-            "a": "No. You manage your site in WordPress as usual, and the technical work behind it is handled for you. If you get stuck, you can open a support ticket and talk to our team."
+            "a": "No. You manage your site in WordPress as usual, and the technical work behind it is handled for you. If you get stuck, you can contact our team by support ticket or email at any hour, and we reply with the next step. You do not need to know what a server is to run your site here."
+          },
+          {
+            "q": "Does DronaHost host email?",
+            "a": "No. Email is not hosted on DronaHost servers. You can use Google Workspace or another email service with your domain, and we show you the DNS records to add. Email stays separate from your hosting, so you can choose the provider that suits your team."
           },
           {
             "q": "Can I move my existing WordPress site to DronaHost?",
-            "a": "Yes. Share your current host details and we copy your site across. You review it before you switch, and your current site stays live until you do.",
+            "a": "Yes. Share your current host details and we copy your site across. You review it before you switch, and your current site stays live until you do. Moving is free on every package: one website per hosting package, and up to 10 websites on a VPS. Start on the migration page and we reply by email.",
             "requiresClaim": "claim:migration-process"
           },
           {
@@ -293,7 +302,7 @@
           },
           {
             "q": "Will the price go up when my plan renews?",
-            "a": "No. Your renewal price is the same as your signup price.",
+            "a": "No. Your hosting price does not change when you renew. You pay the same price you paid at signup, and each plan shows its renewal price next to its signup price. Domains are not covered by this promise. Prices exclude tax, and customers in India pay GST at checkout.",
             "requiresClaim": "claim:renewal-price-same"
           },
           {

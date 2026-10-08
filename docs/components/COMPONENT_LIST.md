@@ -67,7 +67,7 @@ motion is CSS-first and respects `prefers-reduced-motion`; internal links use `L
 | `Testimonials` | Real, verifiable people only | Gated |
 | `LogoWall` | Customer logos with permission | Gated |
 | `CaseStudy` | One to four concrete results | Gated |
-| `SupportChannels` | Ticket, live chat and WhatsApp cards, each only when it exists | Built (no page uses it now) |
+| `SupportChannels` | Support ticket and email cards only (owner decision 22). Email shows only when a support address is set in `content/company.ts` | Built; used on the home page |
 | `DomainSearch` | Domain availability through the WHMCS WhoisLookup API | Gated (`FEATURES.domainSearch` and credentials) |
 | `NewsletterSignup` | Email capture | Gated (`FEATURES.newsletter`, needs an endpoint) |
 | `AnswerBlock` | Question as the heading, the direct 40-80 word answer right under it, optional detail | Built (Phase 1, needs review) |
@@ -93,7 +93,6 @@ motion is CSS-first and respects `prefers-reduced-motion`; internal links use `L
 | `layout/ErrorState` | Shared 500 body with retry and reference | Live |
 | `layout/CurrencySelector` | Currency picker | Gated (`FEATURES.currencySelector`) |
 | `layout/LanguageSwitcher` | Explicit language and region links | Gated (`FEATURES.localeVariants`) |
-| `layout/WhatsAppButton` | Floating WhatsApp link | Parked (no number, not mounted) |
 
 ## 4. Consent and analytics
 

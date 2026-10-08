@@ -1,35 +1,29 @@
-import type { ComparisonRow, CompetitorData } from "./types";
+import type { CompetitorData } from "./types";
+
+const SOURCE = { url: "https://www.siteground.com/wordpress-hosting.htm", retrieved: "2026-10-07" };
 
 const data: CompetitorData = {
   slug: "siteground",
   name: "SiteGround",
-  tagline: "DronaHost vs SiteGround — Which Host Is Better in 2025?",
-  intro:
-    "SiteGround is one of the most recognised shared hosting providers, known for its customer support and WordPress tools. DronaHost is a newer managed hosting provider targeting US, UK, and UAE markets with competitive pricing and modern infrastructure. In this comparison we look at pricing, performance, support, and value to help you decide which is right for your project.",
-  table: [
-    { feature: "Starter Price", dronahost: "$0.99/mo", competitor: "$2.99/mo", winner: "dronahost" },
-    { feature: "Renewal Price", dronahost: "$2.99/mo", competitor: "$14.99/mo", winner: "dronahost" },
-    { feature: "Free SSL", dronahost: "Yes — wildcard", competitor: "Yes — single domain", winner: "dronahost" },
-    { feature: "Free Migration", dronahost: "Yes — unlimited", competitor: "Yes — 1 site", winner: "dronahost" },
-    { feature: "Daily Backups", dronahost: "Yes — 30 days", competitor: "Yes — 30 days", winner: "tie" },
-    { feature: "Uptime SLA", dronahost: "99.9%", competitor: "99.9%", winner: "tie" },
-    { feature: "Support", dronahost: "24/7 live chat", competitor: "24/7 live chat + phone", winner: "competitor" },
-    { feature: "Datacenter Regions", dronahost: "US, UK, EU, UAE", competitor: "US, EU, Asia", winner: "dronahost" },
-  ] satisfies ComparisonRow[],
-  dronahostPros: [
-    "Significantly lower renewal pricing — no surprise bill after year one",
-    "UAE and UK data centers for MENA and British markets",
-    "Wildcard SSL included on all plans",
-    "Unlimited site migrations included",
-  ],
-  competitorPros: [
-    "Longer track record and larger customer base",
-    "Phone support available on all plans",
-    "Strong WordPress-specific tooling (SG Optimizer plugin)",
-  ],
-  verdict:
-    "If price is your primary concern — especially renewal pricing — DronaHost offers significantly better long-term value. SiteGround's renewal rates are among the highest in the industry. DronaHost is the better choice for US, UK, and UAE businesses that need regional data residency at competitive prices. SiteGround is worth considering if phone support is a hard requirement.",
-  datePublished: "2025-01-15",
+  plan: { name: "StartUp", source: SOURCE },
+  dronahostPlanId: "starter",
+  facts: {
+    price: { value: "$3.99/mo, prepaid for 12 months", source: SOURCE },
+    renewal: { value: "$17.99/mo", source: SOURCE },
+    sites: { value: "1 website", source: SOURCE },
+    storage: { value: "10 GB", source: SOURCE },
+    backups: { value: "Daily backups listed; retention period not stated on the page", source: SOURCE },
+    support: { value: "24/7 support listed; channels not stated on the page", source: SOURCE },
+    moneyBack: { value: null, source: SOURCE },
+    uptime: { value: null, source: SOURCE },
+    migration: { value: "Free site migrations listed; no limit stated", source: SOURCE },
+  },
+  strengths: ["support", "migration", "backups"],
+  chooseCompetitor: "Choose {name} if you want its advertised first-term price ({price}) and 24/7 support, and you accept {renewal} after the first term.",
+  chooseDronahost: "Choose DronaHost if you want the renewal price shown next to the signup price on every plan, and a team you can reach by support ticket or email.",
+  // [HUMAN REVIEW: open the source URL and confirm every fact above before turning FEATURES.comparisonPages on]
+  checkedAtSource: false,
+  reviewedOn: "2026-10-07",
 };
 
 export default data;

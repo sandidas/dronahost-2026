@@ -1,4 +1,4 @@
-import { LifeBuoy, MessageCircle, MessagesSquare } from "lucide-react";
+import { LifeBuoy, Mail } from "lucide-react";
 import { useId, type ReactNode } from "react";
 import Button from "@/components/ui/Button";
 import { COMPANY } from "@/content/company";
@@ -18,33 +18,15 @@ type SupportChannelsProps = {
   className?: string;
 };
 
-const waLink = (num: string) => `https://wa.me/${num.replace(/[^0-9]/g, "")}`;
-
 /**
- * Support trio: WhatsApp, live chat, ticket. WhatsApp leads when configured. A channel
- * renders only when it actually exists (number set / chat widget installed), so the page
- * never advertises a channel nobody answers. Ticket (the contact form) is always real.
+ * Support channels: support ticket and email only (owner decision 22). WhatsApp, live chat and phone are not offered.
+ * Email shows only once a support address is set in `content/company.ts`, so the page never advertises an address nobody
+ * has confirmed. The ticket (the contact form) is always real.
  */
 export default function SupportChannels({ eyebrow, title, description, showSamples = false, headingLevel = "h2", className }: SupportChannelsProps) {
   const headingId = useId();
   const Item = headingLevel === "h2" ? "h3" : "h4";
   const all: (Channel & { configured: boolean })[] = [
-    {
-      id: "whatsapp",
-      configured: Boolean(COMPANY.whatsappNumber),
-      icon: <MessageCircle className="size-5" aria-hidden="true" />,
-      title: "WhatsApp",
-      description: "Message the team directly from your phone.",
-      action: { label: "Message us on WhatsApp", href: COMPANY.whatsappNumber ? waLink(COMPANY.whatsappNumber) : "#", external: true },
-    },
-    {
-      id: "chat",
-      configured: COMPANY.liveChatEnabled,
-      icon: <MessagesSquare className="size-5" aria-hidden="true" />,
-      title: "Live chat",
-      description: "Chat with support while you work in your dashboard.",
-      action: { label: "Start a live chat", href: "/contact" },
-    },
     {
       id: "ticket",
       configured: true,
@@ -52,6 +34,14 @@ export default function SupportChannels({ eyebrow, title, description, showSampl
       title: "Support ticket",
       description: "Describe the issue and we reply by email with next steps.",
       action: { label: "Open a ticket", href: "/contact" },
+    },
+    {
+      id: "email",
+      configured: Boolean(COMPANY.supportEmail),
+      icon: <Mail className="size-5" aria-hidden="true" />,
+      title: "Email",
+      description: "Prefer your own email app? Write to us directly and we reply there.",
+      action: { label: "Email the team", href: COMPANY.supportEmail ? `mailto:${COMPANY.supportEmail}` : "#", external: true },
     },
   ];
   const channels = showSamples ? all : all.filter((c) => c.configured);

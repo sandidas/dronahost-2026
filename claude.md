@@ -50,7 +50,7 @@ This shapes: pricing currency, server locations, copywriting voice, compliance r
 
 ## Brand Voice & Copywriting
 
-See **[docs/rules/content-writing-rules.md](docs/rules/content-writing-rules.md)** for the full enforced rule set, covering:
+See **[docs/content-planner/rules/content-writing-rules.md](docs/content-planner/rules/content-writing-rules.md)** for the full enforced rule set, covering:
 
 - Tone of voice and phrases to avoid (clarity and credibility, generic SaaS buzzwords)
 - Consistent terminology (product names, technical terms, pricing language)
@@ -59,6 +59,28 @@ See **[docs/rules/content-writing-rules.md](docs/rules/content-writing-rules.md)
 - Error message guide (validation, API errors, payment failures, provisioning)
 - Empty state copy patterns (structure and examples per context)
 - SEO content rules (title format, meta description formula, keyword intent matching, E-E-A-T, AI discoverability)
+
+---
+
+## Content Work: ALWAYS follow the Content Planner
+
+**Trigger.** Whenever you are asked to write, edit, review, translate or plan any content (page copy, blog or guide, FAQ, CTA, headline, metadata, microcopy, comparison table, keyword plan, maintenance or service text), **first read `docs/content-planner/README.md`** and do what its "For the AI assistant" section says. Do not write content from memory or from other files in this repo.
+
+**Shortcut.** Run `/write-content <primary keyword> [notes]` to plan content. It follows `docs/content-planner/rules/content-writer-workflow.md` and stops after the brief (Stage 3) for approval.
+
+The folder is self-contained: `project/` (business facts, owner decisions, keyword register), `rules/` (writing rules and sentence examples), `plans/` (one plan per search intent), `later/` (parked) and `tools/`. It conflicts with nothing here. Where this file and the planner differ, stop and ask.
+
+Non-negotiable, even if you skip the folder:
+
+- Business facts come only from `docs/content-planner/project/PROJECT.md` and the registries it names. A missing fact becomes `[HUMAN REVIEW: ...]`. Never invent an address, number, name, location, guarantee or review.
+- Prices come only from `data/pricing.json`; same plans and prices for every country; only the currency changes.
+- Tax: customers in India pay GST, everyone else pays none. Show "Prices exclude tax. Customers in India pay GST at checkout." Never "+ VAT" or "VAT included".
+- No location claims. DronaHost is a team in India that runs hosting on rented servers. Write "for UK businesses", never "UK servers" or "our data centre". Do not name cloud providers on marketing pages.
+- One keyword, one URL. Check `project/keyword-register.md` first and run `npm run check:register` after changing it.
+- A person fills the brief (reader's question, our angle, first-hand knowledge, one original element) before any AI draft. Show the brief before long copy.
+- Never use AI for testimonials, reviews, team bios, case-study results or unreviewed legal text.
+- Maintenance, VPS, cloud and domain pages must not state inclusions, times or prices that are not in the claims or `pricing.json`.
+- After publishing, update the register and run `npm run check:pages`, `npm run lint:content` and `npm run check:register`. Those checks cover only `content/pages/*.json`; other copy needs the manual self-check in `rules/voice.md`.
 
 ---
 
@@ -121,7 +143,7 @@ Every page should reinforce trust. Required elements across the site:
 ### Pricing display
 
 - Show price WITH currency symbol always: `$5.99/month` not `5.99/month`
-- Add VAT clarity: "£5.99/month + VAT" for UK or "€5.99/month (VAT included)" for EU
+- Tax line: one plain sentence near prices ("Prices exclude tax. Customers in India pay GST at checkout."). No "+ VAT" or "VAT included" (see Tax handling)
 - US pricing: tax excluded by convention
 - UAE: "AED X/month" — show in Arabic numerals, offer Arabic locale toggle
 
@@ -168,8 +190,8 @@ const price = plan.pricing.annual.USD; // 19.99
 const currency = pricing.currencies.USD;
 // → { symbol: "$", vatDisplay: null }
 
-// UK: "Start Growth — £15.99/month + VAT"
-// EU: "Start Growth — €17.99/month + VAT"
+// UK: "Start Growth — £15.99/month"
+// EU: "Start Growth — €17.99/month"
 ```
 
 ### Rendering conventions
@@ -180,7 +202,6 @@ const currency = pricing.currencies.USD;
 | `trafficType: "semi-dedicated"` | "Semi-Dedicated" badge |
 | `trafficType: "dedicated"` | "Dedicated" badge |
 | `pricing.monthly.USD: null` | "Custom pricing — contact us" |
-| `vatDisplay: "+ VAT"` | Append to price: "£15.99/month + VAT" |
 | `vatDisplay: null` | Show price only: "$19.99/month" |
 
 ### Renewal pricing
@@ -196,14 +217,12 @@ Start [Plan Name] — $[annual price]/month
 30-day money-back guarantee. No questions asked.
 ```
 
-### VAT handling
+### Tax handling (owner rule, 2026-10-07)
 
-- **UK (GBP):** Show price ex-VAT, append "+ VAT". VAT added at checkout.
-- **EU (EUR):** Show price ex-VAT, append "+ VAT". VAT rate varies by member state, calculated at checkout.
-- **US (USD):** Tax excluded. Show price only.
-- **UAE (AED):** Show price only. No VAT display required.
-- **INR:** Show price only.
-- VAT metadata is in `pricing.currencies[code].vatDisplay`.
+- Customers in India are charged GST. Customers everywhere else are charged no tax.
+- Pages show one line near prices: "Prices exclude tax. Customers in India pay GST at checkout."
+- Never display "+ VAT" or "VAT included". `vatDisplay` stays empty for every currency.
+- If the business later registers for VAT in another market, this section changes first.
 
 ### Addons
 
@@ -292,7 +311,7 @@ See **[docs/rules/seo-rules.md](docs/rules/seo-rules.md)** for the full enforced
 - SEO monitoring — Google Search Console setup, KPIs, weekly checks
 - Per-page-type pre-ship checklists (hosting plans, blog posts, comparison pages, regional pages)
 
-See also **[docs/rules/content-writing-rules.md §7](docs/rules/content-writing-rules.md)** for the copy side: title format, meta description formula, keyword intent matching, content length requirements, FAQ writing rules, and E-E-A-T implementation.
+See also **[docs/content-planner/rules/content-writing-rules.md §7](docs/content-planner/rules/content-writing-rules.md)** for the copy side: title format, meta description formula, keyword intent matching, content length requirements, FAQ writing rules, and E-E-A-T implementation.
 
 ---
 
@@ -474,7 +493,7 @@ See **[docs/rules/coding-rules.md](docs/rules/coding-rules.md)** for the full en
 
 ## Content & Brand Voice Summary
 
-See **[docs/rules/content-writing-rules.md](docs/rules/content-writing-rules.md)** — full tone guide, terminology list, CTA patterns, error messages, empty states, and SEO content rules.
+See **[docs/content-planner/rules/content-writing-rules.md](docs/content-planner/rules/content-writing-rules.md)** — full tone guide, terminology list, CTA patterns, error messages, empty states, and SEO content rules.
 
 ---
 
@@ -483,7 +502,7 @@ See **[docs/rules/content-writing-rules.md](docs/rules/content-writing-rules.md)
 - **Tokens**: `app/styles/tokens.css` (colour, radius, shadow, type, motion; dark default) and `app/styles/buttons.css`. Layers declared directly in `globals.css` get flattened by this build, so layered CSS must live in imported files. Use token utilities (`bg-card`, `text-muted-foreground`, `text-link`, `bg-action`), never raw palette colours. `npm run check:contrast` gates every token pair and runs first in `npm run build`.
 - **Components**: see `docs/components/README.md`. Every section takes `headingLevel`; heroes are `ProductHero`, `SplitHero`, `CenteredHero`. Showcase: `/v2` and `/v2/design-system` (development only; they return 404 in production).
 - **No invented facts**: public facts render only from verified registries (`content/claims.ts`, `content/trust.ts`, `content/company.ts`). Sample data lives only in `content/placeholders.ts`. Prices come only from `data/pricing.json` via `lib/pricing`, and are hidden in production until `FEATURES.pricesConfirmed` (`lib/flags.ts`). The full to-do list is `docs/reference/PLACEHOLDERS.md`.
-- **Copy**: draft copy lives in `content/*.ts`. Follow `docs/rules/content-writing-rules.md`; no unconfirmed numbers, guarantees or competitor claims.
+- **Copy**: draft copy lives in `content/*.ts`. Follow `docs/content-planner/rules/content-writing-rules.md`; no unconfirmed numbers, guarantees or competitor claims.
 - **QA**: after `npm run build && npx next start -p 3200`, run `npm run qa` (contrast, axe, links, JSON-LD, raw entities). Lighthouse and screenshot helpers are in `scripts/`; results are in `docs/reference/QA_REPORT.md`.
 - **Gotchas**: do not run `next build` while `next dev` is running in the same folder (intermittent font import-map error; re-run). Do not wrap the root layout children in `Suspense` (it turns 404s into 200s).
 

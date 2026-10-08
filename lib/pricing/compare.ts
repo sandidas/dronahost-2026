@@ -4,15 +4,18 @@ import { DEFAULT_CURRENCY, formatPrice } from "@/lib/pricing";
 
 type Plan = (typeof pricing.plans)[number];
 
-const fmt = (n: number | null | undefined, unit = ""): ComparisonValue => (n == null ? "Unlimited" : `${n.toLocaleString("en-US")}${unit}`);
+const fmt = (n: number | null | undefined, unit = ""): ComparisonValue => (n == null ? false : `${n.toLocaleString("en-US")}${unit}`);
+
+/** Metered plans show a cap. Fair-use plans show "Fair use", never "Unlimited". */
+const traffic = (p: Plan): ComparisonValue => (p.limits.trafficGB == null ? "Fair use" : `${p.limits.trafficGB.toLocaleString("en-US")} GB`);
 
 const LIMIT_ROWS: { label: string; get: (p: Plan) => ComparisonValue }[] = [
-  { label: "WordPress sites", get: (p) => fmt(p.limits.wordPressSites) },
+  { label: "Hosting type", get: (p) => (p.family === "wordpress" ? "Managed WordPress" : "Web hosting") },
+  { label: "Websites", get: (p) => fmt(p.limits.sites) },
   { label: "Storage", get: (p) => fmt(p.limits.diskSpaceGB, " GB") },
-  { label: "Traffic", get: (p) => (p.limits.trafficGB == null ? "Unlimited" : `${p.limits.trafficGB.toLocaleString("en-US")} GB`) },
+  { label: "Traffic", get: traffic },
   { label: "Memory", get: (p) => fmt(p.limits.ramGB, " GB") },
   { label: "Domains", get: (p) => fmt(p.limits.domains) },
-  { label: "Mailboxes", get: (p) => fmt(p.limits.mailboxes) },
   { label: "Databases", get: (p) => fmt(p.limits.databases) },
   { label: "Backup retention", get: (p) => (p.limits.backupRetentionDays ? `${p.limits.backupRetentionDays} ${p.limits.backupRetentionDays === 1 ? "day" : "days"}` : false) },
   { label: "Dedicated resources", get: (p) => Boolean(p.limits.dedicatedResources) },
@@ -22,6 +25,9 @@ const CAPABILITY_ROWS: { label: string; key: keyof Plan["capabilities"] }[] = [
   { label: "Free SSL certificate", key: "freeSSL" },
   { label: "DDoS protection", key: "ddosProtection" },
   { label: "Free migration", key: "freeMigration" },
+  { label: "Automatic WordPress updates", key: "automaticWordPressUpdates" },
+  { label: "Malware scanning", key: "malwareScanning" },
+  { label: "Object cache (Redis)", key: "objectCache" },
   { label: "Staging environment", key: "stagingEnvironment" },
   { label: "Server monitoring", key: "serverMonitoring" },
   { label: "Priority support queue", key: "prioritySupportQueue" },
@@ -31,10 +37,10 @@ const CAPABILITY_ROWS: { label: string; key: keyof Plan["capabilities"] }[] = [
 
 /**
  * Builds ComparisonTable props from data/pricing.json, the single source of truth.
- * Custom-priced plans (null prices) show "Custom pricing".
+ * The contact-only high-traffic tier is not a column: it has no published price or limits.
  */
-export function buildPlanComparison(includeEnterprise = false) {
-  const plans = pricing.plans.filter((p) => includeEnterprise || p.pricing.annual[DEFAULT_CURRENCY] != null);
+export function buildPlanComparison() {
+  const plans = pricing.plans.filter((p) => p.pricing.annual[DEFAULT_CURRENCY] != null);
   const columns: ComparisonColumn[] = plans.map((p) => {
     const annual = p.pricing.annual[DEFAULT_CURRENCY];
     return {
