@@ -2,7 +2,20 @@
 
 Versioned changes to the engine (rules, plans, tools). Business decisions are in `project/DECISIONS.md`.
 
-## 1.0.0 (in progress, begins with Phase 1 on 2026-10-08)
+## 1.0.0 (2026-10-09)
+
+The first release: a reusable, standalone content engine. A keyword or a title goes in; a brief, a fact ledger, an interview and, after the owner approves, a checked draft come out, always "Ready for owner review", never "publish-ready". The engine invents no fact, runs offline checks in CI, and works in a project that has nothing to do with the one it was built in (see Phase 6).
+
+### Phase 6: reuse test and documentation
+
+- Added `eval/sample-project/`: a fictional bakery (config, `project/` facts, register, one page spec, one approved brief, one fact ledger, one article) built from `init-project`'s own output. Everything in it passes every check.
+- Added `tools/reuse.test.ts` (`npm run test:reuse`): copies only the reusable core into a temporary host, runs `install` and `init-project`, overlays the sample, runs config, no-brand, links, schemas, register, check-content, eval, governor, ci, resolve, gen-schema, suggest-links and similarity, proves a bad draft turns the checks red, builds a brief from the template, and confirms no term of the real project is in the copy.
+- Engine tests now run against the sample project (`npm run test:tools`, via `tools/run-tests.ts`), so they cannot depend on this project's data. Tests that import this host's app files moved to `project/tests/` (`npm run test:project`): `parity.test.ts`, `adapters.test.ts`. The engine tests build their own word lists.
+- Bugs found by the reuse proof and fixed: an empty `forbiddenChannels` list matched every line and failed rule PO1 in every new project; `check-schemas` validated this project's ledgers whatever the config said; `check-register` looked for plan files next to the register; a new project's evaluation set failed because `init-project` wrote no plan routing; core files linked to project files a new project does not have (`init-project` now creates a project-specifics slot for every plan; the parked billing plan's project copy is `project/later/12-billing-system-integration.md`); one core file linked to a host document; two comments in a tool named this project's vocabulary.
+- `tools/defaults.ts`: defaults a new project starts from (plan routing, idioms, page-copy keys, WordPress field map). The installer's script list gained `content:ci`, `content:changed`, `content:posts` and `content:webhook`.
+- README: exact reuse commands, the first-brief path, and what stays with the host project.
+
+
 
 ### Phase 5: integration
 

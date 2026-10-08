@@ -156,14 +156,35 @@ Use the skill for research (competitors, gaps, People Also Ask). Where it disagr
 
 ## Reuse in another project
 
-1. Copy this whole folder into the new project's `docs/`.
-2. Replace everything in `project/`: new `PROJECT.md` (use the existing one as the template), `brand.md`, `rules.config.json`, an empty `DECISIONS.md`, an empty register, and empty `briefs/`, `drafts/`, `facts/`, `plan-specifics/`, `later/`.
-3. Edit `content-planner.config.json` (name, paths, limits, governor).
-4. Run `npm run check:config` and `npm run check:no-brand`. The second must pass before and after the swap: it proves the reusable core names no business.
-5. Add a short block to the new project's `CLAUDE.md` that points here (copy the block from this project's `CLAUDE.md`).
-6. Add the scripts from this project's `package.json`: `check:register`, `check:content`, `check:schemas`, `check:config`, `check:no-brand`, `check:links`.
+Needs Node 20 or newer, `tsx` and `zod` (`npm i -D tsx zod`). Nothing else, no paid API and no secret: the web research uses Claude's own search and fetch, and Search Console data comes from CSV exports.
 
-The installer and the sample project arrive in Phases 3 and 6. Stack-specific code (the page renderer and its section schemas, the metadata helper, sitemap code) is not in this folder; it lives in the host project and is registered in the config (`adapters.pageSpec`).
+```
+# 1. Copy the engine (run from the folder that holds this one's docs/)
+mkdir -p ../your-project/docs/content-planner
+cp -R docs/content-planner/{README.md,CHANGELOG.md,rules,plans,templates,schemas,eval,tools,claude,later} ../your-project/docs/content-planner/
+rm -rf ../your-project/docs/content-planner/eval/sample-project      # optional: the fake bakery example
+
+# 2. In your project: install the commands, the agents and the npm scripts
+cd ../your-project
+npx tsx docs/content-planner/tools/install.ts
+
+# 3. Create the project folder and the config
+npm run content:init-project -- --name "Your Business" --domain example.com --owner "Your Name" --locale en-US --yes
+
+# 4. Prove the engine is healthy
+npm run content:config && npm run content:no-brand && npm run content:eval
+```
+
+Then fill in the facts, in this order: `project/PROJECT.md` (business facts), `project/brand.md` (voice and words), `project/rules.config.json` (banned phrases, channels you do not offer, claims you cannot make), `project/pricing.json` and `project/claims.json` if you sell anything, and register rows in `project/keyword-register.md`. Every `[HUMAN REVIEW]` marker is a question for you. Then ask Claude `/write-content "<your first keyword>"`.
+
+**Your first brief in under 10 minutes:** (1) add one register row with status `validated` (2 min); (2) `/write-content "<keyword>"` runs the gate, the research and the ledger (3 min); (3) answer the interview questions, one at a time; "none" is a fine answer and is recorded as a gap (5 min); (4) read the brief and approve it.
+
+**See a finished example:** `eval/sample-project/` is a fictional bakery set up exactly as step 3 produces, with a register, a page, a brief, a ledger and an article that passes every check. Run the engine against it with
+`CONTENT_PLANNER_CONFIG=docs/content-planner/eval/sample-project/content-planner.config.json npm run content:ci -- --all`.
+
+**What stays with your project, not in this folder:** the page renderer and its section schemas (register a check command in `adapters.pageSpec`), the metadata helper and sitemap code, the claims and pricing files if they are not JSON (the claims adapter can also read a TypeScript module that exports `CLAIMS` and `claimRenders()`), the CI workflow (copy the step from this project's `.github/workflows/ci.yml`), and the GitHub branch protection that makes the check required. Add a short block to your `CLAUDE.md` that points to the README (copy the one in this project's `CLAUDE.md`).
+
+**Proof that it works elsewhere:** `npm run test:reuse` copies only the reusable core into a temporary project, runs `install` and `init-project`, overlays the sample bakery and runs every check, then confirms that nothing from this project is in the copy. `npm run test:tools` runs the engine's own tests against the sample project, so they do not depend on this project's data.
 
 ## Not in this folder (by design)
 
