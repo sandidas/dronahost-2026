@@ -17,9 +17,9 @@ created_on: 2026-10-08
 serp_checked_on: 2026-10-08
 information_gain_status: not-confirmed
 original_element: flag
-interview_status: not-started
-approval_1: pending
-approved_on:
+interview_status: gaps
+approval_1: approved
+approved_on: 2026-10-08
 ai_used: yes
 owner: Sandipan Das
 reviewer: Sandipan Das
@@ -27,7 +27,7 @@ next_review_on: 2027-04-08
 ---
 # Brief: dronahost (home page, full rewrite)
 
-Status: **waiting for APPROVAL 1.** No page copy was written. This is a full rewrite of `content/pages/home.json` and the register row for `/` is already `published`, so this is a refresh. Fields marked (owner) are supplied by a person.
+Status: **APPROVAL 1 given by the owner on 2026-10-08** ("skip the interview, approve the brief"). The interview was skipped, so Q1 to Q6 are gaps. This is a full rewrite of `content/pages/home.json` and the register row for `/` is already `published`, so this is a refresh. Fields marked (owner) are supplied by a person.
 
 ## 1. Keywords and intent
 
@@ -99,16 +99,16 @@ Google US phrasing, read **2026-10-08** with a search tool that returned titles 
 
 ## 7. Interview answers (verbatim)
 
-Bank: **Brand and trust pages** (Plan 09) in [interview-questions.md](../../rules/interview-questions.md). One question at a time. **Q1 is asked below; nothing has been answered.** Answers are recorded word for word in the format of [interview.md](../../templates/interview.md). A question you skip, or answer "none", becomes `GAP` and the section that needs it is dropped.
+Bank: **Brand and trust pages** (Plan 09) in [interview-questions.md](../../rules/interview-questions.md). One question at a time. **The owner skipped the interview on 2026-10-08, so every question is a gap.** Answers are recorded word for word in the format of [interview.md](../../templates/interview.md). A question you skip, or answer "none", becomes `GAP` and the section that needs it is dropped.
 
 | # | Question | Owner's answer (verbatim) | Date | Artifact |
 |---|---|---|---|---|
-| Q1 | Who runs the company, and what is each person's real role? | **asked, waiting for the owner** | | none yet |
-| Q2 | What can you prove about your history? | not asked yet | | document or screenshot |
-| Q3 | Which review profiles exist, and what do customers say most? | not asked yet | | profile links |
-| Q4 | What should a skeptical buyer check about you? | not asked yet | | none |
-| Q5 | What are the legal entity, address and contact route? | not asked yet | | registration record |
-| Q6 | What do you honestly not do? | not asked yet | | none |
+| Q1 | Who runs the company, and what is each person's real role? | GAP: owner skipped the interview on 2026-10-08 | | none |
+| Q2 | What can you prove about your history? | GAP: owner skipped the interview on 2026-10-08 | | none |
+| Q3 | Which review profiles exist, and what do customers say most? | GAP: owner skipped the interview on 2026-10-08 | | none |
+| Q4 | What should a skeptical buyer check about you? | GAP: owner skipped the interview on 2026-10-08 | | none |
+| Q5 | What are the legal entity, address and contact route? | GAP: owner skipped the interview on 2026-10-08 | | none |
+| Q6 | What do you honestly not do? | GAP: owner skipped the interview on 2026-10-08 | | none |
 
 ## 8. Fact ledger
 
@@ -197,4 +197,4 @@ Owner and reviewer: Sandipan Das. Next review: 2027-04-08. AI used for the draft
 
 ## 20. APPROVAL 1
 
-**Pending.** You approve the brief and the interview answers. Nothing is drafted until then. Next step: answer Q1.
+**Approved** by Sandipan Das on 2026-10-08 with the interview skipped (all gaps). The sections that need interview answers (who is behind DronaHost, the original element, and the owner's "what we do not do" answers) are dropped or left as `[HUMAN REVIEW]`. Next step: draft.

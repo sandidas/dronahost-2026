@@ -86,6 +86,7 @@ export function structureRules(ctx: Ctx, doc: Doc): RuleResult[] {
 }
 
 export function keywordRules(ctx: Ctx, doc: Doc): RuleResult[] {
+  const L = ctx.config.limits;
   const kw = (doc.front.primary_keyword ?? "").toLowerCase();
   const slug = doc.front.slug ?? "";
   const out: RuleResult[] = [];
@@ -103,7 +104,7 @@ export function keywordRules(ctx: Ctx, doc: Doc): RuleResult[] {
     const bits = kw.replace(/^how to /, "").split(/\s+/);
     const near = (t: string) => t.toLowerCase().includes(kw) || bits.every((b) => t.toLowerCase().includes(b));
     const kf: Finding[] = [];
-    if (!near(doc.title ?? "")) kf.push({ line: lineOf(doc.raw, "seo_title"), message: "primary keyword not in the title" });
+    if (!near(`${doc.title ?? ""}${L.titleSuffix}`)) kf.push({ line: lineOf(doc.raw, "seo_title"), message: "primary keyword not in the title" });
     if (!doc.h1[0] || !near(doc.h1[0].text)) kf.push({ line: doc.h1[0]?.n ?? 1, message: "primary keyword not in the H1" });
     if (!near(first100)) kf.push({ line: doc.h1[0]?.n ?? 1, message: "primary keyword not in the first 100 words" });
     out.push(rule("K2", "Keyword", "Primary keyword in title, H1 and first 100 words", kf));

@@ -90,6 +90,12 @@ test("Structure: a money page needs 6 to 8 FAQ items, a guide 4 to 6, and a page
   assert.equal(result(withItems(7, "trust"), "S4")?.ok, false, "a brand page allows at most 6");
 });
 
+test("Keyword: the brand suffix the site adds counts as part of the title (a brand keyword needs no brand in the typed title)", () => {
+  const file = guide((t) => t.replace("primary_keyword: how to check wordpress version", "primary_keyword: exampleco").replace("seo_title: How to Check Your WordPress Version", "seo_title: Find Your Software Number"));
+  const k2 = result(file, "K2");
+  assert.ok(!k2?.failures.some((f) => f.message.includes("not in the title")), "the title plus ' | ExampleCo' contains the keyword");
+});
+
 test("Keyword: the register must own the URL and the keyword", () => {
   assert.ok(failedIds(guide((t) => t.replace("slug: /kb/check-wordpress-version", "slug: /kb/other"))).includes("K1"));
   assert.ok(failedIds(guide((t) => t.replace("primary_keyword: how to check wordpress version", "primary_keyword: how to find wordpress version"))).includes("K1"));

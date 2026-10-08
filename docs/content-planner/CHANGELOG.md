@@ -2,6 +2,10 @@
 
 Versioned changes to the engine (rules, plans, tools). Business decisions are in `project/DECISIONS.md`.
 
+## 1.0.3 (2026-10-08)
+
+- Rule K2 now reads the page title together with the site suffix. A brand keyword could not pass before: M1 forbids the brand in the typed title, while K2 required the keyword in it. A test covers it.
+
 ## 1.0.2 (2026-10-09), second owner review
 
 - Interview banks for regional (Plan 05), policy (07), domain (08), brand and trust (09) and off-site (15) pages, in the owner's exact wording (decision 32). A test pins each bank by hash so no question can be reworded by accident; each plan names its bank; `rules/interview-questions.md` has a "which bank for which plan" table. Domain question 1 was reworded by the owner on 2026-10-09 ("billing system" instead of a product name), so no no-brand exception is needed; the `noBrand.allowTerms` option stays available but is unused.
