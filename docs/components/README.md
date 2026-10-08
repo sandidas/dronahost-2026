@@ -48,7 +48,7 @@ Shared props: `eyebrow`, `title`, `titleAccent`, `description`, `primaryCta`, `s
 | `ResourceGrid` | Blog/resource cards | no image required, unambiguous dates |
 | `FAQSection` | Accordion on native `<details>` | answers in the initial HTML, works without JS; pair with `faqPageSchema` |
 | `CTABand` | Closing call to action | one primary action |
-| `SupportChannels` | Ticket and email only | email renders only if `COMPANY.supportEmail` is set; ticket is always real |
+| `SupportChannels` | Ticket and email only; `layout="split"` puts the heading beside the cards | email renders only if `COMPANY.supportEmail` is set; ticket is always real |
 | `NewsletterSignup` (**client**) | Email capture | off until `FEATURES.newsletter` and an `endpoint` exist |
 
 ## Social proof and trust (all hidden unless verified)
@@ -59,7 +59,7 @@ Shared props: `eyebrow`, `title`, `titleAccent`, `description`, `primaryCta`, `s
 | `LogoWall` | logos are flagged `verified` (written permission); rating needs a source URL |
 | `CaseStudy` | it links to a published, customer-approved `sourceUrl` |
 | `StatsBar` | a claim in `content/claims.ts` is `verified` |
-| `TrustSignals` | an item in `content/trust.ts` is `verified` |
+| `TrustSignals` | an item in `content/trust.ts` is `verified` (`variant="list"` is the compact divided list) |
 | `TrustBadges` | a payment method in `content/claims.ts` is `verified` (shown as accepted methods only) |
 
 ## Layout chrome (`layouts`, `components/layout`)

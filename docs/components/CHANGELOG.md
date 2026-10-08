@@ -2,6 +2,9 @@
 
 Branch `polish/design-system`. Each batch is one commit.
 
+## Home page design pass (2026-10-08)
+- `TrustSignals` gets `variant="list"` and `SupportChannels` gets `layout="split"`, both shown in `/v2`. The page-spec schema takes `variant` and `layout`. The home page uses them so the same three claims no longer appear as three card grids.
+
 ## Baseline
 - Snapshot of in-progress work before the polish (`c82d00b`).
 

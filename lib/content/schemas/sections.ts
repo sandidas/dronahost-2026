@@ -132,6 +132,7 @@ export const SupportChannels = z.strictObject({
     h2: z.string().min(8).max(70),
     description,
     channels: z.array(z.enum(["ticket", "email"])).min(1).max(2),
+    layout: z.enum(["stacked", "split"]).optional(),
     /** Hours text comes from this claim once its terms page is published. */
     hoursFrom: ClaimRef.optional(),
   }),
@@ -146,7 +147,7 @@ export const Testimonials = z.strictObject({
 export const TrustSignals = z.strictObject({
   ...sectionBase,
   type: z.literal("TrustSignals"),
-  content: z.strictObject({ h2: z.string().min(8).max(60), links: z.array(Href).min(1).max(8), onlyPublished: z.boolean() }),
+  content: z.strictObject({ h2: z.string().min(8).max(60), links: z.array(Href).min(1).max(8), onlyPublished: z.boolean(), variant: z.enum(["cards", "list"]).optional() }),
 });
 
 export const FAQSection = z.strictObject({

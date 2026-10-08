@@ -139,7 +139,7 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
   },
   SupportChannels: {
     schema: S.SupportChannels,
-    render: ({ content: c }) => <SupportChannels title={c.h2} description={c.description} />,
+    render: ({ content: c }) => <SupportChannels title={c.h2} description={c.description} layout={c.layout} />,
   },
   Testimonials: {
     schema: S.Testimonials,
@@ -157,7 +157,7 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
           const p = POLICY_LINKS[href];
           return p ? [{ id: href, icon: p.icon, title: p.title, description: p.description, href, linkLabel: p.linkLabel, verified: true }] : [];
         });
-      return items.length ? <TrustSignals title={c.h2} items={items} /> : null;
+      return items.length ? <TrustSignals title={c.h2} items={items} variant={c.variant} /> : null;
     },
   },
   FAQSection: {

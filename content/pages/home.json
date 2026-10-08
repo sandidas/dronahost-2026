@@ -65,11 +65,6 @@
           "label": "Talk to our team",
           "href": "/contact"
         },
-        "highlights": [
-          "claim:free-migration",
-          "claim:money-back",
-          "claim:renewal-price-same"
-        ],
         "accent": "without the technical worry",
         "leadFallback": "DronaHost is a focused team in India that offers managed WordPress hosting for small businesses, freelancers and agencies worldwide. You can reach the team by support ticket or email.",
         "leadRequiresClaims": [
@@ -233,7 +228,8 @@
         "channels": [
           "ticket",
           "email"
-        ]
+        ],
+        "layout": "split"
       }
     },
     {
@@ -259,7 +255,8 @@
           "/terms",
           "/privacy"
         ],
-        "onlyPublished": true
+        "onlyPublished": true,
+        "variant": "list"
       }
     },
     {

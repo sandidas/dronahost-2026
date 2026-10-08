@@ -532,6 +532,8 @@ export default function V2ShowcasePage() {
             notes="Guarantee, SLA, security, data-center locations, DPA and support. Each item shows only when verified in content/trust.ts. Samples forced on here."
           >
             <TrustSignals title="Why you can trust us" headingLevel="h3" items={TRUST_ITEMS} showSamples note="Renewal prices are shown next to the signup price on every plan." className="!py-0" />
+            <p className="t-small mt-10 text-muted-foreground">Variant <code>list</code>: one compact divided list. Use it when the page already shows the same items as claims, so cards would repeat them.</p>
+            <TrustSignals title="Our policies, in plain language" headingLevel="h3" items={TRUST_ITEMS} showSamples variant="list" className="!pb-0" />
           </ShowcaseSection>
 
           <ShowcaseSection
@@ -607,6 +609,8 @@ export default function V2ShowcasePage() {
             verify={["Support email address (hidden until set)", "Ticket system exists", "Hours text comes from the published support policy"]}
           >
             <SupportChannels title="Reach the team" headingLevel="h3" showSamples className="!py-0" />
+            <p className="t-small mt-10 text-muted-foreground">Layout <code>split</code>: the heading sits beside the cards from the lg breakpoint.</p>
+            <SupportChannels title="Reach a person when you need one" description="Open a ticket or write to the team." headingLevel="h3" showSamples layout="split" className="!pb-0" />
           </ShowcaseSection>
 
           {/* ── Home page (Phase 1: new components) ── */}
