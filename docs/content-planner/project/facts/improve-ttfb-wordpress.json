@@ -1,14 +1,162 @@
 {
-  "$comment": "Converted from improve-ttfb-wordpress.md in Phase 2. The .md copy is deleted only after the owner approves and F1 reads this file (Phase 3).",
+  "$comment": "Rebuilt by /write-content on 2026-10-09. Wording follows the sources after the fact-checker role compared each fact with its page. The older improve-ttfb-wordpress.md ledger is superseded and stays only until the owner approves its deletion.",
   "slug": "/kb/improve-ttfb-wordpress",
-  "updated": "2026-10-08",
+  "updated": "2026-10-09",
   "facts": [
-    { "id": "F1", "fact": "Good TTFB is 0.8 seconds or less", "kind": "number", "source": { "type": "url", "ref": "https://web.dev/articles/ttfb", "pageDate": "2025-11-18" }, "retrievedOn": "2026-10-08", "checkedBy": "Claude (fetch), owner to confirm", "status": "verified" },
-    { "id": "F2", "fact": "Poor TTFB is more than 1.8 seconds", "kind": "number", "source": { "type": "url", "ref": "https://web.dev/articles/ttfb", "pageDate": "2025-11-18" }, "retrievedOn": "2026-10-08", "checkedBy": "Claude (fetch), owner to confirm", "status": "verified" },
-    { "id": "F3", "fact": "DevTools shows \"Waiting for server response\" under Network, Timing", "kind": "procedure", "source": { "type": "unresolved", "ref": "Chrome DevTools Network panel documentation, not read yet" }, "status": "needs-check" },
-    { "id": "F4", "fact": "TTFB is not one of the three Core Web Vitals (LCP, INP, CLS)", "kind": "definition", "source": { "type": "unresolved", "ref": "web.dev Core Web Vitals page, not read yet" }, "status": "needs-check" },
-    { "id": "F5", "fact": "A CDN that serves only static files does not lower page TTFB; full-page caching can", "kind": "claim", "source": { "type": "unresolved", "ref": "a CDN vendor's documentation, not read yet" }, "status": "needs-check" },
-    { "id": "F6", "fact": "Newer supported PHP versions usually run WordPress faster", "kind": "claim", "source": { "type": "unresolved", "ref": "php.net or WordPress documentation, not read yet" }, "status": "needs-check" },
-    { "id": "F7", "fact": "Query Monitor is a plugin that shows slow queries", "kind": "definition", "source": { "type": "unresolved", "ref": "wordpress.org plugin page, not read yet" }, "status": "needs-check" }
+    {
+      "id": "F1",
+      "fact": "Good TTFB is 0.8 seconds or less",
+      "kind": "number",
+      "source": {
+        "type": "url",
+        "ref": "https://web.dev/articles/ttfb",
+        "pageDate": "2025-11-18"
+      },
+      "retrievedOn": "2026-10-09",
+      "checkedBy": "Claude (fetch, second reading by the fact-checker role), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Measure and the stop point"
+      ]
+    },
+    {
+      "id": "F2",
+      "fact": "Poor TTFB is greater than 1.8 seconds",
+      "kind": "number",
+      "source": {
+        "type": "url",
+        "ref": "https://web.dev/articles/ttfb",
+        "pageDate": "2025-11-18"
+      },
+      "retrievedOn": "2026-10-09",
+      "checkedBy": "Claude (fetch, second reading by the fact-checker role), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Measure and the stop point"
+      ]
+    },
+    {
+      "id": "F3",
+      "fact": "TTFB is not a Core Web Vitals metric, so meeting the good threshold is not absolutely necessary as long as Core Web Vitals performance is not impaired",
+      "kind": "definition",
+      "source": {
+        "type": "url",
+        "ref": "https://web.dev/articles/ttfb",
+        "pageDate": "2025-11-18"
+      },
+      "retrievedOn": "2026-10-09",
+      "checkedBy": "Claude (fetch, second reading by the fact-checker role), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Is TTFB a Core Web Vital"
+      ]
+    },
+    {
+      "id": "F4",
+      "fact": "TTFB can be measured in the Network panel of Chrome DevTools",
+      "kind": "procedure",
+      "source": {
+        "type": "url",
+        "ref": "https://web.dev/articles/ttfb",
+        "pageDate": "2025-11-18"
+      },
+      "retrievedOn": "2026-10-09",
+      "checkedBy": "Claude (fetch, second reading by the fact-checker role), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Measure and the stop point"
+      ]
+    },
+    {
+      "id": "F5",
+      "fact": "In the Chrome DevTools Network panel Timing tab, the entry 'Waiting (TTFB)' means the browser is waiting for the first byte of a response",
+      "kind": "procedure",
+      "source": {
+        "type": "url",
+        "ref": "https://developer.chrome.com/docs/devtools/network/reference",
+        "pageDate": "2024-07-16"
+      },
+      "retrievedOn": "2026-10-09",
+      "checkedBy": "Claude (fetch, second reading by the fact-checker role), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Measure and the stop point"
+      ]
+    },
+    {
+      "id": "F6",
+      "fact": "Caching can mask a slow backend, which makes long TTFBs harder to diagnose",
+      "kind": "claim",
+      "source": {
+        "type": "url",
+        "ref": "https://web.dev/articles/optimize-ttfb",
+        "pageDate": "2025-11-28"
+      },
+      "retrievedOn": "2026-10-09",
+      "checkedBy": "Claude (fetch, second reading by the fact-checker role), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Is it your site or your host"
+      ]
+    },
+    {
+      "id": "F7",
+      "fact": "WordPress recommends PHP 8.3 or greater; it also works with PHP 7.4+, but those versions have reached their official end of life",
+      "kind": "claim",
+      "source": {
+        "type": "url",
+        "ref": "https://wordpress.org/about/requirements/",
+        "pageDate": "2026-05-07"
+      },
+      "retrievedOn": "2026-10-09",
+      "checkedBy": "Claude (fetch, second reading by the fact-checker role), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Fixes: update PHP"
+      ]
+    },
+    {
+      "id": "F8",
+      "fact": "PHP 8.2 receives security support until 31 December 2026 and PHP 8.3 until 31 December 2027 (supported-versions table)",
+      "kind": "date",
+      "source": {
+        "type": "url",
+        "ref": "https://www.php.net/supported-versions.php"
+      },
+      "retrievedOn": "2026-10-09",
+      "checkedBy": "Claude (fetch, second reading by the fact-checker role), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Fixes: update PHP"
+      ]
+    },
+    {
+      "id": "F9",
+      "fact": "Query Monitor is the developer tools panel for WordPress and WooCommerce; it debugs database queries, PHP errors, hooks and actions, block editor blocks, enqueued scripts and stylesheets, and HTTP API calls",
+      "kind": "definition",
+      "source": {
+        "type": "url",
+        "ref": "https://wordpress.org/plugins/query-monitor/"
+      },
+      "retrievedOn": "2026-10-09",
+      "checkedBy": "Claude (fetch, second reading by the fact-checker role), owner to confirm",
+      "status": "verified",
+      "usedIn": [
+        "Fixes: heavy plugins and queries"
+      ]
+    },
+    {
+      "id": "F10",
+      "fact": "A CDN that serves only static files does not lower page TTFB; full-page caching can",
+      "kind": "claim",
+      "source": {
+        "type": "unresolved",
+        "ref": "a CDN vendor's documentation, not read yet"
+      },
+      "status": "needs-check",
+      "usedIn": [
+        "Fixes: CDN"
+      ]
+    }
   ]
 }
