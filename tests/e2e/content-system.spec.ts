@@ -145,7 +145,7 @@ test.describe("section gating on the home page", () => {
   });
 
   test("section-level requires and requiresClaim each remove a section", () => {
-    const all = ctx({ claims: ["migration-process"], flags: ["pricesConfirmed"], predicates: ["verifiedReviews"] });
+    const all = ctx({ claims: ["free-migration"], flags: ["pricesConfirmed"], predicates: ["verifiedReviews"] });
     expect(ids(all)).toEqual(["hero", "assurance", "router", "meaning", "moving", "platform", "plans", "help", "proof", "faq", "cta"]);
   });
 });

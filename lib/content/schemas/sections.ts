@@ -101,9 +101,10 @@ export const Meaning = z.strictObject({
   content: z.strictObject({
     eyebrow,
     h2: z.string().min(8).max(80),
-    /** 40 to 80 words. Hidden until `answerRequiresClaim` renders, when that is set. */
+    /** 40 to 80 words. Hidden until `answerRequires` is met, when that is set. */
     answer: z.string().refine((a) => wordCount(a) >= 40 && wordCount(a) <= 80, "the direct answer must be 40 to 80 words").optional(),
-    answerRequiresClaim: ClaimRef.optional(),
+    /** A requires expression, for example "claim:backups && claim:free-migration". Every claim the answer states belongs here. */
+    answerRequires: Requires.optional(),
     /** The heading when the answer is hidden. */
     h2Fallback: z.string().min(8).max(80).optional(),
     weLookAfter: z.array(gatedText).min(1).max(6),

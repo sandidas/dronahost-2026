@@ -134,8 +134,7 @@
       "type": "Meaning",
       "content": {
         "h2": "What does managed WordPress hosting mean?",
-        "answer": "Managed WordPress hosting means your host looks after the technical work behind your website: the servers, backups, security and updates. You keep control of your content and your business. It suits owners who want a reliable site without learning server administration.",
-        "answerRequiresClaim": "claim:managed-hosting-tasks",
+        "answer": "Managed WordPress hosting means a team looks after the technical side of your site, so you can focus on running your business. With DronaHost you get a backup of your site every day, a free move of your existing site, and help by support ticket or email. You keep control of your content, your plugins and themes, your domain and your decisions.",
         "h2Fallback": "What we look after, and what stays with you",
         "weLookAfter": [
           {
@@ -147,8 +146,8 @@
             "requiresClaim": "claim:backups"
           },
           {
-            "text": "Moving your site across",
-            "requiresClaim": "claim:migration-process"
+            "text": "Moving your existing site across, free of charge",
+            "requiresClaim": "claim:free-migration"
           },
           "Answering when something goes wrong"
         ],
@@ -159,31 +158,28 @@
           "Your business decisions"
         ],
         "lookAfterLabel": "We look after",
-        "keepLabel": "You keep"
+        "keepLabel": "You keep",
+        "answerRequires": "claim:backups && claim:free-migration"
       }
     },
     {
       "id": "moving",
       "type": "ProcessTimeline",
-      "requiresClaim": "claim:migration-process",
+      "requiresClaim": "claim:free-migration",
       "content": {
-        "h2": "Moving to DronaHost, step by step",
+        "h2": "Moving to DronaHost",
         "steps": [
           {
-            "title": "Tell us your host",
-            "text": "Share your current host details."
+            "title": "Pick any hosting package",
+            "text": "Free migration is included on every hosting package."
           },
           {
-            "title": "We copy your site",
-            "text": "Your site is copied to DronaHost."
+            "title": "Send your host details",
+            "text": "Use the migration page to share where your site lives now."
           },
           {
-            "title": "You check it",
-            "text": "Review the copy on a private link."
-          },
-          {
-            "title": "You switch when ready",
-            "text": "Your old site stays live until you switch."
+            "title": "We reply with next steps",
+            "text": "We reply by email and tell you what happens next."
           }
         ]
       }

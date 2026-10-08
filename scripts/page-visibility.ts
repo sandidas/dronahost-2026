@@ -29,8 +29,8 @@ function missingFacts(value: unknown, out: Set<string> = new Set()): Set<string>
   if (Array.isArray(value)) value.forEach((v) => missingFacts(v, out));
   else if (value && typeof value === "object") {
     for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
-      if (k === "requires" && typeof v === "string") splitRequires(v).forEach(check);
-      else if ((k === "requiresClaim" || k === "answerRequiresClaim") && typeof v === "string") check(v);
+      if ((k === "requires" || k === "answerRequires") && typeof v === "string") splitRequires(v).forEach(check);
+      else if (k === "requiresClaim" && typeof v === "string") check(v);
       else if ((k === "h1Requires" || k === "leadRequiresClaims") && Array.isArray(v)) v.forEach((x) => typeof x === "string" && check(x));
       else missingFacts(v, out);
     }

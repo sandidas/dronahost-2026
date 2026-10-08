@@ -22,7 +22,7 @@ test.describe("home page (rendered from content/pages/home.json)", () => {
     await page.goto("/");
     const text = (await page.locator("main").innerText()).toLowerCase();
     // Gated sections and copy stay out until their claims are verified and published. The home page makes no reply-time promise (owner, 2026-10-08).
-    for (const hidden of ["moving to dronahost", "same price, no increase", "whatsapp", "live chat", "24/7", "5 minutes", "5-minute", "litespeed", "nvme"]) {
+    for (const hidden of ["same price, no increase", "whatsapp", "live chat", "24/7", "5 minutes", "5-minute", "litespeed", "nvme"]) {
       expect(text, `main shows "${hidden}"`).not.toContain(hidden);
     }
     // The lead names DronaHost and uses the free-migration claim, which renders.
@@ -35,7 +35,8 @@ test.describe("home page (rendered from content/pages/home.json)", () => {
   test("the sections that are confirmed render, with no empty gaps", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByRole("heading", { name: "Help when you need it, and the terms behind our promises" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "What we look after, and what stays with you" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "What does managed WordPress hosting mean?" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Moving to DronaHost" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Questions before you choose" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Ready to see which plan fits?" })).toBeVisible();
     // Every section on the page has a heading: no section renders empty.

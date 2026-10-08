@@ -22,7 +22,7 @@ import { showPrices } from "@/lib/flags";
 import { buildPlanCards, VAT_DISPLAY } from "@/lib/pricing/plans";
 import { featureById } from "./features";
 import { POLICY_LINKS, PUBLISHED_PAGES } from "./published-pages";
-import { fillTemplate, passes, resolveClaimRef, type ResolveContext } from "./refs";
+import { fillTemplate, passes, resolveClaimRef, resolveRequires, type ResolveContext } from "./refs";
 import { loadVerifiedReviews } from "./reviews";
 import * as S from "./schemas/sections";
 
@@ -101,7 +101,7 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
       const norm = (items: typeof c.weLookAfter) =>
         items.flatMap((i) => (typeof i === "string" ? [{ text: i }] : !i.requiresClaim || resolveClaimRef(i.requiresClaim, ctx) ? [{ text: i.text }] : []));
       // The answer shows only while the claim behind it renders; the heading follows the answer.
-      const answerOk = Boolean(c.answer) && (!c.answerRequiresClaim || resolveClaimRef(c.answerRequiresClaim, ctx));
+      const answerOk = Boolean(c.answer) && resolveRequires(c.answerRequires, ctx);
       return (
         <MeaningSection
           eyebrow={c.eyebrow}
