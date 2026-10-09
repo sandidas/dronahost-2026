@@ -1,4 +1,4 @@
-export type Group = "Structure" | "Keyword" | "Voice" | "Facts" | "People" | "Experience" | "Sources" | "Metadata" | "Schema" | "Policy" | "Overlap" | "Blueprint" | "Flags";
+export type Group = "Structure" | "Keyword" | "Voice" | "Facts" | "People" | "Experience" | "Sources" | "Metadata" | "Schema" | "Policy" | "Overlap" | "Blueprint" | "Intent" | "Trust" | "Flags";
 export type Finding = { line: number; message: string };
 export type RuleResult = { id: string; group: Group; name: string; ok: boolean; skipped?: boolean; failures: Finding[]; warnings: Finding[]; note?: string };
 

@@ -12,7 +12,7 @@ const PLANNER_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 /** The one script map. `{p}` is the planner path relative to the host. */
 export const SCRIPT_FILES: Record<string, string> = {
   "content:check": "check-content", "content:register": "check-register", "content:governor": "governor", "content:eval": "eval",
-  "content:gen-schema": "gen-schema", "content:suggest-links": "suggest-links", "content:similarity": "similarity",
+  "content:gen-schema": "gen-schema", "content:suggest-links": "suggest-links", "content:similarity": "similarity", "content:owed": "owed",
   "content:gsc-report": "gsc-report", "content:refresh-queue": "refresh-queue", "content:install": "install", "content:init-project": "init-project",
   "content:links": "check-links", "content:no-brand": "check-no-brand", "content:config": "check-config", "content:schemas": "check-schemas", "content:resolve": "resolve", "content:ci": "ci", "content:copy": "copy-engine", "content:changed": "check-changed", "content:posts": "wp-posts", "content:webhook": "wp-webhook",
 };

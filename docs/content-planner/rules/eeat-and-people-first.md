@@ -27,6 +27,24 @@ No fake profiles, no invented credentials, no stock photo presented as a team.
 
 A page with no interview answer for experience cannot reach "Ready for owner review". It stays a draft with the gap named.
 
+## Trust checks on every page (group Trust)
+
+The checks above apply to articles (P1 to P3, E1 to E3, SO1). A page spec has no author or interview, so trust has to show another way. These rules run on page specs and articles. The data (which links, which wording, which page types) is the project's, in `project/profiles.json`. Each rule has a severity, `warn` first and then `fail` (see [search-intent.md](search-intent.md), "Warn first").
+
+| Rule | Passes when | Why |
+|---|---|---|
+| **TR1** | A link to a page that says who is responsible (About or Contact) is on the page or in the site-wide navigation file named in the profile | Raters look for who is responsible for the site and how to reach them (source 7) |
+| **TR2** | A page that asks for money links at least the minimum number of policy pages it relies on | Readers check the terms before they pay; a promise with its source is verifiable |
+| **TR3** | Wording that claims authority ("the best", "fastest", "trusted by", "award-winning") has a source link in the same section or paragraph, or a fact in the ledger | A claim with no proof is the first thing a careful buyer distrusts |
+| **TR4** | A product, decision or landing page says who it is not for or what it does not cover | Honest limits build trust (rule 4 below) |
+| **TR5** | The page was reviewed within the profile's limit (days) | A maintained page is a trustworthy page |
+
+TR3 reads the page, not the gating of single items inside a section. Do not use it to excuse an unsourced claim: if a claim has no source, either find the source or remove the claim.
+
+## What only a person can supply, listed by the engine
+
+`npm run content:owed` prints, per page, which sections are hidden and the facts or content that would show them, grouped by who must supply them (identity, prices, measured numbers, reviews, a case study, a screenshot). It adds no facts. Use it in place of a hand-written list, so the list is the same every run.
+
 ## Rules that follow
 
 1. Claude has no first-hand experience. It never writes "in my experience", "we tested" or "our customers say" unless a named person said it in the interview and the words are on file.

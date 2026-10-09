@@ -4,6 +4,7 @@ import { basename, extname, join } from "node:path";
 import { pathToFileURL } from "node:url";
 import type { Blueprints, Visibility } from "../../schemas/blueprints";
 import type { Config } from "../../schemas/config";
+import { type Profiles, ProfilesSchema } from "../../schemas/profiles";
 import type { RulesConfig } from "../../schemas/rules-config";
 import { DEFAULT_LABEL_KEYS, DEFAULT_NON_COPY_KEYS } from "../defaults";
 import { loadConfig } from "../load-config";
@@ -23,6 +24,8 @@ export type Ctx = {
   /** Blueprint data (paths.blueprints), the host's visibility result and its copy-source result. Absent means the Blueprint group is skipped. */
   blueprints?: Blueprints | null;
   visibility?: Visibility | null;
+  /** Intent and trust profile data (paths.profiles). Absent means the Intent and Trust groups are skipped. */
+  profiles?: Profiles | null;
   copySource?: { ran: boolean; ok: boolean; lines: string[] } | null;
 };
 
@@ -72,12 +75,20 @@ async function loadClaims(config: Config, resolvePath: (p: string) => string): P
   return list.map((c) => ({ id: c.id, verified: renders ? Boolean(renders(c)) : Boolean(c.verified), status: String(c.status ?? "") }));
 }
 
+export function loadProfiles(ctx: Pick<Ctx, "config" | "resolvePath">): Profiles | null {
+  const rel = process.env.CHECK_CONTENT_PROFILES ?? ctx.config.paths.profiles;
+  if (!rel) return null;
+  const file = process.env.CHECK_CONTENT_PROFILES ? rel : ctx.resolvePath(rel);
+  return existsSync(file) ? ProfilesSchema.parse(JSON.parse(readFileSync(file, "utf8"))) : null;
+}
+
 export async function loadContext(): Promise<Ctx> {
   const { config, rules, resolvePath } = loadConfig();
   const registerPath = process.env.CHECK_CONTENT_REGISTER ?? resolvePath(config.paths.register);
   const pricingFile = resolvePath(config.paths.pricing);
   return {
     config, rules, resolvePath,
+    profiles: loadProfiles({ config, resolvePath }),
     copy: { nonCopyKeys: config.adapters.pageSpec?.nonCopyKeys ?? DEFAULT_NON_COPY_KEYS, labelKeys: config.adapters.pageSpec?.labelKeys ?? DEFAULT_LABEL_KEYS },
     claims: await loadClaims(config, resolvePath),
     register: existsSync(registerPath) ? parseRegister(readFileSync(registerPath, "utf8")) : null,

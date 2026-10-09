@@ -15,6 +15,7 @@ governor_month_cap: <from the config>
 governor_paused: <true | false>
 created_on: <YYYY-MM-DD, the day the brief was started; the governor counts briefs by month>
 serp_checked_on: <YYYY-MM-DD or unavailable>
+intent_confirmed_by: <owner name; required only when serp_checked_on is unavailable, otherwise remove this line>
 information_gain_status: <confirmed | not-confirmed>
 original_element: <artifact | flag>
 interview_status: <not-started | gaps | complete>

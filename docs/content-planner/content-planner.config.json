@@ -14,7 +14,8 @@
     "drafts": "project/drafts",
     "rulesConfig": "project/rules.config.json",
     "pricingModule": "project/adapters/pricing.ts",
-    "blueprints": "project/blueprints.json"
+    "blueprints": "project/blueprints.json",
+    "profiles": "project/profiles.json"
   },
   "adapters": {
     "claims": "ts-export",

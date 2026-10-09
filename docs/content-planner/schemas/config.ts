@@ -21,6 +21,8 @@ export const ConfigSchema = z.object({
     rulesConfig: z.string().min(1),
     /** Blueprint data (schemas/blueprints.ts). Without it the Blueprint checks are skipped. */
     blueprints: z.string().min(1).optional(),
+    /** Intent and trust profile data (schemas/profiles.ts). Without it the Intent and Trust checks are skipped. */
+    profiles: z.string().min(1).optional(),
   }),
   adapters: z.object({
     claims: z.enum(["ts-export", "json"]),

@@ -59,7 +59,7 @@ Classify before anything else. Do not assume the keyword is informational.
 | Plan | wants help deciding what to do | 03 and 10, plus a plan-finder tool | |
 | Local | wants a local business | **Not targeted** unless the project has a real local presence. "Near me" is excluded | Region queries go to Plan 05 |
 
-Record the primary and secondary intent, the reader's likely problem and goal, the expected format and the buying stage. Confirm against the live results (Stage 2). If the results disagree with the register's intent, say so and ask the owner.
+Record the primary and secondary intent, the reader's likely problem and goal, the expected format and the buying stage. Confirm against the live results (Stage 2). If the results disagree with the register's intent, say so and ask the owner. If the live results are unavailable, the owner confirms the intent and the brief records who (`intent_confirmed_by`). What the page must then show for that intent is in [search-intent.md](search-intent.md); `check-content` tests it (rules IN1 to IN4). Page specs carry the intent in `searchIntent`.
 
 ## Stage 2: Research and fact ledger
 

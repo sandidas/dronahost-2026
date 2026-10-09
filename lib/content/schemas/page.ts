@@ -38,6 +38,10 @@ export const PageSpec = z
     blueprint: z.string().regex(/^C\d{1,2}[a-z]?$/, 'must look like "C1" or "C10a"').optional(),
     archetype: z.enum(["product", "decision", "trust", "landing"]),
     intent: z.string().min(3),
+    /** The search intent the page serves (rules/search-intent.md). check-content tests that the page shows what that intent needs. */
+    searchIntent: z.enum(["Learn", "Solve", "Compare", "Buy", "Find", "Plan"]).optional(),
+    /** A second intent the page also serves. Its needs are checked as warnings. */
+    secondaryIntent: z.enum(["Learn", "Solve", "Compare", "Buy", "Find", "Plan"]).optional(),
     audience: z.string().min(10),
     primaryKeyword: z.string().min(3),
     secondaryKeywords: z.array(z.string().min(3)).max(8),

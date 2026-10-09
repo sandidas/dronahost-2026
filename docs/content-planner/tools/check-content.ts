@@ -17,6 +17,7 @@ import { compare } from "./similarity";
 import { type Ctx, loadContext } from "./content/context";
 import { type Doc, loadDoc as loadDocRaw } from "./content/parse";
 import { blueprintRules, loadBlueprints, loadVisibility, runCopySource, signatureRules } from "./content/rules-blueprint";
+import { intentRules, trustRules } from "./content/rules-intent-trust";
 import { experienceRules, factRules, flagRules, peopleRules, policyRules, sourceRules } from "./content/rules-facts";
 import { keywordRules, metadataRules, schemaRules, structureRules, voiceRules } from "./content/rules-text";
 import { type Finding, type RuleResult, rule } from "./content/types";
@@ -27,7 +28,7 @@ export type { Doc } from "./content/parse";
 export type { RuleResult, Group } from "./content/types";
 
 /** Rules that gate "Ready for owner review". In a Draft they warn. */
-const READY_ONLY = new Set(["S4", "S5", "E1", "E3", "SO1"]);
+const READY_ONLY = new Set(["S4", "S5", "E1", "E3", "SO1", "IN2", "IN3", "TR2", "TR4"]);
 
 export const loadDoc = (ctx: Ctx, file: string): Doc => loadDocRaw(file, ctx.copy);
 
@@ -47,7 +48,7 @@ export function checkDoc(ctx: Ctx, doc: Doc, opts: { overlap?: boolean } = {}): 
   const results = [
     ...structureRules(ctx, doc), ...keywordRules(ctx, doc), ...voiceRules(ctx, doc), ...factRules(ctx, doc), ...peopleRules(ctx, doc),
     ...experienceRules(ctx, doc), ...sourceRules(ctx, doc), ...metadataRules(ctx, doc), ...schemaRules(ctx, doc), ...policyRules(ctx, doc),
-    ...(opts.overlap === false ? [] : overlapRules(ctx, doc)), ...blueprintRules(ctx, doc), ...flagRules(doc),
+    ...(opts.overlap === false ? [] : overlapRules(ctx, doc)), ...blueprintRules(ctx, doc), ...intentRules(ctx, doc), ...trustRules(ctx, doc), ...flagRules(doc),
   ];
   const staged = !/^draft/i.test(doc.state) ? results : results.map((r) => READY_ONLY.has(r.id) && !r.ok
     ? { ...r, ok: true, failures: [], warnings: [...r.warnings, ...r.failures], note: "readiness rule: warns in a Draft" }
@@ -145,7 +146,7 @@ export function runChecks(ctx: Ctx, files: string[]): number {
   const sigs = signatureRules(docs, ctx.blueprints ?? null);
   let failed = unreadable.length;
   for (const u of unreadable) console.log(`\n${u}\n    FAIL could not read`);
-  const order = ["Structure", "Keyword", "Voice", "Facts", "People", "Experience", "Sources", "Metadata", "Schema", "Policy", "Overlap", "Blueprint", "Flags"];
+  const order = ["Structure", "Keyword", "Voice", "Facts", "People", "Experience", "Sources", "Metadata", "Schema", "Policy", "Overlap", "Blueprint", "Intent", "Trust", "Flags"];
   for (const d of docs) {
     const all = [...checkDoc(ctx, d), ...(dupes.get(d.file) ?? []), ...(sigs.get(d.file) ?? [])].sort((a, b) => order.indexOf(a.group) - order.indexOf(b.group));
     if (!report(d.file, all)) failed++;

@@ -22,6 +22,8 @@ export const BriefFrontMatter = z
     governor_paused: Bool,
     created_on: IsoDate,
     serp_checked_on: z.union([IsoDate, z.literal("unavailable")]),
+    /** Who confirmed the intent when the live results were unavailable (serp_checked_on: unavailable). */
+    intent_confirmed_by: z.string().min(2).optional(),
     information_gain_status: z.enum(["confirmed", "not-confirmed"]),
     original_element: z.enum(["artifact", "flag"]),
     interview_status: z.enum(["not-started", "gaps", "complete"]),

@@ -2,6 +2,15 @@
 
 Versioned changes to the engine (rules, plans, tools). Business decisions are in `project/DECISIONS.md`.
 
+## 1.0.7 (2026-10-09)
+
+- Two new rule groups, driven by a project data file (`paths.profiles`, schema `schemas/profiles.ts`). **Intent:** IN1 intent declared and confirmed against the live results, IN2 the page shows what its intent needs, IN3 the first screen serves the intent, IN4 call to action labels fit the intent. **Trust:** TR1 a reader can find who is responsible, TR2 money pages link their policies, TR3 authority wording has a source, TR4 honest limits are stated, TR5 the page was reviewed recently. They run on page specs and articles. Without profile data they are skipped with a note.
+- Each new rule has a severity in the profile data. `warn` shows failures as warnings (the rollout setting); `fail` fails the run.
+- Page specs can declare `searchIntent` and `secondaryIntent`. The brief has an optional `intent_confirmed_by`.
+- New rule file `rules/search-intent.md`; `rules/eeat-and-people-first.md` gains the Trust checks.
+- New tool `content:owed`: per page, the hidden sections and the facts only a person can supply.
+- The readiness rules (warn in a Draft) now include IN2, IN3, TR2 and TR4.
+
 ## 1.0.6 (2026-10-09)
 
 - New blueprint section `MigrationRequest` (lead capture), plus `ProofBar`, `WhyChoose` and `Evidence`, in `rules/page-blueprints.md`. Home (C1) was reordered and Migration (C4) now requires the request form.

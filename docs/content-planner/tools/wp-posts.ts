@@ -27,7 +27,7 @@ export function getPath(obj: unknown, dotted: string): unknown {
   return cur;
 }
 
-const GROUP_ORDER = ["Structure", "Keyword", "Voice", "Facts", "People", "Experience", "Sources", "Metadata", "Schema", "Policy", "Overlap", "Flags"];
+const GROUP_ORDER = ["Structure", "Keyword", "Voice", "Facts", "People", "Experience", "Sources", "Metadata", "Schema", "Policy", "Overlap", "Intent", "Trust", "Flags"];
 const oneLine = (s: string): string => s.replace(/\s+/g, " ").trim();
 const plain = (html: string): string => oneLine(htmlToMarkdown(html).replace(/[*_`#>]/g, ""));
 

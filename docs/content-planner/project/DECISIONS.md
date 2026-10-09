@@ -43,6 +43,7 @@ Decisions that shape what is written. Do not reopen without the owner. Date form
 | 37 | Home conversion order | Home follows blueprint C1 as revised on 2026-10-09: hero, proof bar, router, plans, three reasons with sources, free-move request, evidence, reviews, help, FAQ, closing action. Hero second action is "Move my site free". "Talk to our team" is not used on Home. The long "what managed hosting means" text lives on `/wordpress-hosting` (owner, 2026-10-09) |
 | 38 | Free-move request | The request form sends through one function (`lib/leads/submit.ts`), default mailto, no database. It stays hidden on a page until a destination is set (`supportEmail` in `content/company.ts`, or a route in `lib/leads/config.ts`) (owner, 2026-10-09) |
 | 39 | Footer | The footer lists only what is sold and what is Ready in `page-map.md`: WordPress hosting, Contact, and the policy and legal pages. Other products return when their row turns Ready (owner, 2026-10-09) |
+| 40 | Intent and trust rules | The engine checks that a page serves its search intent (IN1 to IN4) and shows trust (TR1 to TR5). They start as warnings and become failures per rule once pages are measured, by changing `severity` in `project/profiles.json` (owner, 2026-10-09). "Who it is not for" (TR4) applies to product, decision and landing pages |
 
 ## Open (waiting on the owner)
 

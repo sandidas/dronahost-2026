@@ -9,7 +9,7 @@ The planner folder is `docs/content-planner/` (its config is `content-planner.co
 **Before APPROVAL 1 (never write the article in this part):**
 
 1. **Resolve.** Run `npm run content:resolve -- "$ARGUMENTS"`. If the input was a title, show the derived keyword with the reason and **ask the owner to confirm it before going on**. Stop and say why if the decision is `reject`, `merge` or `refused`.
-2. **Classify.** Plan, intent, buying stage and expected format (workflow Stage 1). Pick the interview bank for the page type.
+2. **Classify.** Plan, intent, buying stage and expected format (workflow Stage 1). Pick the interview bank for the page type. Read `rules/search-intent.md`: the brief names the primary intent and what the page must show for it, and a page spec sets `searchIntent`.
 3. **Research.** Use the `researcher` agent for the SERP snapshot (dated). If web access is missing, write "SERP analysis unavailable" and ask the owner to confirm the intent. Name the information gain; if there is none, stop and recommend dropping or merging the keyword.
 4. **Fact ledger.** Create `<facts folder>/<slug>.json` from `templates/fact-ledger.json`. Use the `fact-checker` agent on every fact. Add nothing from memory.
 5. **Brief.** Fill `templates/brief.md` and save it in the briefs folder. Include the governor status.
@@ -20,7 +20,7 @@ The planner folder is `docs/content-planner/` (its config is `content-planner.co
 
 8. **Draft** with the `drafter` agent, from the brief, the ledger and the interview only. Mark every gap `[HUMAN REVIEW]`.
 9. **Edit** with the `editor` agent: voice, clarity, banned phrases, information gain, who/how/why.
-10. **Check.** Run `npm run check:content`, `npm run check:register`, `npm run content:similarity -- <file>`, `npm run content:suggest-links -- <file>` and `npm run content:gen-schema -- <file>`. Fix what fails. List what you cannot fix.
+10. **Check.** Run `npm run check:content`, `npm run check:register`, `npm run content:similarity -- <file>`, `npm run content:suggest-links -- <file>` and `npm run content:gen-schema -- <file>`. Fix what fails. List what you cannot fix, including the Intent (IN1 to IN4) and Trust (TR1 to TR5) warnings, and run `npm run content:owed` for the facts only the owner can supply.
 11. **Handoff** with `templates/handoff.md`. The status is "Ready for owner review", never "publish-ready". Propose the register change; do not set `published`.
 
 If subagents are not available, run the four roles in this order inside this command with the same allowed and forbidden actions (see `claude/agents/`).

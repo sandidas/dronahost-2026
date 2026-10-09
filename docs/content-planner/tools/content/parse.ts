@@ -149,7 +149,7 @@ function parseJson(file: string, text: string, copy: CopyOptions): Doc {
   const seo = (spec.seo ?? {}) as Json;
   const rules = (spec.rules ?? {}) as Json;
   return {
-    file, kind: "json", front: { primary_keyword: String(spec.primaryKeyword ?? ""), slug: String(spec.path ?? ""), reviewed_on: String(rules.reviewedOn ?? ""), ...waiverFront(spec.waivers) },
+    file, kind: "json", front: { primary_keyword: String(spec.primaryKeyword ?? ""), slug: String(spec.path ?? ""), reviewed_on: String(rules.reviewedOn ?? ""), ...waiverFront(spec.waivers), ...(typeof spec.searchIntent === "string" ? { intent_primary: spec.searchIntent } : {}), ...(typeof spec.secondaryIntent === "string" ? { intent_secondary: spec.secondaryIntent } : {}) },
     lines, labels, raw, h1, headings, paragraphs: [], links, faq, answer, title: seo.title as string | undefined,
     description: seo.description as string | undefined, state: "",
     schemaTypes: Array.isArray(seo.schema) ? (seo.schema as unknown[]).map(String) : [], rulesBlock: rules,
