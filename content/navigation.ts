@@ -93,17 +93,14 @@ export const HELP_PANEL = {
 export const ACCOUNT_LINK: NavLink = { label: "Log in", href: "/login" };
 export const HEADER_CTA: NavLink = { label: "View plans", href: "/pricing" };
 
+/**
+ * The footer lists only what is sold and what is ready: the WordPress hosting plans, and the pages marked Ready in
+ * docs/content-planner/project/page-map.md (Contact), plus the policy and legal pages. Add a product or page here when its row in
+ * the page map turns Ready, not before. Cloud, VPS, business hosting, domains and the services stay out of the footer until then.
+ */
 export const FOOTER_COLUMNS: readonly { title: string; links: readonly NavLink[] }[] = [
-  { title: "Hosting", links: HOSTING_LINKS },
-  { title: "Services", links: SERVICE_LINKS },
-  {
-    title: "Company",
-    links: [
-      { label: "About", href: "/about" },
-      { label: "Contact", href: "/contact" },
-      { label: "Blog", href: "/blog" },
-    ],
-  },
+  { title: "Hosting", links: [{ label: "WordPress hosting", href: "/wordpress-hosting" }] },
+  { title: "Company", links: [{ label: "Contact", href: "/contact" }] },
   {
     title: "Trust and legal",
     links: [

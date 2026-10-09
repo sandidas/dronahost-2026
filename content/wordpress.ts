@@ -29,3 +29,21 @@ export const WORDPRESS_PRICING = {
   title: "Plans for WordPress hosting",
   description: "Pick the plan that matches your sites and traffic. You can move up as you grow.",
 };
+
+/**
+ * "What does managed WordPress hosting mean?" The long version, moved here from the home page (conversion review, 2026-10-09).
+ * The answer states only what the approved policy pages state, and it shows only while those claims render. Each line shows
+ * only while its own claim renders.
+ */
+export const WORDPRESS_MEANING = {
+  title: "What does managed WordPress hosting mean?",
+  answer:
+    "Managed WordPress hosting means a team looks after the technical side of your site, so you can focus on running your business. With DronaHost you get a backup of your site every day, a free move of your existing site, and help by support ticket or email. You keep control of your content, your plugins and themes, your domain and your decisions.",
+  answerClaims: ["backups", "free-migration"],
+  weLookAfter: [
+    { text: "Backups of your site", claim: "backups" },
+    { text: "Moving your existing site across, free of charge", claim: "free-migration" },
+    { text: "Answering when something goes wrong" },
+  ],
+  youKeep: [{ text: "Your content, products and pages" }, { text: "Which plugins and themes you choose" }, { text: "Your domain and your accounts" }, { text: "Your business decisions" }],
+} as const;

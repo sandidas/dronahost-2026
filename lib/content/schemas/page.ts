@@ -56,6 +56,8 @@ export const PageSpec = z
       forbiddenClaims: z.array(z.string().min(2)),
       reviewedOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "YYYY-MM-DD"),
     }),
+    /** Rules the owner has overruled for this page (check-content shows their failures as warnings). Needs a reason and an approver. */
+    waivers: z.strictObject({ rules: z.array(z.string().regex(/^[A-Z]{1,3}\d{1,2}$/)).min(1), reason: z.string().min(10), approvedBy: z.string().min(3) }).optional(),
     sections: z.array(Section).min(3).max(14),
   })
   .superRefine((page, ctx) => {

@@ -18,5 +18,5 @@ export const COMPANY = {
   supportEmail: null as string | null,
   /** Only real, owned profile URLs. The old footer.json placeholders (twitter.com etc.) were removed. */
   socials: [] as SocialLink[],
-  summary: "Managed WordPress, cloud and VPS hosting, plus web design and SEO.",
+  summary: "Managed WordPress hosting for small businesses, freelancers and agencies.",
 } as const;

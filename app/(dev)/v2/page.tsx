@@ -49,6 +49,8 @@ import AssuranceStrip, { SAMPLE_ASSURANCES } from "@/components/sections/Assuran
 import PathRouter from "@/components/sections/bespoke/PathRouter";
 import HelpAndPolicies from "@/components/sections/bespoke/HelpAndPolicies";
 import MeaningSection from "@/components/sections/bespoke/MeaningSection";
+import WhyChoose from "@/components/sections/bespoke/WhyChoose";
+import MigrationRequest from "@/components/sections/MigrationRequest";
 import ResponsibilitySplit from "@/components/sections/bespoke/ResponsibilitySplit";
 import StatsBar from "@/components/sections/StatsBar";
 import SupportChannels from "@/components/sections/SupportChannels";
@@ -91,7 +93,7 @@ const orgSchema = {
 };
 
 export default function V2ShowcasePage() {
-  if (process.env.NODE_ENV !== "development") notFound();
+  if (process.env.NODE_ENV !== "development" && process.env.E2E_SHOWCASE !== "1") notFound();
 
   return (
     <div className="min-h-screen bg-background">
@@ -642,6 +644,42 @@ export default function V2ShowcasePage() {
                 <p className="text-sm text-muted-foreground">Only one path has no claim, so the router is omitted. Nothing is rendered above this sentence.</p>
               </div>
             </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="why-choose"
+            title="WhyChoose (bespoke)"
+            status="needs-verification"
+            notes="Three reasons to choose us, each with a short title, one line and a source link to the page that publishes the terms. A reason shows only while its claim renders; with fewer than two the section is omitted. Samples here are the three approved claims."
+            verify={["Refund (money-back, /refund-policy)", "Free migration (free-migration, /migration-terms)", "Renewal price (renewal-price-same, /pricing-policy)"]}
+          >
+            <WhyChoose
+              title="Three promises you can read in full"
+              reasons={[
+                { icon: "refresh-cw", title: "30-day money-back guarantee", text: "If it is not right for you, ask for your money back. The terms are in writing.", source: { label: "Read the refund policy", href: "/refund-policy" } },
+                { icon: "server", title: "We move your site for free", text: "Free migration is included on every hosting package.", source: { label: "Read the migration terms", href: "/migration-terms" } },
+                { icon: "shield-check", title: "The same price at renewal", text: "Your hosting price does not change when you renew.", source: { label: "Read how renewals work", href: "/pricing-policy" } },
+              ]}
+              headingLevel="h3"
+              className="!py-0"
+            />
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="migration-request"
+            title="MigrationRequest (lead form)"
+            status="needs-verification"
+            notes="Lead capture for a free move: site URL, current host, email and an optional note, with Zod validation, a honeypot, error and success states and a privacy line. It sends through one function (lib/leads/submit.ts) and the destination is set in lib/leads/config.ts (mailto by default). On a page it hides until a destination is set; here the preview note shows."
+            verify={["Support email address (content/company.ts) or another destination", "Privacy policy approved (/privacy)"]}
+          >
+            <MigrationRequest
+              title="Move your site to us for free"
+              description="Tell us where your site lives now. We reply by email with the next steps."
+              fields={["siteUrl", "currentHost", "email", "note"]}
+              anchorId="v2-move-my-site"
+              headingLevel="h3"
+              className="!py-0"
+            />
           </ShowcaseSection>
 
           <ShowcaseSection

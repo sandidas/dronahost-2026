@@ -55,7 +55,7 @@ test.describe("page schema", () => {
     expect(PageSpec.safeParse(longH1).success).toBe(false);
 
     const shortAnswer = clone(home);
-    (shortAnswer.sections[3] as { content: { answer: string } }).content.answer = "Too short to be a real answer.";
+    shortAnswer.sections.push({ id: "answer-test", type: "AnswerBlock", content: { h2: "What is a test answer?", answer: "Too short to be a real answer." } } as never);
     expect(PageSpec.safeParse(shortAnswer).success).toBe(false);
 
     const longFaq = clone(home);
@@ -141,12 +141,22 @@ test.describe("section gating on the home page", () => {
   const ids = (c: ResolveContext) => visibleSections(spec, c).map((s) => s.id);
 
   test("today (nothing verified, prices unconfirmed) the gated sections drop out and no gap is left", () => {
-    expect(ids(ctx())).toEqual(["hero", "assurance", "router", "meaning", "platform", "help", "faq", "cta"]);
+    expect(ids(ctx())).toEqual(["hero", "proofbar", "router", "why", "evidence", "help", "faq", "cta"]);
   });
 
   test("section-level requires and requiresClaim each remove a section", () => {
-    const all = ctx({ claims: ["free-migration"], flags: ["pricesConfirmed"], predicates: ["verifiedReviews"] });
-    expect(ids(all)).toEqual(["hero", "assurance", "router", "meaning", "moving", "platform", "plans", "help", "proof", "faq", "cta"]);
+    const all = ctx({ claims: ["free-migration"], flags: ["pricesConfirmed"], predicates: ["verifiedReviews", "leadFormReady"] });
+    expect(ids(all)).toEqual(["hero", "proofbar", "router", "plans", "why", "move-my-site", "evidence", "reviews", "help", "faq", "cta"]);
+  });
+});
+
+test.describe("home conversion links", () => {
+  test("the buttons that say 'Move my site free' anchor to the form section's id, and only show with the form", () => {
+    const hero = (home.sections[0] as { content: { ctaSecondary: { label: string; href: string }; ctaSecondaryRequires: string } }).content;
+    const form = home.sections.find((s) => s.type === "MigrationRequest") as { id: string; requires: string };
+    expect(hero.ctaSecondary.label).toBe("Move my site free");
+    expect(hero.ctaSecondary.href).toBe(`/#${form.id}`);
+    expect(hero.ctaSecondaryRequires).toBe(form.requires);
   });
 });
 

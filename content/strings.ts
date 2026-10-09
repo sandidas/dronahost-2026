@@ -21,6 +21,8 @@ export const UI = {
   },
   /** Region name for the assurance strip when the page does not give one. */
   assurance: { region: "Our commitments" },
+  stats: { region: "Service statistics" },
+  caseStudy: { eyebrow: "Case study", sampleData: "Sample data (unverified)", read: "Read the case study", source: "Source:", publishedLink: "published case study" },
   split: { lookAfter: "We look after", keep: "You keep" },
   /** The decorative dashboard in the hero. A page can override each value in its JSON (`mockup`). */
   mockup: {
@@ -36,6 +38,36 @@ export const UI = {
   support: {
     ticket: { title: "Support ticket", description: "Describe the issue and we reply by email with next steps.", action: "Open a ticket" },
     email: { title: "Email", description: "Prefer your own email app? Write to us directly and we reply there.", action: "Email the team" },
+  },
+  /** The free-migration request form. Page JSON gives the heading, the lead and the list of fields. */
+  migrationRequest: {
+    labels: { siteUrl: "Your website address", currentHost: "Who hosts your site now", email: "Your email", note: "Anything we should know (optional)" },
+    placeholders: { siteUrl: "example.com", currentHost: "Your current host", email: "you@example.com", note: "" },
+    submit: "Move my site free",
+    submitting: "Sending your request",
+    errors: {
+      siteUrl: "Enter your website address, for example example.com.",
+      currentHost: "Tell us who hosts your site now.",
+      email: "Enter an email address we can reply to.",
+      note: "Keep the note under 500 characters.",
+      summary: "Please fix the fields marked below.",
+      form: "We could not send your request. Please try again, or open a ticket from the contact page.",
+      notConfigured: "This form cannot send yet. Please open a ticket from the contact page.",
+    },
+    ticketLink: "Open a ticket",
+    successMailtoTitle: "Your request is ready to send",
+    successMailtoBody: "Your email app opened with your request. Send it from there and we reply by email with the next steps.",
+    successSentTitle: "Thanks, we have your request",
+    successSentBody: "We reply by email with the next steps.",
+    privacyBefore: "We use these details only to answer your request. Read the",
+    privacyLink: "privacy policy",
+    privacyAfter: ".",
+    preview: "Preview only: no email address is set, so this form cannot send yet. Set supportEmail in content/company.ts.",
+    mailSubject: "Free migration request",
+    stickyLabel: "Move my site free",
+    optional: "optional",
+    required: "required",
+    honeypot: "Leave this field empty",
   },
   pricing: {
     customTitle: "Custom pricing",
@@ -53,7 +85,7 @@ export const POLICY_TEXT: Record<string, { title: string; description: string; l
   "/support-policy": { title: "Support policy", description: "How to reach us and how support works.", linkLabel: "Read the support policy" },
   "/pricing-policy": { title: "Pricing and renewal", description: "What you pay at signup and at renewal, and how tax works.", linkLabel: "Read how renewals work" },
   "/backup-policy": { title: "Backup policy", description: "How often we back up your site and what is kept.", linkLabel: "Read the backup policy" },
-  "/migration-terms": { title: "Free migration terms", description: "What free migration covers: one website per package, up to 10 on a VPS.", linkLabel: "Read the migration terms" },
+  "/migration-terms": { title: "Free migration terms", description: "What free migration covers: one website per hosting package.", linkLabel: "Read the migration terms" },
   "/terms": { title: "Terms of service", description: "The agreement between you and DronaHost, in writing.", linkLabel: "Read the terms" },
   "/sla": { title: "Service level agreement", description: "What we commit to on availability, and what happens if we miss it.", linkLabel: "Read the SLA" },
   "/privacy": { title: "Privacy policy", description: "What data we collect, why, and the choices you have.", linkLabel: "Read the privacy policy" },

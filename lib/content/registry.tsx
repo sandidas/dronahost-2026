@@ -13,6 +13,14 @@ import FAQSection from "@/components/sections/FAQSection";
 import PricingPlans from "@/components/sections/PricingPlans";
 import ProcessTimeline from "@/components/sections/ProcessTimeline";
 import ProductHero from "@/components/sections/ProductHero";
+import MigrationRequest from "@/components/sections/MigrationRequest";
+import CaseStudy from "@/components/sections/CaseStudy";
+import StatsBar from "@/components/sections/StatsBar";
+import WhyChoose from "@/components/sections/bespoke/WhyChoose";
+import { CASE_STUDIES } from "@/content/case-studies";
+import NextImage from "next/image";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import SupportChannels from "@/components/sections/SupportChannels";
 import Testimonials from "@/components/sections/Testimonials";
 import TrustSignals from "@/components/sections/TrustSignals";
@@ -30,6 +38,16 @@ type Of<T extends S.SectionType> = Extract<S.SectionSpec, { type: T }>;
 type Entry<T extends S.SectionType> = { schema: ZodType; render: (section: Of<T>, ctx: ResolveContext) => ReactNode };
 
 const claimId = (ref: string) => ref.replace(/^claim:/, "");
+
+/** A real screenshot from public/screenshots, or null: with no real picture the hero shows none and centres its text. */
+function heroVisual(shot: { src: string; alt: string; width: number; height: number } | undefined): ReactNode | null {
+  if (!shot || !existsSync(join(process.cwd(), "public", shot.src))) return null;
+  return (
+    <figure className="surface surface-raised overflow-hidden !rounded-2xl shadow-xl">
+      <NextImage src={shot.src} alt={shot.alt} width={shot.width} height={shot.height} priority sizes="(min-width: 1024px) 50vw, 100vw" className="h-auto w-full" />
+    </figure>
+  );
+}
 const BENTO_VISUALS = { cache: <CacheVisual />, growth: <GrowthVisual />, restore: <RestoreVisual />, channels: <ChannelsVisual /> } as const;
 
 /**
@@ -52,7 +70,8 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
         titleAccent={accent && h1.endsWith(accent) ? accent : undefined}
         description={c.leadRequiresClaims && !c.leadRequiresClaims.every((r) => resolveClaimRef(r, ctx)) ? (c.leadFallback ?? c.lead) : c.lead}
         primaryCta={c.ctaPrimary}
-        secondaryCta={c.ctaSecondary}
+        secondaryCta={c.ctaSecondary && resolveRequires(c.ctaSecondaryRequires, ctx) ? c.ctaSecondary : undefined}
+        visual={heroVisual(c.screenshot)}
         mockup={c.mockup}
         highlights={(c.highlights ?? []).flatMap((h) => {
           if (!h.startsWith("claim:")) return [h];
@@ -72,6 +91,35 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
         return claim && claim.kind === "assurance" && resolveClaimRef(ref, ctx) ? [{ ...claim, verified: true }] : [];
       });
       return claims.length ? <AssuranceStrip claims={claims} label={c.label} /> : null;
+    },
+  },
+  ProofBar: {
+    schema: S.ProofBar,
+    render: ({ content: c }, ctx) => {
+      // Measured numbers only, each from a claim that renders. Fewer than three is not a proof bar.
+      const stats = c.claims.flatMap((ref) => {
+        const claim = CLAIMS.find((x) => x.id === claimId(ref));
+        return claim && claim.kind === "stat" && resolveClaimRef(ref, ctx) ? [{ ...claim, verified: true }] : [];
+      });
+      return stats.length >= 3 ? <StatsBar claims={stats} label={c.h2} /> : null;
+    },
+  },
+  WhyChoose: {
+    schema: S.WhyChoose,
+    render: ({ content: c }, ctx) => {
+      const reasons = c.items.filter((i) => resolveClaimRef(i.requiresClaim, ctx)).map((i) => ({ icon: i.icon, title: i.title, text: i.text, source: i.source }));
+      return <WhyChoose eyebrow={c.eyebrow} title={c.h2} description={c.description} reasons={reasons} />;
+    },
+  },
+  MigrationRequest: {
+    schema: S.MigrationRequest,
+    render: ({ id, content: c }) => <MigrationRequest eyebrow={c.eyebrow} title={c.h2} description={c.description} fields={c.fields} anchorId={id} />,
+  },
+  Evidence: {
+    schema: S.Evidence,
+    render: ({ content: c }) => {
+      const study = CASE_STUDIES[0];
+      return study ? <CaseStudy title={c.h2 ?? study.title} description={study.description} metrics={study.metrics} sourceUrl={study.sourceUrl} /> : null;
     },
   },
   PathRouter: {
@@ -208,6 +256,6 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
   },
   CTABand: {
     schema: S.CTABand,
-    render: ({ content: c }) => <CTABand title={c.h2} description={c.description} primaryCta={c.ctaPrimary} secondaryCta={c.ctaSecondary} note={c.note} />,
+    render: ({ content: c }, ctx) => <CTABand title={c.h2} description={c.description} primaryCta={c.ctaPrimary} secondaryCta={c.ctaSecondary && resolveRequires(c.ctaSecondaryRequires, ctx) ? c.ctaSecondary : undefined} note={c.note} />,
   },
 };

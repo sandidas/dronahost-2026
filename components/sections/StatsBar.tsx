@@ -3,6 +3,7 @@ import { useId } from "react";
 import CountUp from "@/components/motion/CountUp";
 import { verifiedClaims, type Claim } from "@/content/claims";
 import { cn } from "@/utils/cn";
+import { UI } from "@/content/strings";
 
 type StatsBarProps = {
   /** Claim ids to display, in order. Defaults to every verified claim. */
@@ -18,7 +19,7 @@ type StatsBarProps = {
  * Stats strip driven by content/claims.ts. Renders nothing until at least one claim is
  * verified. Each stat can link to its proof page (SLA, status, etc.).
  */
-export default function StatsBar({ ids, label = "Service statistics", claims, className }: StatsBarProps) {
+export default function StatsBar({ ids, label = UI.stats.region, claims, className }: StatsBarProps) {
   const headingId = useId();
   // Measured numbers only. Policy and feature claims ("assurance") render in AssuranceStrip instead.
   const stats = (claims ?? verifiedClaims(ids).filter((c) => c.kind === "stat")).slice(0, 4);
@@ -57,7 +58,7 @@ export default function StatsBar({ ids, label = "Service statistics", claims, cl
                   )}
                 </dt>
                 {stat.note && <dd className="mt-1 text-xs text-subtle-foreground">{stat.note}</dd>}
-                {!stat.verified && <dd className="mt-1 text-xs font-semibold text-warning">Sample, unverified</dd>}
+                {!stat.verified && <dd className="mt-1 text-xs font-semibold text-warning">{UI.sample.unverified}</dd>}
               </div>
             );
           })}

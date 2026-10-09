@@ -11,10 +11,10 @@
   ],
   "layoutSignature": [
     "ProductHero:dashboard",
-    "AssuranceStrip",
+    "ProofBar",
     "PathRouter",
-    "Meaning",
-    "ProcessTimeline"
+    "PricingPlans",
+    "WhyChoose"
   ],
   "seo": {
     "title": "Hosting With the Same Price at Renewal",
@@ -33,15 +33,14 @@
     "requiredSections": [
       "hero",
       "router",
-      "meaning",
+      "why",
       "help",
       "faq",
       "cta"
     ],
     "mustLinkTo": [
       "/pricing",
-      "/wordpress-hosting",
-      "/contact"
+      "/wordpress-hosting"
     ],
     "forbiddenClaims": [
       "unlimited",
@@ -49,6 +48,13 @@
       "fastest"
     ],
     "reviewedOn": "2026-10-08"
+  },
+  "waivers": {
+    "rules": [
+      "S3"
+    ],
+    "reason": "Conversion review 2026-10-09: the long answer about managed hosting moved to /wordpress-hosting, and the home page keeps a two-line version under the router heading.",
+    "approvedBy": "Sandipan Das (owner)"
   },
   "sections": [
     {
@@ -64,27 +70,32 @@
           "href": "/wordpress-hosting"
         },
         "ctaSecondary": {
-          "label": "Talk to our team",
-          "href": "/contact"
+          "label": "Move my site free",
+          "href": "/#move-my-site"
         },
         "accent": "without the technical worry",
         "leadFallback": "DronaHost is a focused team that offers managed WordPress hosting for small businesses, freelancers and agencies worldwide. You can reach the team by support ticket or email.",
         "leadRequiresClaims": [
           "claim:free-migration"
         ],
-        "mockup": {
-          "caption": "Example dashboard"
+        "ctaSecondaryRequires": "claim:free-migration && leadFormReady",
+        "screenshot": {
+          "src": "/screenshots/home-dashboard.png",
+          "alt": "Screenshot of the DronaHost customer dashboard",
+          "width": 1600,
+          "height": 1000
         }
       }
     },
     {
-      "id": "assurance",
-      "type": "AssuranceStrip",
+      "id": "proofbar",
+      "type": "ProofBar",
       "content": {
         "claims": [
-          "claim:money-back",
-          "claim:free-migration",
-          "claim:renewal-price-same"
+          "claim:uptime-sla",
+          "claim:ttfb",
+          "claim:first-reply",
+          "claim:founded"
         ]
       }
     },
@@ -126,76 +137,8 @@
             "requiresClaim": "claim:managed-vps-scope"
           }
         ],
-        "compact": true
-      }
-    },
-    {
-      "id": "meaning",
-      "type": "Meaning",
-      "content": {
-        "h2": "What does managed WordPress hosting mean?",
-        "answer": "Managed WordPress hosting means a team looks after the technical side of your site, so you can focus on running your business. With DronaHost you get a backup of your site every day, a free move of your existing site, and help by support ticket or email. You keep control of your content, your plugins and themes, your domain and your decisions.",
-        "h2Fallback": "What we look after, and what stays with you",
-        "weLookAfter": [
-          {
-            "text": "The servers your site runs on",
-            "requiresClaim": "claim:managed-server-care"
-          },
-          {
-            "text": "Backups of your site",
-            "requiresClaim": "claim:backups"
-          },
-          {
-            "text": "Moving your existing site across, free of charge",
-            "requiresClaim": "claim:free-migration"
-          },
-          "Answering when something goes wrong"
-        ],
-        "youKeep": [
-          "Your content, products and pages",
-          "Which plugins and themes you choose",
-          "Your domain and your accounts",
-          "Your business decisions"
-        ],
-        "lookAfterLabel": "We look after",
-        "keepLabel": "You keep",
-        "answerRequires": "claim:backups && claim:free-migration"
-      }
-    },
-    {
-      "id": "moving",
-      "type": "ProcessTimeline",
-      "requiresClaim": "claim:free-migration",
-      "content": {
-        "h2": "Moving to DronaHost",
-        "steps": [
-          {
-            "title": "Pick any hosting package",
-            "text": "Free migration is included on every hosting package."
-          },
-          {
-            "title": "Send your host details",
-            "text": "Use the migration page to share where your site lives now."
-          },
-          {
-            "title": "We reply with next steps",
-            "text": "We reply by email and tell you what happens next."
-          }
-        ]
-      }
-    },
-    {
-      "id": "platform",
-      "type": "BentoGrid",
-      "content": {
-        "h2": "What is included on the platform",
-        "tiles": [
-          "feature:staging",
-          "feature:backups",
-          "feature:security",
-          "feature:performance",
-          "feature:developer-tools"
-        ]
+        "compact": true,
+        "description": "Managed hosting means a team looks after the technical side of your site. You keep control of your content, plugins and domain."
       }
     },
     {
@@ -219,6 +162,76 @@
       }
     },
     {
+      "id": "why",
+      "type": "WhyChoose",
+      "content": {
+        "h2": "Three promises you can read in full",
+        "items": [
+          {
+            "icon": "refresh-cw",
+            "title": "30-day money-back guarantee",
+            "text": "If it is not right for you, ask for your money back. The terms are in writing.",
+            "source": {
+              "label": "Read the refund policy",
+              "href": "/refund-policy"
+            },
+            "requiresClaim": "claim:money-back"
+          },
+          {
+            "icon": "server",
+            "title": "We move your site for free",
+            "text": "Free migration is included on every hosting package.",
+            "source": {
+              "label": "Read the migration terms",
+              "href": "/migration-terms"
+            },
+            "requiresClaim": "claim:free-migration"
+          },
+          {
+            "icon": "shield-check",
+            "title": "The same price at renewal",
+            "text": "Your hosting price does not change when you renew.",
+            "source": {
+              "label": "Read how renewals work",
+              "href": "/pricing-policy"
+            },
+            "requiresClaim": "claim:renewal-price-same"
+          }
+        ]
+      }
+    },
+    {
+      "id": "move-my-site",
+      "type": "MigrationRequest",
+      "requires": "claim:free-migration && leadFormReady",
+      "content": {
+        "h2": "Move your site to us for free",
+        "description": "Tell us where your site lives now. We reply by email with the next steps.",
+        "fields": [
+          "siteUrl",
+          "currentHost",
+          "email",
+          "note"
+        ]
+      }
+    },
+    {
+      "id": "evidence",
+      "type": "Evidence",
+      "content": {
+        "source": "case-studies.json"
+      }
+    },
+    {
+      "id": "reviews",
+      "type": "Testimonials",
+      "hideIfEmpty": true,
+      "requires": "verifiedReviews",
+      "content": {
+        "source": "reviews.json"
+      }
+    },
+    {
       "id": "help",
       "type": "HelpAndPolicies",
       "content": {
@@ -226,24 +239,11 @@
         "supportLabel": "Reach the team",
         "policiesLabel": "Our policies, in plain language",
         "links": [
-          "/refund-policy",
           "/support-policy",
-          "/pricing-policy",
           "/backup-policy",
-          "/migration-terms",
-          "/terms",
-          "/privacy"
+          "/refund-policy"
         ],
         "onlyPublished": true
-      }
-    },
-    {
-      "id": "proof",
-      "type": "Testimonials",
-      "hideIfEmpty": true,
-      "requires": "verifiedReviews",
-      "content": {
-        "source": "reviews.json"
       }
     },
     {
@@ -266,7 +266,7 @@
           },
           {
             "q": "Can I move my existing WordPress site to DronaHost?",
-            "a": "Yes, you can move your existing WordPress site to DronaHost. Moving is free on every package. Each hosting package includes the move of one website, and a VPS includes up to 10 websites. The migration terms page explains what is covered. To start, open the free migration page.",
+            "a": "Yes, you can move your existing WordPress site to DronaHost. Moving is free on every hosting package, and each package includes the move of one website. The migration terms page explains what is covered. To start, open the free migration page and send your current host details.",
             "requiresClaim": "claim:free-migration"
           },
           {
@@ -301,9 +301,10 @@
           "href": "/wordpress-hosting"
         },
         "ctaSecondary": {
-          "label": "Talk to our team",
-          "href": "/contact"
-        }
+          "label": "Move my site free",
+          "href": "/#move-my-site"
+        },
+        "ctaSecondaryRequires": "claim:free-migration && leadFormReady"
       }
     }
   ]

@@ -1,7 +1,7 @@
 import { FEATURES } from "@/lib/flags";
 
 /** Named predicates a page may use in `requires`. Each is resolved by the resolve context, never by the page. */
-export const PREDICATES = ["verifiedReviews"] as const;
+export const PREDICATES = ["verifiedReviews", "leadFormReady"] as const;
 
 /** `A && B && C`; each term is `FEATURES.<flag>`, `claim:<id>`, `feature:<id>` or a named predicate. */
 const TERM = /^(FEATURES\.[A-Za-z]+|claim:[a-z0-9-]+|feature:[a-z0-9-]+|[A-Za-z]+)$/;

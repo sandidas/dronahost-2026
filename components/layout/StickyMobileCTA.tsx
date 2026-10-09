@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { usePathname } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
+import { UI } from "@/content/strings";
 
 const HIDDEN_ON = ["/contact", "/consultation", "/migration"];
 
@@ -17,10 +18,13 @@ export default function StickyMobileCTA({ label, href = "/contact" }: { label?: 
   const pathname = usePathname();
   const [pastHero, setPastHero] = useState(false);
   const [footerVisible, setFooterVisible] = useState(false);
+  // On the home page the bar points to the free-move form (and hides when the form is not on the page).
+  const [hasMoveForm, setHasMoveForm] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setPastHero(window.scrollY > window.innerHeight * 0.8);
     onScroll();
+    setHasMoveForm(Boolean(document.getElementById("move-my-site")));
     window.addEventListener("scroll", onScroll, { passive: true });
     const footer = document.querySelector("footer");
     const io = footer ? new IntersectionObserver(([e]) => setFooterVisible(Boolean(e?.isIntersecting))) : null;
@@ -31,7 +35,8 @@ export default function StickyMobileCTA({ label, href = "/contact" }: { label?: 
     };
   }, [pathname]);
 
-  if (HIDDEN_ON.some((p) => pathname.startsWith(p))) return null;
+  const onHome = pathname === "/";
+  if (HIDDEN_ON.some((p) => pathname.startsWith(p)) || (onHome && !hasMoveForm)) return null;
   const shown = pastHero && !footerVisible;
 
   return (
@@ -41,8 +46,8 @@ export default function StickyMobileCTA({ label, href = "/contact" }: { label?: 
       className="sticky-cta fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] pt-3 backdrop-blur md:hidden"
       data-shown={shown}
     >
-      <Button href={href} fullWidth>
-        {label ?? t("talkToTeam")}
+      <Button href={onHome ? "/#move-my-site" : href} fullWidth>
+        {onHome ? UI.migrationRequest.stickyLabel : (label ?? t("talkToTeam"))}
       </Button>
     </div>
   );

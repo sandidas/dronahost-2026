@@ -2,6 +2,7 @@ import { Link } from "@/i18n/link";
 import { useId, type ReactNode } from "react";
 import Button from "@/components/ui/Button";
 import { cn } from "@/utils/cn";
+import { UI } from "@/content/strings";
 
 type CaseStudyProps = {
   eyebrow?: string;
@@ -22,7 +23,7 @@ type CaseStudyProps = {
 
 /** Case study with concrete metrics. Hidden unless it links to an approved, published source. */
 export default function CaseStudy({
-  eyebrow = "Case study",
+  eyebrow = UI.caseStudy.eyebrow,
   title,
   description,
   metrics,
@@ -44,7 +45,7 @@ export default function CaseStudy({
           <div>
             <p className="t-eyebrow">
               {eyebrow}
-              {!sourceUrl && <span className="ms-3 font-semibold normal-case tracking-normal text-warning">Sample data (unverified)</span>}
+              {!sourceUrl && <span className="ms-3 font-semibold normal-case tracking-normal text-warning">{UI.caseStudy.sampleData}</span>}
             </p>
             <Heading id={headingId} className="t-h2 mt-3 text-foreground">
               {title}
@@ -53,7 +54,7 @@ export default function CaseStudy({
             {(cta || sourceUrl) && (
               <div className="mt-8">
                 <Button href={cta?.href ?? sourceUrl ?? "#"} variant="secondary" size="lg">
-                  {cta?.label ?? "Read the case study"}
+                  {cta?.label ?? UI.caseStudy.read}
                 </Button>
               </div>
             )}
@@ -71,9 +72,9 @@ export default function CaseStudy({
         </div>
         {sourceUrl && (
           <p className="t-small mt-4 text-center text-muted-foreground">
-            Source:{" "}
+            {UI.caseStudy.source}{" "}
             <Link href={sourceUrl} className="font-semibold text-link underline underline-offset-4">
-              published case study
+              {UI.caseStudy.publishedLink}
             </Link>
           </p>
         )}

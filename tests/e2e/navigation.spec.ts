@@ -41,7 +41,7 @@ test.describe("keyboard and structure", () => {
 
   test("sticky mobile CTA appears after scrolling on phones only", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 800 });
-    await page.goto("/");
+    await page.goto("/about");
     const cta = page.locator(".sticky-cta");
     await expect(cta).toHaveAttribute("data-shown", "false");
     await page.mouse.wheel(0, 1200);

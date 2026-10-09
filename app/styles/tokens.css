@@ -94,8 +94,8 @@
   --card-foreground: #f1fafa;
   --surface-raised: #112a40;
   --muted: #0a1a2a;
-  --muted-foreground: #a9bbc9;
-  --subtle-foreground: #8fa5b6;
+  --muted-foreground: #c9d8e3;
+  --subtle-foreground: #b0c3d1;
   --border: rgb(255 255 255 / 0.11);
   --border-strong: rgb(255 255 255 / 0.2);
   --ring: #05a2c6;
@@ -267,6 +267,11 @@ body {
     padding-inline: var(--gutter);
   }
 
+  /* Alternate bands for page-spec pages: every second section sits on the muted surface, so neighbours never share a background. */
+  .page-tones > section:nth-of-type(even) {
+    background-color: var(--muted);
+    border-block: 1px solid var(--border);
+  }
   .section-y {
     padding-block: var(--section-y);
   }
@@ -319,13 +324,13 @@ body {
     text-wrap: pretty;
   }
   .t-body {
-    font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+    font-size: clamp(1.0625rem, 1.03rem + 0.15vw, 1.1875rem);
     line-height: 1.7;
     max-width: 65ch;
     text-wrap: pretty;
   }
   .t-small {
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
     line-height: 1.55;
   }
   .t-eyebrow {

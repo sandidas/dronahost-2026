@@ -1,5 +1,6 @@
 import { CLAIMS, claimRenders } from "@/content/claims";
 import { FEATURES } from "@/lib/flags";
+import { leadFormReady } from "@/lib/leads/config";
 import { startingPrice, formatPrice, DEFAULT_CURRENCY } from "@/lib/pricing";
 import pricing from "@/data/pricing.json";
 import { featureById, plansWithFeature } from "./features";
@@ -26,8 +27,8 @@ export const defaultContext: ResolveContext = {
     return claim ? claimRenders(claim) : false;
   },
   flag: (name) => (name in FEATURES ? Boolean((FEATURES as Record<string, boolean>)[name]) : false),
-  // No verified review source exists yet, so this stays false until reviews.json does.
-  predicate: (name) => (name === "verifiedReviews" ? false : false),
+  // verifiedReviews stays false until reviews.json exists. leadFormReady is true when a request has somewhere to go (and in development).
+  predicate: (name) => (name === "leadFormReady" ? leadFormReady() : false),
   plansWithFeature,
 };
 

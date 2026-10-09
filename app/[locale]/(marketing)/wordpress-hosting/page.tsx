@@ -12,7 +12,8 @@ import { isVerified } from "@/content/claims";
 import { WORDPRESS_HERO } from "@/content/heroes";
 import { MIGRATION_STEPS, WORDPRESS_FAQ } from "@/content/faqs";
 import { HOME_CTA, HOME_SPLITS } from "@/content/home";
-import { WORDPRESS_FEATURES, WORDPRESS_PRICING } from "@/content/wordpress";
+import { WORDPRESS_FEATURES, WORDPRESS_MEANING, WORDPRESS_PRICING } from "@/content/wordpress";
+import MeaningSection from "@/components/sections/bespoke/MeaningSection";
 import { showPrices } from "@/lib/flags";
 import { startingPriceLabel } from "@/lib/pricing";
 import { buildFamilyCards, VAT_DISPLAY } from "@/lib/pricing/plans";
@@ -47,6 +48,12 @@ export default function WordPressHostingPage() {
         ]}
       />
       <SplitHero {...WORDPRESS_HERO} />
+      <MeaningSection
+        title={WORDPRESS_MEANING.title}
+        answer={WORDPRESS_MEANING.answerClaims.every((id) => isVerified(id)) ? WORDPRESS_MEANING.answer : undefined}
+        weLookAfter={WORDPRESS_MEANING.weLookAfter.map((i) => ({ ...i }))}
+        youKeep={WORDPRESS_MEANING.youKeep.map((i) => ({ ...i }))}
+      />
       <FeatureGrid {...WORDPRESS_FEATURES} columns={3} />
       <TwoColumn
         eyebrow={wpSplit.eyebrow}

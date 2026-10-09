@@ -29,6 +29,10 @@ export const ProductHero = z.strictObject({
     leadFallback: z.string().max(220).optional(),
     ctaPrimary: Cta,
     ctaSecondary: Cta.optional(),
+    /** The secondary action shows only while this condition holds, for example "claim:free-migration && leadFormReady". */
+    ctaSecondaryRequires: Requires.optional(),
+    /** A real product screenshot in public/screenshots. When the file is missing the hero shows no visual and centres its text. */
+    screenshot: z.strictObject({ src: z.string().regex(/^\/screenshots\/[a-z0-9-]+\.(png|jpg|webp)$/, "must be /screenshots/<name>.png, .jpg or .webp"), alt: z.string().min(10).max(160), width: z.number().int().positive(), height: z.number().int().positive() }).optional(),
     /** Plain text or `claim:` refs. A claim that does not render is dropped. */
     highlights: z.array(z.union([ClaimRef, z.string().min(4).max(80)])).max(4).optional(),
     /** Text of the decorative dashboard. The caption must say it is an example. */
@@ -130,6 +134,55 @@ export const HelpAndPolicies = z.strictObject({
   }),
 });
 
+/** Three to four measured numbers or ratings, each from a verified claim. Hidden until at least three render. */
+export const ProofBar = z.strictObject({
+  ...sectionBase,
+  type: z.literal("ProofBar"),
+  content: z.strictObject({ h2: z.string().min(8).max(60).optional(), claims: z.array(ClaimRef).min(3).max(4) }),
+});
+
+/** Three reasons to choose us. Each has an icon, a short title, one line and a source link, and shows only while its claim renders. */
+export const WhyChoose = z.strictObject({
+  ...sectionBase,
+  type: z.literal("WhyChoose"),
+  content: z.strictObject({
+    eyebrow,
+    h2: z.string().min(8).max(70),
+    description,
+    items: z
+      .array(
+        z.strictObject({
+          icon: IconName.optional(),
+          title: z.string().min(4).max(60),
+          text: z.string().min(10).max(140),
+          source: Cta,
+          requiresClaim: ClaimRef,
+        }),
+      )
+      .min(3)
+      .max(3),
+  }),
+});
+
+/** Lead capture for a free move. The fields are listed here and limited by the blueprint. */
+export const MigrationRequest = z.strictObject({
+  ...sectionBase,
+  type: z.literal("MigrationRequest"),
+  content: z.strictObject({
+    eyebrow,
+    h2: z.string().min(8).max(60),
+    description,
+    fields: z.array(z.enum(["siteUrl", "currentHost", "email", "note"])).min(3).max(4).refine((f) => new Set(f).size === f.length, "a field is listed twice"),
+  }),
+});
+
+/** One approved case study with real numbers. Hidden until one exists (content/case-studies.ts). */
+export const Evidence = z.strictObject({
+  ...sectionBase,
+  type: z.literal("Evidence"),
+  content: z.strictObject({ source: z.literal("case-studies.json"), h2: z.string().max(70).optional() }),
+});
+
 export const ProcessTimeline = z.strictObject({
   ...sectionBase,
   type: z.literal("ProcessTimeline"),
@@ -216,11 +269,11 @@ export const FAQSection = z.strictObject({
 export const CTABand = z.strictObject({
   ...sectionBase,
   type: z.literal("CTABand"),
-  content: z.strictObject({ h2: z.string().min(8).max(60), description, ctaPrimary: Cta, ctaSecondary: Cta.optional(), note: z.string().max(120).optional() }),
+  content: z.strictObject({ h2: z.string().min(8).max(60), description, ctaPrimary: Cta, ctaSecondary: Cta.optional(), ctaSecondaryRequires: Requires.optional(), note: z.string().max(120).optional() }),
 });
 
 export const Section = z.discriminatedUnion("type", [
-  ProductHero, AssuranceStrip, PathRouter, AnswerBlock, ResponsibilitySplit, Meaning, ProcessTimeline, BentoGrid, PricingPlans,
+  ProductHero, AssuranceStrip, ProofBar, PathRouter, AnswerBlock, ResponsibilitySplit, Meaning, WhyChoose, MigrationRequest, Evidence, ProcessTimeline, BentoGrid, PricingPlans,
   SupportChannels, HelpAndPolicies, Testimonials, TrustSignals, FAQSection, CTABand,
 ]);
 

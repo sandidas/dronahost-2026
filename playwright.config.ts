@@ -2,6 +2,8 @@ import { defineConfig } from "@playwright/test";
 
 const PORT = Number(process.env.E2E_PORT ?? 3200);
 const WP_PORT = Number(process.env.WP_MOCK_PORT ?? 3900);
+/** A second server on the same build with the /v2 showcase switched on (E2E_SHOWCASE), so the free-move form can be tested before an address is set. */
+const PREVIEW_PORT = Number(process.env.E2E_PREVIEW_PORT ?? 3201);
 
 /**
  * End-to-end tests run against a production build (`npm run build` first).
@@ -21,6 +23,12 @@ export default defineConfig({
       port: PORT,
       reuseExistingServer: !process.env.CI,
       env: { WORDPRESS_API_URL: `http://localhost:${WP_PORT}/wp-json/wp/v2` },
+    },
+    {
+      command: `npx next start -p ${PREVIEW_PORT}`,
+      port: PREVIEW_PORT,
+      reuseExistingServer: !process.env.CI,
+      env: { WORDPRESS_API_URL: `http://localhost:${WP_PORT}/wp-json/wp/v2`, E2E_SHOWCASE: "1" },
     },
   ],
 });
