@@ -11,6 +11,13 @@ Branch `polish/design-system`. Each batch is one commit.
 - New `MeaningSection` and `HelpAndPolicies` (shown in `/v2`); `SupportChannels`, `TrustSignals` and `ResponsibilitySplit` get a `bare` mode so a composite can hold them. The support button is secondary. The hero mockup (`SiteDashboardMockup`, `StagingFlowMockup`) shows a visible "Example dashboard" caption, and its text comes from the page JSON or `content/strings.ts`.
 - `content/strings.ts` holds the shared UI text. `npm run check:copy-source` fails on a text literal in a section component.
 
+## Home conversion pass (2026-10-09)
+- New `WhyChoose` (three reasons, each with a source link) and `MigrationRequest` (free-move lead form: Zod validation, honeypot, error and success states, privacy line; sends through `lib/leads/submit.ts`). Both are in `/v2`.
+- `ProductHero` shows a real screenshot from `public/screenshots/` or, with none, no visual and centred text. The fake dashboard is no longer the default on Home.
+- Pages built from a spec alternate a tinted band on every second section (`.page-tones`), so neighbours never share a background.
+- Body text on dark is brighter (`--muted-foreground`, `--subtle-foreground`) and `t-body` and `t-small` are larger.
+- The footer lists only what is sold and Ready. The mobile call to action on Home reads "Move my site free" and hides when the form is not on the page.
+
 ## Baseline
 - Snapshot of in-progress work before the polish (`c82d00b`).
 

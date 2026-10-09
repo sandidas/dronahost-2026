@@ -98,7 +98,7 @@ A claim renders only when it is verified **and** its terms page is published. Th
 | Claim | Status on 2026-10-07 |
 |---|---|
 | 30-day money-back guarantee | Owner-approved and published 2026-10-08 (`/refund-policy`). Renders |
-| 24/7 support | Owner-approved and published 2026-10-08: ticket and email, any hour, reply within 5 minutes (`/support-policy`). Renders |
+| 24/7 support | Owner-approved 2026-10-08, reworded 2026-10-09 (decision 36): ticket and email, any hour. No reply time is promised. Terms page `/support-policy` |
 | Free migration | Owner-approved and published 2026-10-08 (`/migration-terms`): free on every package, one website per package, up to 10 on a VPS. Renders |
 | Renewal price equals signup price | Owner-approved and published 2026-10-08 (`/pricing-policy`): hosting price does not change on renewal. Renders. Terms of Service must not say prices can change at any time |
 | Uptime SLA, response times, founding year, free SSL, CDN, features | Unverified. Never render |

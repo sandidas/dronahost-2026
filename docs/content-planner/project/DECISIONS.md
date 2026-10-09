@@ -39,6 +39,10 @@ Decisions that shape what is written. Do not reopen without the owner. Date form
 | 33 | Reuse proof in CI | `npm run test:reuse` runs on ubuntu-latest and windows-latest in CI (owner, 2026-10-09) |
 | 34 | Location | No page says where the business is based except `/about` (owner, 2026-10-08). The company serves customers worldwide, so no title, description, headline or lead says "India" or "a team in India". The tax line ("Customers in India pay GST") is a tax rule, not a location claim, and stays. Enforced by check PO4 (`locationClaims` in `rules.config.json`) |
 | 35 | Titles | Page titles give a reason to choose us, so a visitor feels the benefit before clicking (owner, 2026-10-08). The reason must come from a claim that renders, a fact in the ledger, or the plain job of the page, never from a location or an unverified promise |
+| 36 | Support wording | The "reply within 5 minutes" promise is removed everywhere (owner, 2026-10-09): the `support-24-7` claim now reads "24/7 support by ticket and email", and `/support-policy` says "We reply by email" with no time. A reply-time promise returns only with a measured number and the owner's word |
+| 37 | Home conversion order | Home follows blueprint C1 as revised on 2026-10-09: hero, proof bar, router, plans, three reasons with sources, free-move request, evidence, reviews, help, FAQ, closing action. Hero second action is "Move my site free". "Talk to our team" is not used on Home. The long "what managed hosting means" text lives on `/wordpress-hosting` (owner, 2026-10-09) |
+| 38 | Free-move request | The request form sends through one function (`lib/leads/submit.ts`), default mailto, no database. It stays hidden on a page until a destination is set (`supportEmail` in `content/company.ts`, or a route in `lib/leads/config.ts`) (owner, 2026-10-09) |
+| 39 | Footer | The footer lists only what is sold and what is Ready in `page-map.md`: WordPress hosting, Contact, and the policy and legal pages. Other products return when their row turns Ready (owner, 2026-10-09) |
 
 ## Open (waiting on the owner)
 

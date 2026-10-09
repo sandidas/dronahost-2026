@@ -18,10 +18,44 @@
     "components/sections/FAQSection.tsx",
     "components/sections/CTABand.tsx",
     "lib/content/registry.tsx",
-    "lib/content/published-pages.ts"
+    "lib/content/published-pages.ts",
+    "components/sections/MigrationRequest.tsx",
+    "components/sections/bespoke/WhyChoose.tsx",
+    "components/sections/bespoke/MeaningSection.tsx",
+    "components/sections/bespoke/HelpAndPolicies.tsx",
+    "components/sections/StatsBar.tsx",
+    "components/sections/CaseStudy.tsx",
+    "lib/leads/migration-request.ts",
+    "lib/leads/submit.ts"
   ],
-  "textAttributes": ["aria-label", "alt", "title", "placeholder", "label", "description", "eyebrow", "caption", "summary"],
-  "textKeys": ["title", "description", "label", "text", "cta", "linkLabel", "heading", "eyebrow", "caption", "line", "question", "answer", "note", "message", "name"],
+  "textAttributes": [
+    "aria-label",
+    "alt",
+    "title",
+    "placeholder",
+    "label",
+    "description",
+    "eyebrow",
+    "caption",
+    "summary"
+  ],
+  "textKeys": [
+    "title",
+    "description",
+    "label",
+    "text",
+    "cta",
+    "linkLabel",
+    "heading",
+    "eyebrow",
+    "caption",
+    "line",
+    "question",
+    "answer",
+    "note",
+    "message",
+    "name"
+  ],
   "$allow": "Exact strings that may stay in a component: structure, not copy.",
   "allow": []
 }

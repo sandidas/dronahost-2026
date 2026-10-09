@@ -1,5 +1,5 @@
 {
-  "$comment": "DronaHost blueprint data, read by check-content (schemas/blueprints.ts). Source: rules/page-blueprints.md and project/page-map.md. Counts, required sections and order for C1 come straight from the blueprint. For C2 to C15 the publish minimum is the number of required sections, and the word ranges for C10 to C15 that the blueprint does not state are planning guesses: the owner confirms them.",
+  "$comment": "DronaHost blueprint data, read by check-content (schemas/blueprints.ts). Source: rules/page-blueprints.md and project/page-map.md. Counts, required sections and order for C1 come straight from the blueprint. For C2 to C15 the publish minimum is the number of required sections, and the word ranges for C10 to C15 that the blueprint does not state are planning guesses: the owner confirms them. C1 was revised on 2026-10-09 (conversion review): WhyChoose, MigrationRequest, ProofBar and Evidence were added, and the answer and the timeline moved off Home.",
   "heroTypes": [
     "ProductHero",
     "SplitHero",
@@ -27,7 +27,7 @@
         8,
         11
       ],
-      "publishMinimum": 7,
+      "publishMinimum": 6,
       "words": [
         500,
         900
@@ -35,21 +35,21 @@
       "required": [
         "Hero",
         "PathRouter",
-        "Meaning",
+        "WhyChoose",
         "HelpAndPolicies",
         "FAQSection",
         "CTABand"
       ],
       "order": [
         "Hero",
-        "AssuranceStrip",
+        "ProofBar",
         "PathRouter",
-        "Meaning",
-        "ProcessTimeline",
-        "BentoGrid",
         "PricingPlans",
-        "HelpAndPolicies",
+        "WhyChoose",
+        "MigrationRequest",
+        "Evidence",
         "Testimonials",
+        "HelpAndPolicies",
         "FAQSection",
         "CTABand"
       ]
@@ -135,8 +135,8 @@
         "Hero",
         "AnswerBlock",
         "ProcessTimeline",
-        "FAQSection",
-        "CTABand"
+        "MigrationRequest",
+        "FAQSection"
       ],
       "order": [
         "Hero",
@@ -146,6 +146,7 @@
         "RiskCards",
         "Testimonials",
         "CaseStudy",
+        "MigrationRequest",
         "FAQSection",
         "CTABand"
       ]
@@ -593,29 +594,6 @@
         "what": "answer"
       }
     ],
-    "Meaning": [
-      {
-        "path": "content.answer",
-        "unit": "words",
-        "min": 40,
-        "max": 80,
-        "what": "answer"
-      },
-      {
-        "path": "content.weLookAfter",
-        "unit": "items",
-        "min": 3,
-        "max": 5,
-        "what": "lines we look after"
-      },
-      {
-        "path": "content.youKeep",
-        "unit": "items",
-        "min": 3,
-        "max": 5,
-        "what": "lines you keep"
-      }
-    ],
     "ResponsibilitySplit": [
       {
         "path": "content.weLookAfter",
@@ -693,8 +671,8 @@
       {
         "path": "content.links",
         "unit": "items",
-        "min": 4,
-        "max": 7,
+        "min": 1,
+        "max": 3,
         "what": "policy links"
       }
     ],
@@ -713,6 +691,68 @@
         "unit": "words",
         "max": 8,
         "what": "heading"
+      }
+    ],
+    "MigrationRequest": [
+      {
+        "path": "content.h2",
+        "unit": "words",
+        "max": 8,
+        "what": "heading"
+      },
+      {
+        "path": "content.description",
+        "unit": "words",
+        "max": 40,
+        "what": "description"
+      },
+      {
+        "path": "content.fields",
+        "unit": "items",
+        "min": 3,
+        "max": 4,
+        "what": "form fields",
+        "oneOf": [
+          "siteUrl",
+          "currentHost",
+          "email",
+          "note"
+        ],
+        "mustInclude": [
+          "siteUrl",
+          "currentHost",
+          "email"
+        ]
+      }
+    ],
+    "WhyChoose": [
+      {
+        "path": "content.items",
+        "unit": "items",
+        "min": 3,
+        "max": 3,
+        "what": "reasons"
+      },
+      {
+        "path": "content.items[*].title",
+        "unit": "words",
+        "max": 6,
+        "what": "reason title"
+      },
+      {
+        "path": "content.items[*].text",
+        "unit": "words",
+        "max": 20,
+        "what": "reason line"
+      }
+    ],
+    "ProofBar": [
+      {
+        "path": "content.claims",
+        "unit": "items",
+        "min": 3,
+        "max": 4,
+        "what": "proof items"
       }
     ]
   }

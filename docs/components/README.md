@@ -48,6 +48,8 @@ Shared props: `eyebrow`, `title`, `titleAccent`, `description`, `primaryCta`, `s
 | `ResourceGrid` | Blog/resource cards | no image required, unambiguous dates |
 | `FAQSection` | Accordion on native `<details>` | answers in the initial HTML, works without JS; pair with `faqPageSchema` |
 | `CTABand` | Closing call to action | one primary action |
+| `WhyChoose` | Blueprint section: three reasons to choose us, each with a source link to its terms page |
+| `MigrationRequest` (**client**) | Free-move lead form: site URL, current host, email, optional note. Zod, honeypot, error and success states. Sends through `lib/leads/submit.ts`; the destination is `lib/leads/config.ts` (mailto by default) |
 | `MeaningSection` | Blueprint section "Meaning": the direct answer under one question heading, then who looks after what (replaces AnswerBlock plus ResponsibilitySplit) |
 | `HelpAndPolicies` | Blueprint section "Help and policies": live support channels beside a policy list (replaces SupportChannels plus TrustSignals) |
 | `SupportChannels` | Ticket and email only; `layout="split"` puts the heading beside the cards | email renders only if `COMPANY.supportEmail` is set; ticket is always real |
@@ -75,6 +77,10 @@ Shared props: `eyebrow`, `title`, `titleAccent`, `description`, `primaryCta`, `s
 ## Structured data
 
 `lib/seo/jsonld.ts`: `organizationSchema`, `websiteSchema`, `breadcrumbSchema`, `faqPageSchema`, `serviceSchema`, `hostingPlansSchema` (omitted while prices are hidden), `blogPostingSchema`, `articleSchema`. Only mark up content visible on the page.
+
+## Real hero screenshot
+
+Put a real screenshot of the customer dashboard at `public/screenshots/home-dashboard.png` (1600 by 1000 works well). The home hero shows it automatically. With no file the hero shows no visual and centres its text, so a fake picture never appears. Edit `hero.screenshot.alt` in `content/pages/home.json` so it describes the real image.
 
 ## Feature flags (`lib/flags.ts`)
 

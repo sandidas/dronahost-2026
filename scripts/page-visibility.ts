@@ -53,7 +53,10 @@ for (const file of readdirSync(dir).filter((f) => f.endsWith(".json"))) {
     const visible = html.length > 0;
     return { id: s.id, type: s.type, visible, reason: visible ? ("ok" as const) : ("empty" as const), missing, gatesOk, words: visible ? textWords(html) : 0 };
   });
-  pages[spec.path] = { sections };
+  // Tones follow the page's CSS (.page-tones): every second rendered section is tinted.
+  const shown = sections.filter((s) => s.visible);
+  const tone = new Map(shown.map((s, i) => [s.id, i % 2 === 1 ? "tint" : "base"]));
+  pages[spec.path] = { sections: sections.map((s) => (s.visible ? { ...s, tone: tone.get(s.id) } : s)) };
 }
 void resolveRequires;
 process.stdout.write(`${JSON.stringify({ pages }, null, 2)}\n`);

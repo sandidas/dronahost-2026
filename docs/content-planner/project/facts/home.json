@@ -144,7 +144,7 @@
     },
     {
       "id": "F10",
-      "fact": "Claim support-24-7: \"24/7 support, with a reply within 5 minutes\". Renders (terms page /support-policy published)",
+      "fact": "Claim support-24-7: \"24/7 support by ticket and email\". Renders (terms page /support-policy published). The 5-minute reply was removed on 2026-10-09 (decision 36)",
       "kind": "claim",
       "source": {
         "type": "project-file",
@@ -154,8 +154,7 @@
       "checkedBy": "Claude (claimRenders() run on 2026-10-08), second reading of content/claims.ts and the route by the fact-checker role, owner to confirm",
       "status": "verified",
       "usedIn": [
-        "Assurance strip",
-        "Support section"
+        "Nowhere on the home page today (decision 37)"
       ]
     },
     {
