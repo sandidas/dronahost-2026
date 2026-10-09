@@ -4,6 +4,8 @@
   "path": "/",
   "archetype": "product",
   "intent": "navigational-commercial",
+  "searchIntent": "Find",
+  "secondaryIntent": "Buy",
   "audience": "Small business owners who run or need a WordPress site and want fewer technical worries",
   "primaryKeyword": "dronahost",
   "secondaryKeywords": [
