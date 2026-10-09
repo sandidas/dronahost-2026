@@ -58,6 +58,13 @@ export function copyStrings(value: unknown, opts: CopyOptions, path = ""): { whe
   return walk(value, path);
 }
 
+/** A page spec's `waivers` block as the same front-matter keys a Markdown draft uses (waive_rules, waive_reason, waive_approved_by). */
+function waiverFront(w: unknown): Record<string, string> {
+  if (!w || typeof w !== "object") return {};
+  const o = w as { rules?: unknown; reason?: unknown; approvedBy?: unknown };
+  return Array.isArray(o.rules) ? { waive_rules: o.rules.map(String).join(", "), waive_reason: String(o.reason ?? ""), waive_approved_by: String(o.approvedBy ?? "") } : {};
+}
+
 function parseMarkdown(file: string, text: string): Doc {
   text = lf(text);
   const raw = text.split("\n");
@@ -142,7 +149,7 @@ function parseJson(file: string, text: string, copy: CopyOptions): Doc {
   const seo = (spec.seo ?? {}) as Json;
   const rules = (spec.rules ?? {}) as Json;
   return {
-    file, kind: "json", front: { primary_keyword: String(spec.primaryKeyword ?? ""), slug: String(spec.path ?? ""), reviewed_on: String(rules.reviewedOn ?? "") },
+    file, kind: "json", front: { primary_keyword: String(spec.primaryKeyword ?? ""), slug: String(spec.path ?? ""), reviewed_on: String(rules.reviewedOn ?? ""), ...waiverFront(spec.waivers) },
     lines, labels, raw, h1, headings, paragraphs: [], links, faq, answer, title: seo.title as string | undefined,
     description: seo.description as string | undefined, state: "",
     schemaTypes: Array.isArray(seo.schema) ? (seo.schema as unknown[]).map(String) : [], rulesBlock: rules,

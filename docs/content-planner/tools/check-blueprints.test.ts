@@ -140,3 +140,27 @@ test("runChecks still runs the host page-spec adapter and the Blueprint group to
   assert.match(text, /PASS BP1 /);
   void failed;
 });
+
+test("BP5: a list limited to an allowed set fails on an unknown value and on a missing required value", () => {
+  const r = rule("fail-bp5-fields", "BP5");
+  assert.equal(r.ok, false);
+  assert.ok(r.failures.some((f) => /has "z", allowed: a, b, c, d/.test(f.message)));
+  assert.ok(r.failures.some((f) => /must include "b"/.test(f.message)));
+  assert.equal(rule("pass-fields", "BP5").ok, true);
+});
+
+test("BP12: two visible neighbours with the same tone fail; alternating tones pass; no tones skips", () => {
+  const bad = rule("fail-bp12-same-tone", "BP12");
+  assert.equal(bad.ok, false);
+  assert.match(bad.failures[0].message, /neighbours with the same tone \("tint"\)/);
+  assert.equal(rule("pass-tones", "BP12").ok, true);
+  assert.equal(rule("pass-page", "BP12").skipped, true, "a host that reports no tones skips the check");
+});
+
+test("A page spec's `waivers` block turns the named rule's failures into warnings that name the approver", () => {
+  const r = rule("waived-bp5-limit", "BP5");
+  assert.equal(r.ok, true);
+  assert.ok(r.warnings.length > 0, "the failure stays visible as a warning");
+  assert.match(r.note ?? "", /waived by Sam Example/);
+  assert.equal(rule("fail-bp5-limit", "BP5").ok, false, "the same page without the block still fails");
+});

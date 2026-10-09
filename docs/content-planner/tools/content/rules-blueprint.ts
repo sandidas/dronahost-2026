@@ -84,6 +84,12 @@ function limitRules(bp: Blueprints, doc: Doc, spec: Json): RuleResult {
     const type = String(s.type);
     for (const lim of bp.sectionLimits[type] ?? []) {
       for (const v of valuesAt(s, lim.path)) {
+        if (Array.isArray(v) && (lim.oneOf || lim.mustInclude)) {
+          const items = v.filter((x): x is string => typeof x === "string");
+          const at = lineOf(doc.raw, `"id": "${s.id}"`);
+          for (const bad of items.filter((x) => lim.oneOf && !lim.oneOf.includes(x))) fails.push({ line: at, message: `${type} "${s.id}": ${lim.what} has "${bad}", allowed: ${lim.oneOf?.join(", ")}` });
+          for (const need of (lim.mustInclude ?? []).filter((x) => !items.includes(x))) fails.push({ line: at, message: `${type} "${s.id}": ${lim.what} must include "${need}"` });
+        }
         const n = lim.unit === "items" ? (Array.isArray(v) ? v.length : -1) : typeof v === "string" ? (lim.unit === "chars" ? v.length : wc(v.replace(/\{\{[^}]*\}\}/g, ""))) : -1;
         if (n < 0 || (typeof v === "string" && v.includes("{{") && lim.unit === "words")) continue;
         const sample = typeof v === "string" ? v : String(s.id);
@@ -130,7 +136,7 @@ export function blueprintRules(ctx: Ctx, doc: Doc): RuleResult[] {
     ["BP1", "Blueprint named and known"], ["BP2", "Visible sections inside the blueprint range"], ["BP3", "Required sections visible (status Ready or Blocked)"],
     ["BP4", "Sections follow the order pattern"], ["BP5", "Every section field is inside its limit"], ["BP6", "No section type repeated beyond its allowance"],
     ["BP7", "One primary label, at most one secondary, no banned label, no price in a label"], ["BP9", "Page copy comes from the page JSON or the strings file, not a component"],
-    ["BP10", "No section shows while its gate is closed"], ["BP11", "Visible words inside the planning range"],
+    ["BP10", "No section shows while its gate is closed"], ["BP11", "Visible words inside the planning range"], ["BP12", "Neighbouring sections differ in background tone"],
   ];
   const all = (note: string): RuleResult[] => ids.map(([id, name]) => skipped(id, NAME, name, note));
   if (doc.kind !== "json") return all("not a page spec");
@@ -211,6 +217,15 @@ export function blueprintRules(ctx: Ctx, doc: Doc): RuleResult[] {
   // BP10 Gate
   if (!vis) out.push(skipped("BP10", NAME, "No section shows while its gate is closed", noVis));
   else out.push(rule("BP10", NAME, "No section shows while its gate is closed", visible.filter((s) => !s.gatesOk).map((s) => ({ line: lineOf(doc.raw, `"id": "${s.id}"`), message: `${s.type} "${s.id}" shows although ${gateText(s)}` }))));
+
+  // BP12 Neighbours
+  if (!vis) out.push(skipped("BP12", NAME, "Neighbouring sections differ in background tone", noVis));
+  else if (!visible.some((s) => s.tone)) out.push(skipped("BP12", NAME, "Neighbouring sections differ in background tone", "the host reports no tones"));
+  else {
+    const f: Finding[] = [];
+    for (let i = 1; i < visible.length; i++) if (visible[i].tone && visible[i].tone === visible[i - 1].tone) f.push({ line: lineOf(doc.raw, `"id": "${visible[i].id}"`), message: `${visible[i - 1].type} and ${visible[i].type} are neighbours with the same tone ("${visible[i].tone}")` });
+    out.push(rule("BP12", NAME, "Neighbouring sections differ in background tone", f));
+  }
 
   // BP11 Thin or long
   if (!vis) out.push(skipped("BP11", NAME, "Visible words inside the planning range", noVis));

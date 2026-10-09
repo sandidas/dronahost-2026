@@ -2,6 +2,13 @@
 
 Versioned changes to the engine (rules, plans, tools). Business decisions are in `project/DECISIONS.md`.
 
+## 1.0.6 (2026-10-09)
+
+- New blueprint section `MigrationRequest` (lead capture), plus `ProofBar`, `WhyChoose` and `Evidence`, in `rules/page-blueprints.md`. Home (C1) was reordered and Migration (C4) now requires the request form.
+- Section limits can name an allowed set of values with some required (`oneOf`, `mustInclude`): the form fields are limited this way.
+- Check BP12: two visible neighbours with the same background tone fail (the host reports tones in its visibility result).
+- A page spec can carry a `waivers` block with the same effect as a draft's `waive_rules`.
+
 ## 1.0.5 (2026-10-08)
 
 - Rule PO4: where the business is based may be said only on the pages the project lists (`locationClaims` in `project/rules.config.json`). A project without the setting skips it. A test covers it.

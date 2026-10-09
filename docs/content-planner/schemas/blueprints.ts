@@ -12,6 +12,10 @@ export const SectionLimitSchema = z.object({
   max: z.number().int().positive().optional(),
   /** Plain name used in the message, for example "lead". */
   what: z.string().min(1),
+  /** For a list of strings: every value must be one of these (for example the allowed fields of a form). */
+  oneOf: z.array(z.string().min(1)).optional(),
+  /** For a list of strings: each of these must be present. */
+  mustInclude: z.array(z.string().min(1)).optional(),
 });
 
 export const BlueprintSchema = z.object({
@@ -62,6 +66,8 @@ export const VisibilitySchema = z.object({
           missing: z.array(z.string()).default([]),
           /** False when a gate is not met. A visible section with gatesOk false is a Gate failure. */
           gatesOk: z.boolean(),
+          /** The background tone the host gives the section. Two visible neighbours with the same tone fail the Neighbours check. Omitted when the host has no tones. */
+          tone: z.string().optional(),
           words: z.number().int().nonnegative(),
         }),
       ),

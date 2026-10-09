@@ -92,6 +92,25 @@
         "max": 30,
         "what": "FAQ answer"
       }
+    ],
+    "LeadForm": [
+      {
+        "path": "content.fields",
+        "unit": "items",
+        "min": 2,
+        "max": 4,
+        "what": "form fields",
+        "oneOf": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ],
+        "mustInclude": [
+          "a",
+          "b"
+        ]
+      }
     ]
   }
 }

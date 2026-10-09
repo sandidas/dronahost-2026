@@ -11,7 +11,7 @@ Reusable rules. They name no business. The blueprints themselves (how many secti
 3. **Every blueprint has required sections.** If gating hides a required section, the page is **Blocked** (not published) until the missing fact arrives. The status says which section needs which fact.
 4. **Order follows the reader's questions** for that intent (pattern per stage below).
 5. **One conversion goal per page.** One primary CTA label, repeated wherever a CTA appears. At most one secondary action (usually "Talk to our team").
-6. **Layout signature.** No two key pages share the same hero variant and the same first four section types. The linter checks this.
+6. **Layout signature.** No two key pages share the same hero variant and the same first four section types. The linter checks this. Within a page, two neighbouring sections never share a background tone, so the page reads as separate blocks.
 7. **A section type appears once per page**, except `CTABand` (max 2: a middle one and the final one) and `TwoColumn` (max 2).
 8. **Hidden sections leave no gap.** Spacing recalculates. An empty section never renders a heading alone.
 9. **Content comes from the right place.** Copy: page JSON. Prices and plan features: the pricing file. Promises: claims. Company facts: the company file. UI chrome (button labels like "Open a ticket"): the shared strings file.
@@ -49,7 +49,11 @@ Reusable rules. They name no business. The blueprints themselves (how many secti
 | `FAQSection` | Answer the last doubts | Money, pricing and product pages 6 to 8 items. Other pages 4 to 6. Answers 40 to 80 words, first sentence answers, at most one link | Page JSON | an item hides if it depends on a claim that does not render |
 | `ResourceGrid` | Point to next reads | 3 or 4 links with a reason each | Register, posts | hides if fewer than 3 pages exist |
 | `CodeBlock` | Show commands or config | Short, copyable, tested | Page or post | never |
-| `ContactForm` / migration form | Collect a request | Only the fields the team needs. Error, success and empty states | Strings file | never |
+| `ContactForm` | Collect a request | Only the fields the team needs. Error, success and empty states | Strings file | never |
+| `ProofBar` | Show measured numbers or ratings above the fold | 3 or 4 items, each a number, a short label and a link to its method | Claims, reviews file | each item hides alone. Section hides if fewer than 3 render |
+| `WhyChoose` (a page names its own heading) | Give three reasons to choose us, each with a source | Exactly 3 items. Title 6 words or fewer, one line of 20 words or fewer, a source link to the page that publishes the terms | Claims, published pages | an item hides if its claim does not render. Section needs 2 items |
+| `MigrationRequest` | Capture a lead for a free move | Fields: site URL, current host, email, optional note. A honeypot, an error state, a success state and a privacy line. The page JSON lists the fields. Submit goes through one function that the project points at its destination | Page JSON, strings file | hides until the destination is configured and the migration claim renders |
+| `Evidence` | Show one real result | One approved case study with real numbers and a source link | Case-study file | hides until a case study is approved |
 | `CTABand` | Close with one action | H2 8 words or fewer. Primary CTA, optional secondary | Page JSON | never (required) |
 
 ## How the engine enforces this (Part E)
@@ -64,12 +68,13 @@ A page spec (`content/pages/*.json`) names its blueprint in a `blueprint` field.
 | Count | Visible sections fall outside the blueprint's range |
 | Required | A required section is missing or hidden. Status becomes Blocked with the missing fact |
 | Order | Sections are out of the pattern for the stage (warns, not fails, for optional ones) |
-| Section limits | Any field breaks its limit: H1 70, lead 220, FAQ answers 40 to 80, FAQ count per archetype, tiles 4 to 6, steps 3 to 5, and so on |
+| Section limits | Any field breaks its limit: H1 70, lead 220, FAQ answers 40 to 80, FAQ count per archetype, tiles 4 to 6, steps 3 to 5, and so on. A list may also be limited to an allowed set of values with some values required (for example the fields of a request form) |
 | Duplicates | A section type is repeated beyond its allowance |
 | CTA | More than one primary label, a banned label, or a price inside a button label |
 | Signature | Two key pages share hero variant and first four section types |
 | Copy source | Page copy appears in a component instead of page JSON or the content files (strings file for UI chrome only) |
 | Gate | A section shows although its claim, flag or page does not render |
+| Neighbours | Two visible sections next to each other share a background tone |
 | Thin or long | Visible words outside the blueprint range (warning) |
 
 Two readings the engine uses:
