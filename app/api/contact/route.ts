@@ -5,6 +5,7 @@ import { clientIp, rateLimited, tooFast } from "@/lib/forms/guard";
 import { verifyTurnstile } from "@/lib/forms/turnstile";
 import { ContactMessage } from "@/lib/models/contact-message";
 import { connectToDatabase } from "@/lib/mongodb";
+import { UI } from "@/content/strings";
 
 export async function POST(req: NextRequest) {
   const ip = clientIp(req);
@@ -16,12 +17,12 @@ export async function POST(req: NextRequest) {
   try {
     body = await req.json();
   } catch {
-    return NextResponse.json({ error: "Invalid request." }, { status: 400 });
+    return NextResponse.json({ error: UI.errors.contactUnreadable }, { status: 400 });
   }
 
   const parsed = contactSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid input", details: parsed.error.flatten().fieldErrors }, { status: 400 });
+    return NextResponse.json({ error: UI.errors.fixFields, details: parsed.error.flatten().fieldErrors }, { status: 400 });
   }
 
   // Honeypot filled in or submitted implausibly fast: pretend success, store nothing.
@@ -38,6 +39,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true }, { status: 200 });
   } catch {
     // Never claim success when the message was not stored, and never log the visitor's details.
-    return NextResponse.json({ error: "We could not send your message right now. Please try again shortly." }, { status: 503 });
+    return NextResponse.json({ error: UI.errors.sendFailed }, { status: 503 });
   }
 }

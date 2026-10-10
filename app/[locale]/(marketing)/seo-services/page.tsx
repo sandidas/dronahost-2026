@@ -14,7 +14,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return buildMetadata({ locale,
-    title: "SEO Services on a Monthly Retainer | DronaHost",
+    title: "SEO Services on a Monthly Retainer",
     description:
       "Technical SEO, content strategy and link building on a monthly retainer, with plain-language reporting for businesses in the US, UK, UAE and Europe.",
     path: "/seo-services",

@@ -1,0 +1,265 @@
+{
+  "$comment": "Brand voice as data: the one place to change tone, readability limits, spelling, word swaps and the banned lists. The checks read it (V1 to V11, M1) and `npm run content:voice` prints it as a card for writers and agents. Schema: schemas/voice.ts. Worked examples per page type stay in project/brand.md.",
+  "summary": "Confident, specific, calm. Plain international English, grade 8 to 10, for a smart reader who may not read English as a first language.",
+  "attributes": [
+    {
+      "name": "Confident",
+      "means": "State verified facts, not hopes. Never \"we try our best\"."
+    },
+    {
+      "name": "Specific",
+      "means": "Numbers, plans and steps. Never a vague adjective where a verified metric can stand."
+    },
+    {
+      "name": "Calm",
+      "means": "No urgency that is not real. No exclamation marks in marketing copy. No countdowns without a genuine deadline."
+    },
+    {
+      "name": "Honest",
+      "means": "Say what we do not do. Do not imply a location, size or channel we do not have. Being a focused team is a feature."
+    },
+    {
+      "name": "Technical, second",
+      "means": "Lead with the outcome in plain words, then give the technical term in the same sentence or a short \"How it works\" line. The reader is a business owner, not a sysadmin."
+    }
+  ],
+  "spectrum": {
+    "tooFormal": "We are pleased to inform you that your hosting account has been provisioned successfully.",
+    "tooCasual": "OMG your site is live!!",
+    "target": "Your hosting is ready. Here is how to log in."
+  },
+  "writeLike": [
+    "Fathom Analytics",
+    "Kinsta",
+    "Cloudways",
+    "Basecamp",
+    "Bunny.net"
+  ],
+  "neverWriteLike": [
+    "hype-driven reseller sites built on pressure and countdowns"
+  ],
+  "person": {
+    "we": "the company, and only for something we actually did",
+    "you": "the reader, a business owner deciding or fixing something"
+  },
+  "readability": {
+    "gradeTarget": [
+      8,
+      10
+    ],
+    "gradeWarnAbove": 10,
+    "gradeFailAbove": 11,
+    "sentenceMax": 28,
+    "averageSentenceMax": 20
+  },
+  "spelling": {
+    "variant": "US",
+    "avoid": {
+      "centre": "center",
+      "centres": "centers",
+      "colour": "color",
+      "colours": "colors",
+      "favourite": "favorite",
+      "behaviour": "behavior",
+      "honour": "honor",
+      "labour": "labor",
+      "neighbour": "neighbor",
+      "catalogue": "catalog",
+      "programme": "program",
+      "licence": "license",
+      "defence": "defense",
+      "offence": "offense",
+      "analyse": "analyze",
+      "analysed": "analyzed",
+      "analysing": "analyzing",
+      "optimise": "optimize",
+      "optimised": "optimized",
+      "optimising": "optimizing",
+      "optimisation": "optimization",
+      "organise": "organize",
+      "organised": "organized",
+      "organisation": "organization",
+      "organisations": "organizations",
+      "prioritise": "prioritize",
+      "prioritised": "prioritized",
+      "recognise": "recognize",
+      "recognised": "recognized",
+      "realise": "realize",
+      "realised": "realized",
+      "customise": "customize",
+      "customised": "customized",
+      "customisation": "customization",
+      "capitalise": "capitalize",
+      "capitalised": "capitalized",
+      "authorise": "authorize",
+      "authorised": "authorized",
+      "minimise": "minimize",
+      "maximise": "maximize",
+      "summarise": "summarize",
+      "standardise": "standardize",
+      "utilise": "use",
+      "apologise": "apologize",
+      "emphasise": "emphasize",
+      "specialise": "specialize",
+      "specialised": "specialized",
+      "localise": "localize",
+      "localised": "localized",
+      "localisation": "localization",
+      "synchronise": "synchronize",
+      "cancelled": "canceled",
+      "cancelling": "canceling",
+      "travelling": "traveling",
+      "enrol": "enroll",
+      "enrolment": "enrollment",
+      "fulfil": "fulfill",
+      "judgement": "judgment",
+      "ageing": "aging",
+      "grey": "gray",
+      "cheque": "check",
+      "tyre": "tire",
+      "whilst": "while",
+      "amongst": "among"
+    }
+  },
+  "exclamationMarks": false,
+  "wordSwaps": [
+    {
+      "avoid": [
+        "utilize",
+        "utilise",
+        "leverage"
+      ],
+      "use": "use"
+    },
+    {
+      "avoid": [
+        "commence",
+        "initiate"
+      ],
+      "use": "start"
+    },
+    {
+      "avoid": [
+        "facilitate"
+      ],
+      "use": "help, let"
+    },
+    {
+      "avoid": [
+        "in order to"
+      ],
+      "use": "to"
+    },
+    {
+      "avoid": [
+        "a plethora of"
+      ],
+      "use": "many (or a verified count)"
+    },
+    {
+      "avoid": [
+        "ensure"
+      ],
+      "use": "make sure"
+    },
+    {
+      "avoid": [
+        "reach out"
+      ],
+      "use": "contact, write to"
+    },
+    {
+      "avoid": [
+        "circle back"
+      ],
+      "use": "return to"
+    },
+    {
+      "avoid": [
+        "prior to"
+      ],
+      "use": "before"
+    },
+    {
+      "avoid": [
+        "in the event that"
+      ],
+      "use": "if"
+    },
+    {
+      "avoid": [
+        "at this point in time"
+      ],
+      "use": "now"
+    },
+    {
+      "avoid": [
+        "approximately"
+      ],
+      "use": "about"
+    }
+  ],
+  "bannedPhrases": [
+    "don't fret",
+    "don't worry",
+    "do the needful",
+    "revert back",
+    "prepone",
+    "best of luck",
+    "kindly",
+    "world-class",
+    "blazing fast",
+    "cutting-edge",
+    "state-of-the-art",
+    "next-generation",
+    "revolutionary",
+    "game-changing",
+    "game changer",
+    "one-to-one support",
+    "supercharge",
+    "unlock the power",
+    "take your business to the next level",
+    "all-in-one",
+    "seamless",
+    "robust platform",
+    "scalable infrastructure",
+    "empower your team",
+    "we provide best services",
+    "in today's fast-paced world",
+    "it's important to note",
+    "dive into",
+    "unleash",
+    "lorem ipsum"
+  ],
+  "idioms": [
+    "go the extra mile",
+    "at the end of the day",
+    "think outside the box",
+    "hit the ground running",
+    "low-hanging fruit",
+    "touch base",
+    "ballpark figure",
+    "move the needle",
+    "game plan",
+    "raise the bar",
+    "in a nutshell",
+    "piece of cake",
+    "hit the nail on the head",
+    "back to square one",
+    "the ball is in your court"
+  ],
+  "bannedCtaLabels": [
+    "click here",
+    "learn more",
+    "read more",
+    "get started",
+    "submit",
+    "sign up",
+    "buy now",
+    "try it",
+    "order now",
+    "contact us",
+    "download"
+  ],
+  "disclosureLine": "Drafted with AI assistance, then edited, fact-checked and approved by"
+}

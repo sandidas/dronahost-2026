@@ -50,7 +50,7 @@ export default function TrustSignals({ eyebrow, title, description, items = TRUS
                 </div>
                 {item.href && (
                   <Link href={item.href} className="inline-flex min-h-9 shrink-0 items-center text-sm font-semibold text-link underline underline-offset-4">
-                    {item.linkLabel ?? UI.generic.learnMore}
+                    {item.linkLabel ?? UI.generic.readDetails}
                   </Link>
                 )}
               </li>
@@ -66,7 +66,7 @@ export default function TrustSignals({ eyebrow, title, description, items = TRUS
                 <p className="t-small mt-1.5 text-muted-foreground">{item.description}</p>
                 {item.href && (
                   <Link href={item.href} className="mt-3 inline-flex min-h-9 items-center text-sm font-semibold text-link underline underline-offset-4">
-                    {item.linkLabel ?? UI.generic.learnMore}
+                    {item.linkLabel ?? UI.generic.readDetails}
                   </Link>
                 )}
                 {!item.verified && <p className="mt-2 text-xs font-semibold text-warning">{UI.sample.unverified}</p>}

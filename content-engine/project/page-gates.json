@@ -1,0 +1,181 @@
+{
+  "$comment": "What each page in project/page-map.md needs before it can publish. 'refs' are checked by scripts/page-map.ts: claim:<id>, FEATURES.<flag>, plans:<family> (a plan family in data/pricing.json), pages:<n> published policy pages. 'facts' are things only the owner can supply; they stay listed until the owner removes them. Pages that have a page spec in content/pages are judged by their blueprint instead (required sections hidden = Blocked).",
+  "pages": {
+    "/wordpress-hosting": {
+      "blueprint": "C2",
+      "refs": [
+        "FEATURES.pricesConfirmed",
+        "claim:litespeed",
+        "claim:ssh-wp-cli",
+        "claim:staging-plans"
+      ],
+      "facts": [
+        "Plan limits confirmed (pricing file 'confirmBeforeLaunch')"
+      ]
+    },
+    "/business-hosting": {
+      "blueprint": "C2",
+      "refs": [
+        "FEATURES.pricesConfirmed",
+        "claim:business-hosting-scope",
+        "claim:cpanel"
+      ],
+      "facts": []
+    },
+    "/vps-hosting": {
+      "blueprint": "C2",
+      "refs": [
+        "plans:vps",
+        "FEATURES.pricesConfirmed",
+        "claim:managed-vps-scope"
+      ],
+      "facts": [
+        "Whether VPS is sold"
+      ]
+    },
+    "/cloud-hosting": {
+      "blueprint": "C2",
+      "refs": [
+        "plans:cloud",
+        "FEATURES.pricesConfirmed"
+      ],
+      "facts": [
+        "Whether cloud hosting is sold"
+      ]
+    },
+    "/pricing": {
+      "blueprint": "C3",
+      "refs": [
+        "FEATURES.pricesConfirmed"
+      ],
+      "facts": [
+        "Confirmation that prices are final"
+      ]
+    },
+    "/migration": {
+      "blueprint": "C4",
+      "refs": [
+        "claim:free-migration",
+        "claim:migration-process"
+      ],
+      "facts": [
+        "'What can go wrong and what we do' (three cards from the owner's interview)"
+      ]
+    },
+    "/email": {
+      "blueprint": "C5",
+      "refs": [],
+      "facts": []
+    },
+    "/web-design": {
+      "blueprint": "C6",
+      "refs": [
+        "claim:website-design-service"
+      ],
+      "facts": [
+        "Service sheet",
+        "One real case study (or the section hides)"
+      ]
+    },
+    "/seo-services": {
+      "blueprint": "C6",
+      "refs": [],
+      "facts": [
+        "Service sheet",
+        "Whether SEO is sold as described"
+      ]
+    },
+    "/custom-development": {
+      "blueprint": "C6",
+      "refs": [],
+      "facts": [
+        "Service sheet"
+      ]
+    },
+    "/vs/[competitor]": {
+      "blueprint": "C7",
+      "refs": [
+        "FEATURES.comparisonPages"
+      ],
+      "facts": [
+        "Every comparison cell sourced and dated",
+        "Legal read"
+      ]
+    },
+    "/hosting/uk": {
+      "blueprint": "C8",
+      "refs": [
+        "FEATURES.localeVariants"
+      ],
+      "facts": [
+        "Legal review of 'what applies here'"
+      ]
+    },
+    "/domains": {
+      "blueprint": "C9",
+      "refs": [],
+      "facts": [
+        "Domain registrar integration and price sync (domain search flag)"
+      ]
+    },
+    "/about": {
+      "blueprint": "C10a",
+      "refs": [],
+      "facts": [
+        "Legal entity name and registration number",
+        "Registered address",
+        "Founding year",
+        "Team names and roles"
+      ]
+    },
+    "/trust": {
+      "blueprint": "C10b",
+      "refs": [
+        "pages:4"
+      ],
+      "facts": [
+        "No route yet: app/[locale]/(marketing)/trust must be built"
+      ]
+    },
+    "/contact": {
+      "blueprint": "C10c",
+      "refs": [],
+      "facts": []
+    },
+    "/reviews": {
+      "blueprint": "C10d",
+      "refs": [
+        "verifiedReviews"
+      ],
+      "facts": [
+        "Real reviews with permission"
+      ]
+    },
+    "/terms": {
+      "blueprint": "C11",
+      "refs": [],
+      "facts": [
+        "Tier B: qualified human approval"
+      ]
+    },
+    "/privacy": {
+      "blueprint": "C11",
+      "refs": [],
+      "facts": [
+        "Tier B: qualified human approval"
+      ]
+    },
+    "/sla": {
+      "blueprint": "C11",
+      "refs": [],
+      "facts": []
+    },
+    "/blog": {
+      "blueprint": "C15",
+      "refs": [],
+      "facts": [
+        "At least 3 published posts"
+      ]
+    }
+  }
+}

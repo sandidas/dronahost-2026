@@ -20,12 +20,16 @@ import { buildFamilyCards, VAT_DISPLAY } from "@/lib/pricing/plans";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 import { breadcrumbSchema, faqPageSchema, serviceSchema } from "@/lib/seo/jsonld";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { moneyBackGuarantee } from "@/lib/pricing/guarantee";
+
+/** Built from the hero copy, so it names LiteSpeed or staging only while those claims render. */
+const WP_SUMMARY = `Managed WordPress hosting with ${WORDPRESS_HERO.description.charAt(0).toLowerCase()}${WORDPRESS_HERO.description.slice(1)}`;
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return buildMetadata({ locale,
-    title: "Managed WordPress Hosting | DronaHost",
-    description: `Managed WordPress hosting on LiteSpeed servers, with free migration support and a staging area for safe updates${startingPriceLabel() ? `. Plans from ${startingPriceLabel()}` : ""}.`,
+    title: "Managed WordPress Hosting",
+    description: `${WP_SUMMARY.replace(/\.$/, "")}${startingPriceLabel() ? `. Plans from ${startingPriceLabel()}` : ""}.`,
     path: "/wordpress-hosting",
   });
 }
@@ -42,7 +46,7 @@ export default function WordPressHostingPage() {
           faqPageSchema(WORDPRESS_FAQ),
           serviceSchema({
             name: "Managed WordPress hosting",
-            description: "Managed WordPress hosting on LiteSpeed servers with staging environments and migration support.",
+            description: WP_SUMMARY,
             url: "https://dronahost.com/wordpress-hosting",
           }),
         ]}
@@ -72,13 +76,14 @@ export default function WordPressHostingPage() {
         visual={<MigrationVisual />}
         visualPosition="left"
       />
-      <ProcessTimeline eyebrow="Migration" title="How moving your site works" steps={MIGRATION_STEPS} />
+      {/* The step-by-step process is a claim of its own (migration-process); it shows only once verified. */}
+      {isVerified("migration-process") && <ProcessTimeline eyebrow="Migration" title="How moving your site works" steps={MIGRATION_STEPS} />}
       <PricingPlans
         {...WORDPRESS_PRICING}
         plans={buildFamilyCards("wordpress")}
         showPrices={prices}
         vatDisplay={VAT_DISPLAY}
-        guaranteeNote={isVerified("money-back") ? "30-day money-back guarantee." : null}
+        {...moneyBackGuarantee()}
         renewalPromise={isVerified("renewal-price-same")}
       >
         <PricingExtras showPrices={prices} />

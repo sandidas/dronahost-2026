@@ -394,6 +394,16 @@ export default function RootLayout({ children }) {
 - Buttons / UI labels: body font, `--text-sm`, weight 500
 - Code: mono font only
 
+### 3.6 Font families are fixed (owner rule, 2026-10-09)
+
+The site uses two families and only two: **Sora** for headlines and **Manrope** for all other text (descriptions, body, labels, eyebrows, metadata, buttons, prices, form text). They are set in `app/fonts.ts` and `--font-heading` / `--font-sans` in `app/styles/tokens.css`.
+
+- Never add or swap a font family for a component, a section or a page: no serif, display or decorative font, even for one "editorial" banner. Ask the owner first; this rule changes before any font does.
+- Every component uses the same families: headlines `font-heading` (Sora), description and every other text `font-sans` (Manrope, the body default).
+- What may vary per component is **size** (fluid with `clamp()`, responsive with breakpoints), weight among the loaded weights, line height, letter spacing, case and colour. That is how a banner gets its own character, not through a new family.
+- No synthetic styles: do not use `italic` (no italic is loaded) and do not ask for a weight that is not loaded.
+- The mono family (`--font-mono`) is for code samples only, never for labels, prices or metadata.
+
 ---
 
 ## 4. Spacing, Layout & Radius
@@ -915,64 +925,55 @@ const orgSchema = {
 
 ## 11. E-E-A-T Implementation
 
-**E-E-A-T = Experience · Expertise · Authoritativeness · Trustworthiness**
+**E-E-A-T = Experience · Expertise · Authoritativeness · Trustworthiness.** Trust matters most. Rewritten 2026-10-09: the full
+rule set is `content-engine/rules/trust-and-intent-design.md` (where trust sits on the page) and
+`content-engine/rules/eeat-and-people-first.md` (what counts as trust). This section is the design summary; where
+the two differ, the planner wins.
 
-### Experience — show real-world proof
+### What every page shows
 
-- Genuine testimonials: name + company + country (no anonymous reviews). No star rating unless it comes from a real review platform and links to it.
-- Case studies: real client, specific metrics, before/after
-- Live uptime % widget (real API, never hardcoded), and only with a public status page behind it
-- Team About page: names, photos, roles, LinkedIn, years of experience
+| Reader's doubt | On the page | Component |
+|---|---|---|
+| Who is this? | One entity sentence in the first 50 words, the same wording site-wide | hero lead |
+| Is it real? | About and Contact reachable from every page; legal entity, registration number and address in the footer once confirmed in `content/company.ts` | `Footer` |
+| Can I reach a person? | Ticket and email (the only channels, decision 22) beside every buy action and on the contact page, with what happens next | `HelpAndPolicies`, `SupportChannels` |
+| What are the terms? | Every promise next to a link to the page that publishes its terms; a promise with no published terms page does not render (`content/claims.ts`) | `WhyChoose`, `AssuranceStrip`, plan cards |
+| What does it cost? | Signup price, billing period, renewal price and the tax line together above the button, never inside the label or in a tooltip (decision #5) | `PricingPlans` |
+| What is the catch? | Honest limits in plain words before the plans or the form | `HonestLimits`, the "not for you" column |
+| Who checked this, and when? | A named reviewer with role, the date as `<time>` with a spelled-out month, how facts are checked, a report-an-error link, the editorial policy once published | `PageProvenance`; byline on articles |
+| Did anyone else trust them? | Real proof only, with name, role, company and a link, placed beside the decision point. Hidden until real | `Testimonials`, `CaseStudy`/`Evidence`, `StatsBar`/`ProofBar` |
 
-### Expertise — demonstrate domain knowledge
+### Rules
 
-- Blog and KB with original, in-depth articles by named authors
-- Each article: author name, bio, date published, date updated, reading time
-- Comparison pages (DronaHost vs WP Engine) — factual, no spin
-- No AI-generated thin content — every page must be genuinely useful
-
-### Authoritativeness — build external trust signals
-
-- Footer: legal entity, country and founding year, rendered from `claims.ts` once verified. TODO(decision #6): the entity name ("Alphabet Force") and the founding year (2022 vs 2019) are unconfirmed.
-- Partner / technology logos: WordPress, cPanel, Cloudflare, LiteSpeed
-- Client count / countries served (real numbers only, from `claims.ts`)
-- Privacy Policy, Terms, Refund Policy linked in footer on every page
-
-### Trustworthiness — technical + content trust
-
-- HTTPS canonical enforced in metadata
-- Consistent NAP (Name, Address, Phone) format across all pages
-- Renewal price equals the signup price (decision #5). Every pricing card shows the renewal price ("Renews at $X/month", from `pricing.renewal`). The promise wording ("same price, no increase") is a claim: it renders only when `renewal-price-same` renders (verified AND its terms page published, see `content/claims.ts`). Never hide the renewal price or put it in a tooltip.
-- Money-back guarantee badge on hosting pages, only if the guarantee is verified in `claims.ts`
-- Real phone and email from `claims.ts`, never hidden. TODO(decision #6): values unconfirmed.
-- Cookie consent banner for EU/UK visitors
-- SSL badge + DDoS protection mention on hosting pages
+- A trust element is a fact a reader can check: a name, a date, a link. Badges, seals, star icons and partner logos with no linked source or written permission do not render. No "SSL badge" or "DDoS protection" mention unless its claim renders.
+- Proof sits next to the action it supports, not in a carousel at the top.
+- Photos presented as the team, a customer or a result are real photos. An AI image is labelled where it could mislead.
+- The visible review date equals `rules.reviewedOn` and moves only when a person rechecks the whole page (trust check TR6).
+- No phone number, live uptime widget or "NAP" block: phone is not offered (decision 22) and no uptime figure renders without a verified SLA claim.
+- Articles: named author, bio, reviewer, published and updated dates, sources with retrieval dates, the AI-assisted line where it applies (decision 17).
 
 ---
 
 ## 12. Search Intent Architecture
 
-Every page is built for one primary user intent.
+Every page is built for one primary search intent, declared in the page spec (`searchIntent`) and checked by
+`check-content` (rules IN1 to IN5). The six intents, what each must show and what the first screen holds are in
+`content-engine/rules/search-intent.md` and `rules/trust-and-intent-design.md`, section 3. The page-by-page map is
+`content-engine/project/page-map.md`; URLs come from there, not from this file.
 
-TODO(decision #7): the paths in this table and in §13 conflict with the sitemap URLs in `seo-rules.md`
-(`/managed-vps` vs `/vps-hosting`, `/wordpress-website-design` vs `/web-design`, `/contact-us` vs `/contact`). Do not
-change any URL until the owner supplies the live URL map.
-
-| Page | Intent | Key CTA |
+| Intent | First screen shows | First screen never shows |
 |---|---|---|
-| Homepage | Navigational + Commercial | → Service pages |
-| /wordpress-hosting | Commercial Investigation | "See WordPress hosting plans" |
-| /managed-vps | Commercial Investigation | "See VPS hosting plans" / "Talk to the team" |
-| /wordpress-website-design | Commercial Investigation | "Request Consultation" |
-| /about | Navigational + Trust | No hard CTA |
-| /blog/* | Informational | Newsletter / soft CTA |
-| /contact-us | Transactional | Form / phone |
+| Learn (guides) | The question as H1, the 40 to 80 word answer, the byline | A plan, a price, a sales banner |
+| Solve (fix articles) | The symptom as H1, the quick answer, the backup warning | "Your site is at risk" wording |
+| Compare | Both options in the H1, the verdict, the date the facts were checked | A "winner" badge with no criteria |
+| Buy (product, pricing, service) | What this is and for whom, one primary action, one risk reducer beside it, the price or the way to it | Two competing actions, a countdown, a price inside a button |
+| Find (home, about, contact) | The entity sentence, the route to the main destinations, how to reach a person | A re-sell to someone who already knows us |
+| Plan | The decision in one sentence and the criteria | A recommendation before the criteria |
 
-**Copy rules:**
-
-- Commercial pages: lead with the outcome. "Your site loads in under 1s" not "We use LiteSpeed servers."
-- Informational pages: depth, accuracy, original research — no keyword stuffing
-- Transactional pages: single CTA, minimal form fields, trust signals prominent
+**Copy rules:** commercial pages lead with the outcome ("Your site stays online while we update it", then the technical
+term); informational pages give depth, accuracy and original material; transactional pages have one CTA, the fewest form
+fields, what happens next under the button, and the trust elements above beside the action. Fake urgency, invented scarcity
+and "no questions asked" are never used (trust check TR8).
 
 ---
 

@@ -1,6 +1,7 @@
 import pricing from "@/data/pricing.json";
 import type { ComparisonColumn, ComparisonGroup, ComparisonValue } from "@/components/sections/ComparisonTable";
 import { DEFAULT_CURRENCY, formatPrice } from "@/lib/pricing";
+import { showPrices } from "@/lib/flags";
 
 type Plan = (typeof pricing.plans)[number];
 
@@ -46,7 +47,8 @@ export function buildPlanComparison() {
     return {
       key: p.id,
       label: p.name,
-      sublabel: annual == null ? "Custom pricing" : `${formatPrice(annual)}/month, billed annually`,
+      // Same gate as the plan cards: no price text while FEATURES.pricesConfirmed is off in production.
+      sublabel: annual == null ? "Custom pricing" : showPrices() ? `${formatPrice(annual)}/month, billed annually` : undefined,
       highlight: Boolean(p.highlight),
     };
   });

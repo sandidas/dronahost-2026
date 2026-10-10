@@ -22,7 +22,7 @@ import { comparisonFaq, comparisonRows, competitorStrengths, dronahostStrengths,
 import pricing from "@/data/pricing.json";
 
 /**
- * /vs/[competitor]. Closed while FEATURES.comparisonPages is off. Template: docs/content-planner/plans/02-commercial-investigation.md.
+ * /vs/[competitor]. Closed while FEATURES.comparisonPages is off. Template: content-engine/plans/02-commercial-investigation.md.
  * DronaHost's side is built from pricing.json and verified claims (lib/vs/compare.ts), never typed. Competitor facts come from
  * data/vs/*.ts, each with a source and a date. No made-up author: the page names the company and the date it was reviewed.
  */

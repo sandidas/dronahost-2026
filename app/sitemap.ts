@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
 import { DEFAULT_LOCALE, LIVE_LOCALES, LOCALES, localePath } from "@/lib/i18n/config";
 import { SITE_URL } from "@/lib/seo/config";
+import { isBlocked } from "@/lib/seo/indexing";
 
 // ─── Static pages ─────────────────────────────────────────────────────────────
 
-const STATIC_PAGES: MetadataRoute.Sitemap = [
+const ALL_STATIC_PAGES: MetadataRoute.Sitemap = [
   { url: `${SITE_URL}/`, priority: 1.0, changeFrequency: "weekly" },
   { url: `${SITE_URL}/wordpress-hosting`, priority: 0.9, changeFrequency: "weekly" },
   { url: `${SITE_URL}/pricing`, priority: 0.9, changeFrequency: "weekly" },
@@ -38,6 +39,15 @@ const STATIC_PAGES: MetadataRoute.Sitemap = [
   { url: `${SITE_URL}/security`, priority: 0.3, changeFrequency: "yearly" },
   { url: `${SITE_URL}/data-processing`, priority: 0.3, changeFrequency: "yearly" },
 ];
+
+/** Pages that are noindex in their own metadata whatever the page map says (decision 42: legal pages are finished after the main pages). */
+const ALWAYS_NOINDEX = new Set(["/terms", "/privacy", "/data-processing", "/security", "/hosting/us", "/hosting/uk", "/hosting/eu", "/hosting/uae"]);
+
+/** Only Ready pages (content engine page map) that are not noindex go in the sitemap. */
+const STATIC_PAGES: MetadataRoute.Sitemap = ALL_STATIC_PAGES.filter((p) => {
+  const path = p.url.slice(SITE_URL.length) || "/";
+  return !isBlocked(path) && !ALWAYS_NOINDEX.has(path);
+});
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fetch published blog post slugs + updatedAt from MongoDB.

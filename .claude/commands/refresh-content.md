@@ -4,7 +4,7 @@ argument-hint: <page url or path>
 ---
 Refresh the page: $ARGUMENTS
 
-Follow `docs/content-planner/rules/content-writer-workflow.md` for the checks and `rules/information-gain.md` for the gain. Never publish and never change a price, claim or legal text.
+Follow `content-engine/rules/content-writer-workflow.md` for the checks and `rules/information-gain.md` for the gain. Never publish and never change a price, claim or legal text. Run `npm run content:voice` first and keep the copy in that voice.
 
 1. Find the file: the register row for the URL, then the page spec or the post. Say which file and which plan.
 2. Run `npm run check:content -- <file>` and `npm run content:similarity -- <file>`. List every failure and warning.

@@ -7,6 +7,7 @@ import { track } from "@/lib/analytics/track";
 import Button from "@/components/ui/Button";
 import { contactSchema } from "@/lib/contact-schema";
 import { cn } from "@/utils/cn";
+import { UI } from "@/content/strings";
 
 type Fields = "name" | "email" | "subject" | "message";
 type Errors = Partial<Record<Fields, string>>;
@@ -52,7 +53,7 @@ export default function ContactForm({ defaultPlan }: { defaultPlan?: string }) {
       const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...parsed.data, startedAt: startedAt.current || Date.now() - 10_000, turnstileToken: token || undefined }) });
       if (!res.ok) {
         const body = (await res.json().catch(() => ({}))) as { error?: string };
-        throw new Error(body.error ?? "Something went wrong. Please try again.");
+        throw new Error(body.error ?? UI.errors.sendFailed);
       }
       track("contact_submit");
       setStatus("success");

@@ -9,6 +9,8 @@ import { cn } from "@/utils/cn";
 import SectionHeader from "./SectionHeader";
 import type { PlanCardData } from "@/lib/pricing/plans";
 import { UI } from "@/content/strings";
+import { Link } from "@/i18n/link";
+import type { GuaranteeLink } from "@/lib/pricing/guarantee";
 
 type Cycle = "annual" | "monthly";
 
@@ -23,6 +25,8 @@ type PricingPlansProps = {
   vatDisplay?: string | null;
   /** Only pass when the guarantee is verified in content/claims.ts. */
   guaranteeNote?: string | null;
+  /** Link to the guarantee terms, shown after the note. */
+  guaranteeLink?: GuaranteeLink | null;
   /** True only when the renewal-price-same claim may render (verified and terms page published). The renewal price itself always shows. */
   renewalPromise?: boolean;
   /** Billing periods actually offered. The toggle renders only when both are. */
@@ -50,6 +54,7 @@ function PlanCard({
   showPrices,
   vat,
   guaranteeNote,
+  guaranteeLink,
   renewalPromise = false,
   headingLevel,
 }: {
@@ -59,6 +64,7 @@ function PlanCard({
   showPrices: boolean;
   vat?: string | null;
   guaranteeNote?: string | null;
+  guaranteeLink?: GuaranteeLink | null;
   renewalPromise?: boolean;
   headingLevel: "h3" | "h4";
 }) {
@@ -68,7 +74,7 @@ function PlanCard({
   // "Choose {plan name}" when prices are shown (no price in the label). The visible label already names the plan,
   // so it needs no separate aria-label; the generic fallback gets the plan name added for screen readers.
   const priced = !plan.custom && showPrices && Boolean(activeAmount);
-  const ctaLabel = plan.custom ? "Talk to the team" : priced ? `Choose ${plan.name}` : "Ask about this plan";
+  const ctaLabel = plan.custom ? UI.pricing.customCta : priced ? UI.pricing.choosePlan(plan.name) : UI.pricing.talkAboutPlan(plan.name);
   const ctaAria = plan.custom || priced ? undefined : `${ctaLabel}: ${plan.name}`;
 
   return (
@@ -112,11 +118,11 @@ function PlanCard({
                 <p className="t-small mt-2 text-muted-foreground">
                   {c === "annual" ? (
                     <>
-                      {plan.annualTotal ? `${plan.annualTotal} billed annually. ` : "Billed annually. "}
+                      {plan.annualTotal ? `${plan.annualTotal} ${UI.pricing.billedAnnuallyAfter} ` : `${UI.pricing.billedAnnually}. `}
                       {renewalLine(plan.renewal, { promiseVisible: renewalPromise, sameAsSignup: plan.renewalSame })}
                     </>
                   ) : (
-                    "Billed monthly."
+                    `${UI.pricing.billedMonthly}.`
                   )}
                 </p>
               </div>
@@ -134,7 +140,20 @@ function PlanCard({
           >
             {ctaLabel}
           </Button>
-          {guaranteeNote && !plan.custom && <p className="t-small mt-3 text-center text-muted-foreground">{guaranteeNote}</p>}
+          {guaranteeNote && !plan.custom && (
+            <p className="t-small mt-3 text-center text-muted-foreground">
+              {guaranteeNote}
+              {guaranteeLink && (
+                <>
+                  {" "}
+                  <Link href={guaranteeLink.href} className="text-link underline underline-offset-4">
+                    {guaranteeLink.label}
+                  </Link>
+                  .
+                </>
+              )}
+            </p>
+          )}
         </div>
 
         <ul className="mt-6 space-y-3 border-t border-border pt-6">
@@ -164,6 +183,7 @@ export default function PricingPlans({
   showPrices,
   vatDisplay,
   guaranteeNote,
+  guaranteeLink,
   renewalPromise,
   cycles = ["annual", "monthly"],
   defaultCycle = "annual",
@@ -205,7 +225,7 @@ export default function PricingPlans({
                     cycle === c ? "bg-card text-foreground shadow-sm ring-1 ring-border-strong" : "text-muted-foreground hover:text-foreground",
                   )}
                 >
-                  {c === "annual" ? "Billed annually" : "Billed monthly"}
+                  {c === "annual" ? UI.pricing.billedAnnually : UI.pricing.billedMonthly}
                 </button>
               ))}
             </div>
@@ -225,6 +245,7 @@ export default function PricingPlans({
                 showPrices={showPrices}
                 vat={vatDisplay}
                 guaranteeNote={guaranteeNote}
+                guaranteeLink={guaranteeLink}
                 renewalPromise={renewalPromise}
                 headingLevel={cardHeading}
               />

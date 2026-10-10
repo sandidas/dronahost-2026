@@ -8,6 +8,7 @@ Import the design tokens from `app/styles/tokens.css` (color, radius, shadow, ty
 
 - **No invented facts.** Anything factual renders only when verified: `content/claims.ts`, `content/trust.ts`, `content/company.ts`. Unverified sample data lives in `content/placeholders.ts` and is shown only with `showSamples`.
 - **Prices come from `data/pricing.json` only**, formatted with `lib/pricing` (`Intl`). Numeric prices are hidden in production until `FEATURES.pricesConfirmed` is set (`lib/flags.ts`).
+- **Fonts are fixed**: Sora for headlines, Manrope for every other text. Vary size (responsive), loaded weight, tracking and colour only; never add a family, never italic, mono only for code (`docs/rules/ui-ux-rules.md` §3.6).
 - One primary (orange) action per section. Teal is for links and a single highlighted phrase.
 
 ## Layout and primitives (`components/ui`)
@@ -52,8 +53,31 @@ Shared props: `eyebrow`, `title`, `titleAccent`, `description`, `primaryCta`, `s
 | `MigrationRequest` (**client**) | Free-move lead form: site URL, current host, email, optional note. Zod, honeypot, error and success states. Sends through `lib/leads/submit.ts`; the destination is `lib/leads/config.ts` (mailto by default) |
 | `MeaningSection` | Blueprint section "Meaning": the direct answer under one question heading, then who looks after what (replaces AnswerBlock plus ResponsibilitySplit) |
 | `HelpAndPolicies` | Blueprint section "Help and policies": live support channels beside a policy list (replaces SupportChannels plus TrustSignals) |
+| `HonestLimits` | Blueprint section "HonestLimits": what we do not do, one limit per line with a reason and a link to the better option; items gate on claims; `firstHand` marks a recorded decision (trust rule TR7) |
+| `PageProvenance` | Blueprint section "PageProvenance": a named reviewer, role, review date (`<time>`, spelled-out month), one "how we check facts" line, a report-an-error link, and the editorial policy link once that page is published (trust rule TR6). Half-height band (`section-y-sm`) |
 | `SupportChannels` | Ticket and email only; `layout="split"` puts the heading beside the cards | email renders only if `COMPANY.supportEmail` is set; ticket is always real |
 | `NewsletterSignup` (**client**) | Email capture | off until `FEATURES.newsletter` and an `endpoint` exist |
+
+## Intent banners (`components/sections/banners`)
+
+Two banners per search intent. Each has its own art direction, so no two read as the same template, and its variants come from props. Copy comes from props; fixed labels live in `UI.banners` (`content/strings.ts`). `BannerShell.tsx` holds only the shared pieces: the landmark wrapper, `SCOPE` (`ink` forces the dark tokens, `paper` the light ones, so a navy band or a paper ticket looks the same in both themes and stays inside the contrast check), `Kicker`, `QuietLink`, `PrimaryAction`, `indexNo`, `currencySymbol` (Intl, formatting only). `Ticket.tsx` is the notched two-part paper shape. Art utilities are in `tokens.css` (`.outline-text`, `.tk-a`/`.tk-b`/`.tk-row`, `.barcode`, `.graph-paper`, `.contours`, `.index-card`, `.horizon-glow`, `.band-ink`, `.dotted-leader`, `t-statement`, `t-meta`). Every banner uses the site families only: Sora for headlines, Manrope for all other text (`docs/rules/ui-ux-rules.md` §3.6); each one gets its character from size, weight, tracking and art, never a new font. Shown with samples on `/v2` under "Intent banners". The rules behind them: `content-engine/rules/search-intent.md` and `rules/trust-and-intent-design.md`.
+
+| Intent | Component | Concept | Variants (props) |
+|---|---|---|---|
+| Informational | `AnswerBanner` | Dictionary entry: the question as a large Sora headword, the answer as definition 1 signed by the reviewer, a giant outline question mark cropped off the edge | `layout` entry/margin/centered, `card` (ruled index card), `partOfSpeech`, `toc`, `next` |
+| Informational | `GuideBanner` | Route map: the outcomes as a transit line from an orange start to a teal end, reading time on a sign, contour lines | `layout` line/vertical, `numbered`, `scope` ink/page |
+| Navigational | `BrandBanner` | Lobby directory: the name cropped huge as an outline watermark, destinations lettered with dotted leaders | `layout` board/inline, `scope` ink/paper, `primaryCta`, `logo` |
+| Navigational | `DestinationBanner` | Command palette: a glass quick-jump panel with keycaps; the search row is drawn, each row is a link | `layout` palette/split/tiles, `columns`, `key` per item |
+| Commercial | `VerdictBanner` | Split screen: navy and paper halves with a "vs" seal, the verdict on a ribbon, criteria on a scoreboard with the check date | `layout` split/ribbon, `ribbon` teal/ink, `criteria`, actions |
+| Commercial | `BuyersGuideBanner` | Magazine cover: masthead with double rule and issue mark, large Sora title, a contents page of what was compared, best-for and not-for stamps | `layout` cover/column, `scope` paper/ink, `issue`, `dateLine`, `notFor` |
+| Transactional | `OfferBanner` | Ticket: plan and price on a notched paper ticket, renewal and tax as line items, the action and a barcode on the stub, navy with a low orange horizon | `layout` split/centered/compact, `scope` ink/page, `price` optional, `planName` |
+| Transactional | `ActionBand` | Split block: the plan on navy, price and action on a solid orange block; or a whole orange band; or a floating pill | `variant` split/orange/pill, `sticky`, `price` optional |
+| Local | `RegionBanner` | Boarding pass: the reader's region code in giant outline letters, its currency symbol, region facts as pass fields, action on the stub | `layout` split/pass, `scope`, `code`, `currency`, fact count |
+| Local | `ServiceAreaBanner` | Currency wall: one column per region under its giant currency symbol, filled when a regional page exists, outlined when not | `layout` wall/list, `scope` ink/page, `currency` per region |
+| Generative AI | `CitableFactBanner` | Footnoted article: the quotable sentences with superscript citations linked to footnotes (source, date checked) | `layout` article/quote/cards, `scope` |
+| Generative AI | `TaskBanner` | Instrument panel on graph paper: the worked example drawn as sliders, ticks or choice chips with the answer on a dark result screen | `kind` calculator/checklist/planner, `layout` split/stacked, `example.readings`, `example.result` |
+
+Local intent is served without a local claim: no office, phone or map, no "near me" targeting (workflow Stage 1); the boarding pass names the reader's region, never a server location. Transactional prices render only through `lib/pricing` and the guarantee and renewal lines only while their claims render. The orange horizon on `OfferBanner` and the orange block on `ActionBand` are the only places the action colour is a surface.
 
 ## Social proof and trust (all hidden unless verified)
 

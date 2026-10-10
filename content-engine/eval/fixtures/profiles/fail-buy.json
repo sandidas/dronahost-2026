@@ -1,0 +1,51 @@
+{
+  "id": "buy-fail",
+  "path": "/buy-fail",
+  "archetype": "product",
+  "intent": "fixture",
+  "searchIntent": "Buy",
+  "primaryKeyword": "fixture keyword",
+  "seo": {
+    "title": "Fixture page title here",
+    "description": "A fixture description that is long enough to be a description."
+  },
+  "rules": {
+    "primaryCta": {
+      "label": "See plans",
+      "href": "/pricing"
+    },
+    "reviewedOn": "2025-01-01"
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "type": "ProductHero",
+      "content": {
+        "h1": "Hosting that stays out of your way",
+        "lead": "Plans for one site or many. Hurry, only 3 spots left and the offer ends tonight."
+      }
+    },
+    {
+      "id": "claim",
+      "type": "AnswerBlock",
+      "content": {
+        "h2": "The best hosting",
+        "answer": "We are trusted by thousands and the fastest host there is. Switch today, no questions asked."
+      }
+    },
+    {
+      "id": "provenance",
+      "type": "PageProvenance",
+      "content": {
+        "reviewer": "A. Person",
+        "role": "owner",
+        "reviewedOn": "2026-10-09",
+        "howLine": "Every promise on this page links to the policy behind it.",
+        "report": {
+          "label": "Report an error",
+          "href": "/help"
+        }
+      }
+    }
+  ]
+}

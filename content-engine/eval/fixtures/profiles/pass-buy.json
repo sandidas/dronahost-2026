@@ -1,0 +1,101 @@
+{
+  "id": "buy-pass",
+  "path": "/buy-pass",
+  "archetype": "product",
+  "intent": "fixture",
+  "searchIntent": "Buy",
+  "primaryKeyword": "fixture keyword",
+  "seo": {
+    "title": "Fixture page title here",
+    "description": "A fixture description that is long enough to be a description."
+  },
+  "rules": {
+    "primaryCta": {
+      "label": "See plans",
+      "href": "/pricing"
+    },
+    "reviewedOn": "2026-10-01"
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "type": "ProductHero",
+      "content": {
+        "h1": "Hosting that stays out of your way",
+        "lead": "Plans for one site or many.",
+        "ctaPrimary": {
+          "label": "See plans",
+          "href": "/pricing"
+        }
+      }
+    },
+    {
+      "id": "router",
+      "type": "PathRouter",
+      "content": {
+        "h2": "Choose the plan that fits",
+        "paths": [
+          {
+            "title": "For small business",
+            "line": "One site",
+            "href": "/pricing"
+          }
+        ]
+      }
+    },
+    {
+      "id": "help",
+      "type": "HelpAndPolicies",
+      "content": {
+        "h2": "Policies",
+        "links": [
+          "/refund-policy",
+          "/support-policy",
+          "/about"
+        ]
+      }
+    },
+    {
+      "id": "limits",
+      "type": "AnswerBlock",
+      "content": {
+        "h2": "What a plan does not cover",
+        "answer": "A plan does not include root access and is not a good fit for sites that need it."
+      }
+    },
+    {
+      "id": "evidence",
+      "type": "Evidence",
+      "content": {
+        "source": "case-studies.json"
+      }
+    },
+    {
+      "id": "faq",
+      "type": "FAQSection",
+      "content": {
+        "h2": "Questions before you choose",
+        "items": [
+          {
+            "q": "What happens after I choose a plan?",
+            "a": "You get an email with the next steps within one working day, and the plan starts when you confirm."
+          }
+        ]
+      }
+    },
+    {
+      "id": "provenance",
+      "type": "PageProvenance",
+      "content": {
+        "reviewer": "A. Person",
+        "role": "owner",
+        "reviewedOn": "2026-10-01",
+        "howLine": "Every promise on this page links to the policy behind it.",
+        "report": {
+          "label": "Report an error",
+          "href": "/contact"
+        }
+      }
+    }
+  ]
+}

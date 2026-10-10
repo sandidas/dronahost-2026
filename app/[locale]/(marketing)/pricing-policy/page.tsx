@@ -15,8 +15,9 @@ export default function Page() {
   return (
     <>
       <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs("/pricing-policy"))]} />
-      <LegalPage title="Pricing and Renewal Policy" path="/pricing-policy" updated="2026-10-08">
-        <p>Your hosting price does not change when you renew. You pay the same price you paid at signup.</p>
+      <LegalPage title="Pricing and Renewal Policy" path="/pricing-policy" updated="2026-10-10">
+        {/* Owner 2026-10-10 (decision 50): the renewal price equals the signup price with no end date. */}
+        <p>Your hosting price does not change when you renew. You pay the same price you paid at signup, with no end date.</p>
 
         <h2>Where to find prices</h2>
         <p>Every price is on the <Link href="/pricing" className="text-link underline underline-offset-4">pricing page</Link>, in US dollars for now. Each plan shows the signup price and the renewal price together.</p>
@@ -31,7 +32,7 @@ export default function Page() {
           {" · "}
           <Link href="/pricing" className="text-link underline underline-offset-4">Plans and pricing</Link>
           {" · "}
-          <Link href="/contact" className="text-link underline underline-offset-4">Contact us</Link>
+          <Link href="/contact" className="text-link underline underline-offset-4">Ask the team about this policy</Link>
         </p>
       </LegalPage>
     </>

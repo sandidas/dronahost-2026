@@ -17,6 +17,8 @@ import MigrationRequest from "@/components/sections/MigrationRequest";
 import CaseStudy from "@/components/sections/CaseStudy";
 import StatsBar from "@/components/sections/StatsBar";
 import WhyChoose from "@/components/sections/bespoke/WhyChoose";
+import HonestLimits from "@/components/sections/bespoke/HonestLimits";
+import PageProvenance from "@/components/sections/bespoke/PageProvenance";
 import { CASE_STUDIES } from "@/content/case-studies";
 import NextImage from "next/image";
 import { existsSync } from "node:fs";
@@ -33,6 +35,7 @@ import { POLICY_LINKS, PUBLISHED_PAGES } from "./published-pages";
 import { fillTemplate, passes, resolveClaimRef, resolveRequires, type ResolveContext } from "./refs";
 import { loadVerifiedReviews } from "./reviews";
 import * as S from "./schemas/sections";
+import { moneyBackGuarantee } from "@/lib/pricing/guarantee";
 
 type Of<T extends S.SectionType> = Extract<S.SectionSpec, { type: T }>;
 type Entry<T extends S.SectionType> = { schema: ZodType; render: (section: Of<T>, ctx: ResolveContext) => ReactNode };
@@ -208,6 +211,7 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
           showPrices={showPrices()}
           vatDisplay={VAT_DISPLAY}
           guaranteeNote={ctx.claimRenders("money-back") ? `${CLAIMS.find((x) => x.id === "money-back")?.text ?? ""}.` : null}
+          guaranteeLink={ctx.claimRenders("money-back") ? moneyBackGuarantee().guaranteeLink : null}
           renewalPromise={ctx.claimRenders("renewal-price-same")}
         >
           {c.link && (
@@ -253,6 +257,19 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
         .filter((i) => i.answer.length > 0);
       return items.length >= 3 ? <FAQSection title={c.h2} items={items} /> : null;
     },
+  },
+  HonestLimits: {
+    schema: S.HonestLimits,
+    render: ({ content: c }, ctx) => {
+      // Each limit gates on its own claim or condition; fewer than two left and the section is omitted.
+      const items = c.items.filter((i) => passes(i, ctx)).map((i) => ({ text: i.text, reason: i.reason, link: i.link, firstHand: i.firstHand }));
+      return <HonestLimits eyebrow={c.eyebrow} title={c.h2} description={c.description} items={items} />;
+    },
+  },
+  PageProvenance: {
+    schema: S.PageProvenance,
+    // The editorial policy link shows only once that page is published, like every policy link.
+    render: ({ content: c }) => <PageProvenance reviewer={c.reviewer} role={c.role} reviewedOn={c.reviewedOn} howLine={c.howLine} report={c.report} policyHref={c.policyHref && PUBLISHED_PAGES.has(c.policyHref) ? c.policyHref : undefined} />,
   },
   CTABand: {
     schema: S.CTABand,

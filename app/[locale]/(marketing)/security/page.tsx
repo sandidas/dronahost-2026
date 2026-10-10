@@ -5,79 +5,82 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/jsonld";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 
+import { CLAIMS, isVerified } from "@/content/claims";
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return buildMetadata({ locale,
-    title: "Security & Data Protection — DronaHost",
+    title: "Security & Data Protection",
     description:
-      "How DronaHost secures your hosting environment: DDoS protection, firewalls, automated patching, encryption at rest and in transit, and vulnerability management.",
+      "How DronaHost protects your data and hosting account, which security measures are confirmed today, and how to report a security problem to the team.",
     path: "/security",
+    // noindex until the owner (Tier A) or a qualified reviewer (Tier B) approves
+    noIndex: true,
   });
 }
 
+const claimText = (id: string): string | undefined => CLAIMS.find((c) => c.id === id && c.verified)?.text;
+
+/**
+ * Lists only measures confirmed in content/claims.ts. Anything else (monitoring, encryption
+ * standards, patch windows, penetration tests) stays off the page until the owner confirms it.
+ */
 export default function SecurityPage() {
+  const backups = isVerified("backups");
+  const ssl = claimText("free-ssl");
   return (
     <>
       <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs("/security"))]} />
       <LegalPage title="Security &amp; Data Protection" path="/security" updated="2025-01-01">
         <p>
-          Security is a core part of DronaHost&apos;s infrastructure. This page
-          describes the technical and organizational measures we use to protect
-          your data and hosting environment.
+          This page describes how DronaHost protects your data and your hosting
+          account. It lists only the measures we have confirmed. We will add
+          more detail as each measure is reviewed.
         </p>
 
-        <h2>Network Security</h2>
+        {(backups || ssl) && (
+          <>
+            <h2>What is in place today</h2>
+            <ul>
+              {backups && (
+                <li>
+                  Your site is backed up automatically.{" "}
+                  <Link href="/backup-policy" className="text-link underline underline-offset-4">
+                    Read the backup policy
+                  </Link>
+                  .
+                </li>
+              )}
+              {ssl && <li>{ssl}.</li>}
+            </ul>
+          </>
+        )}
+
+        <h2>How we handle personal data</h2>
         <p>
-          All DronaHost infrastructure is protected by enterprise-grade DDoS
-          mitigation, network firewalls, and intrusion detection systems (IDS).
-          Traffic is monitored 24/7 and suspicious patterns trigger automatic
-          rate limiting.
+          The{" "}
+          <Link href="/privacy" className="text-link underline underline-offset-4">
+            privacy policy
+          </Link>{" "}
+          explains what personal data we collect and why. The{" "}
+          <Link href="/data-processing" className="text-link underline underline-offset-4">
+            data processing page
+          </Link>{" "}
+          explains how we process data on your behalf.
         </p>
 
-        <h2>Encryption</h2>
+        <h2>Report a security problem</h2>
         <p>
-          All data in transit is encrypted using TLS 1.2 or higher. Data at
-          rest is encrypted using AES-256. Free wildcard SSL certificates are
-          included on all plans via Let&apos;s Encrypt and are auto-renewed 30
-          days before expiry.
+          If you find a security problem in our service, open a support ticket
+          and say that it is a security report. Please do not share the details
+          publicly until we have replied.
         </p>
 
-        <h2>Automated Patching</h2>
+        <h2>What this page does not cover yet</h2>
         <p>
-          Operating system and server software security patches are applied
-          automatically within 24 hours of release for critical vulnerabilities.
-          Non-critical patches are applied within 7 days during scheduled
-          maintenance windows.
-        </p>
-
-        <h2>Access Controls</h2>
-        <p>
-          Production systems require multi-factor authentication for all
-          administrative access. Access is granted on a least-privilege basis.
-          All administrative actions are logged and retained for 90 days for
-          audit purposes.
-        </p>
-
-        <h2>Vulnerability Management</h2>
-        <p>
-          We conduct quarterly vulnerability scans of our infrastructure and
-          annual penetration testing by an independent third party. Critical
-          findings are remediated within 72 hours.
-        </p>
-
-        <h2>Incident Response</h2>
-        <p>
-          In the event of a security incident affecting customer data, we will
-          notify affected customers within 72 hours as required by GDPR and UK
-          GDPR. Notifications include the nature of the incident, data affected,
-          and steps being taken.
-        </p>
-
-        <h2>Responsible Disclosure</h2>
-        <p>
-          We welcome responsible disclosure of security vulnerabilities. Report
-          issues to security@dronahost.com. We commit to acknowledging reports
-          within 48 hours and providing updates on remediation progress.
+          Details such as monitoring, encryption standards, update schedules and
+          independent testing are not listed here yet. Ask the team if you need
+          an answer before you buy.
         </p>
         <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
         <p>

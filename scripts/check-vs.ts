@@ -1,5 +1,5 @@
 /**
- * Checks data/vs/*.ts against the comparison rules (docs/content-planner/plans/02-commercial-investigation.md).
+ * Checks data/vs/*.ts against the comparison rules (content-engine/plans/02-commercial-investigation.md).
  * Errors: a fact without an https source or a valid date, fewer than two strengths, a strength with no value, a token that
  * cannot be filled, an unknown DronaHost plan, and FEATURES.comparisonPages on while any competitor is not checked at source.
  * Warnings: facts not checked yet. Usage: npx tsx scripts/check-vs.ts

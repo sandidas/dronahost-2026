@@ -1,7 +1,7 @@
 {
   "_meta": {
     "version": "3.1.0",
-    "lastUpdated": "2026-10-08",
+    "lastUpdated": "2026-10-10",
     "status": "recommended-v1-needs-owner-confirmation",
     "category": "Web Hosting and WordPress Hosting",
     "description": "Source of truth for all hosting plan pricing across the DronaHost website. Import this file in components, generateMetadata(), and JSON-LD schemas. Copy never contains a number or promise that is not rendered from this file or from content/claims.ts.",
@@ -11,10 +11,11 @@
     "annualSavings": "Paying annually costs about 22% to 24% less per month than paying monthly. See pricing.annualDiscountPercent on each plan.",
     "enabledCurrencies": ["USD"],
     "currencyNote": "USD only until non-USD prices are final. Do not add estimated prices.",
-    "emailNotice": "Email is not hosted on DronaHost servers. Customers who need business email use Google Workspace or premium email.",
+    "emailNotice": "Email is not included with any hosting plan. Email is a separate service, sold on its own.",
     "changesFromV2": [
       "Plan 'pop' renamed to 'pro'.",
       "Mailboxes removed from all limits. Email hosting is discontinued.",
+      "3.2.0 (2026-10-10): email is never part of a hosting plan or a hosting add-on. Email will be sold as a separate service with its own plans (owner decision 49). Business Email plans live in emailPlans, outside plans[], priced from Google Workspace US list prices (decision 54).",
       "Scale, Dedicated Core and Enterprise moved out of the public plan list into highTraffic (talk to us).",
       "Two Web hosting plans added: essential and plus.",
       "Starter backup retention raised from 1 day to 7 days.",
@@ -651,8 +652,134 @@
     {
       "id": "email-hosting",
       "label": "Email hosting",
-      "detail": "Email is not hosted on DronaHost servers. Use Google Workspace or premium email.",
+      "detail": "Email is not included with any hosting plan. It is a separate service.",
       "href": "/email"
     }
-  ]
+  ],
+  "emailPlans": {
+    "$comment": "Business email (Google Workspace): a separate service, never part of a hosting plan or a hosting add-on (decision 49). Kept out of plans[] so hosting cards and tables never show it. Prices per user per month, renewal equals signup (decision 50). Hidden in production until FEATURES.pricesConfirmed, like every price.",
+    "provider": "Google Workspace",
+    "fulfilment": "Supplied through DronaHost's distributor. Never name the distributor on any page, email, invoice text or schema (decision 56).",
+    "trademarkLine": "Google Workspace is a trademark of Google LLC.",
+    "source": {
+      "basis": "Google Workspace US list prices: Business Starter, Standard and Plus, annual commitment and Flexible plan (owner decision 54, 2026-10-10).",
+      "checkedOn": "2026-10-10",
+      "urls": [
+        "https://workspace.google.com/pricing",
+        "https://www.emailvendorselection.com/google-workspace-pricing/",
+        "https://www.larksuite.com/en_us/blog/google-workspace-pricing"
+      ],
+      "caveat": "Google's pricing page showed India prices (INR) from our location on 2026-10-10, so the USD figures come from 2026 summaries of Google's US list prices. The owner accepted them on 2026-10-10 (decision 56)."
+    },
+    "plans": [
+      {
+        "id": "email-starter",
+        "name": "Google Workspace Business Starter",
+        "slug": "email-starter",
+        "family": "email",
+        "tier": "public",
+        "description": "Email on your own domain, with 30 GB of storage per user.",
+        "bestFor": "A small team that needs email on its own domain",
+        "cta": {
+          "label": "Choose Google Workspace Business Starter",
+          "href": "/checkout?plan=email-starter"
+        },
+        "pricing": {
+          "unit": "per user per month",
+          "monthly": {
+            "USD": 8.4
+          },
+          "annual": {
+            "USD": 7
+          },
+          "renewal": {
+            "USD": 7
+          },
+          "renewalMonthlyCycle": {
+            "USD": 8.4
+          },
+          "annualBilledTotal": {
+            "USD": 84
+          }
+        },
+        "limits": {
+          "storagePerUser": "30 GB",
+          "maxUsers": 300,
+          "customDomain": true
+        }
+      },
+      {
+        "id": "email-standard",
+        "name": "Google Workspace Business Standard",
+        "slug": "email-standard",
+        "family": "email",
+        "tier": "public",
+        "description": "Email on your own domain, with 2 TB of storage per user.",
+        "bestFor": "A growing team that shares large files and records meetings",
+        "cta": {
+          "label": "Choose Google Workspace Business Standard",
+          "href": "/checkout?plan=email-standard"
+        },
+        "pricing": {
+          "unit": "per user per month",
+          "monthly": {
+            "USD": 16.8
+          },
+          "annual": {
+            "USD": 14
+          },
+          "renewal": {
+            "USD": 14
+          },
+          "renewalMonthlyCycle": {
+            "USD": 16.8
+          },
+          "annualBilledTotal": {
+            "USD": 168
+          }
+        },
+        "limits": {
+          "storagePerUser": "2 TB",
+          "maxUsers": 300,
+          "customDomain": true
+        }
+      },
+      {
+        "id": "email-plus",
+        "name": "Google Workspace Business Plus",
+        "slug": "email-plus",
+        "family": "email",
+        "tier": "public",
+        "description": "Email on your own domain, with 5 TB of storage per user.",
+        "bestFor": "A team that needs more storage and stronger admin controls",
+        "cta": {
+          "label": "Choose Google Workspace Business Plus",
+          "href": "/checkout?plan=email-plus"
+        },
+        "pricing": {
+          "unit": "per user per month",
+          "monthly": {
+            "USD": 26.4
+          },
+          "annual": {
+            "USD": 22
+          },
+          "renewal": {
+            "USD": 22
+          },
+          "renewalMonthlyCycle": {
+            "USD": 26.4
+          },
+          "annualBilledTotal": {
+            "USD": 264
+          }
+        },
+        "limits": {
+          "storagePerUser": "5 TB",
+          "maxUsers": 300,
+          "customDomain": true
+        }
+      }
+    ]
+  }
 }

@@ -31,7 +31,7 @@ export async function generateMetadata({ params, searchParams }: { params: Promi
   if (page > 1) q.set("page", String(page));
   return buildMetadata({
     locale,
-    title: page > 1 ? `Blog, page ${page}: Hosting, Performance and Web Design | DronaHost` : "Blog: Hosting, Performance and Web Design | DronaHost",
+    title: page > 1 ? `Blog, page ${page}: Hosting, Performance and Web Design` : "Blog: Hosting, Performance and Web Design",
     description: "Practical guides on WordPress hosting, web performance, SEO and web design from the DronaHost team.",
     path: `/blog${q.size ? `?${q}` : ""}`,
   });

@@ -8,10 +8,12 @@ import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return buildMetadata({ locale,
-    title: "Terms of Service — DronaHost",
+    title: "Terms of Service",
     description:
       "DronaHost Terms of Service. The legal agreement governing your use of DronaHost hosting services.",
     path: "/terms",
+    // noindex until the owner (Tier A) or a qualified reviewer (Tier B) approves
+    noIndex: true,
   });
 }
 
@@ -76,8 +78,7 @@ export default function TermsPage() {
 
         <h2>Governing Law</h2>
         <p>
-          These Terms are governed by the laws of England and Wales for UK/EU
-          customers, and the laws of Delaware, USA for US customers.
+          The governing law is being confirmed by a qualified reviewer.
         </p>
         <footer className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800 text-sm text-muted-foreground">
         <p>

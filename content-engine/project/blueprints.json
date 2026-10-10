@@ -1,0 +1,821 @@
+{
+  "$comment": "DronaHost blueprint data, read by check-content (schemas/blueprints.ts). Source: rules/page-blueprints.md and project/page-map.md. Counts, required sections and order for C1 come straight from the blueprint. For C2 to C15 the publish minimum is the number of required sections, and the word ranges for C10 to C15 that the blueprint does not state were confirmed by the owner on 2026-10-10 (decision 55). C1 was revised on 2026-10-09 (conversion review): WhyChoose, MigrationRequest, ProofBar and Evidence were added, and the answer and the timeline moved off Home. Revised 2026-10-09 (E-E-A-T review): every page blueprint ends with PageProvenance (who reviewed the page, when, how to report an error) before the closing CTABand, required on money, decision, trust and about pages; HonestLimits (what we do not do) joins C1, C2, C6 and C8. Revised 2026-10-10: the section maximum of C5, C9, C10c, C10d and C15 was raised by one so the appended PageProvenance fits.",
+  "heroTypes": [
+    "ProductHero",
+    "SplitHero",
+    "CenteredHero"
+  ],
+  "duplicateAllowance": {
+    "CTABand": 2,
+    "TwoColumn": 2
+  },
+  "ctaKeys": {
+    "primary": [
+      "ctaPrimary",
+      "primaryCta"
+    ],
+    "secondary": [
+      "ctaSecondary",
+      "secondaryCta"
+    ]
+  },
+  "blueprints": {
+    "C1": {
+      "name": "Home",
+      "stage": "navigational and commercial",
+      "sections": [
+        8,
+        13
+      ],
+      "publishMinimum": 7,
+      "words": [
+        500,
+        1000
+      ],
+      "required": [
+        "Hero",
+        "PathRouter",
+        "WhyChoose",
+        "HelpAndPolicies",
+        "FAQSection",
+        "PageProvenance",
+        "CTABand"
+      ],
+      "order": [
+        "Hero",
+        "ProofBar",
+        "PathRouter",
+        "PricingPlans",
+        "WhyChoose",
+        "HonestLimits",
+        "MigrationRequest",
+        "Evidence",
+        "Testimonials",
+        "HelpAndPolicies",
+        "FAQSection",
+        "PageProvenance",
+        "CTABand"
+      ]
+    },
+    "C2": {
+      "name": "Product page",
+      "stage": "decide",
+      "sections": [
+        10,
+        15
+      ],
+      "publishMinimum": 7,
+      "words": [
+        700,
+        1200
+      ],
+      "required": [
+        "Hero",
+        "AnswerBlock",
+        "FeatureGrid",
+        "PricingPlans",
+        "FAQSection",
+        "CTABand",
+        "PageProvenance"
+      ],
+      "order": [
+        "Hero",
+        "AssuranceStrip",
+        "AnswerBlock",
+        "TwoColumn",
+        "HonestLimits",
+        "FeatureGrid",
+        "ProcessTimeline",
+        "ResponsibilitySplit",
+        "PricingPlans",
+        "HelpAndPolicies",
+        "Testimonials",
+        "CaseStudy",
+        "FAQSection",
+        "PageProvenance",
+        "CTABand"
+      ]
+    },
+    "C3": {
+      "name": "Pricing page",
+      "stage": "decide",
+      "sections": [
+        7,
+        9
+      ],
+      "publishMinimum": 5,
+      "words": [
+        400,
+        800
+      ],
+      "required": [
+        "Hero",
+        "PricingPlans",
+        "FAQSection",
+        "CTABand",
+        "PageProvenance"
+      ],
+      "order": [
+        "Hero",
+        "PricingPlans",
+        "ComparisonTable",
+        "TwoColumn",
+        "AddOns",
+        "BillingSummary",
+        "FAQSection",
+        "PageProvenance",
+        "CTABand"
+      ]
+    },
+    "C4": {
+      "name": "Migration page",
+      "stage": "decide",
+      "sections": [
+        8,
+        10
+      ],
+      "publishMinimum": 6,
+      "words": [
+        500,
+        900
+      ],
+      "required": [
+        "Hero",
+        "AnswerBlock",
+        "ProcessTimeline",
+        "MigrationRequest",
+        "FAQSection",
+        "PageProvenance"
+      ],
+      "order": [
+        "Hero",
+        "AnswerBlock",
+        "ProcessTimeline",
+        "TwoColumn",
+        "RiskCards",
+        "Testimonials",
+        "CaseStudy",
+        "MigrationRequest",
+        "FAQSection",
+        "PageProvenance",
+        "CTABand"
+      ]
+    },
+    "C5": {
+      "name": "Email page",
+      "stage": "decide",
+      "sections": [
+        6,
+        8
+      ],
+      "publishMinimum": 3,
+      "words": [
+        400,
+        700
+      ],
+      "required": [
+        "Hero",
+        "AnswerBlock",
+        "FAQSection"
+      ],
+      "order": [
+        "Hero",
+        "AnswerBlock",
+        "OptionCards",
+        "ProcessTimeline",
+        "Callout",
+        "FAQSection",
+        "PageProvenance",
+        "CTABand"
+      ]
+    },
+    "C6": {
+      "name": "Service page",
+      "stage": "decide",
+      "sections": [
+        9,
+        13
+      ],
+      "publishMinimum": 7,
+      "words": [
+        700,
+        1100
+      ],
+      "required": [
+        "Hero",
+        "AnswerBlock",
+        "FeatureGrid",
+        "ProcessTimeline",
+        "FAQSection",
+        "CTABand",
+        "PageProvenance"
+      ],
+      "order": [
+        "Hero",
+        "AnswerBlock",
+        "TwoColumn",
+        "HonestLimits",
+        "FeatureGrid",
+        "ProcessTimeline",
+        "CaseStudy",
+        "PricingApproach",
+        "FAQSection",
+        "PageProvenance",
+        "CTABand"
+      ]
+    },
+    "C7": {
+      "name": "Comparison page",
+      "stage": "compare",
+      "sections": [
+        8,
+        10
+      ],
+      "publishMinimum": 5,
+      "words": [
+        800,
+        1400
+      ],
+      "required": [
+        "Hero",
+        "AnswerBlock",
+        "ComparisonTable",
+        "WhereEachIsStronger",
+        "PageProvenance"
+      ],
+      "order": [
+        "Hero",
+        "AnswerBlock",
+        "TwoColumn",
+        "ComparisonTable",
+        "WhereEachIsStronger",
+        "WhoShouldChoose",
+        "ProcessTimeline",
+        "FAQSection",
+        "PageProvenance",
+        "CTABand"
+      ]
+    },
+    "C8": {
+      "name": "Regional page",
+      "stage": "decide",
+      "sections": [
+        8,
+        11
+      ],
+      "publishMinimum": 4,
+      "words": [
+        600,
+        1000
+      ],
+      "required": [
+        "Hero",
+        "AnswerBlock",
+        "WhatAppliesHere",
+        "PageProvenance"
+      ],
+      "order": [
+        "Hero",
+        "AnswerBlock",
+        "PricingPlans",
+        "WhatAppliesHere",
+        "HonestLimits",
+        "SupportHours",
+        "HostedWhere",
+        "Testimonials",
+        "FAQSection",
+        "PageProvenance",
+        "CTABand"
+      ]
+    },
+    "C9": {
+      "name": "Domain page",
+      "stage": "decide",
+      "sections": [
+        5,
+        8
+      ],
+      "publishMinimum": 3,
+      "words": [
+        300,
+        600
+      ],
+      "required": [
+        "Hero",
+        "Prices"
+      ],
+      "order": [
+        "Hero",
+        "AnswerBlock",
+        "Prices",
+        "Rules",
+        "TransferSteps",
+        "FAQSection",
+        "PageProvenance",
+        "CTABand"
+      ]
+    },
+    "C10a": {
+      "name": "About",
+      "stage": "trust",
+      "sections": [
+        7,
+        9
+      ],
+      "publishMinimum": 3,
+      "words": [
+        300,
+        800
+      ],
+      "required": [
+        "Hero",
+        "Story",
+        "PageProvenance"
+      ],
+      "order": [
+        "Hero",
+        "Story",
+        "People",
+        "HowWeWork",
+        "WhereWeOperate",
+        "Policies",
+        "PageProvenance",
+        "CTABand"
+      ]
+    },
+    "C10b": {
+      "name": "Trust hub",
+      "stage": "trust",
+      "sections": [
+        5,
+        7
+      ],
+      "publishMinimum": 2,
+      "words": [
+        200,
+        600
+      ],
+      "required": [
+        "Hero",
+        "Policies"
+      ],
+      "order": [
+        "Hero",
+        "Policies",
+        "SecurityFacts",
+        "SupportChannels",
+        "Reviews",
+        "PageProvenance",
+        "CTABand"
+      ]
+    },
+    "C10c": {
+      "name": "Contact",
+      "stage": "trust",
+      "sections": [
+        4,
+        6
+      ],
+      "publishMinimum": 3,
+      "words": [
+        100,
+        400
+      ],
+      "required": [
+        "Hero",
+        "Channels",
+        "ContactForm"
+      ],
+      "order": [
+        "Hero",
+        "Channels",
+        "ContactForm",
+        "CompanyDetails",
+        "FAQSection",
+        "PageProvenance"
+      ]
+    },
+    "C10d": {
+      "name": "Reviews",
+      "stage": "trust",
+      "sections": [
+        3,
+        6
+      ],
+      "publishMinimum": 2,
+      "words": [
+        100,
+        400
+      ],
+      "required": [
+        "Hero",
+        "Profiles"
+      ],
+      "order": [
+        "Hero",
+        "Profiles",
+        "Quotes",
+        "HowWeAsk",
+        "PageProvenance",
+        "CTABand"
+      ]
+    },
+    "C11": {
+      "name": "Policy page",
+      "stage": "trust",
+      "sections": [
+        3,
+        5
+      ],
+      "publishMinimum": 3,
+      "words": [
+        200,
+        4000
+      ],
+      "required": [
+        "Summary",
+        "FullText",
+        "ChangeLog"
+      ],
+      "order": [
+        "Summary",
+        "FullText",
+        "ChangeLog",
+        "RelatedPolicies",
+        "Contact"
+      ]
+    },
+    "C12": {
+      "name": "Blog guide",
+      "stage": "learn",
+      "sections": [
+        6,
+        9
+      ],
+      "publishMinimum": 4,
+      "words": [
+        1000,
+        2000
+      ],
+      "required": [
+        "AnswerBlock",
+        "WhatWeSaw",
+        "Sources"
+      ],
+      "order": [
+        "AnswerBlock",
+        "Sections",
+        "WhatWeSaw",
+        "Sources",
+        "FAQSection",
+        "ProductLink",
+        "RelatedPosts"
+      ]
+    },
+    "C13": {
+      "name": "Fix article",
+      "stage": "fix",
+      "sections": [
+        6,
+        8
+      ],
+      "publishMinimum": 4,
+      "words": [
+        600,
+        1500
+      ],
+      "required": [
+        "QuickAnswer",
+        "BackupStep",
+        "Fixes",
+        "TestedVersions"
+      ],
+      "order": [
+        "Symptom",
+        "QuickAnswer",
+        "BackupStep",
+        "Diagnose",
+        "Fixes",
+        "TestedVersions",
+        "WhenToAskForHelp",
+        "Prevent"
+      ]
+    },
+    "C14": {
+      "name": "Glossary or help entry",
+      "stage": "learn",
+      "sections": [
+        4,
+        6
+      ],
+      "publishMinimum": 1,
+      "words": [
+        250,
+        600
+      ],
+      "required": [
+        "Definition"
+      ],
+      "order": [
+        "Definition",
+        "WhyItMatters",
+        "Example",
+        "RelatedTerms",
+        "NextStep"
+      ]
+    },
+    "C15": {
+      "name": "Hub page",
+      "stage": "learn",
+      "sections": [
+        4,
+        7
+      ],
+      "publishMinimum": 1,
+      "words": [
+        100,
+        400
+      ],
+      "required": [
+        "TopicGroups"
+      ],
+      "order": [
+        "Hero",
+        "FeaturedGuide",
+        "TopicGroups",
+        "UsefulFixes",
+        "Newsletter",
+        "PageProvenance",
+        "CTABand"
+      ]
+    }
+  },
+  "sectionLimits": {
+    "ProductHero": [
+      {
+        "path": "content.eyebrow",
+        "unit": "chars",
+        "max": 40,
+        "what": "eyebrow"
+      },
+      {
+        "path": "content.h1",
+        "unit": "chars",
+        "max": 70,
+        "what": "H1"
+      },
+      {
+        "path": "content.lead",
+        "unit": "chars",
+        "max": 220,
+        "what": "lead"
+      }
+    ],
+    "SplitHero": [
+      {
+        "path": "content.eyebrow",
+        "unit": "chars",
+        "max": 40,
+        "what": "eyebrow"
+      },
+      {
+        "path": "content.h1",
+        "unit": "chars",
+        "max": 70,
+        "what": "H1"
+      },
+      {
+        "path": "content.lead",
+        "unit": "chars",
+        "max": 220,
+        "what": "lead"
+      }
+    ],
+    "CenteredHero": [
+      {
+        "path": "content.eyebrow",
+        "unit": "chars",
+        "max": 40,
+        "what": "eyebrow"
+      },
+      {
+        "path": "content.h1",
+        "unit": "chars",
+        "max": 70,
+        "what": "H1"
+      },
+      {
+        "path": "content.lead",
+        "unit": "chars",
+        "max": 220,
+        "what": "lead"
+      }
+    ],
+    "AnswerBlock": [
+      {
+        "path": "content.answer",
+        "unit": "words",
+        "min": 40,
+        "max": 80,
+        "what": "answer"
+      }
+    ],
+    "ResponsibilitySplit": [
+      {
+        "path": "content.weLookAfter",
+        "unit": "items",
+        "min": 3,
+        "max": 5,
+        "what": "lines we look after"
+      },
+      {
+        "path": "content.youKeep",
+        "unit": "items",
+        "min": 3,
+        "max": 5,
+        "what": "lines you keep"
+      }
+    ],
+    "PathRouter": [
+      {
+        "path": "content.paths",
+        "unit": "items",
+        "min": 3,
+        "max": 4,
+        "what": "cards"
+      },
+      {
+        "path": "content.paths[*].line",
+        "unit": "words",
+        "max": 20,
+        "what": "card line"
+      }
+    ],
+    "BentoGrid": [
+      {
+        "path": "content.tiles",
+        "unit": "items",
+        "min": 4,
+        "max": 6,
+        "what": "tiles"
+      }
+    ],
+    "ProcessTimeline": [
+      {
+        "path": "content.steps",
+        "unit": "items",
+        "min": 3,
+        "max": 5,
+        "what": "steps"
+      },
+      {
+        "path": "content.steps[*].title",
+        "unit": "words",
+        "max": 5,
+        "what": "step title"
+      }
+    ],
+    "PricingPlans": [
+      {
+        "path": "content.show",
+        "unit": "items",
+        "min": 3,
+        "max": 3,
+        "what": "plan cards"
+      }
+    ],
+    "TrustSignals": [
+      {
+        "path": "content.links",
+        "unit": "items",
+        "min": 4,
+        "max": 7,
+        "what": "policy links"
+      }
+    ],
+    "HelpAndPolicies": [
+      {
+        "path": "content.links",
+        "unit": "items",
+        "min": 1,
+        "max": 3,
+        "what": "policy links"
+      }
+    ],
+    "FAQSection": [
+      {
+        "path": "content.items[*].a",
+        "unit": "words",
+        "min": 40,
+        "max": 80,
+        "what": "FAQ answer"
+      }
+    ],
+    "CTABand": [
+      {
+        "path": "content.h2",
+        "unit": "words",
+        "max": 8,
+        "what": "heading"
+      }
+    ],
+    "MigrationRequest": [
+      {
+        "path": "content.h2",
+        "unit": "words",
+        "max": 8,
+        "what": "heading"
+      },
+      {
+        "path": "content.description",
+        "unit": "words",
+        "max": 40,
+        "what": "description"
+      },
+      {
+        "path": "content.fields",
+        "unit": "items",
+        "min": 3,
+        "max": 4,
+        "what": "form fields",
+        "oneOf": [
+          "siteUrl",
+          "currentHost",
+          "email",
+          "note"
+        ],
+        "mustInclude": [
+          "siteUrl",
+          "currentHost",
+          "email"
+        ]
+      }
+    ],
+    "WhyChoose": [
+      {
+        "path": "content.items",
+        "unit": "items",
+        "min": 3,
+        "max": 3,
+        "what": "reasons"
+      },
+      {
+        "path": "content.items[*].title",
+        "unit": "words",
+        "max": 6,
+        "what": "reason title"
+      },
+      {
+        "path": "content.items[*].text",
+        "unit": "words",
+        "max": 20,
+        "what": "reason line"
+      }
+    ],
+    "ProofBar": [
+      {
+        "path": "content.claims",
+        "unit": "items",
+        "min": 3,
+        "max": 4,
+        "what": "proof items"
+      }
+    ],
+    "HonestLimits": [
+      {
+        "path": "content.h2",
+        "unit": "chars",
+        "max": 70,
+        "what": "heading"
+      },
+      {
+        "path": "content.items",
+        "unit": "items",
+        "min": 2,
+        "max": 6,
+        "what": "limits"
+      },
+      {
+        "path": "content.items[*].text",
+        "unit": "chars",
+        "max": 140,
+        "what": "limit"
+      },
+      {
+        "path": "content.items[*].reason",
+        "unit": "chars",
+        "max": 200,
+        "what": "reason"
+      }
+    ],
+    "PageProvenance": [
+      {
+        "path": "content.howLine",
+        "unit": "chars",
+        "min": 20,
+        "max": 200,
+        "what": "how line"
+      }
+    ]
+  }
+}

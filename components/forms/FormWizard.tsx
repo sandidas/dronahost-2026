@@ -8,6 +8,7 @@ import Button from "@/components/ui/Button";
 import type { FieldDef, StepDef } from "@/content/forms";
 import { track, type AnalyticsEvent } from "@/lib/analytics/track";
 import { cn } from "@/utils/cn";
+import { UI } from "@/content/strings";
 
 type Props = {
   steps: readonly StepDef[];
@@ -114,7 +115,7 @@ export default function FormWizard({ steps, schema, endpoint, storageKey, event,
       });
       if (!res.ok) {
         const body = (await res.json().catch(() => ({}))) as { error?: string };
-        throw new Error(body.error ?? "Something went wrong. Please try again.");
+        throw new Error(body.error ?? UI.errors.sendFailed);
       }
       track(event);
       try {

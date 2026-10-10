@@ -3,9 +3,11 @@
  *
  * TODO: replace with verified data. Each entry renders only when `verified` is true
  * (certifications and locations only if the company actually holds/operates them).
+ * Where a claim exists in content/claims.ts, `verified` is derived from it, never set by hand.
  * Reuse the evidence in content/claims.ts; do not duplicate figures here.
  */
 import type { FeatureIconName } from "@/components/ui/FeatureIcon";
+import { isVerified } from "./claims";
 
 export type TrustItem = {
   id: string;
@@ -25,7 +27,7 @@ export const TRUST_ITEMS: readonly TrustItem[] = [
     description: "If hosting is not right for you, you can cancel within the guarantee period for a refund.",
     href: "/refund-policy",
     linkLabel: "Read the refund policy",
-    verified: false,
+    verified: isVerified("money-back"),
   },
   {
     id: "sla",
@@ -34,7 +36,7 @@ export const TRUST_ITEMS: readonly TrustItem[] = [
     description: "Our uptime commitment and service-credit terms are set out in writing.",
     href: "/sla",
     linkLabel: "Read the SLA",
-    verified: false,
+    verified: isVerified("uptime-sla"),
   },
   {
     id: "security",
@@ -43,15 +45,6 @@ export const TRUST_ITEMS: readonly TrustItem[] = [
     description: "How we protect servers, data and backups, in plain language.",
     href: "/security",
     linkLabel: "Read our security practices",
-    verified: false,
-  },
-  {
-    id: "data-centers",
-    icon: "globe",
-    title: "Data center locations",
-    description: "Choose where your site is hosted. Regions are listed on each hosting page.",
-    href: "/hosting/us",
-    linkLabel: "See locations",
     verified: false,
   },
   {

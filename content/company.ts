@@ -15,7 +15,8 @@ export const COMPANY = {
   vatNumber: null as string | null,
   /** Physical business address, honest about where the team is based. Unconfirmed. */
   address: null as string | null,
-  supportEmail: null as string | null,
+  /** Owner confirmed 2026-10-10. */
+  supportEmail: "support@dronahost.com" as string | null,
   /** Only real, owned profile URLs. The old footer.json placeholders (twitter.com etc.) were removed. */
   socials: [] as SocialLink[],
   summary: "Managed WordPress hosting for small businesses, freelancers and agencies.",

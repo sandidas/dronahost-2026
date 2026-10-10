@@ -24,10 +24,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug, locale } = await params;
   try {
     const post = await getPost(slug);
-    if (!post) return buildMetadata({ locale, title: "Post not found | DronaHost Blog", description: "The article you are looking for could not be found.", path: `/blog/${slug}`, noIndex: true });
+    if (!post) return buildMetadata({ locale, title: "Post not found", description: "The article you are looking for could not be found.", path: `/blog/${slug}`, noIndex: true });
     return buildMetadata({
       locale,
-      title: `${post.title} | DronaHost Blog`,
+      title: `${post.title}`,
       description: post.excerpt,
       path: `/blog/${slug}`,
       ogImage: post.image?.url,

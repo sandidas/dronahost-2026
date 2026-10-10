@@ -311,7 +311,7 @@ unverified in `claims.ts` and the related tiles do not render.
 ### Prompt that was sent (Phase 1 is built; kept for reference)
 
 ```
-Read docs/reference/pages/HOME_PAGE_DESIGN.md and the content planner in docs/content-planner/ (README first).
+Read docs/reference/pages/HOME_PAGE_DESIGN.md and the content planner in content-engine/ (README first).
 Do Phase 1 only: build PathRouter and ResponsibilitySplit as new components in /v2
 (bespoke tier), plus AnswerBlock if missing. Follow the /v2 review workflow. Take
 viewport screenshots at 1440 and 390 in dark and light, review them yourself, and fix

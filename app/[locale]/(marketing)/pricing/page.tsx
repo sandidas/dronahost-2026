@@ -14,11 +14,12 @@ import { buildFamilyCards, buildPlanCards, HIGH_TRAFFIC, PLAN_FAMILIES, VAT_DISP
 import { breadcrumbSchema, faqPageSchema, hostingPlansSchema } from "@/lib/seo/jsonld";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { moneyBackGuarantee } from "@/lib/pricing/guarantee";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return buildMetadata({ locale,
-    title: "Pricing: Managed WordPress and Cloud Hosting Plans | DronaHost",
+    title: "Pricing: Managed WordPress and Cloud Hosting Plans",
     description: `Compare DronaHost hosting plans, with the renewal price shown beside the signup price${startingPriceLabel() ? `. Plans from ${startingPriceLabel()}` : ""}.`,
     path: "/pricing",
   });
@@ -49,7 +50,7 @@ export default function PricingPage() {
           plans={buildFamilyCards(family.id)}
           showPrices={prices}
           vatDisplay={VAT_DISPLAY}
-          guaranteeNote={isVerified("money-back") ? "30-day money-back guarantee." : null}
+          {...moneyBackGuarantee()}
           renewalPromise={isVerified("renewal-price-same")}
         >
           {i === PLAN_FAMILIES.length - 1 && <PricingExtras showPrices={prices} />}

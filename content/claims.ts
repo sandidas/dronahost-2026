@@ -73,7 +73,7 @@ const OWNER_CONFIRMED = {
 } as const;
 
 const RECORDS: readonly ClaimRecord[] = [
-  { id: "uptime-sla", kind: "stat", text: "99.95% uptime SLA with service credits", value: "99.95%", label: "Uptime SLA", note: "with service credits", ...NONE },
+  { id: "uptime-sla", kind: "stat", text: "99.99% uptime SLA with service credits", value: "99.99%", label: "Uptime SLA", note: "with service credits", termsLabel: "Read the SLA", ...OWNER_CONFIRMED, source: "owner 2026-10-10: 99.99% on every hosting plan (decision 45); credit terms on /sla modeled on Kinsta's published SLA, updated 2025-09-25 (decision 53)", verifiedOn: "2026-10-10", termsPage: "/sla", termsPageStatus: "published" },
   { id: "ttfb", kind: "stat", text: "Average TTFB under 200ms from London, New York and Dubai", value: "< 200ms", label: "Avg. TTFB", note: "London · New York · Dubai", ...NONE },
   { id: "first-reply", kind: "stat", text: "Average first reply in 18 minutes", value: "18 min", label: "Avg. first reply", ...NONE },
   { id: "founded", kind: "stat", text: "Founded in 2019", value: "2019", label: "Founded", ...NONE },

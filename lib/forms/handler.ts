@@ -5,6 +5,7 @@ import { FormSubmission } from "@/lib/models/form-submission";
 import { connectToDatabase } from "@/lib/mongodb";
 import { clientIp, rateLimited, tooFast } from "./guard";
 import { verifyTurnstile } from "./turnstile";
+import { UI } from "@/content/strings";
 
 type FormBase = { email: string; startedAt: number; website?: string; turnstileToken?: string } & Record<string, unknown>;
 
@@ -31,7 +32,7 @@ export function createFormHandler({ type, schema, subject }: Options) {
 
     const body = await req.json().catch(() => null);
     const parsed = schema.safeParse(body);
-    if (!parsed.success) return NextResponse.json({ error: "Please check the highlighted fields.", details: parsed.error.flatten().fieldErrors }, { status: 400 });
+    if (!parsed.success) return NextResponse.json({ error: UI.errors.fixFields, details: parsed.error.flatten().fieldErrors }, { status: 400 });
 
     const { website, startedAt, turnstileToken, ...data } = parsed.data;
     // Bots learn nothing: pretend success, store nothing.

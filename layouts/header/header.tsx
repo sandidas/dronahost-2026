@@ -16,7 +16,7 @@ import MobileMenu from "./MobileMenu";
 
 const MEGA_ID = "hosting-mega-menu";
 const linkClass =
-  "inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-foreground";
+  "inline-flex min-h-11 items-center rounded-lg px-2.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-foreground lg:px-3";
 
 /** Sticky site header: logo, primary navigation with hosting mega menu, account and theme controls. */
 export default function Header() {
@@ -27,7 +27,9 @@ export default function Header() {
   const sentinelRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const closeMega = useCallback(() => setMegaOpen(false), []);
+  /** True while the panel is open because the mouse hovered the trigger (so the next click does not close it). */
+  const hoverOpened = useRef(false);
+  const closeMega = useCallback(() => { hoverOpened.current = false; setMegaOpen(false); }, []);
 
   useEffect(() => {
     if (!megaOpen) return;
@@ -73,14 +75,22 @@ export default function Header() {
               <Logo size="md" priority />
             </Link>
 
-            <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
+            {/* Tablets (md) get the real links and the action, not a hamburger; only phones use the drawer. */}
+            <nav aria-label="Primary" className="hidden items-center gap-0.5 md:flex lg:gap-1">
               <button
                 ref={triggerRef}
                 type="button"
                 aria-expanded={megaOpen}
                 aria-controls={MEGA_ID}
-                onClick={() => setMegaOpen((v) => !v)}
-                onMouseEnter={() => setMegaOpen(true)}
+                // A click after a hover-open keeps the panel open (the hover already opened it; the click confirms). A click
+                // on a panel that was opened by click, or by keyboard, closes it.
+                onClick={() => {
+                  if (hoverOpened.current) { hoverOpened.current = false; setMegaOpen(true); return; }
+                  setMegaOpen((v) => !v);
+                }}
+                // Hover opens only for a mouse. On a touch screen a tap fires mouseenter and then click, which would open and
+                // immediately close the panel, so touch and pen rely on the click alone.
+                onPointerEnter={(e) => { if (e.pointerType === "mouse" && !megaOpen) { hoverOpened.current = true; setMegaOpen(true); } }}
                 onKeyDown={(e) => {
                   if (e.key === "ArrowDown") {
                     e.preventDefault();
@@ -109,14 +119,17 @@ export default function Header() {
             </nav>
 
             <div className="flex items-center gap-2">
-              <div className="hidden items-center gap-2 lg:flex">
-                <CurrencySelector />
+              <div className="hidden items-center gap-2 md:flex">
+                {/* The currency selector and the account link need the wide header; on tablets they live in the footer and the account page. */}
+                <div className="hidden items-center gap-2 lg:flex">
+                  <CurrencySelector />
+                  {FEATURES.accountArea && (
+                    <Button href={ACCOUNT_LINK.href} variant="ghost" size="sm" leadingIcon={<LogIn className="size-4" aria-hidden="true" />}>
+                      {ACCOUNT_LINK.label}
+                    </Button>
+                  )}
+                </div>
                 <ThemeToggle />
-                {FEATURES.accountArea && (
-                  <Button href={ACCOUNT_LINK.href} variant="ghost" size="sm" leadingIcon={<LogIn className="size-4" aria-hidden="true" />}>
-                    {ACCOUNT_LINK.label}
-                  </Button>
-                )}
                 <Button href={HEADER_CTA.href} size="sm">
                   {HEADER_CTA.label}
                 </Button>
@@ -128,7 +141,7 @@ export default function Header() {
                 aria-expanded={drawerOpen}
                 aria-controls="mobile-menu"
                 aria-label="Open navigation menu"
-                className="btn btn-secondary size-11 !min-h-11 !px-0 lg:hidden"
+                className="btn btn-secondary size-11 !min-h-11 !px-0 md:hidden"
               >
                 <Menu className="size-5" aria-hidden="true" />
               </button>

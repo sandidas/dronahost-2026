@@ -1,0 +1,67 @@
+{
+  "$comment": "FICTIONAL SAMPLE. Brand identity and business settings. Schema: schemas/settings.ts",
+  "brand": {
+    "name": "Crumb and Co",
+    "domain": "crumbandco.example",
+    "neverWrite": [
+      "Crumb & Co",
+      "CrumbAndCo"
+    ]
+  },
+  "business": {
+    "type": "local bakery with a bread-box delivery",
+    "category": "bakery",
+    "oneLine": "Weekly bread boxes delivered to the door in one town, and wedding cakes by order",
+    "offerings": [
+      {
+        "name": "Weekly bread box",
+        "url": "/bread-box",
+        "status": "offered"
+      },
+      {
+        "name": "Family bread box",
+        "url": "/bread-box",
+        "status": "offered"
+      },
+      {
+        "name": "Wedding cakes",
+        "url": null,
+        "status": "offered"
+      }
+    ]
+  },
+  "audience": {
+    "summary": "Households and small events in one town.",
+    "priorityMarkets": [
+      "one town"
+    ],
+    "secondLanguageReaders": true
+  },
+  "language": {
+    "locale": "en-US",
+    "otherLocales": [],
+    "dateExample": "October 6, 2026",
+    "timeExample": "9:00 AM local time"
+  },
+  "pricing": {
+    "defaultCurrency": "USD",
+    "currencies": [
+      "USD"
+    ],
+    "taxLine": null
+  },
+  "support": {
+    "channels": [
+      "the email form on the contact page"
+    ],
+    "notOffered": [
+      "phone orders",
+      "text message orders"
+    ]
+  },
+  "people": {
+    "approver": "Jo Baker",
+    "drafter": "Claude",
+    "legalReviewer": null
+  }
+}

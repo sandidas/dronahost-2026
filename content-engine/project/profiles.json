@@ -1,0 +1,115 @@
+{
+  "$comment": "What a page must show for its search intent (IN1 to IN5) and to be trusted (TR1 to TR8). Rules: rules/search-intent.md and rules/eeat-and-people-first.md. Schema: schemas/profiles.ts. Every rule starts as a warning (decision 40); set a rule to \"fail\" once the pages are measured. Revised 2026-10-09: richer needs per intent (the elements a reader expects before they stop searching), and the provenance, experience and pressure checks.",
+  "severity": { "IN1": "warn", "IN2": "warn", "IN3": "warn", "IN4": "warn", "IN5": "warn", "TR1": "warn", "TR2": "warn", "TR3": "warn", "TR4": "warn", "TR5": "warn", "TR6": "warn", "TR7": "warn", "TR8": "warn" },
+  "intents": {
+    "Learn": {
+      "needs": [
+        { "id": "answer", "label": "a direct answer under the H1", "any": [{ "answer": true }] },
+        { "id": "why", "label": "why it matters to the reader (a 'why' or 'what it means' heading)", "any": [{ "heading": "(why|what (it|this) means|does it matter|should you care)" }] },
+        { "id": "example", "label": "a real example, a mistake to avoid, or a step the reader can repeat", "any": [{ "heading": "(example|mistake|in practice|how to|step)" }, { "text": "^\\s*(step )?\\d+[.)]\\s" }] },
+        { "id": "sources", "label": "a source the reader can check (an outside link or a sources section)", "any": [{ "heading": "^sources" }, { "href": "^https?://" }] },
+        { "id": "nextStep", "label": "a link to a next step", "any": [{ "href": "^/" }] }
+      ],
+      "firstScreen": ["answer"],
+      "avoidFirstScreen": [{ "label": "a link to pricing or checkout (a sales push before the answer)", "detector": { "href": "^/(pricing|checkout|signup)" } }],
+      "avoidLabels": ["^(buy|order|sign up|get started)\\b"]
+    },
+    "Solve": {
+      "needs": [
+        { "id": "answer", "label": "a quick answer under the H1", "any": [{ "answer": true }] },
+        { "id": "backup", "label": "a backup or safety step before the fix", "any": [{ "heading": "(back ?up|before you start|first,? )" }, { "text": "(take a backup|back up your site|make a backup)" }] },
+        { "id": "steps", "label": "numbered or named fix steps", "any": [{ "heading": "step|fix|how to|solution" }, { "text": "^\\s*(step )?\\d+[.)]\\s" }] },
+        { "id": "check", "label": "a check that the fix worked", "any": [{ "text": "(check that|to confirm|you should (now )?see|if it worked|to test)" }] },
+        { "id": "versions", "label": "the versions and the date the steps were tested", "any": [{ "heading": "(tested|versions)" }, { "text": "tested (on|with|in) " }] },
+        { "id": "help", "label": "when to ask for help, with a link", "any": [{ "heading": "(still stuck|need help|ask for help|when to)" }, { "href": "^/(contact|support)" }] }
+      ],
+      "firstScreen": ["answer"],
+      "avoidFirstScreen": [],
+      "avoidLabels": ["^(buy|order|sign up)\\b", "at risk"]
+    },
+    "Compare": {
+      "needs": [
+        { "id": "verdict", "label": "a one-sentence verdict", "any": [{ "text": "(verdict|in short|short answer|our pick|choose .{1,40} if)" }] },
+        { "id": "criteria", "label": "the criteria used to compare", "any": [{ "heading": "(criteria|how we (compare|compared|chose|test)|what we (compare|compared))" }] },
+        { "id": "table", "label": "a comparison table", "any": [{ "table": true }] },
+        { "id": "stronger", "label": "where the other option is stronger (honest, both sides)", "any": [{ "heading": "(where .{1,40} (is|are) stronger|stronger|better at)" }] },
+        { "id": "dated", "label": "the date the facts were checked", "any": [{ "text": "(checked|read|retrieved|updated) (on )?\\d{1,2} [A-Z][a-z]+ \\d{4}" }, { "text": "(checked|read|retrieved|updated) (on )?\\d{4}-\\d{2}-\\d{2}" }] },
+        { "id": "whoChooses", "label": "who should choose which option", "any": [{ "heading": "(who should|which one|best for|choose)" }] }
+      ],
+      "firstScreen": ["verdict"],
+      "avoidFirstScreen": [],
+      "avoidLabels": ["^(buy|order|sign up) now$"]
+    },
+    "Buy": {
+      "needs": [
+        { "id": "price", "label": "a visible price or a link to the pricing page", "any": [{ "sectionType": "PricingPlans" }, { "href": "^/pricing" }] },
+        { "id": "risk", "label": "a risk reducer (refund, cancellation or a move that is handled for the buyer)", "any": [{ "href": "^/(refund|money-back)" }, { "text": "(money-back|refund|guarantee|cancel)" }] },
+        { "id": "fit", "label": "who it is for, by situation (a router or a 'who it is for' section)", "any": [{ "sectionType": "PathRouter" }, { "heading": "(who (this|it) is for|right for you|best for|is this for)" }] },
+        { "id": "included", "label": "what is included, in words (a feature list, a plan card or an answer block)", "any": [{ "sectionType": "FeatureGrid" }, { "sectionType": "BentoGrid" }, { "sectionType": "PricingPlans" }, { "sectionType": "Meaning" }, { "sectionType": "ResponsibilitySplit" }, { "heading": "(what (is|you get|we (look after|handle|do))|included)" }] },
+        { "id": "next", "label": "what happens after the action (the next step, who replies, how)", "any": [{ "text": "(what happens next|after you (choose|order|sign up|pay)|we (reply|email|contact) you|you (get|receive) an email|next steps?)" }, { "sectionType": "ProcessTimeline" }] },
+        { "id": "support", "label": "how to reach a person before and after buying", "any": [{ "sectionType": "HelpAndPolicies" }, { "sectionType": "SupportChannels" }, { "href": "^/contact" }] },
+        { "id": "faq", "label": "the last doubts answered (a FAQ)", "any": [{ "sectionType": "FAQSection" }, { "heading": "^(faq|questions)" }] },
+        { "id": "cta", "label": "one clear primary action", "any": [{ "field": "ctaPrimary" }] }
+      ],
+      "firstScreen": ["cta"],
+      "avoidFirstScreen": [],
+      "avoidLabels": []
+    },
+    "Find": {
+      "needs": [
+        { "id": "entity", "label": "one sentence that says what the business is, in the first screen", "any": [{ "text": "^DronaHost is " }] },
+        { "id": "link", "label": "a direct link to the place the reader wants", "any": [{ "href": "^/" }] },
+        { "id": "routes", "label": "the main destinations by the reader's situation (a router, or links to the main services)", "any": [{ "sectionType": "PathRouter" }, { "href": "^/(wordpress-hosting|pricing)" }] },
+        { "id": "support", "label": "how to reach a person", "any": [{ "sectionType": "HelpAndPolicies" }, { "sectionType": "SupportChannels" }, { "href": "^/contact" }] },
+        { "id": "notOffered", "label": "what the business does not do (so a reader with the wrong need leaves quickly)", "any": [{ "sectionType": "HonestLimits" }, { "heading": "(not (for|offer|do)|what we (do not|don.t) do)" }] }
+      ],
+      "firstScreen": ["entity", "link"],
+      "avoidFirstScreen": [],
+      "avoidLabels": []
+    },
+    "Plan": {
+      "needs": [
+        { "id": "criteria", "label": "the decision criteria", "any": [{ "heading": "(criteria|how to (choose|decide)|what to consider)" }] },
+        { "id": "options", "label": "who each option suits", "any": [{ "heading": "(who .{1,30} suits|best for|choose .{1,40} if|which .{1,40} for)" }, { "table": true }] },
+        { "id": "recommendation", "label": "a recommendation with its reason", "any": [{ "text": "(we recommend|our recommendation|start with|choose .{1,40} if)" }] },
+        { "id": "nextStep", "label": "a link to a next step", "any": [{ "href": "^/" }] }
+      ],
+      "firstScreen": [],
+      "avoidFirstScreen": [],
+      "avoidLabels": ["pressure"]
+    }
+  },
+  "trust": {
+    "identity": { "appliesTo": ["product", "decision", "trust", "landing", "article"], "hrefs": ["/about", "/contact"], "siteWideFile": "../content/navigation.ts" },
+    "policies": { "appliesTo": ["product", "landing"], "hrefs": ["/refund-policy", "/support-policy", "/pricing-policy", "/backup-policy", "/migration-terms"], "min": 2 },
+    "authority": {
+      "patterns": ["\\b(the best|best-in-class|#1|number one|leading provider|fastest|award[- ]winning|trusted by|world[- ]class|industry[- ]leading|top[- ]rated|most reliable|unbeatable)\\b"]
+    },
+    "honestLimits": {
+      "appliesTo": ["product", "decision", "landing"],
+      "any": [{ "sectionType": "HonestLimits" }, { "text": "(not (for|the right|a good fit)|isn.t (for|the right|a good fit)|(does not|doesn.t) (include|cover|offer)|only (covers|for)|one website per)" }, { "heading": "(not for|who it.s not|limits|what.s not)" }]
+    },
+    "freshness": { "appliesTo": ["product", "decision", "trust", "landing", "article"], "maxAgeDays": 180 },
+    "provenance": {
+      "appliesTo": ["product", "decision", "trust", "landing", "article"],
+      "any": [{ "sectionType": "PageProvenance" }, { "text": "^\\*?(written by|reviewed by)" }]
+    },
+    "experience": {
+      "appliesTo": ["product", "landing", "trust", "article"],
+      "any": [{ "sectionType": "Evidence" }, { "sectionType": "Testimonials" }, { "sectionType": "ProofBar" }, { "sectionType": "CaseStudy" }, { "field": "firstHand" }, { "heading": "^what we (saw|did|tested|found)" }, { "text": "\\(Q\\d+\\)" }, { "text": "\\(decision \\d+" }]
+    },
+    "pressure": {
+      "patterns": ["\\b(hurry|act now|last chance|limited[- ]time|ends (today|tonight|soon)|only \\d+ (left|spots?|seats?)|no questions asked|don.t miss (out|this)|selling fast|while stocks last|\\d+ people are (viewing|looking))\\b"]
+    }
+  },
+  "owed": [
+    { "match": "leadFormReady", "label": "A support email, or a form route, so the free-move form can send", "who": "owner" },
+    { "match": "pricesConfirmed", "label": "Confirmed prices in data/pricing.json", "who": "owner" },
+    { "match": "claim:(uptime-sla|ttfb|first-reply|founded)", "label": "A measured number with its source (uptime, speed, first reply, year founded)", "who": "owner" },
+    { "match": "verifiedReviews", "label": "Real reviews with the reviewer's name, role and permission", "who": "customers, via owner" },
+    { "match": "^Evidence\\|", "label": "One approved case study with real numbers", "who": "owner and customer" },
+    { "match": "claim:(business-hosting-scope|managed-vps-scope)", "label": "Confirmation of what business hosting and managed VPS include", "who": "owner" },
+    { "match": "screenshot", "label": "A real product screenshot", "who": "owner" },
+    { "match": "editorialPolicyPublished", "label": "The editorial policy page, reviewed and published, so provenance can link to it", "who": "owner" }
+  ]
+}

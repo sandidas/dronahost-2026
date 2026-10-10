@@ -4,7 +4,7 @@ argument-hint: <topic>
 ---
 Plan keywords for: $ARGUMENTS
 
-Follow `docs/content-planner/README.md` and `rules/governor.md`. This command never writes a page.
+Follow `content-engine/README.md` and `rules/governor.md`. This command never writes a page.
 
 1. Run `npm run content:governor`. The number of rows you may propose is the monthly cap minus the briefs already started this month, and zero if the pause switch is on or the in-flight cap is reached. Say the number first.
 2. Research the topic with the `researcher` agent: real search suggestions and the live results for each candidate (dated). Use Search Console data if a CSV is available.

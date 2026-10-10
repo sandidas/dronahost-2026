@@ -1,0 +1,166 @@
+{
+  "$comment": "Host integration: paths, adapters, governor and limits. Every path is relative to this file. The brand name, locale and title suffix come from project/settings.json; the readability limits from project/voice.json. Schema: schemas/config.ts",
+  "paths": {
+    "register": "project/keyword-register.md",
+    "pricing": "../data/pricing.json",
+    "claims": "../content/claims.ts",
+    "company": "../content/company.ts",
+    "pages": "../content/pages",
+    "posts": null,
+    "briefs": "project/briefs",
+    "facts": "project/facts",
+    "drafts": "project/drafts",
+    "rulesConfig": "project/rules.config.json",
+    "pricingModule": "project/adapters/pricing.ts",
+    "blueprints": "project/blueprints.json",
+    "profiles": "project/profiles.json",
+    "settings": "project/settings.json",
+    "voice": "project/voice.json"
+  },
+  "adapters": {
+    "claims": "ts-export",
+    "pricing": "module",
+    "posts": "wordpress",
+    "pageSpec": {
+      "$comment": "App-specific Zod page-spec and layout-signature checks stay in the app (owner decision, Q9). check-content calls this command; it is not copied into schemas/.",
+      "command": "npx tsx scripts/validate-pages.ts",
+      "nonCopyKeys": [
+        "id",
+        "type",
+        "variant",
+        "icon",
+        "href",
+        "source",
+        "show",
+        "highlight",
+        "claims",
+        "tiles",
+        "channels",
+        "links",
+        "requires",
+        "requiresClaim",
+        "hoursFrom",
+        "onlyPublished",
+        "hideIfEmpty",
+        "showRenewalPrice"
+      ],
+      "labelKeys": [
+        "label",
+        "cta"
+      ]
+    },
+    "wordpress": {
+      "apiUrlEnv": "WORDPRESS_API_URL",
+      "userEnv": "WORDPRESS_USER",
+      "passwordEnv": "WORDPRESS_APP_PASSWORD",
+      "webhookSecretEnv": "CONTENT_WEBHOOK_SECRET",
+      "urlTemplate": "/kb/{slug}",
+      "fields": {
+        "title": "title.rendered",
+        "slug": "slug",
+        "content": "content.rendered",
+        "author": "_embedded.author.0.name",
+        "seo_title": "meta.seo_title",
+        "meta_description": "meta.meta_description",
+        "primary_keyword": "meta.primary_keyword",
+        "plan": "meta.plan",
+        "locale": "meta.locale",
+        "reviewer": "meta.reviewer",
+        "ai_assisted": "meta.ai_assisted",
+        "reviewed_on": "meta.reviewed_on",
+        "next_review_on": "meta.next_review_on",
+        "author_page": "meta.author_page",
+        "reviews_source": "meta.reviews_source",
+        "url_path": "meta.url_path"
+      },
+      "stateMap": {
+        "draft": "Draft",
+        "auto-draft": "Draft",
+        "pending": "Ready for owner review",
+        "future": "Ready for owner review",
+        "publish": "Published",
+        "private": "Published"
+      }
+    },
+    "pageVisibility": {
+      "$comment": "Prints which sections of each page are visible after gating (JSON). Blueprint checks BP2 to BP4, BP10 and BP11 use it.",
+      "command": "npx tsx scripts/page-visibility.ts"
+    },
+    "copySource": {
+      "$comment": "Fails on page copy in a section component instead of the page JSON, claims or content/strings.ts. Blueprint check BP9.",
+      "command": "npx tsx scripts/check-copy-source.ts"
+    }
+  },
+  "governor": {
+    "maxInFlight": 3,
+    "monthlyNewPages": 4,
+    "paused": false
+  },
+  "cta": {
+    "bannedLabels": [],
+    "cardLabelTemplate": "Choose {plan}"
+  },
+  "limits": {
+    "titleWarnAbove": 60,
+    "titleFailAbove": 70,
+    "descriptionWarnAbove": 160,
+    "answerBlockWords": [
+      40,
+      80
+    ],
+    "faqItems": [
+      4,
+      6
+    ],
+    "faqAnswerWarnBelow": 40,
+    "faqAnswerFailAbove": 80,
+    "internalLinksMin": 3,
+    "similarity": {
+      "shingleWords": 5,
+      "threshold": 0.3
+    },
+    "linksSuggested": 3,
+    "faqItemsByArchetype": {
+      "money": [
+        6,
+        8
+      ],
+      "pricing": [
+        6,
+        8
+      ],
+      "guide": [
+        4,
+        6
+      ],
+      "brand": [
+        4,
+        6
+      ]
+    },
+    "archetypeByPlan": {
+      "01": "money",
+      "02": "guide",
+      "03": "guide",
+      "04": "guide",
+      "05": "money",
+      "06": "money",
+      "07": "guide",
+      "08": "money",
+      "09": "brand",
+      "10": "guide",
+      "14": "guide",
+      "15": "brand"
+    },
+    "archetypeAliases": {
+      "product": "money",
+      "landing": "money",
+      "decision": "guide",
+      "trust": "brand"
+    }
+  },
+  "web": {
+    "serpSource": "claude-web",
+    "gscSource": "csv"
+  }
+}

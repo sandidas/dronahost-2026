@@ -72,7 +72,7 @@ export default function BentoGrid({ eyebrow, title, description, items, headingL
                       href={item.href}
                       className="btn btn-link mt-3 static self-start after:absolute after:inset-0 after:content-['']"
                     >
-                      {item.linkLabel ?? UI.generic.learnMore}
+                      {item.linkLabel ?? UI.generic.readDetails}
                       <span aria-hidden="true"> →</span>
                     </Link>
                   )}

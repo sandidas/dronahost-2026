@@ -91,6 +91,17 @@ const categories: Category[] = [
     ],
   },
   {
+    label: "Intent banners",
+    items: [
+      { id: "banners-informational", label: "Informational" },
+      { id: "banners-navigational", label: "Navigational" },
+      { id: "banners-commercial", label: "Commercial" },
+      { id: "banners-transactional", label: "Transactional" },
+      { id: "banners-local", label: "Local" },
+      { id: "banners-generative", label: "Generative AI" },
+    ],
+  },
+  {
     label: "Launch features",
     items: [
       { id: "breadcrumbs", label: "Breadcrumbs" },

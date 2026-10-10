@@ -8,7 +8,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return buildMetadata({ locale,
-    title: "Website Migration Request | DronaHost",
+    title: "Website Migration Request",
     description: "Ask DronaHost to move your website. Tell us where it lives today and we will copy it across and let you review it before you switch your domain.",
     path: "/migration",
   });

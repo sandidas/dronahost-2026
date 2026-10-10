@@ -9,7 +9,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return buildMetadata({ locale,
-    title: "Cookie Policy | DronaHost",
+    title: "Cookie Policy",
     description: "Which cookies and similar storage DronaHost uses, what each one is for, how long it lasts, and how to change your choices.",
     path: "/cookie-policy",
   });
@@ -112,7 +112,7 @@ export default function CookiePolicyPage() {
           <Link href="/privacy" className="text-link underline underline-offset-4">
             Privacy policy
           </Link>
-          . Questions about cookies? <Link href="/contact" className="text-link underline underline-offset-4">Contact us</Link>.
+          . Questions about cookies? <Link href="/contact" className="text-link underline underline-offset-4">Ask the team about this policy</Link>.
         </p>
       </LegalPage>
     </>

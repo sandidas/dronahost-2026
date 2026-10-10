@@ -25,6 +25,28 @@ test.describe("keyboard and structure", () => {
     await expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
+  test("tablets show the primary links and the action, not a hamburger; a tap opens the mega menu", async ({ browser }) => {
+    const context = await browser.newContext({ viewport: { width: 834, height: 1112 }, hasTouch: true });
+    const page = await context.newPage();
+    await page.goto("/");
+    await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "View plans" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Open navigation menu" })).toBeHidden();
+    const trigger = page.getByRole("button", { name: "Hosting", exact: true });
+    await trigger.tap();
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
+    await expect(page.locator("#hosting-mega-menu")).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBe(0);
+    await context.close();
+  });
+
+  test("phones keep the drawer", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 800 });
+    await expect(page.getByRole("navigation", { name: "Primary" })).toBeHidden();
+    await page.getByRole("button", { name: "Open navigation menu" }).click();
+    await expect(page.getByRole("dialog", { name: "Navigation menu" })).toBeVisible();
+  });
+
   test("each page has exactly one h1", async ({ page }) => {
     for (const path of ["/", "/pricing", "/contact", "/terms", "/blog"]) {
       await page.goto(path);

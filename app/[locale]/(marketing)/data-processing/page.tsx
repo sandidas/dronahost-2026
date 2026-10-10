@@ -7,8 +7,10 @@ import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  // Owner 2026-10-10: legal pages are finished after the main pages (decision 42). Live for visitors, noindex until a qualified review.
   return buildMetadata({ locale,
-    title: "Data Processing Agreement — GDPR DPA | DronaHost",
+    noIndex: true,
+    title: "Data Processing Agreement — GDPR DPA",
     description:
       "DronaHost GDPR Data Processing Agreement. Required for EU and UK businesses using DronaHost services. Download the DPA or request a signed copy.",
     path: "/data-processing",
@@ -47,7 +49,7 @@ export default function DataProcessingPage() {
         <h2>Sub-processors</h2>
         <p>
           DronaHost uses the following sub-processors to deliver its services:
-          data center providers in the UK, EU, US, and UAE; payment processors;
+          infrastructure providers listed in our sub-processor list; payment processors;
           and monitoring and security services. A current list of sub-processors
           is available on request via legal@dronahost.com.
         </p>

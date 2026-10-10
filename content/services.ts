@@ -33,7 +33,7 @@ const CONTACT = { label: "Talk to our team", href: "/contact" };
 export const SERVICES: Record<string, ServiceContent> = {
   "vps-hosting": {
     slug: "vps-hosting",
-    metaTitle: "VPS Hosting | DronaHost",
+    metaTitle: "VPS Hosting",
     metaDescription: "Virtual private servers for applications, stores and teams that need dedicated resources and more control than shared hosting.",
     schemaName: "VPS hosting",
     schemaDescription: "Virtual private servers with dedicated resources for applications and teams.",
@@ -64,7 +64,7 @@ export const SERVICES: Record<string, ServiceContent> = {
   },
   "cloud-hosting": {
     slug: "cloud-hosting",
-    metaTitle: "Cloud Hosting | DronaHost",
+    metaTitle: "Cloud Hosting",
     metaDescription: "Flexible cloud hosting for sites and applications whose traffic changes over time and that need to grow without migrating.",
     schemaName: "Cloud hosting",
     schemaDescription: "Flexible cloud hosting for sites and applications that need to scale.",
@@ -95,38 +95,37 @@ export const SERVICES: Record<string, ServiceContent> = {
   },
   "business-hosting": {
     slug: "business-hosting",
-    metaTitle: "Business Hosting with Email | DronaHost",
-    metaDescription: "Business hosting that sets up your website and business email together, with help from the team.",
+    metaTitle: "Business Hosting with a cPanel Dashboard",
+    metaDescription: "Web hosting with a cPanel dashboard for any kind of site. You manage the site and we run the hosting account. Email is not included.",
     schemaName: "Business hosting",
-    schemaDescription: "A website and business email set up together.",
+    schemaDescription: "Web hosting with a cPanel dashboard for any kind of site. Email is not included.",
     hero: {
       eyebrow: "Business hosting",
-      title: "Your website and",
-      titleAccent: "business email together",
-      description: "Get a site and professional email on your own domain, set up by people who will also help you maintain them.",
+      title: "Web hosting with a cPanel dashboard,",
+      titleAccent: "for any kind of site",
+      description: "Host your website and manage it from a cPanel dashboard. You manage the site. We run the hosting account.",
       primaryCta: CONTACT,
-      secondaryCta: { label: "View plans", href: "/pricing" },
+      secondaryCta: { label: "See business hosting plans", href: "/pricing" },
     },
     features: {
       eyebrow: "What it covers",
-      title: "The basics of an online business, in one place",
-      description: "Business hosting is for small teams that want their website, domain and email handled together.",
+      title: "The hosting basics for a business site",
+      description: "Business hosting is for small teams that want their website and domain in one account, managed from a familiar dashboard.",
       items: [
         { icon: "globe", title: "Your own domain", description: "Register or transfer a domain and keep everything in one account." },
-        { icon: "mail", title: "Business email", description: "Email addresses on your domain, set up with your site." },
-        { icon: "layers", title: "A site that is maintained", description: "Hosting, updates and backups handled so you can focus on running the business." },
+        { icon: "layers", title: "You manage the site. We run the hosting account.", description: "You look after your site, its updates and its content in cPanel. We keep the hosting account running." },
         { icon: "life-buoy", title: "Setup help", description: "Tell us what you have today and we will help you move it." },
       ],
     },
     faq: [
       { question: "Can I use my existing domain?", answer: "Yes. You can keep a domain you already own and point it to DronaHost, or transfer it to us." },
-      { question: "Is email included?", answer: "Business hosting is set up together with email on your domain. Contact the team for what your plan includes." },
-      { question: "Can you move my current site and email?", answer: "Yes. Tell us where they live today and we will plan the move so nothing is interrupted." },
+      { question: "Is email included?", answer: "No. Email is not included with any hosting plan. Email is a separate service, so you add it only if you need it. Ask the team about email for your domain." },
+      { question: "Can you move my current site?", answer: "Yes. Tell us where it lives today and we will plan the move with you. Your email stays with your email provider." },
     ],
   },
   domains: {
     slug: "domains",
-    metaTitle: "Domain Registration and Transfers | DronaHost",
+    metaTitle: "Domain Registration and Transfers",
     metaDescription: "Register a domain name or transfer one you own, with help from the DronaHost team.",
     schemaName: "Domain registration",
     schemaDescription: "Domain registration and transfers handled by the DronaHost team.",
@@ -136,7 +135,7 @@ export const SERVICES: Record<string, ServiceContent> = {
       titleAccent: "your domain",
       description: "Tell us the name you want, or the domain you already own, and we will handle registration or transfer and point it to your hosting.",
       primaryCta: CONTACT,
-      secondaryCta: { label: "View plans", href: "/pricing" },
+      secondaryCta: { label: "See hosting plans", href: "/pricing" },
     },
     features: {
       eyebrow: "How it works",
@@ -145,7 +144,7 @@ export const SERVICES: Record<string, ServiceContent> = {
       items: [
         { icon: "search", title: "Availability check", description: "Send us the names you are considering and we will check them." },
         { icon: "globe", title: "Registration and transfer", description: "Register a new domain or move one from another registrar." },
-        { icon: "lock", title: "Privacy by default", description: "Ask us about WHOIS privacy for your registration." },
+        { icon: "lock", title: "WHOIS privacy", description: "Ask us about WHOIS privacy for your registration." },
         { icon: "layers", title: "Connected to hosting", description: "We point the domain to your site so it works from day one." },
       ],
     },
@@ -157,7 +156,7 @@ export const SERVICES: Record<string, ServiceContent> = {
   },
   "web-design": {
     slug: "web-design",
-    metaTitle: "Web Design and Development | DronaHost",
+    metaTitle: "Web Design and Development",
     metaDescription: "WordPress, React and Next.js websites scoped around what your business needs the site to do.",
     schemaName: "Web design and development",
     schemaDescription: "WordPress, React and Next.js website design and development.",
@@ -188,7 +187,7 @@ export const SERVICES: Record<string, ServiceContent> = {
   },
   "growth-services": {
     slug: "growth-services",
-    metaTitle: "Growth Services | DronaHost",
+    metaTitle: "Growth Services",
     metaDescription: "Support for sites that are ready to grow: integrations, conversion work and ongoing improvement.",
     schemaName: "Growth services",
     schemaDescription: "Integrations, conversion work and ongoing improvement for growing sites.",
@@ -207,7 +206,7 @@ export const SERVICES: Record<string, ServiceContent> = {
       items: [
         { icon: "git-branch", title: "Integrations", description: "Connect your site to the analytics, CRM and marketing tools you already use." },
         { icon: "trending-up", title: "Conversion work", description: "Find and fix the places where visitors drop out." },
-        { icon: "gauge", title: "Performance", description: "Speed improvements that make the site pleasant to use and easier to rank." },
+        { icon: "gauge", title: "Performance", description: "Speed improvements that make the site faster for visitors." },
         { icon: "activity", title: "Ongoing improvement", description: "Regular reviews and a short list of changes worth making next." },
       ],
     },
@@ -220,10 +219,10 @@ export const SERVICES: Record<string, ServiceContent> = {
 };
 
 /* ── Regional hosting pages (/hosting/[region]) ─────────────────────────────────
- * Claim-free: no latency figures, prices or data-center commitments. Region labels and
- * compliance regimes come from data/pricing.json. TODO: replace with verified data. */
-export const REGION_FAQ = (label: string): FaqItem[] => [
-  { question: `Can I host a site for ${label} visitors with DronaHost?`, answer: `Yes. Tell the team where most of your visitors are and we will recommend the hosting region that suits them.` },
-  { question: "Why does hosting location matter?", answer: "Servers closer to your visitors respond faster, and some businesses have rules about where personal data is stored. Both are worth deciding before you launch." },
+ * Claim-free: no latency figures, prices, server locations or data-center commitments.
+ * Pages speak to businesses serving each audience. TODO: replace with verified data. */
+export const REGION_FAQ = (label: string, regimes: string): FaqItem[] => [
+  { question: `Can I host a site for ${label} visitors with DronaHost?`, answer: "Yes. Tell the team about your site and your visitors and we will suggest the plan that fits." },
+  { question: "Which data protection rules apply to my business?", answer: `Businesses serving ${label} visitors often need to consider ${regimes}. A qualified adviser can tell you what applies to your business.` },
   { question: "Where can I read how you handle personal data?", answer: "Our privacy policy and data processing pages explain how DronaHost handles personal data, and the team can answer specific questions." },
 ];

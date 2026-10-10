@@ -3,6 +3,12 @@
  * Page copy lives in content/pages/*.json. Promises live in content/claims.ts. Company facts live in content/company.ts.
  * `npm run check:copy-source` fails when a section component holds a text literal of its own, so new text goes here.
  */
+import { isVerified } from "./claims";
+import { COMPANY } from "./company";
+
+/** "Free" wording on the migration form only while the free-migration claim renders. */
+const FREE_MIGRATION = isVerified("free-migration");
+
 export const UI = {
   /** Labels shown only in the /v2 showcase or in development, so a sample is never mistaken for a fact. */
   sample: {
@@ -13,7 +19,7 @@ export const UI = {
     draftPrices: "Draft prices from data/pricing.json (unconfirmed). Hidden in production until FEATURES.pricesConfirmed is set.",
   },
   generic: {
-    learnMore: "Learn more",
+    readDetails: "Read the details",
     readTerms: "Read the terms",
     verifyOn: "Verify on",
     linkedIn: "LinkedIn",
@@ -39,11 +45,11 @@ export const UI = {
     ticket: { title: "Support ticket", description: "Describe the issue and we reply by email with next steps.", action: "Open a ticket" },
     email: { title: "Email", description: "Prefer your own email app? Write to us directly and we reply there.", action: "Email the team" },
   },
-  /** The free-migration request form. Page JSON gives the heading, the lead and the list of fields. */
+  /** The migration request form. Page JSON gives the heading, the lead and the list of fields. */
   migrationRequest: {
     labels: { siteUrl: "Your website address", currentHost: "Who hosts your site now", email: "Your email", note: "Anything we should know (optional)" },
     placeholders: { siteUrl: "example.com", currentHost: "Your current host", email: "you@example.com", note: "" },
-    submit: "Move my site free",
+    submit: FREE_MIGRATION ? "Move my site free" : "Ask us to move your site",
     submitting: "Sending your request",
     errors: {
       siteUrl: "Enter your website address, for example example.com.",
@@ -51,7 +57,7 @@ export const UI = {
       email: "Enter an email address we can reply to.",
       note: "Keep the note under 500 characters.",
       summary: "Please fix the fields marked below.",
-      form: "We could not send your request. Please try again, or open a ticket from the contact page.",
+      form: `We could not send your request. Try again, or email us at ${COMPANY.supportEmail}.`,
       notConfigured: "This form cannot send yet. Please open a ticket from the contact page.",
     },
     ticketLink: "Open a ticket",
@@ -63,18 +69,86 @@ export const UI = {
     privacyLink: "privacy policy",
     privacyAfter: ".",
     preview: "Preview only: no email address is set, so this form cannot send yet. Set supportEmail in content/company.ts.",
-    mailSubject: "Free migration request",
-    stickyLabel: "Move my site free",
+    mailSubject: FREE_MIGRATION ? "Free migration request" : "Migration request",
+    stickyLabel: FREE_MIGRATION ? "Move my site free" : "Ask us to move your site",
     optional: "optional",
     required: "required",
     honeypot: "Leave this field empty",
   },
+  /** The provenance line at the end of a page: who reviewed it, when, how facts are checked, how to report an error. */
+  provenance: {
+    region: "About this page",
+    reviewedBy: "Reviewed by",
+    on: "on",
+    policyLink: "How we write and check our pages",
+  },
+  /** The honest-limits section: labels for the "instead" link and the first-hand marker. */
+  limits: {
+    firstHand: "Our decision",
+  },
+  /** Fixed labels inside the intent banners (components/sections/banners). The copy itself comes from props. */
+  banners: {
+    reviewedBy: "Reviewed by",
+    updated: "Updated",
+    checkedOn: "Facts checked on",
+    inThisGuide: "In this guide",
+    youWillLearn: "What you will learn",
+    whatWeCompared: "What we compared",
+    bestFor: "Best for",
+    notFor: "Not for",
+    verdict: "Verdict",
+    criteria: "How we compared",
+    renewsAt: "Renews at",
+    whatHappensNext: "What happens next",
+    source: "Source",
+    quickLinks: "Quick links",
+    regions: "Where we serve",
+    youNeed: "You will need",
+    youGet: "You get",
+    example: "Example",
+    question: "Question",
+    answer: "Answer",
+    vs: "vs",
+    jumpTo: "Jump to a page",
+    keyHint: "Shortcut",
+    issue: "Issue",
+    plan: "Plan",
+    billed: "Billed",
+    tax: "Tax",
+    total: "From",
+    region: "Region",
+    currency: "Currency",
+    start: "Start",
+    finish: "Done",
+    readingTime: "Reading time",
+    result: "Result",
+    notes: "Notes",
+    definition: "Definition",
+    footnotes: "Sources",
+    citeAs: "Cite as",
+  },
+  /** Error messages that reach visitors (content-writing-rules §5): say what happened and what to do next. */
+  errors: {
+    fixFields: "Please fix the fields marked below.",
+    contactUnreadable: "We could not read your message. Reload the page and try again.",
+    sendFailed: `Your message could not be sent right now. Try again, or email us at ${COMPANY.supportEmail}.`,
+    consentUnreadable: "We could not save your cookie choice. Reload the page and choose again.",
+    consentNotStored: "We could not record your cookie choice right now. Your choice still applies in this browser.",
+    domainCheckFailed: `We could not check availability right now. Try again in a moment, or email us at ${COMPANY.supportEmail}.`,
+    domainSearchOff: "Domain search is not available yet. Ask the team to check a name for you.",
+  },
   pricing: {
     customTitle: "Custom pricing",
-    customLine: "Contact us for a quote.",
+    customLine: "Talk to the team for a quote.",
     onRequestTitle: "Price on request",
     onRequestLine: "Ask the team for current pricing.",
     billingPeriod: "Billing period",
+    billedAnnually: "Billed annually",
+    billedMonthly: "Billed monthly",
+    billedAnnuallyAfter: "billed annually.",
+    customCta: "Talk to the team",
+    choosePlan: (plan: string): string => `Choose ${plan}`,
+    talkAboutPlan: (plan: string): string => `Talk to the team about ${plan}`,
     unavailable: "Plans are not available right now. Please contact the team.",
   },
 } as const;

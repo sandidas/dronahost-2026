@@ -61,8 +61,23 @@ import CodeBlock from "@/components/ui/CodeBlock";
 import { CLAIMS } from "@/content/claims";
 import { HOME_CTA, HOME_FAQ } from "@/content/home";
 import { MIGRATION_STEPS } from "@/content/faqs";
+import AnswerBanner from "@/components/sections/banners/AnswerBanner";
+import GuideBanner from "@/components/sections/banners/GuideBanner";
+import BrandBanner from "@/components/sections/banners/BrandBanner";
+import DestinationBanner from "@/components/sections/banners/DestinationBanner";
+import VerdictBanner from "@/components/sections/banners/VerdictBanner";
+import BuyersGuideBanner from "@/components/sections/banners/BuyersGuideBanner";
+import OfferBanner from "@/components/sections/banners/OfferBanner";
+import ActionBand from "@/components/sections/banners/ActionBand";
+import RegionBanner from "@/components/sections/banners/RegionBanner";
+import ServiceAreaBanner from "@/components/sections/banners/ServiceAreaBanner";
+import CitableFactBanner from "@/components/sections/banners/CitableFactBanner";
+import TaskBanner from "@/components/sections/banners/TaskBanner";
+import Logo from "@/components/ui/Logo";
+import { DEFAULT_CURRENCY, formatPrice, getPlan, startingPrice } from "@/lib/pricing";
 import {
   SAMPLE_ANSWER,
+  SAMPLE_BANNERS,
   SAMPLE_CASE_STUDY,
   SAMPLE_CODE,
   SAMPLE_LOGOS,
@@ -92,8 +107,24 @@ const orgSchema = {
   url: "https://dronahost.com",
 };
 
+/** Sample prices for the transactional banners, read from data/pricing.json through lib/pricing (never typed). */
+function samplePrices() {
+  const start = startingPrice("annual");
+  const growth = getPlan("growth");
+  const growthMonthly = growth?.pricing.annual[DEFAULT_CURRENCY];
+  const growthRenewal = growth?.pricing.renewal[DEFAULT_CURRENCY];
+  const fmt = (v: number | null | undefined) => (typeof v === "number" ? formatPrice(v) : null);
+  return { start: fmt(start), growth: fmt(growthMonthly), growthRenewal: fmt(growthRenewal) };
+}
+
+const variantLabel = "mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground";
+const frame = "overflow-hidden rounded-lg border border-border";
+
 export default function V2ShowcasePage() {
   if (process.env.NODE_ENV !== "development" && process.env.E2E_SHOWCASE !== "1") notFound();
+  const prices = samplePrices();
+  const B = SAMPLE_BANNERS;
+  const taxLine = "Prices exclude tax. Customers in India pay GST at checkout.";
 
   return (
     <div className="min-h-screen bg-background">
@@ -761,6 +792,223 @@ export default function V2ShowcasePage() {
             <div className="space-y-12">
               <AnswerBlock eyebrow="In plain words" title={SAMPLE_ANSWER.title} answer={SAMPLE_ANSWER.answer} detail={SAMPLE_ANSWER.detail} link={{ label: "See WordPress hosting", href: "/wordpress-hosting" }} claim="managed-hosting-tasks" showSamples headingLevel="h3" className="!py-0" />
               <AnswerBlock title="Is DronaHost the right fit for my site?" answer="DronaHost suits businesses that want managed WordPress hosting with a team to talk to. If you need a very large enterprise platform with custom contracts, ask us first and we will tell you honestly if we are not the right fit." headingLevel="h3" className="!py-0" />
+            </div>
+          </ShowcaseSection>
+
+          {/* ── Intent banners: two per search intent, each with its own art direction; variants by props. Copy is sample data from content/placeholders.ts. ── */}
+          <ShowcaseSection
+            id="banners-informational"
+            title="Informational: AnswerBanner (dictionary entry) and GuideBanner (route map)"
+            status="built"
+            notes="Learn intent. AnswerBanner sets the question as a dictionary headword in the editorial serif, the answer as definition 1 signed by the reviewer, with a giant teal question mark cropped off the edge. GuideBanner draws the outcomes as a transit line from an orange start to the end, with the reading time on a sign. No sale above the answer."
+          >
+            <div className="space-y-12">
+              <div>
+                <p className={variantLabel}>AnswerBanner, entry: headword, definition, reviewer, &ldquo;in this guide&rdquo; line and a next step</p>
+                <div className={frame}><AnswerBanner eyebrow="In plain words" {...B.answer} headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>AnswerBanner, margin: the guide sections as numbered notes in the margin</p>
+                <div className={frame}><AnswerBanner {...B.answer} next={undefined} layout="margin" headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>AnswerBanner, centered: a short explainer, no contents</p>
+                <div className={frame}><AnswerBanner question={B.answer.question} answer={B.answer.answer} partOfSpeech={B.answer.partOfSpeech} byline={B.answer.byline} layout="centered" headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>AnswerBanner, card: the entry on a ruled index card</p>
+                <div className={frame}><AnswerBanner question={B.answer.question} answer={B.answer.answer} byline={B.answer.byline} readingTime={B.answer.readingTime} card headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>GuideBanner, line: the route across the navy map, numbered stops</p>
+                <div className={frame}><GuideBanner {...B.guide} numbered headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>GuideBanner, vertical: the route runs down beside the text</p>
+                <div className={frame}><GuideBanner {...B.guide} layout="vertical" headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>GuideBanner, line on the page background, three stops, no meta</p>
+                <div className={frame}><GuideBanner eyebrow={B.guide.eyebrow} title={B.guide.title} summary={B.guide.summary} learn={B.guide.learn.slice(0, 3)} scope="page" headingLevel="h2" /></div>
+              </div>
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="banners-navigational"
+            title="Navigational: BrandBanner (lobby directory) and DestinationBanner (command palette)"
+            status="built"
+            notes="Find intent. BrandBanner crops the brand name across the band as an outline watermark and lists the destinations like a building directory, lettered with dotted leaders. DestinationBanner sets them in a glass quick-jump panel with keycaps; the search row is drawn, every row is a real link. Neither re-sells."
+          >
+            <div className="space-y-12">
+              <div>
+                <p className={variantLabel}>BrandBanner, board on the navy lobby, with the wordmark and the main action</p>
+                <div className={frame}><BrandBanner {...B.brand} logo={<Logo size="lg" />} headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>BrandBanner, inline: name beside the directory, no action</p>
+                <div className={frame}><BrandBanner name={B.brand.name} entityLine={B.brand.entityLine} destinations={B.brand.destinations} layout="inline" headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>BrandBanner, board on the light stone lobby, three links</p>
+                <div className={frame}><BrandBanner name={B.brand.name} entityLine={B.brand.entityLine} destinations={B.brand.destinations.slice(0, 3)} scope="paper" headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>DestinationBanner, palette: centred quick-jump panel</p>
+                <div className={frame}><DestinationBanner eyebrow="Looking for something?" title="Go straight to the right place" intro="The pages people who already know us ask for most." items={B.destinations} headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>DestinationBanner, split: heading beside the panel</p>
+                <div className={frame}><DestinationBanner title="Go straight to the right place" intro="The pages people who already know us ask for most." items={B.destinations} layout="split" headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>DestinationBanner, tiles: large drawn icons with keycaps, four across</p>
+                <div className={frame}><DestinationBanner title="Where do you want to go?" items={B.destinations} layout="tiles" columns={4} headingLevel="h2" /></div>
+              </div>
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="banners-commercial"
+            title="Commercial: VerdictBanner (split screen) and BuyersGuideBanner (magazine cover)"
+            status="built"
+            notes="Compare intent. VerdictBanner cuts the band in two, navy and paper, with a vs seal on the cut, the verdict on a ribbon across both halves and the criteria on a scoreboard with the date the facts were checked. BuyersGuideBanner is a magazine cover: masthead, issue mark, serif title, a contents page of what was compared, and best-for and not-for stamps. Comparison pages stay behind FEATURES.comparisonPages until every cell is sourced."
+          >
+            <div className="space-y-12">
+              <div>
+                <p className={variantLabel}>VerdictBanner, split: both options face each other, teal ribbon, scoreboard, two actions</p>
+                <div className={frame}><VerdictBanner {...B.verdict} headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>VerdictBanner, ribbon: title, teal verdict ribbon and scoreboard</p>
+                <div className={frame}><VerdictBanner eyebrow={B.verdict.eyebrow} title={B.verdict.title} verdict={B.verdict.verdict} checkedOn={B.verdict.checkedOn} criteria={B.verdict.criteria} primaryCta={B.verdict.primaryCta} layout="ribbon" headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>VerdictBanner, ribbon in navy, verdict and date only</p>
+                <div className={frame}><VerdictBanner title={B.verdict.title} verdict={B.verdict.verdict} checkedOn={B.verdict.checkedOn} layout="ribbon" ribbon="ink" headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>BuyersGuideBanner, cover: title beside the contents page, both stamps</p>
+                <div className={frame}><BuyersGuideBanner {...B.buyersGuide} headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>BuyersGuideBanner, cover in navy</p>
+                <div className={frame}><BuyersGuideBanner {...B.buyersGuide} scope="ink" headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>BuyersGuideBanner, column: one centred column, best-for stamp only</p>
+                <div className={frame}><BuyersGuideBanner eyebrow={B.buyersGuide.eyebrow} issue="02" dateLine={B.buyersGuide.dateLine} title={B.buyersGuide.title} summary={B.buyersGuide.summary} compared={B.buyersGuide.compared.slice(0, 4)} forWho={B.buyersGuide.forWho} layout="column" headingLevel="h2" /></div>
+              </div>
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="banners-transactional"
+            title="Transactional: OfferBanner (ticket) and ActionBand (split block)"
+            status="needs-verification"
+            notes="Buy intent. OfferBanner prints everything a buyer checks on a paper ticket: plan and price on the main part, renewal price and tax as line items, the action, the risk reducer and a barcode on the stub, over navy with a low orange horizon. ActionBand puts the plan on navy and the price and action on a solid orange block; pill is a floating bar for long pages. Prices come from data/pricing.json through lib/pricing and are hidden in production until FEATURES.pricesConfirmed; the guarantee and renewal lines render only while their claims do."
+            verify={["Prices and renewal prices in data/pricing.json", "30-day money-back guarantee (money-back)", "Renewal price equals the signup price (renewal-price-same)", "Free move of one website per package (free-migration)", "The 'what happens next' line (login email timing is a sample)"]}
+          >
+            <div className="space-y-12">
+              <div>
+                <p className={variantLabel}>OfferBanner, split: text beside an upright ticket (price from pricing.json)</p>
+                <div className={frame}>
+                  <OfferBanner {...B.offer} price={prices.start ? { amount: prices.start, period: "/month billed annually, from", renewal: prices.start, taxLine } : undefined} headingLevel="h2" />
+                </div>
+              </div>
+              <div>
+                <p className={variantLabel}>OfferBanner, centered: a long ticket, no price (as it ships while prices are hidden)</p>
+                <div className={frame}><OfferBanner eyebrow={B.offer.eyebrow} title={B.offer.title} titleAccent={B.offer.titleAccent} description={B.offer.description} planName={B.offer.planName} primaryCta={B.offer.primaryCta} riskReducer={B.offer.riskReducer} nextStep={B.offer.nextStep} layout="centered" headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>OfferBanner, compact: the whole banner is the ticket, on the page background</p>
+                <div className={frame}><OfferBanner title={B.offer.title} titleAccent={B.offer.titleAccent} description={B.offer.description} planName={B.offer.planName} price={prices.start ? { amount: prices.start, period: "/month billed annually, from", renewal: prices.start, taxLine } : undefined} primaryCta={B.offer.primaryCta} riskReducer={B.offer.riskReducer} layout="compact" scope="page" headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>ActionBand, split: plan on navy, price and action on the orange block</p>
+                <div className={frame}><ActionBand {...B.actionBand} price={prices.growth ? { amount: prices.growth, period: "/month billed annually", renewal: prices.growthRenewal ?? undefined } : undefined} /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>ActionBand, orange: the whole band in the action colour, no price</p>
+                <div className={frame}><ActionBand label={B.actionBand.label} line={B.actionBand.line} cta={B.actionBand.cta} note={B.actionBand.note} variant="orange" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>ActionBand, pill: a floating bar (use `sticky` on a long page to pin it to the bottom)</p>
+                <div className={frame}><ActionBand {...B.actionBand} price={prices.growth ? { amount: prices.growth, period: "/month" } : undefined} variant="pill" /></div>
+              </div>
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="banners-local"
+            title="Local: RegionBanner (boarding pass) and ServiceAreaBanner (currency wall)"
+            status="needs-verification"
+            notes="Local intent, served honestly. The business has no local office, phone line or data centre to claim, so 'near me' is never targeted (workflow Stage 1). RegionBanner prints the reader's region as a boarding pass: the code in giant outline letters, its currency symbol (from Intl, never a price), the region facts as pass fields and the action on the stub. ServiceAreaBanner sets each region under its giant currency symbol, filled where a regional page exists and outlined where it does not yet. Regional pages are Phase 2 (decision 8) and need a legal read of 'what applies here'."
+            verify={["Every region fact (currency, tax, hours, law): verified and legally read before it shows", "The hosted-where line is the standard answer in Plan 05", "Regional pages exist before a region links to them"]}
+          >
+            <div className="space-y-12">
+              <div>
+                <p className={variantLabel}>RegionBanner, split: text beside an upright pass, on the grid</p>
+                <div className={frame}><RegionBanner {...B.region} headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>RegionBanner, pass: text over a long pass, navy band</p>
+                <div className={frame}><RegionBanner {...B.region} layout="pass" scope="ink" headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>RegionBanner, split with two facts and no secondary link</p>
+                <div className={frame}><RegionBanner eyebrow={B.region.eyebrow} title={B.region.title} description={B.region.description} code={B.region.code} currency={B.region.currency} facts={B.region.facts.slice(0, 2)} hostedLine={B.region.hostedLine} primaryCta={B.region.primaryCta} headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>ServiceAreaBanner, wall on navy: filled where a regional page exists, outlined where not</p>
+                <div className={frame}><ServiceAreaBanner {...B.serviceArea} headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>ServiceAreaBanner, wall on the page background, three regions</p>
+                <div className={frame}><ServiceAreaBanner title={B.serviceArea.title} description={B.serviceArea.description} regions={B.serviceArea.regions.slice(0, 3)} honestLine={B.serviceArea.honestLine} scope="page" headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>ServiceAreaBanner, list: symbol seals with a note per region</p>
+                <div className={frame}><ServiceAreaBanner {...B.serviceArea} layout="list" scope="page" headingLevel="h2" /></div>
+              </div>
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="banners-generative"
+            title="Generative AI: CitableFactBanner (footnoted article) and TaskBanner (instrument panel)"
+            status="built"
+            notes="Answer-engine intent (rules/ai-search.md). No chat widget: the site is cited, it does not chat. CitableFactBanner sets the quotable sentences like a research paper, each with a superscript number linked to its footnote (source and date checked). TaskBanner opens a tool page on graph paper and draws the worked example as an instrument: sliders for a calculator, ticks for a checklist, choice chips for a planner, with the answer on a dark result screen. Only facts that render from the claims registry belong in either."
+          >
+            <div className="space-y-12">
+              <div>
+                <p className={variantLabel}>CitableFactBanner, article: one footnoted paragraph with a drop cap</p>
+                <div className={frame}><CitableFactBanner eyebrow="Facts you can quote" title="Three things about DronaHost, with their source" facts={B.facts} headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>CitableFactBanner, quote: the first fact as an oversized pull quote, navy</p>
+                <div className={frame}><CitableFactBanner facts={B.facts} layout="quote" scope="ink" headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>CitableFactBanner, cards: citation cards with a cite-as line</p>
+                <div className={frame}><CitableFactBanner title="Facts you can quote" facts={B.facts} layout="cards" headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>TaskBanner, calculator: sliders and the result screen beside the text</p>
+                <div className={frame}><TaskBanner kind="calculator" {...B.task} headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>TaskBanner, planner: choice chips, stacked under the text</p>
+                <div className={frame}><TaskBanner kind="planner" {...B.task} layout="stacked" headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>TaskBanner, checklist: ticks</p>
+                <div className={frame}><TaskBanner kind="checklist" {...B.task} headingLevel="h2" /></div>
+              </div>
+              <div>
+                <p className={variantLabel}>TaskBanner, no example: text and action only</p>
+                <div className={frame}><TaskBanner kind="checklist" eyebrow={B.task.eyebrow} title={B.task.title} description={B.task.description} inputs={B.task.inputs} outcome={B.task.outcome} cta={B.task.cta} headingLevel="h2" /></div>
+              </div>
             </div>
           </ShowcaseSection>
 

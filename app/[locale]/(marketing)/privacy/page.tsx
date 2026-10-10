@@ -7,8 +7,10 @@ import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  // Owner 2026-10-10: legal pages are finished after the main pages (decision 42). Live for visitors, noindex until a qualified review.
   return buildMetadata({ locale,
-    title: "Privacy Policy — DronaHost",
+    noIndex: true,
+    title: "Privacy Policy",
     description:
       "DronaHost Privacy Policy. How we collect, use, and protect your personal data in compliance with GDPR, UK GDPR, and CCPA.",
     path: "/privacy",
@@ -79,7 +81,7 @@ export default function PrivacyPage() {
           safeguards including Standard Contractual Clauses.
         </p>
 
-        <h2>Contact Us</h2>
+        <h2>How to contact us about your data</h2>
         <p>
           For privacy-related questions, contact our Data Protection Officer at
           privacy@dronahost.com or write to DronaHost, Data Protection Officer,
@@ -101,7 +103,7 @@ export default function PrivacyPage() {
           </Link>
           {" · "}
           <Link href="/contact" className="text-link underline underline-offset-4">
-            Contact Us
+            Ask the team about this policy
           </Link>
         </p>
       </footer>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DEFAULT_LOCALE, LIVE_LOCALES, LOCALES, isLocale, localePath, type Locale } from "@/lib/i18n/config";
 import { SITE_URL, SITE_NAME } from "./config";
+import { isBlocked } from "./indexing";
 
 type BuildMetadataInput = {
   title: string;         // 50-60 chars, already formatted
@@ -34,8 +35,9 @@ export function buildMetadata(input: BuildMetadataInput): Metadata {
       ? { ...Object.fromEntries(LIVE_LOCALES.map((l) => [LOCALES[l].tag, localizedUrl(normalizedPath, l)])), "x-default": localizedUrl(normalizedPath, DEFAULT_LOCALE) }
       : undefined);
   const ogImage = input.ogImage ?? `${SITE_URL}/images/og/default.jpg`;
-  const noIndex = input.noIndex ?? false;
-  const noFollow = input.noFollow ?? noIndex;
+  // A page the content engine's page map marks Blocked is noindex (links still followed) until it is Ready.
+  const noIndex = input.noIndex ?? isBlocked(normalizedPath);
+  const noFollow = input.noFollow ?? input.noIndex ?? false;
 
   return {
     title: input.title,

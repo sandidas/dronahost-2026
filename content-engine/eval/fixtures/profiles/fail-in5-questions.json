@@ -1,0 +1,47 @@
+{
+  "id": "buy-questions",
+  "path": "/buy-questions",
+  "archetype": "product",
+  "intent": "fixture",
+  "searchIntent": "Buy",
+  "primaryKeyword": "fixture keyword",
+  "seo": {
+    "title": "Fixture page title here",
+    "description": "A fixture description that is long enough to be a description."
+  },
+  "rules": {
+    "primaryCta": {
+      "label": "See plans",
+      "href": "/pricing"
+    },
+    "reviewedOn": "2026-10-01"
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "type": "ProductHero",
+      "content": {
+        "h1": "Hosting that stays out of your way",
+        "lead": "Plans for one site or many.",
+        "ctaPrimary": {
+          "label": "See plans",
+          "href": "/pricing"
+        }
+      }
+    },
+    {
+      "id": "router",
+      "type": "PathRouter",
+      "content": {
+        "h2": "Choose the plan that fits",
+        "paths": [
+          {
+            "title": "For small business",
+            "line": "One site",
+            "href": "/pricing"
+          }
+        ]
+      }
+    }
+  ]
+}

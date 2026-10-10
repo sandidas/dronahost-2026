@@ -1,0 +1,214 @@
+{
+  "$comment": "Machine-readable detection lists for the checks: feature words, channels, claims, location wording, plan routing and the no-brand test. Voice lists (banned phrases, idioms, CTA labels, disclosure line) live in project/voice.json; the brand name and the brand suffix pattern come from project/settings.json. Schema: schemas/rules-config.ts",
+  "featureWords": [
+    {
+      "pattern": "litespeed",
+      "claim": "litespeed"
+    },
+    {
+      "pattern": "nvme",
+      "claim": "nvme"
+    },
+    {
+      "pattern": "free ssl",
+      "claim": "free-ssl"
+    },
+    {
+      "pattern": "daily backups?",
+      "claim": "backups"
+    },
+    {
+      "pattern": "uptime",
+      "claim": "uptime-sla"
+    },
+    {
+      "pattern": "\\bCDN\\b",
+      "claim": "cloudflare-cdn",
+      "caseSensitive": true
+    }
+  ],
+  "forbiddenChannels": [
+    "WhatsApp",
+    "live chat",
+    "phone support",
+    "phone number",
+    "call us",
+    "call our"
+  ],
+  "forbiddenClaims": [
+    "we host email",
+    "our data centre",
+    "our data center",
+    "our servers",
+    "UK servers",
+    "US servers",
+    "EU servers",
+    "UAE servers",
+    "+ VAT",
+    "VAT included",
+    "ResellerClub",
+    "Reseller Club",
+    "Google partner",
+    "Google Premier Partner",
+    "official Google reseller",
+    "authorized Google reseller",
+    "authorised Google reseller"
+  ],
+  "channelAllowlistFiles": [],
+  "locationClaims": {
+    "patterns": [
+      "\\b(based|located|headquartered|registered|run|runs|operate[sd]?|working)\\s+(in|from|out of)\\s+india\\b",
+      "\\b(team|company|studio|business|firm)\\s+(in|from)\\s+india\\b",
+      "\\bfrom\\s+india\\b",
+      "\\bmade in india\\b",
+      "\\bindian\\s+(company|team|business)\\b"
+    ],
+    "allowedPages": [
+      "/about"
+    ]
+  },
+  "noBrand": {
+    "$comment": "Words the reusable core must never contain. The no-brand test greps rules/ plans/ templates/ schemas/ eval/ tools/ claude/ later/ for these.",
+    "terms": [
+      "Alphabet Force",
+      "Sandipan",
+      "WhatsApp",
+      "live chat",
+      "India",
+      "GST",
+      "WHMCS",
+      "Hetzner",
+      "DigitalOcean",
+      "AWS",
+      "Google Cloud",
+      "Cloudflare",
+      "ResellerClub",
+      "Reseller Club"
+    ],
+    "patterns": [
+      "(^|[\\s(])[$£€₹]\\s?\\d"
+    ],
+    "allowFiles": [
+      "tools/check-no-brand.ts",
+      "eval/sample-project"
+    ]
+  },
+  "planRouting": [
+    {
+      "plan": "02",
+      "patterns": [
+        "\\bvs\\b",
+        "alternatives?\\b",
+        "\\bcompare\\b",
+        "comparison"
+      ]
+    },
+    {
+      "plan": "14",
+      "patterns": [
+        "\\bmigrat",
+        "move my .{0,25}(site|website)",
+        "switch host",
+        "business email",
+        "email hosting",
+        "email for (my |a )?domain"
+      ]
+    },
+    {
+      "plan": "08",
+      "patterns": [
+        "\\bdomains?\\b",
+        "\\.com\\b",
+        "\\.co\\.uk\\b",
+        "\\btransfer\\b",
+        "\\btld\\b"
+      ]
+    },
+    {
+      "plan": "05",
+      "patterns": [
+        "\\b(uk|us|usa|eu|uae|europe|german|germany|france|netherlands|ireland|dubai)\\b.*\\bhosting\\b",
+        "\\bhosting\\b.*\\b(uk|us|usa|eu|uae|europe|germany|france|netherlands|ireland|dubai)\\b"
+      ]
+    },
+    {
+      "plan": "07",
+      "patterns": [
+        "\\bgdpr\\b",
+        "\\bdpa\\b",
+        "data processing",
+        "\\bccpa\\b",
+        "privacy",
+        "\\bterms\\b",
+        "refund policy",
+        "\\bsla\\b"
+      ]
+    },
+    {
+      "plan": "06",
+      "patterns": [
+        "\\bagency\\b",
+        "\\bservices?\\b",
+        "\\bhire\\b",
+        "\\bredesign\\b",
+        "\\bdeveloper\\b",
+        "\\bmaintenance\\b",
+        "web design"
+      ]
+    },
+    {
+      "plan": "04",
+      "patterns": [
+        "\\bslow\\b",
+        "\\bhacked\\b",
+        "\\berror\\b",
+        "\\bfix\\b",
+        "\\bwhy is\\b",
+        "\\bttfb\\b",
+        "\\bnot working\\b"
+      ]
+    },
+    {
+      "plan": "15",
+      "patterns": [
+        "\\breviews?\\b.*\\b(trustpilot|g2|hostadvice|clutch)\\b",
+        "\\bpartnership\\b",
+        "\\bpress\\b"
+      ]
+    },
+    {
+      "plan": "03",
+      "patterns": [
+        "^how to\\b",
+        "^what is\\b",
+        "\\bguide\\b",
+        "\\bchecklist\\b",
+        "\\bexplained\\b",
+        "^how (do|does|can)\\b"
+      ]
+    },
+    {
+      "plan": "01",
+      "patterns": [
+        "\\bbuy\\b",
+        "\\bprice\\b",
+        "\\bplans?\\b",
+        "\\bhosting\\b"
+      ]
+    }
+  ],
+  "intentByPlan": {
+    "01": "Buy",
+    "02": "Compare",
+    "03": "Learn",
+    "04": "Solve",
+    "05": "Buy",
+    "06": "Buy",
+    "07": "Learn",
+    "08": "Buy",
+    "09": "Find",
+    "10": "Learn",
+    "14": "Solve",
+    "15": "Find"
+  }
+}

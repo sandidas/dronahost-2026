@@ -2,6 +2,29 @@
 
 Branch `polish/design-system`. Each batch is one commit.
 
+## Font rule (2026-10-09)
+- Owner rule: the site keeps its two families, Sora for headlines and Manrope for all other text; components vary size, loaded weight, tracking and colour only. Written into `docs/rules/ui-ux-rules.md` §3.6, `CLAUDE.md` and this README.
+- Instrument Serif is removed (`app/fonts.ts`, `RootDocument`, `--font-serif`). The banners that used it now use Sora for display text and Manrope for text, without italic. `t-meta` labels and banner figures use Manrope with tabular numbers instead of the mono family, which stays for code only.
+
+## Intent banners: one concept per banner (2026-10-09)
+- Each of the twelve banners now has its own art direction instead of one shared template: dictionary entry, route map, lobby directory, command palette, split screen, magazine cover, ticket, split block, boarding pass, currency wall, footnoted article and instrument panel. See the table in `docs/components/README.md`.
+- New shared shape `Ticket.tsx` and art utilities in `tokens.css`. `BannerShell` now carries `SCOPE` (`ink`/`paper` force the dark or light tokens) instead of the old tone set. Tone props are replaced per banner (`layout`, `scope`, `variant`, `ribbon`, `card`); new optional data: `partOfSpeech`, `key`, `issue`, `dateLine`, `planName`, `code`, `currency`, `example.readings`, `example.result`.
+- `ResourceGrid` keys posts by title (the sample posts share one link and raised a duplicate-key warning).
+
+## Intent banners: premium restyle (2026-10-09)
+- The twelve banners are restyled to "quiet authority": light-weight Sora statements (`t-statement`, `t-statement-sm` in `tokens.css`), mono capitals for metadata (`t-meta`), hairline rules, numbered index rows and hairline tile grids instead of mint fills, pills, check marks and icon tiles. One flat orange action (`PrimaryAction`); every other action is a quiet underlined link (`QuietLink`, `.link-quiet`).
+- Tones are now `paper`, `ink` and `framed` (were plain, tinted, glow, card). `ink` is a deep navy band (`.band-ink`) that scopes the dark tokens, so it looks the same in both themes and every colour pair stays covered by the contrast check. `ActionBand` tones are `ink`, `rule` and `framed`.
+- Props are unchanged apart from the tone names; `icon` on navigational items is accepted but no longer drawn. Checked at 1440 and 390 pixels in dark and light: no horizontal overflow, no console errors.
+
+## Intent banners (2026-10-09)
+- Twelve banners in `components/sections/banners`, two per search intent (informational, navigational, commercial, transactional, local, generative AI), each with three or four variants by props, on one `BannerShell` wrapper with four tones. Shown on `/v2` under "Intent banners" with sample copy from `content/placeholders.ts` (`SAMPLE_BANNERS`). Fixed labels in `UI.banners`; all twelve files are in the copy-source check. Prices in the transactional samples come from `lib/pricing`.
+
+## Header on tablets (2026-10-09)
+- Between 768 and 1023px the header showed only the logo and a hamburger. The primary links, the theme toggle and "View plans" now show from `md`; the drawer is for phones only. The currency selector and the account link still need the wide header (`lg`).
+- The Hosting mega menu opens on hover only for a mouse pointer (`onPointerEnter` with `pointerType === "mouse"`). On a touch screen a tap used to fire mouseenter and then click, opening and closing the panel in one go. A click after a hover-open keeps the panel open; a click on a click-opened panel closes it.
+- The mega panel has two columns on tablets (hosting and web services side by side, the help panel underneath) and three on desktop.
+- `tests/e2e/navigation.spec.ts` covers the tablet header and the phone drawer.
+
 ## Home page design pass (2026-10-08)
 - `TrustSignals` gets `variant="list"` and `SupportChannels` gets `layout="split"`, both shown in `/v2`. The page-spec schema takes `variant` and `layout`. The home page uses them so the same three claims no longer appear as three card grids.
 

@@ -1,0 +1,158 @@
+{
+  "$comment": "Machine-readable project rules. Add your own banned phrases, claims and channels. Schema: schemas/rules-config.ts",
+  "featureWords": [
+    {
+      "pattern": "stone[- ]baked",
+      "claim": "stone-baked"
+    },
+    {
+      "pattern": "gluten[- ]free",
+      "claim": "gluten-free"
+    },
+    {
+      "pattern": "organic",
+      "claim": "organic"
+    }
+  ],
+  "forbiddenChannels": [
+    "phone orders",
+    "text message orders"
+  ],
+  "forbiddenClaims": [
+    "we deliver nationwide",
+    "ships worldwide"
+  ],
+  "channelAllowlistFiles": [],
+  "planRouting": [
+    {
+      "plan": "02",
+      "patterns": [
+        "\\bvs\\b",
+        "alternatives?\\b",
+        "\\bcompare\\b",
+        "comparison"
+      ]
+    },
+    {
+      "plan": "14",
+      "patterns": [
+        "\\bmigrat",
+        "move my .{0,25}(site|website)",
+        "switch host",
+        "business email",
+        "email hosting",
+        "email for (my |a )?domain"
+      ]
+    },
+    {
+      "plan": "08",
+      "patterns": [
+        "\\bdomains?\\b",
+        "\\.com\\b",
+        "\\.co\\.uk\\b",
+        "\\btransfer\\b",
+        "\\btld\\b"
+      ]
+    },
+    {
+      "plan": "05",
+      "patterns": [
+        "\\b(uk|us|usa|eu|uae|europe|german|germany|france|netherlands|ireland|dubai)\\b.*\\b(hosting|delivery|service)\\b",
+        "\\b(hosting|delivery|service)\\b.*\\b(uk|us|usa|eu|uae|europe|germany|france|netherlands|ireland|dubai)\\b"
+      ]
+    },
+    {
+      "plan": "07",
+      "patterns": [
+        "\\bgdpr\\b",
+        "\\bdpa\\b",
+        "data processing",
+        "\\bccpa\\b",
+        "privacy",
+        "\\bterms\\b",
+        "refund policy",
+        "\\bsla\\b"
+      ]
+    },
+    {
+      "plan": "06",
+      "patterns": [
+        "\\bagency\\b",
+        "\\bservices?\\b",
+        "\\bhire\\b",
+        "\\bredesign\\b",
+        "\\bdeveloper\\b",
+        "\\bmaintenance\\b",
+        "web design"
+      ]
+    },
+    {
+      "plan": "04",
+      "patterns": [
+        "\\bslow\\b",
+        "\\bhacked\\b",
+        "\\berror\\b",
+        "\\bfix\\b",
+        "\\bwhy is\\b",
+        "\\bnot (working|rising)\\b",
+        "\\bttfb\\b"
+      ]
+    },
+    {
+      "plan": "15",
+      "patterns": [
+        "\\breviews?\\b.*\\b(trustpilot|g2|hostadvice|clutch)\\b",
+        "\\bpartnership\\b",
+        "\\bpress\\b"
+      ]
+    },
+    {
+      "plan": "03",
+      "patterns": [
+        "^how to\\b",
+        "^what is\\b",
+        "\\bguide\\b",
+        "\\bchecklist\\b",
+        "\\bexplained\\b",
+        "^how (do|does|can)\\b"
+      ]
+    },
+    {
+      "plan": "01",
+      "patterns": [
+        "\\bbuy\\b",
+        "\\bprice\\b",
+        "\\bplans?\\b",
+        "\\bsubscription\\b",
+        "\\bhosting\\b"
+      ]
+    }
+  ],
+  "intentByPlan": {
+    "10": "Learn",
+    "14": "Solve",
+    "15": "Find",
+    "01": "Buy",
+    "02": "Compare",
+    "03": "Learn",
+    "04": "Solve",
+    "05": "Buy",
+    "06": "Buy",
+    "07": "Learn",
+    "08": "Buy",
+    "09": "Find"
+  },
+  "noBrand": {
+    "terms": [
+      "phone orders",
+      "sourdough"
+    ],
+    "patterns": [
+      "(^|[\\s(])[$£€₹]\\s?\\d"
+    ],
+    "allowFiles": [
+      "tools/check-no-brand.ts",
+      "eval/sample-project"
+    ]
+  }
+}

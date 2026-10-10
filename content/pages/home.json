@@ -38,6 +38,7 @@
       "why",
       "help",
       "faq",
+      "provenance",
       "cta"
     ],
     "mustLinkTo": [
@@ -140,7 +141,7 @@
           }
         ],
         "compact": true,
-        "description": "Managed hosting means a team looks after the technical side of your site. You keep control of your content, plugins and domain."
+        "description": "Managed hosting means the server work sits with us, as set out in our policies. You keep control of your content, plugins and domain."
       }
     },
     {
@@ -203,6 +204,47 @@
       }
     },
     {
+      "id": "limits",
+      "type": "HonestLimits",
+      "content": {
+        "eyebrow": "Honest limits",
+        "h2": "What DronaHost does not do",
+        "description": "Knowing this before you buy saves you a support ticket later.",
+        "items": [
+          {
+            "text": "Hosting plans do not include email.",
+            "reason": "Email is a separate service, so you add it only if you need it, or keep the email you use today."
+          },
+          {
+            "text": "Support is by ticket and email only.",
+            "reason": "The support policy explains how to reach the team and what to include in a request.",
+            "link": {
+              "label": "Read the support policy",
+              "href": "/support-policy"
+            }
+          },
+          {
+            "text": "We do not promise a reply time.",
+            "reason": "We reply by email to every ticket. We will publish a reply time only after we have measured it.",
+            "firstHand": true
+          },
+          {
+            "text": "VPS and cloud hosting have no published plans yet.",
+            "reason": "Ask the team by ticket or email before you buy, and we will say what we can offer today."
+          },
+          {
+            "text": "The free move covers one website per hosting package.",
+            "reason": "The migration terms say exactly what is covered.",
+            "link": {
+              "label": "Read the migration terms",
+              "href": "/migration-terms"
+            },
+            "requiresClaim": "claim:free-migration"
+          }
+        ]
+      }
+    },
+    {
       "id": "move-my-site",
       "type": "MigrationRequest",
       "requires": "claim:free-migration && leadFormReady",
@@ -260,11 +302,11 @@
           },
           {
             "q": "Do I need technical skills to use DronaHost?",
-            "a": "No. You manage your site in WordPress as usual, and we handle the technical side. If you get stuck, you can open a support ticket or write to the team by email, and the team will help with the next step. You do not need to know how servers work to run your site here."
+            "a": "No. You manage your site in WordPress as usual. If you get stuck, open a support ticket and the team will help with the next step. You do not need to know how servers work to run your site here. The support policy explains what to include in a ticket."
           },
           {
-            "q": "Does DronaHost host email?",
-            "a": "No. Email is not hosted on DronaHost servers, and Business Hosting does not include email. Your hosting and your email are separate, so you will need an email service from another provider. If you are unsure which option fits, write to the team before you buy."
+            "q": "Is email included with DronaHost hosting?",
+            "a": "No. Email is not included with any DronaHost hosting plan, and Business Hosting does not include it either. Email is a separate service, so you add it only if you need it, or keep the email you use today. If you are unsure which option fits, write to the team before you buy."
           },
           {
             "q": "Can I move my existing WordPress site to DronaHost?",
@@ -288,9 +330,24 @@
           },
           {
             "q": "How do I reach support?",
-            "a": "You can reach the team by support ticket or email. Tickets and email are the only support channels we offer. The support policy explains how support works and what to include in your request, so read it before you write. Open a ticket from the contact page, or write to the team by email."
+            "a": "You can reach the team by support ticket or email. Tickets and email are the only support channels we offer. The support policy explains how support works and what to include in your request, so read it before you write. Open a ticket from the contact page."
           }
         ]
+      }
+    },
+    {
+      "id": "provenance",
+      "type": "PageProvenance",
+      "content": {
+        "reviewer": "Sandipan Das",
+        "role": "owner",
+        "reviewedOn": "2026-10-08",
+        "howLine": "Every promise on this page links to the policy that states its terms, and every price comes from one published price list.",
+        "report": {
+          "label": "Report an error on this page",
+          "href": "/contact"
+        },
+        "policyHref": "/editorial-policy"
       }
     },
     {

@@ -44,8 +44,8 @@ export const HOSTING_LINKS: readonly NavLink[] = [
   {
     label: "Business hosting",
     href: "/business-hosting",
-    description: "A website and business email set up together.",
-    icon: "mail",
+    description: "Web hosting with a cPanel dashboard for any kind of site. Email is not included.",
+    icon: "server",
   },
   {
     label: "Domains",
@@ -95,7 +95,7 @@ export const HEADER_CTA: NavLink = { label: "View plans", href: "/pricing" };
 
 /**
  * The footer lists only what is sold and what is ready: the WordPress hosting plans, and the pages marked Ready in
- * docs/content-planner/project/page-map.md (Contact), plus the policy and legal pages. Add a product or page here when its row in
+ * content-engine/project/page-map.md (Contact), plus the policy and legal pages. Add a product or page here when its row in
  * the page map turns Ready, not before. Cloud, VPS, business hosting, domains and the services stay out of the footer until then.
  */
 export const FOOTER_COLUMNS: readonly { title: string; links: readonly NavLink[] }[] = [

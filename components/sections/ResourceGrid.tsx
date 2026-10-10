@@ -45,7 +45,7 @@ export default function ResourceGrid({ eyebrow, title, description, posts, colum
         {title && <SectionHeader id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} />}
         <ul className={cn("grid grid-cols-1 gap-5 sm:grid-cols-2", columns === 3 && "lg:grid-cols-3", title && "mt-12 sm:mt-14")}>
           {posts.map((post, i) => (
-            <li key={post.href} className="flex" {...reveal(i)}>
+            <li key={post.title} className="flex" {...reveal(i)}>
               <article className="surface surface-interactive relative flex w-full flex-col overflow-hidden">
                 <div aria-hidden="true" className="relative flex h-28 items-end border-b border-border bg-muted/60 p-5">
                   <div className="bg-grid absolute inset-0 opacity-60" />

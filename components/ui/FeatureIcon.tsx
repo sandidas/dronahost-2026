@@ -48,6 +48,9 @@ const ICONS = {
 
 export type FeatureIconName = keyof typeof ICONS;
 
+/** The raw lucide icons, for components that draw them without the tile. */
+export const FEATURE_ICONS: Record<FeatureIconName, LucideIcon> = ICONS;
+
 type FeatureIconProps = {
   name: FeatureIconName;
   /** Tile size. md is 44px, the minimum comfortable touch/visual weight. */

@@ -5,24 +5,30 @@
  * unconfirmed numbers, benchmarks or guarantees.
  */
 import type { FeatureIconName } from "@/components/ui/FeatureIcon";
+import { isVerified } from "./claims";
+
+type FeatureItem = { icon: FeatureIconName; title: string; description: string };
+
+/** Each tile shows only while its claim renders (content/claims.ts). Tiles with no claim behind them are not listed. */
+const FEATURE_ITEMS: readonly (FeatureItem & { claim: string })[] = [
+  { claim: "litespeed", icon: "zap", title: "LiteSpeed web servers", description: "A web server built for WordPress, with page caching configured at the server level." },
+  { claim: "staging-plans", icon: "git-branch", title: "Staging environments", description: "Test plugin, theme and code changes on a private copy before they reach your live site." },
+  { claim: "free-migration", icon: "refresh-cw", title: "Free migration", description: "We move your existing site to DronaHost free of charge. The migration terms set out what is covered." },
+  { claim: "free-ssl", icon: "lock", title: "SSL certificates", description: "Certificates are issued and renewed for you, so visitors see the secure padlock." },
+  { claim: "backups", icon: "database", title: "Backups", description: "Your site is backed up automatically. The backup policy explains how restores work." },
+  { claim: "malware-scanning", icon: "shield-check", title: "Malware scanning", description: "Malware scanning runs in the background on your site." },
+];
 
 export const WORDPRESS_FEATURES: {
   eyebrow: string;
   title: string;
   description: string;
-  items: { icon: FeatureIconName; title: string; description: string }[];
+  items: FeatureItem[];
 } = {
   eyebrow: "What you get",
   title: "The server work, done for you",
-  description: "Every managed WordPress plan comes with the same foundations, so you can start small and grow without re-platforming.",
-  items: [
-    { icon: "zap", title: "LiteSpeed web servers", description: "A web server built for WordPress, with page caching configured at the server level." },
-    { icon: "git-branch", title: "Staging environments", description: "Test plugin, theme and code changes on a private copy before they reach your live site." },
-    { icon: "refresh-cw", title: "Free migration", description: "We copy your existing site across and let you review it before you switch your domain." },
-    { icon: "lock", title: "SSL certificates", description: "Certificates are issued and renewed for you, so visitors always see the secure padlock." },
-    { icon: "database", title: "Backups", description: "Automatic backups with restore points, so a bad update is a quick rollback." },
-    { icon: "shield-check", title: "Security monitoring", description: "Malware scanning and firewall rules run in the background, with network-level DDoS protection." },
-  ],
+  description: "Every managed WordPress plan comes with the same foundations, so you can start small and grow without changing host.",
+  items: FEATURE_ITEMS.filter((i) => isVerified(i.claim)).map(({ icon, title, description }) => ({ icon, title, description })),
 };
 
 export const WORDPRESS_PRICING = {
@@ -38,7 +44,7 @@ export const WORDPRESS_PRICING = {
 export const WORDPRESS_MEANING = {
   title: "What does managed WordPress hosting mean?",
   answer:
-    "Managed WordPress hosting means a team looks after the technical side of your site, so you can focus on running your business. With DronaHost you get a backup of your site every day, a free move of your existing site, and help by support ticket or email. You keep control of your content, your plugins and themes, your domain and your decisions.",
+    "Managed WordPress hosting means the server work sits with us, as set out in our policies, so you can focus on running your business. With DronaHost you get a backup of your site every day, a free move of your existing site, and help by support ticket or email. You keep control of your content, your plugins and themes, your domain and your decisions.",
   answerClaims: ["backups", "free-migration"],
   weLookAfter: [
     { text: "Backups of your site", claim: "backups" },

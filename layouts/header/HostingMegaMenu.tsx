@@ -60,7 +60,8 @@ export default function HostingMegaMenu({
   return (
     <div id={id} hidden={!open} className="absolute inset-x-0 top-full z-50">
       <div className="mx-auto max-w-(--container-max) px-4 pt-2 sm:px-6 lg:px-8">
-        <div className="mega-panel surface surface-raised grid gap-2 p-4 shadow-lg lg:grid-cols-[1.15fr_1fr_0.9fr] lg:gap-6 lg:p-6">
+        {/* Tablets: the two link groups side by side with the help panel underneath. Desktop: three columns. */}
+        <div className="mega-panel surface surface-raised grid gap-2 p-4 shadow-lg md:grid-cols-2 md:gap-4 md:p-5 lg:grid-cols-[1.15fr_1fr_0.9fr] lg:gap-6 lg:p-6">
           <nav aria-label="Hosting">
             <p className="t-eyebrow px-3 pb-2">Hosting</p>
             <ul>
@@ -71,7 +72,7 @@ export default function HostingMegaMenu({
           </nav>
           <nav
             aria-label="Web services"
-            className="lg:border-s lg:border-border lg:ps-6"
+            className="md:border-s md:border-border md:ps-4 lg:ps-6"
           >
             <p className="t-eyebrow px-3 pb-2">Web services</p>
             <ul>
@@ -80,7 +81,7 @@ export default function HostingMegaMenu({
               ))}
             </ul>
           </nav>
-          <aside className="rounded-xl border border-border bg-muted p-5 lg:self-start">
+          <aside className="rounded-xl border border-border bg-muted p-5 md:col-span-2 lg:col-span-1 lg:self-start">
             <p className="t-h4 text-foreground">{HELP_PANEL.title}</p>
             <p className="t-small mt-2 text-muted-foreground">
               {HELP_PANEL.body}

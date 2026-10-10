@@ -272,9 +272,62 @@ export const CTABand = z.strictObject({
   content: z.strictObject({ h2: z.string().min(8).max(60), description, ctaPrimary: Cta, ctaSecondary: Cta.optional(), ctaSecondaryRequires: Requires.optional(), note: z.string().max(120).optional() }),
 });
 
+/**
+ * Honest limits (blueprint section "HonestLimits", trust rule TR4): what the product or the business does not do, so a reader
+ * with the wrong need leaves quickly and a reader with the right need trusts the rest. Each item is a plain statement with an
+ * optional reason and link; an item that depends on a claim hides with it. `firstHand` marks a decision we made ourselves
+ * (trust rule TR7 counts it as first-hand experience).
+ */
+export const HonestLimits = z.strictObject({
+  ...sectionBase,
+  type: z.literal("HonestLimits"),
+  content: z.strictObject({
+    eyebrow,
+    h2: z.string().min(8).max(70),
+    description,
+    items: z
+      .array(
+        z.strictObject({
+          /** The limit, in plain words: "We do not host email." */
+          text: z.string().min(10).max(140),
+          /** Why, or what to do instead. */
+          reason: z.string().max(200).optional(),
+          link: Cta.optional(),
+          requiresClaim: ClaimRef.optional(),
+          requires: Requires.optional(),
+          firstHand: z.literal(true).optional(),
+        }),
+      )
+      .min(2)
+      .max(6),
+  }),
+});
+
+/**
+ * Page provenance (trust rule TR6): who reviewed the page, when, how its facts are checked, and where to report an error.
+ * `reviewedOn` must equal `rules.reviewedOn`; check-content fails when they drift. The editorial policy link shows only
+ * when that page is published.
+ */
+export const PageProvenance = z.strictObject({
+  ...sectionBase,
+  type: z.literal("PageProvenance"),
+  content: z.strictObject({
+    /** A real person's name. Never a team name or a pseudonym. */
+    reviewer: z.string().min(3).max(60),
+    role: z.string().min(2).max(40),
+    reviewedOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "YYYY-MM-DD"),
+    /** One sentence on how the facts on this page are checked. */
+    howLine: z.string().min(20).max(200),
+    /** Where to report an error (the contact page). */
+    report: Cta,
+    /** The editorial policy page. Rendered only when it is in the published list. */
+    policyHref: Href.optional(),
+  }),
+});
+
 export const Section = z.discriminatedUnion("type", [
   ProductHero, AssuranceStrip, ProofBar, PathRouter, AnswerBlock, ResponsibilitySplit, Meaning, WhyChoose, MigrationRequest, Evidence, ProcessTimeline, BentoGrid, PricingPlans,
-  SupportChannels, HelpAndPolicies, Testimonials, TrustSignals, FAQSection, CTABand,
+  SupportChannels, HelpAndPolicies, Testimonials, TrustSignals, FAQSection, HonestLimits, PageProvenance, CTABand,
 ]);
 
 export type SectionSpec = z.infer<typeof Section>;

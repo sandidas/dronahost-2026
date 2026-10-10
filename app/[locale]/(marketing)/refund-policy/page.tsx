@@ -8,7 +8,7 @@ import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return buildMetadata({ locale,
-    title: "30-Day Money-Back Guarantee Policy — DronaHost",
+    title: "30-Day Money-Back Guarantee Policy",
     description:
       "DronaHost offers a 30-day money-back guarantee on all shared, WordPress, and business hosting plans. Learn what is covered and how to request a refund.",
     path: "/refund-policy",
@@ -19,17 +19,17 @@ export default function RefundPolicyPage() {
   return (
     <>
       <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs("/refund-policy"))]} />
-      {/* Owner answers 2026-10-08: 30 days from the order, hosting fee, add-ons and VPS covered, domains not, refund takes up to 30 days depending on the payment gateway. */}
-      <LegalPage title="30-Day Money-Back Guarantee" path="/refund-policy" updated="2026-10-08">
+      {/* Owner answers 2026-10-08: 30 days from the order, hosting fee and add-ons covered, domains not, refund takes up to 30 days depending on the payment gateway. Owner 2026-10-10: VPS plans are prepaid and not refundable. */}
+      <LegalPage title="30-Day Money-Back Guarantee" path="/refund-policy" updated="2026-10-10">
         <p>
           If you are not happy with your hosting plan, ask for a refund within 30 days of your order and we will refund it.
         </p>
 
         <h2>What is covered</h2>
-        <p>The guarantee covers your hosting plan, including VPS plans, and any add-ons you bought with it.</p>
+        <p>The guarantee covers your hosting plan and any add-ons you bought with it.</p>
 
         <h2>What is not covered</h2>
-        <p>Domain registrations are not refundable.</p>
+        <p>VPS plans are prepaid and are not refundable. Domain registrations are not refundable.</p>
 
         <h2>How to ask for a refund</h2>
         <p>

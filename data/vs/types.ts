@@ -1,5 +1,5 @@
 /**
- * Competitor comparison data. Rules (docs/content-planner/plans/02-commercial-investigation.md):
+ * Competitor comparison data. Rules (content-engine/plans/02-commercial-investigation.md):
  *  - Every competitor fact carries a source URL and the date it was retrieved. No source, no fact.
  *  - `value: null` means "the page we checked does not state it". A missing key means "not checked yet".
  *  - DronaHost's side is never typed here. It is built from data/pricing.json and verified claims (lib/vs/compare.ts).

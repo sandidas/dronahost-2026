@@ -1,0 +1,87 @@
+{
+  "$comment": "FICTIONAL SAMPLE. Brand voice as data. Schema: schemas/voice.ts",
+  "summary": "Warm, plain and specific. Short sentences. Say what the bread is and when it arrives.",
+  "attributes": [
+    {
+      "name": "Warm",
+      "means": "Talk to one household, not a market."
+    },
+    {
+      "name": "Plain",
+      "means": "Short sentences and everyday words."
+    },
+    {
+      "name": "Specific",
+      "means": "Say what is in the box and when it arrives. No food-marketing clichés."
+    }
+  ],
+  "readability": {
+    "gradeTarget": [
+      8,
+      10
+    ],
+    "gradeWarnAbove": 10,
+    "gradeFailAbove": 11,
+    "sentenceMax": 28,
+    "averageSentenceMax": 20
+  },
+  "spelling": {
+    "variant": "US",
+    "avoid": {
+      "colour": "color",
+      "flavour": "flavor",
+      "centre": "center",
+      "favourite": "favorite"
+    }
+  },
+  "exclamationMarks": false,
+  "wordSwaps": [
+    {
+      "avoid": [
+        "artisan-crafted"
+      ],
+      "use": "baked by hand (only if true)"
+    },
+    {
+      "avoid": [
+        "utilize"
+      ],
+      "use": "use"
+    }
+  ],
+  "bannedPhrases": [
+    "lorem ipsum",
+    "world-class",
+    "cutting-edge",
+    "game-changing",
+    "unlock the power",
+    "in today's fast-paced world",
+    "artisan-crafted",
+    "melt in your mouth",
+    "to die for"
+  ],
+  "idioms": [
+    "go the extra mile",
+    "at the end of the day",
+    "think outside the box",
+    "hit the ground running",
+    "low-hanging fruit",
+    "touch base",
+    "ballpark figure",
+    "move the needle",
+    "game plan",
+    "raise the bar",
+    "in a nutshell",
+    "piece of cake",
+    "hit the nail on the head",
+    "back to square one",
+    "the ball is in your court"
+  ],
+  "bannedCtaLabels": [
+    "click here",
+    "learn more",
+    "read more",
+    "submit"
+  ],
+  "disclosureLine": "Drafted with AI assistance, then edited, fact-checked and approved by"
+}

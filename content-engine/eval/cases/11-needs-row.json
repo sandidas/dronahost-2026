@@ -1,0 +1,11 @@
+{
+  "id": "11-needs-row",
+  "description": "A keyword no register row owns stops at Stage 0 until a row is added (one keyword, one URL)",
+  "type": "resolve",
+  "input": "what is a wildcard ssl certificate",
+  "expect": {
+    "decision": "needs-row",
+    "plan": "03",
+    "intent": "Learn"
+  }
+}

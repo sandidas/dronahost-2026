@@ -6,31 +6,47 @@
  * descriptions of what the product is; verify each before launch.
  */
 import type { HeroBaseProps } from "@/components/sections/hero/types";
+import { isVerified } from "./claims";
 
 type HeroCopy = Omit<HeroBaseProps, "headingLevel" | "className">;
 
+/** Joins phrases as "a, b and c". */
+const joinList = (parts: readonly string[]): string =>
+  parts.length <= 1 ? (parts[0] ?? "") : `${parts.slice(0, -1).join(", ")} and ${parts[parts.length - 1]}`;
+
+/** Each phrase shows only while its claim renders (content/claims.ts). */
+const WORDPRESS_PARTS: readonly { text: string; claim?: string }[] = [
+  { text: "LiteSpeed servers with built-in caching", claim: "litespeed" },
+  { text: "a staging area for testing updates", claim: "staging-plans" },
+  { text: "automatic backups", claim: "backups" },
+  { text: "a team that moves your existing site across", claim: "free-migration" },
+  { text: "help by support ticket" },
+];
+const wordpressParts = WORDPRESS_PARTS.filter((p) => !p.claim || isVerified(p.claim)).map((p) => p.text);
+const wordpressDescription = joinList(wordpressParts);
+
 export const HOME_HERO: HeroCopy = {
-  eyebrow: "WordPress, cloud and VPS hosting",
+  eyebrow: "Managed WordPress hosting",
   title: "Managed WordPress hosting for",
   titleAccent: "growing businesses",
-  description:
-    "DronaHost runs managed WordPress, cloud and VPS hosting on LiteSpeed servers. We migrate your existing site, and you can reach the team by ticket.",
-  primaryCta: { label: "View plans", href: "/pricing" },
+  description: `DronaHost offers managed WordPress hosting with ${wordpressDescription}.`,
+  primaryCta: { label: "See WordPress hosting plans", href: "/pricing" },
   secondaryCta: { label: "Talk to our team", href: "/contact" },
   highlights: [
-    "LiteSpeed servers with server-level caching",
-    "Free migration from your current host",
-    "Support from the team that runs your server",
-  ],
+    { text: "LiteSpeed servers with server-level caching", claim: "litespeed" },
+    { text: "Free migration from your current host", claim: "free-migration" },
+    { text: "Help from the team by support ticket" },
+  ]
+    .filter((h) => !h.claim || isVerified(h.claim))
+    .map((h) => h.text),
 };
 
 export const WORDPRESS_HERO: HeroCopy = {
   eyebrow: "Managed WordPress hosting",
   title: "WordPress hosting,",
   titleAccent: "managed for you.",
-  description:
-    "LiteSpeed servers with built-in caching, a staging area for testing updates, and a team that moves your existing site across.",
-  primaryCta: { label: "View plans", href: "/pricing" },
+  description: `${wordpressDescription.charAt(0).toUpperCase()}${wordpressDescription.slice(1)}.`,
+  primaryCta: { label: "See WordPress hosting plans", href: "/pricing" },
   secondaryCta: { label: "Talk to our team", href: "/contact" },
 };
 
@@ -41,7 +57,7 @@ export const ABOUT_HERO: HeroCopy = {
   description:
     "DronaHost is a hosting and web team based in India, working with businesses in the United States, the United Kingdom, the United Arab Emirates and Europe.",
   primaryCta: { label: "Talk to our team", href: "/contact" },
-  secondaryCta: { label: "View plans", href: "/pricing" },
+  secondaryCta: { label: "See hosting plans", href: "/pricing" },
 };
 
 export const SEO_HERO: HeroCopy = {

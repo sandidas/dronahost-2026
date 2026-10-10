@@ -28,7 +28,7 @@ export default function Page() {
           {" · "}
           <Link href="/pricing" className="text-link underline underline-offset-4">Plans and pricing</Link>
           {" · "}
-          <Link href="/contact" className="text-link underline underline-offset-4">Contact us</Link>
+          <Link href="/contact" className="text-link underline underline-offset-4">Ask the team about this policy</Link>
         </p>
       </LegalPage>
     </>

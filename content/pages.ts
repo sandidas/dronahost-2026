@@ -53,7 +53,7 @@ export const SEO_PROCESS: { eyebrow: string; title: string; steps: TimelineStep[
   title: "From audit to monthly report",
   steps: [
     { title: "Audit", description: "We review your site, search presence and competitors." },
-    { title: "Plan", description: "A prioritised list of fixes and content, agreed with you." },
+    { title: "Plan", description: "A prioritized list of fixes and content, agreed with you." },
     { title: "Implement", description: "We make the changes, or brief your developers." },
     { title: "Report", description: "A monthly report on what changed and what it did." },
   ],

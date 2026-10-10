@@ -29,4 +29,4 @@ open decision affects them; do not choose for the owner.
 - **Decision #8 detail:** locale routing for `en-gb` and `en-ae` exists in code behind `FEATURES.localeVariants`, which
   stays off. Only `en-us` is live.
 - **Claims confirmed 2026-10-06:** 30-day money-back guarantee, 24/7 support, free migration, renewal price equals signup
-  price. Each must link to the page that publishes its terms; see `docs/content-planner/rules/content-writing-rules.md`.
+  price. Each must link to the page that publishes its terms; see `content-engine/rules/content-writing-rules.md`.

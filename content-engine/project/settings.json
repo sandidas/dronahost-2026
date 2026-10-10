@@ -1,0 +1,128 @@
+{
+  "$comment": "Brand identity and business settings: the one place to change the brand name, business type, locale, currencies, support channels and people. The loader merges it into the config (name, locale, title suffix) and the rules (brand suffix pattern, no-brand terms). Schema: schemas/settings.ts. Facts that need proof (address, registration, numbers, guarantees) stay in project/PROJECT.md and the registries.",
+  "brand": {
+    "name": "DronaHost",
+    "wordmark": "dronahost",
+    "domain": "dronahost.com",
+    "neverWrite": [
+      "Drona Host",
+      "DRONAHOST",
+      "Dronahost"
+    ],
+    "titleSuffix": " | DronaHost"
+  },
+  "business": {
+    "type": "web hosting provider and web design agency",
+    "category": "web-hosting",
+    "oneLine": "Managed WordPress hosting and web hosting, plus web design and SEO",
+    "offerings": [
+      {
+        "name": "WordPress Hosting",
+        "url": "/wordpress-hosting",
+        "status": "offered"
+      },
+      {
+        "name": "Business Hosting",
+        "url": "/business-hosting",
+        "status": "offered"
+      },
+      {
+        "name": "VPS Hosting",
+        "url": "/vps-hosting",
+        "status": "planned"
+      },
+      {
+        "name": "Cloud Hosting",
+        "url": "/cloud-hosting",
+        "status": "planned"
+      },
+      {
+        "name": "Domain Registration",
+        "url": "/domains",
+        "status": "offered"
+      },
+      {
+        "name": "Website Migration",
+        "url": "/migration",
+        "status": "offered"
+      },
+      {
+        "name": "Business Email (Google Workspace)",
+        "url": "/email",
+        "status": "offered"
+      },
+      {
+        "name": "Website Design",
+        "url": "/web-design",
+        "status": "offered"
+      },
+      {
+        "name": "SEO Services",
+        "url": "/seo-services",
+        "status": "offered"
+      },
+      {
+        "name": "Custom Development",
+        "url": null,
+        "status": "offered"
+      },
+      {
+        "name": "Website Maintenance",
+        "url": null,
+        "status": "planned"
+      }
+    ],
+    "basedIn": {
+      "country": "India",
+      "mentionOnlyOn": [
+        "/about"
+      ]
+    }
+  },
+  "audience": {
+    "summary": "Educated small-business owners, freelancers and agencies worldwide who read English as a first or second language. Smart, not always technical. They compare providers carefully and distrust hype.",
+    "priorityMarkets": [
+      "United States",
+      "United Kingdom",
+      "United Arab Emirates",
+      "European Union"
+    ],
+    "secondLanguageReaders": true
+  },
+  "language": {
+    "locale": "en-US",
+    "otherLocales": [
+      "en-GB",
+      "en-AE"
+    ],
+    "dateExample": "6 October 2026",
+    "timeExample": "14:00 UTC"
+  },
+  "pricing": {
+    "defaultCurrency": "USD",
+    "currencies": [
+      "USD",
+      "GBP",
+      "EUR",
+      "AED",
+      "INR"
+    ],
+    "taxLine": "Prices exclude tax. Customers in India pay GST at checkout."
+  },
+  "support": {
+    "channels": [
+      "support ticket",
+      "email"
+    ],
+    "notOffered": [
+      "live chat",
+      "WhatsApp",
+      "phone support"
+    ]
+  },
+  "people": {
+    "approver": "Sandipan Das",
+    "drafter": "Claude",
+    "legalReviewer": null
+  }
+}

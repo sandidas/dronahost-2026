@@ -24,14 +24,16 @@ const hreflang = Object.fromEntries(REGIONS.map((r) => [REGIONS_META[r].hreflang
 
 export async function generateMetadata({ params }: { params: Promise<{ region: string; locale: string }> }): Promise<Metadata> {
   const { region, locale } = await params;
-  if (!isRegion(region)) return buildMetadata({ locale, title: "Hosting | DronaHost", description: "Managed hosting.", path: `/hosting/${region}`, noIndex: true });
+  if (!isRegion(region)) return buildMetadata({ locale, title: "Hosting", description: "Managed hosting.", path: `/hosting/${region}`, noIndex: true });
   const label = REGIONS_META[region].label;
   return buildMetadata({
     locale,
-    title: `Web Hosting for ${label} Businesses | DronaHost`,
-    description: `Managed WordPress and cloud hosting for businesses serving ${label} visitors, with help choosing the right region from the DronaHost team.`,
+    title: `Web Hosting for ${label} Businesses`,
+    description: `WordPress and business hosting for ${label} businesses, with help from the DronaHost team choosing the plan that fits your site and visitors.`,
     path: `/hosting/${region}`,
     hreflang,
+    // Blocked in the page map: noindex until the owner (Tier A) or a qualified reviewer (Tier B) approves
+    noIndex: true,
   });
 }
 
@@ -39,29 +41,29 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
   const { region } = await params;
   if (!isRegion(region)) notFound();
   const meta = REGIONS_META[region];
-  const faq = REGION_FAQ(meta.label);
-  const regimes = meta.compliance.join(", ").replace(/-/g, " ");
+  const regimes = meta.complianceLabel;
+  const faq = REGION_FAQ(meta.label, regimes);
 
   return (
     <>
       <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs(`/hosting/${region}`)), faqPageSchema(faq)]} />
       <CenteredHero
         eyebrow={`Hosting for ${meta.label}`}
-        title="Managed hosting for"
-        titleAccent={`${meta.label} audiences`}
-        description={`Choose where your site is hosted so it suits your visitors and your obligations. The team will help you decide.`}
+        title="Web hosting for"
+        titleAccent={`${meta.label} businesses`}
+        description={`Hosting and support for businesses serving ${meta.label} visitors. The team will help you choose a plan.`}
         primaryCta={{ label: "Talk to our team", href: "/contact" }}
-        secondaryCta={{ label: "View plans", href: "/pricing" }}
+        secondaryCta={{ label: "See hosting plans", href: "/pricing" }}
       />
       <FeatureGrid
-        eyebrow="Why location matters"
+        eyebrow="Before you launch"
         title="Three things to decide before you launch"
-        description={`Hosting for ${meta.label} visitors comes down to speed, data and support.`}
+        description={`Hosting for ${meta.label} businesses comes down to the right plan, your data duties and support.`}
         columns={3}
         items={[
-          { icon: "gauge", title: "Speed for your visitors", description: "Servers nearer your audience respond faster, which helps both people and search engines." },
+          { icon: "gauge", title: "A plan that fits your site", description: "Tell us about your site and your visitors and we will suggest a plan that fits." },
           { icon: "shield-check", title: "Data and compliance", description: `Businesses serving ${meta.label} visitors often need to consider ${regimes}. Our privacy and data processing pages explain how we handle personal data.`, },
-          { icon: "life-buoy", title: "Help choosing", description: "Tell us about your audience and site and we will recommend a region, or say so if it does not matter." },
+          { icon: "life-buoy", title: "Help before you buy", description: "Ask the team a question by support ticket before you choose a plan." },
         ]}
       />
       <FAQSection eyebrow="Regions" title={`Hosting for ${meta.label}: common questions`} items={faq} />

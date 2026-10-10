@@ -46,8 +46,8 @@ function LinkGroup({ title, links, onClose }: { title: string; links: readonly N
 }
 
 /**
- * Mobile navigation drawer. The panel is always in the DOM (inert and translated
- * off-screen while closed) so its links stay in the initial HTML. Traps focus while open,
+ * Phone navigation drawer (below the md breakpoint; tablets and up show the links in the header). The panel is always in
+ * the DOM (inert and translated off-screen while closed) so its links stay in the initial HTML. Traps focus while open,
  * closes on Escape or backdrop tap, and restores focus to the opener.
  */
 export default function MobileMenu({ open, onClose }: MobileMenuProps) {
@@ -97,7 +97,7 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
         aria-hidden="true"
         onClick={onClose}
         className={cn(
-          "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-(--dur-slow) ease-(--ease-in-out) lg:hidden",
+          "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-(--dur-slow) ease-(--ease-in-out) md:hidden",
           open ? "opacity-100" : "pointer-events-none opacity-0",
         )}
       />
@@ -110,7 +110,7 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
         inert={!open || undefined}
         onKeyDown={trapFocus}
         className={cn(
-          "fixed inset-y-0 end-0 z-[60] flex w-[min(22rem,100vw)] flex-col border-s border-border-strong bg-card shadow-xl transition-transform duration-(--dur-slow) ease-(--ease-in-out) lg:hidden",
+          "fixed inset-y-0 end-0 z-[60] flex w-[min(22rem,100vw)] flex-col border-s border-border-strong bg-card shadow-xl transition-transform duration-(--dur-slow) ease-(--ease-in-out) md:hidden",
           open ? "translate-x-0" : "translate-x-full rtl:-translate-x-full",
         )}
       >

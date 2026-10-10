@@ -275,6 +275,10 @@ body {
   .section-y {
     padding-block: var(--section-y);
   }
+  /* A short band (the provenance line, a notice): half the section rhythm so it reads as a footnote, not a section. */
+  .section-y-sm {
+    padding-block: calc(var(--section-y) / 2);
+  }
 
   /* ── Typography: fluid, tight tracking, balanced wrapping ── */
   .t-display {
@@ -448,6 +452,113 @@ body {
   .article th {
     background: var(--muted);
     color: var(--foreground);
+  }
+  /* Display sizes for the intent banners. Same families as the rest of the site (Sora headings, Manrope text); only size,
+     weight and tracking change. */
+  .t-statement {
+    font-family: var(--font-heading);
+    font-size: clamp(2.25rem, 1.35rem + 3.3vw, 4.25rem);
+    line-height: 1.03;
+    letter-spacing: -0.04em;
+    font-weight: 400;
+    text-wrap: balance;
+  }
+  .t-statement-sm {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 1.25rem + 1.9vw, 2.875rem);
+    line-height: 1.1;
+    letter-spacing: -0.032em;
+    font-weight: 400;
+    text-wrap: balance;
+  }
+  .t-meta {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+  }
+  /* Quiet text link: hairline underline that firms up on hover. */
+  .link-quiet {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--border-strong);
+    text-underline-offset: 0.4em;
+    transition: text-decoration-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .link-quiet:hover {
+    text-decoration-color: currentColor;
+  }
+  /* Ink band: deep navy with one faint teal light from the top corner. Used with the `.dark` scope so tokens stay checked. */
+  .band-ink {
+    background:
+      radial-gradient(55% 80% at 0% 0%, var(--glow-teal), transparent 65%),
+      linear-gradient(180deg, var(--inverse-surface), var(--background));
+    color: var(--foreground);
+  }
+  /* ── Banner art: each intent banner has its own motif (docs/components/README.md, "Intent banners") ── */
+  .outline-text {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--outline-stroke, var(--accent));
+  }
+  /* Ticket and pass shapes. A ticket is two parts: .tk-a (main) and .tk-b (stub), each with half-notches cut where they
+     meet, so the notch stays on the tear line whatever the content height. Stacked by default; side by side inside
+     .tk-row from 40rem. */
+  .tk-a {
+    -webkit-mask: radial-gradient(circle at 0 100%, transparent 14px, #000 15px) left / 51% 100% no-repeat, radial-gradient(circle at 100% 100%, transparent 14px, #000 15px) right / 51% 100% no-repeat;
+    mask: radial-gradient(circle at 0 100%, transparent 14px, #000 15px) left / 51% 100% no-repeat, radial-gradient(circle at 100% 100%, transparent 14px, #000 15px) right / 51% 100% no-repeat;
+  }
+  .tk-b {
+    -webkit-mask: radial-gradient(circle at 0 0, transparent 14px, #000 15px) left / 51% 100% no-repeat, radial-gradient(circle at 100% 0, transparent 14px, #000 15px) right / 51% 100% no-repeat;
+    mask: radial-gradient(circle at 0 0, transparent 14px, #000 15px) left / 51% 100% no-repeat, radial-gradient(circle at 100% 0, transparent 14px, #000 15px) right / 51% 100% no-repeat;
+  }
+  @media (min-width: 40rem) {
+    .tk-row .tk-a {
+      -webkit-mask: radial-gradient(circle at 100% 0, transparent 14px, #000 15px) top / 100% 51% no-repeat, radial-gradient(circle at 100% 100%, transparent 14px, #000 15px) bottom / 100% 51% no-repeat;
+      mask: radial-gradient(circle at 100% 0, transparent 14px, #000 15px) top / 100% 51% no-repeat, radial-gradient(circle at 100% 100%, transparent 14px, #000 15px) bottom / 100% 51% no-repeat;
+    }
+    .tk-row .tk-b {
+      -webkit-mask: radial-gradient(circle at 0 0, transparent 14px, #000 15px) top / 100% 51% no-repeat, radial-gradient(circle at 0 100%, transparent 14px, #000 15px) bottom / 100% 51% no-repeat;
+      mask: radial-gradient(circle at 0 0, transparent 14px, #000 15px) top / 100% 51% no-repeat, radial-gradient(circle at 0 100%, transparent 14px, #000 15px) bottom / 100% 51% no-repeat;
+    }
+  }
+  /* Decorative barcode on a ticket stub. */
+  .barcode {
+    background: repeating-linear-gradient(90deg, currentColor 0 2px, transparent 2px 4px, currentColor 4px 5px, transparent 5px 8px, currentColor 8px 11px, transparent 11px 13px);
+  }
+  /* Graph paper: a fine teal grid with a stronger line every fifth cell. */
+  .graph-paper {
+    background-image:
+      linear-gradient(color-mix(in srgb, var(--accent) 16%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--accent) 16%, transparent) 1px, transparent 1px),
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+  }
+  /* Map contours for the route banner. */
+  .contours {
+    background-image:
+      repeating-radial-gradient(circle at 85% 15%, transparent 0 46px, var(--grid-line) 47px 48px),
+      repeating-radial-gradient(circle at 10% 110%, transparent 0 58px, var(--grid-line) 59px 60px);
+  }
+  /* Ruled lines of an index card. */
+  .index-card {
+    background-image: repeating-linear-gradient(180deg, transparent 0 31px, color-mix(in srgb, var(--accent) 14%, transparent) 31px 32px);
+  }
+  /* The low orange light along the bottom of the buy banner: the only orange glow on the site. */
+  .horizon-glow {
+    background:
+      radial-gradient(70% 55% at 50% 115%, rgb(254 85 4 / 0.32), transparent 70%),
+      radial-gradient(50% 60% at 0% 0%, var(--glow-teal), transparent 65%),
+      linear-gradient(180deg, var(--inverse-surface), var(--background));
+  }
+  .dotted-leader {
+    flex: 1;
+    min-width: 1.5rem;
+    border-bottom: 1px dotted var(--border-strong);
+    transform: translateY(-0.3em);
   }
   .article hr {
     border: 0;

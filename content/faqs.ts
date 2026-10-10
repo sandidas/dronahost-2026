@@ -5,17 +5,23 @@
  * wording matches data/pricing.json; nothing here states an unconfirmed guarantee or SLA.
  */
 import type { FaqItem } from "@/components/sections/FAQSection";
+import { isVerified } from "@/content/claims";
+import { showPrices } from "@/lib/flags";
 
 export const PRICING_FAQ: FaqItem[] = [
   {
     question: "Are prices shown with or without tax?",
     answer:
-      "Prices are shown in US dollars before sales tax. Where tax such as VAT applies it is added at checkout, based on your billing country.",
+      "Prices exclude tax. Customers in India pay GST at checkout. Customers elsewhere pay no tax.",
   },
   {
     question: "What happens to the price when my plan renews?",
-    answer:
-      "The renewal price is listed directly under the signup price on every plan, so you can see it before you buy. If a renewal price ever differs, it is stated on the plan itself.",
+    // Promise wording only while the renewal-price-same claim renders; the card wording only while prices show.
+    answer: isVerified("renewal-price-same")
+      ? "Your hosting price does not change when you renew. The pricing policy has the full terms."
+      : showPrices()
+        ? "Each plan shows its renewal price next to the signup price."
+        : "Ask the team for the renewal price of any plan before you buy.",
   },
   {
     question: "Can I change plans later?",
@@ -23,8 +29,9 @@ export const PRICING_FAQ: FaqItem[] = [
   },
   {
     question: "Do you help me move my existing site?",
-    answer:
-      "Yes. Migration support is part of the service. We copy your site to DronaHost and let you review it before you switch your domain.",
+    answer: isVerified("migration-process")
+      ? "Yes. Migration support is part of the service. We copy your site to DronaHost and let you review it before you switch your domain."
+      : "Yes. Tell us where your site lives today and we will plan the move with you. The migration terms set out what is covered.",
   },
   {
     question: "Which payment methods do you accept?",
@@ -32,20 +39,41 @@ export const PRICING_FAQ: FaqItem[] = [
   },
 ];
 
+/** Parts of the "what is included" answer; each shows only while its claim renders. */
+const WP_INCLUDED = [
+  { text: "LiteSpeed web servers with caching", claim: "litespeed" },
+  { text: "SSL certificates", claim: "free-ssl" },
+  { text: "automatic backups", claim: "backups" },
+  { text: "malware scanning", claim: "malware-scanning" },
+  { text: "free migration of your existing site", claim: "free-migration" },
+].filter((p) => isVerified(p.claim)).map((p) => p.text);
+
+const listOf = (parts: readonly string[]): string =>
+  parts.length <= 1 ? (parts[0] ?? "") : `${parts.slice(0, -1).join(", ")} and ${parts[parts.length - 1]}`;
+
+// Items tied to an unverified claim (staging, migration process) are left out or reworded until the claim renders.
 export const WORDPRESS_FAQ: FaqItem[] = [
-  {
-    question: "What does managed WordPress hosting include?",
-    answer:
-      "The server stack is configured and maintained for you: LiteSpeed web servers, caching, SSL certificates, backups and security monitoring. You look after your content, themes and plugins.",
-  },
-  {
-    question: "Can I test updates before they go live?",
-    answer: "Yes. Plans with a staging environment let you clone your site, apply updates to the copy, review the result and then push the changes live.",
-  },
+  ...(WP_INCLUDED.length > 0
+    ? [
+        {
+          question: "What does managed WordPress hosting include?",
+          answer: `Plans include ${listOf(WP_INCLUDED)}. You look after your content, themes and plugins.`,
+        },
+      ]
+    : []),
+  ...(isVerified("staging-plans")
+    ? [
+        {
+          question: "Can I test updates before they go live?",
+          answer: "Yes. Plans with a staging environment let you clone your site, apply updates to the copy, review the result and then push the changes live.",
+        },
+      ]
+    : []),
   {
     question: "How does migration work?",
-    answer:
-      "You tell us where your site lives today. We copy the files and database to DronaHost, you review the copy, and only then do you switch your domain. Your current site stays live until you do.",
+    answer: isVerified("migration-process")
+      ? "You tell us where your site lives today. We copy the files and database to DronaHost, you review the copy, and only then do you switch your domain. Your current site stays live until you do."
+      : "Tell us where your site lives today and we will plan the move with you. The migration terms set out what is covered.",
   },
   {
     question: "Which plan should I start with?",

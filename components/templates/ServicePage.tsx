@@ -12,6 +12,9 @@ import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 import { breadcrumbSchema, faqPageSchema, serviceSchema } from "@/lib/seo/jsonld";
 import { buildMetadata } from "@/lib/seo/metadata";
 
+/** Lowercases the first letter for mid-sentence use, but keeps acronyms such as "VPS" intact. */
+const sentenceCase = (s: string): string => (/^[A-Z][a-z]/.test(s) ? s.charAt(0).toLowerCase() + s.slice(1) : s);
+
 /** Metadata for a service page, built from its content entry. */
 export const serviceMetadata = (c: ServiceContent, locale?: string) =>
   buildMetadata({ title: c.metaTitle, description: c.metaDescription, path: `/${c.slug}`, locale });
@@ -42,7 +45,7 @@ export default function ServicePage({ content, heroVariant = "centered", afterHe
       <Hero {...content.hero} />
       {afterHero}
       <FeatureGrid {...content.features} columns={4} />
-      <FAQSection eyebrow="FAQ" title={`Questions about ${content.schemaName.toLowerCase()}`} items={content.faq} />
+      <FAQSection eyebrow="FAQ" title={`Questions about ${sentenceCase(content.schemaName)}`} items={content.faq} />
       <CTABand {...HOME_CTA} />
     </>
   );

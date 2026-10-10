@@ -12,6 +12,11 @@ import type { FeatureIconName } from "@/components/ui/FeatureIcon";
 import type { FaqItem } from "@/components/sections/FAQSection";
 import type { LogoItem } from "@/components/sections/LogoWall";
 import type { TestimonialItem } from "@/components/sections/Testimonials";
+import { isVerified } from "./claims";
+
+/** Keeps a list item only while its claim renders (content/claims.ts). Items with no claim always show. */
+const gated = (items: readonly { text: string; claim?: string }[]): string[] =>
+  items.filter((i) => !i.claim || isVerified(i.claim)).map((i) => i.text);
 
 /* ── Section copy for the Batch C components ───────────────────────────────── */
 
@@ -23,8 +28,9 @@ export const HOME_BENTO = {
   items: [
     {
       title: "Tuned for WordPress",
-      description:
-        "LiteSpeed servers with built-in page caching, configured for WordPress so you do not have to maintain a stack of caching plugins.",
+      description: isVerified("litespeed")
+        ? "LiteSpeed servers with built-in page caching, configured for WordPress so you do not have to maintain a stack of caching plugins."
+        : "Plans set up for WordPress, so you can focus on your site rather than the server.",
       visual: "cache",
       span: "twoThirds",
       href: "/wordpress-hosting",
@@ -40,7 +46,9 @@ export const HOME_BENTO = {
     },
     {
       title: "Safe to change",
-      description: "Staging copies and restore points let you test updates and undo mistakes before visitors notice.",
+      description: isVerified("staging-plans")
+        ? "Staging copies and restore points let you test updates and undo mistakes before visitors notice."
+        : "Automatic backups give you a way back if an update goes wrong. The backup policy explains how restores work.",
       visual: "restore",
       span: "third",
       href: "/security",
@@ -99,30 +107,31 @@ export const HOME_SPLITS = [
     visual: "wordpress",
     eyebrow: "Managed WordPress hosting",
     title: "WordPress hosting that is looked after for you",
-    description: "We configure, update and monitor the server stack so your time goes into the site itself.",
-    features: [
-      "LiteSpeed web servers with server-level caching",
-      "Staging environments to test updates before they go live",
-      "SSL certificates on every site",
-    ],
+    description: "Plans set up for WordPress, with backups and a team you can reach by support ticket, so your time goes into the site itself.",
+    features: gated([
+      { text: "LiteSpeed web servers with server-level caching", claim: "litespeed" },
+      { text: "Staging environments to test updates before they go live", claim: "staging-plans" },
+      { text: "SSL certificates on every site", claim: "free-ssl" },
+      { text: "Automatic backups of your site", claim: "backups" },
+    ]),
     cta: [
-      { label: "View plans", href: "/pricing" },
+      { label: "See WordPress hosting plans", href: "/pricing" },
       { label: "Talk to our team", href: "/contact" },
     ],
   },
   {
     visual: "migration",
     eyebrow: "Free migration",
-    title: "Move your site without losing a weekend",
-    description: "Tell us where your site lives today. We copy it across and let you review the result before you switch your domain.",
-    features: [
-      "We copy your files and database",
-      "You check the new site before DNS changes",
-      "Your current host stays live until you switch",
-    ],
+    title: "Move your site with help from the team",
+    description: "Tell us where your site lives today and we will plan the move with you. The migration terms set out what is covered.",
+    features: gated([
+      { text: "We copy your files and database", claim: "migration-process" },
+      { text: "You check the new site before DNS changes", claim: "migration-process" },
+      { text: "Your current host stays live until you switch", claim: "migration-process" },
+    ]),
     cta: [
       { label: "Start a migration", href: "/migration" },
-      { label: "View plans", href: "/pricing" },
+      { label: "See hosting plans", href: "/pricing" },
     ],
   },
   {
@@ -130,11 +139,11 @@ export const HOME_SPLITS = [
     eyebrow: "Security and backups",
     title: "Protection that runs in the background",
     description: "Security and recovery are part of the platform, not extra products to remember to buy.",
-    features: [
-      "Automatic backups you can restore from",
-      "Malware scanning and firewall rules",
-      "SSL certificates that renew on their own",
-    ],
+    features: gated([
+      { text: "Automatic backups of your site", claim: "backups" },
+      { text: "Malware scanning", claim: "malware-scanning" },
+      { text: "SSL certificates that renew on their own", claim: "free-ssl" },
+    ]),
     cta: [
       { label: "Read our security practices", href: "/security" },
       { label: "See the SLA", href: "/sla" },
@@ -242,9 +251,9 @@ export const HOME_FAQ: { eyebrow: string; title: string; aside: { title: string;
 };
 
 export const HOME_CTA = {
-  eyebrow: "Get started",
-  title: "Ready to move your site?",
-  description: "Pick a plan, or tell us about your site and we will recommend one.",
-  primaryCta: { label: "View plans", href: "/pricing" },
+  eyebrow: "Next step",
+  title: "Not sure which plan fits?",
+  description: "Compare the plans, or tell us about your site and we will recommend one.",
+  primaryCta: { label: "See hosting plans", href: "/pricing" },
   secondaryCta: { label: "Talk to our team", href: "/contact" },
 } as const;

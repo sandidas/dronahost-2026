@@ -7,6 +7,7 @@ import Button from "@/components/ui/Button";
 import { track } from "@/lib/analytics/track";
 import { normalizeDomain } from "@/lib/whmcs/domain";
 import { cn } from "@/utils/cn";
+import { UI } from "@/content/strings";
 
 type Result = { domain: string; status: "available" | "unavailable" } | { error: string } | null;
 
@@ -35,7 +36,7 @@ export default function DomainSearch() {
     try {
       const res = await fetch(`/api/domains/search?q=${encodeURIComponent(domain)}`);
       const body = (await res.json()) as Result;
-      setResult(res.ok ? body : { error: (body as { error?: string })?.error ?? "Something went wrong. Please try again." });
+      setResult(res.ok ? body : { error: (body as { error?: string })?.error ?? UI.errors.domainCheckFailed });
       if (res.ok) track("domain_search");
     } catch {
       setResult({ error: "Network error. Please check your connection and try again." });
