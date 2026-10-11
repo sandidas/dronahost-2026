@@ -3,33 +3,26 @@
 import { X } from "lucide-react";
 import { Link } from "@/i18n/link";
 import { useState, useSyncExternalStore } from "react";
-import { ANNOUNCEMENT } from "@/content/announcement";
+import { ANNOUNCEMENTS_TEXT } from "@/content/portal-strings";
 
 type AnnouncementBarProps = {
-  /** Override the content registry (showcase only). */
+  /** Plain text. Rendered as a text node, never as HTML. */
   message?: string;
   link?: { label: string; href: string } | null;
+  /** Dismissal key. Changes whenever the message is edited, so an edited notice shows again. */
   id?: string;
-  /** Showcase only: render even when the registry is disabled. */
-  forceEnabled?: boolean;
 };
 
 const subscribe = () => () => {};
+const linkClass = "font-semibold text-link underline underline-offset-4 hover:text-accent-hover";
 
 /**
  * Client part of the announcement bar (dismissal state). Use <AnnouncementBar /> instead.
  *
- * Site-wide notice above the header. Renders nothing unless enabled in
- * content/announcement.ts, so no unverified offer can appear. Dismissal is remembered
- * per message id in localStorage; the bar is in the server HTML so it never shifts layout
- * for visitors who have not dismissed it.
+ * Dismissal is remembered per message id in localStorage; the bar is in the server HTML so it never
+ * shifts layout for visitors who have not dismissed it.
  */
-export default function AnnouncementBarClient({
-  message = ANNOUNCEMENT.message,
-  link = ANNOUNCEMENT.link,
-  id = ANNOUNCEMENT.id,
-  forceEnabled = false,
-}: AnnouncementBarProps) {
+export default function AnnouncementBarClient({ message = "", link = null, id = "none" }: AnnouncementBarProps) {
   const [closed, setClosed] = useState(false);
   const dismissed = useSyncExternalStore(
     subscribe,
@@ -43,25 +36,32 @@ export default function AnnouncementBarClient({
     () => false,
   );
 
-  if ((!ANNOUNCEMENT.enabled && !forceEnabled) || !message || closed || dismissed) return null;
+  if (!message || closed || dismissed) return null;
+  const external = link ? /^https?:\/\//.test(link.href) : false;
 
   return (
-    <div role="region" aria-label="Announcement" className="border-b border-border bg-inverse-surface text-inverse-foreground">
+    <div role="region" aria-label={ANNOUNCEMENTS_TEXT.region} className="border-b border-border bg-inverse-surface text-inverse-foreground">
       <div className="container-site flex min-h-11 items-center justify-center gap-3 py-2 text-center text-sm">
         <p>
           {message}
           {link && (
             <>
               {" "}
-              <Link href={link.href} className="font-semibold text-link underline underline-offset-4 hover:text-accent-hover">
-                {link.label}
-              </Link>
+              {external ? (
+                <a href={link.href} rel="noopener noreferrer" className={linkClass}>
+                  {link.label}
+                </a>
+              ) : (
+                <Link href={link.href} className={linkClass}>
+                  {link.label}
+                </Link>
+              )}
             </>
           )}
         </p>
         <button
           type="button"
-          aria-label="Dismiss announcement"
+          aria-label={ANNOUNCEMENTS_TEXT.dismiss}
           onClick={() => {
             try {
               localStorage.setItem(`dh-announcement-${id}`, "1");

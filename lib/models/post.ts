@@ -1,13 +1,16 @@
-import mongoose, { Schema, type Document, type Model } from "mongoose";
+import mongoose, { Schema, type Model, type Types } from "mongoose";
+import type { TiptapDoc } from "@/lib/editor/schema";
 
 // ─── TypeScript interface ─────────────────────────────────────────────────────
 
-export interface IPost extends Document {
+export interface IPost {
+  _id: Types.ObjectId;
   title: string;
   slug: string;
   excerpt: string;
-  content: string;          // HTML or Markdown — rendered server-side
-  coverImage: string;       // absolute URL or /public path
+  /** Tiptap JSON for posts written in the portal. Older posts hold an HTML string; both render server-side. */
+  content: TiptapDoc | string;
+  coverImage: string;       // absolute URL or /public path, "" when there is none
   category: string;
   tags: string[];
   author: {
@@ -15,8 +18,13 @@ export interface IPost extends Document {
     bio: string;
     avatar: string;
   };
+  /** Portal user who created the post. Null for posts imported before the portal existed. */
+  authorId: Types.ObjectId | null;
   status: "draft" | "published";
+  /** "Not for editing": while true, only an admin can change the post. */
+  locked: boolean;
   publishedAt: Date | null;
+  publishedBy: { id: Types.ObjectId | null; name: string } | null;
   updatedAt: Date;
   createdAt: Date;
   deletedAt: Date | null;   // soft-delete (required for tax/audit in Western jurisdictions)
@@ -26,36 +34,43 @@ export interface IPost extends Document {
 
 const PostSchema = new Schema<IPost>(
   {
-    title: { type: String, required: true, trim: true },
+    title: { type: String, required: true, trim: true, maxlength: 200 },
     slug: { type: String, required: true, unique: true, trim: true, lowercase: true },
-    excerpt: { type: String, required: true, trim: true, maxlength: 300 },
-    content: { type: String, required: true },
-    coverImage: { type: String, required: true },
-    category: { type: String, required: true, trim: true },
+    excerpt: { type: String, default: "", trim: true, maxlength: 300 },
+    content: { type: Schema.Types.Mixed, required: true },
+    coverImage: { type: String, default: "" },
+    category: { type: String, default: "", trim: true },
     tags: { type: [String], default: [] },
     author: {
       name: { type: String, required: true, trim: true },
       bio: { type: String, default: "" },
       avatar: { type: String, default: "" },
     },
+    authorId: { type: Schema.Types.ObjectId, default: null },
     status: {
       type: String,
       enum: ["draft", "published"],
       default: "draft",
     },
+    locked: { type: Boolean, default: false },
     publishedAt: { type: Date, default: null },
+    publishedBy: {
+      type: new Schema({ id: { type: Schema.Types.ObjectId, default: null }, name: { type: String, default: "" } }, { _id: false }),
+      default: null,
+    },
     deletedAt: { type: Date, default: null },   // soft-delete — never hard-delete
   },
   {
     timestamps: true, // adds createdAt + updatedAt automatically
+    minimize: false,  // keep empty Tiptap attrs objects as written
   }
 );
 
-// Indexes for common query patterns
-PostSchema.index({ slug: 1 });
+// Indexes for common query patterns (the unique slug index comes from the field definition)
 PostSchema.index({ status: 1, publishedAt: -1 });
+PostSchema.index({ deletedAt: 1, status: 1, publishedAt: -1 });
+PostSchema.index({ deletedAt: 1, updatedAt: -1 });
 PostSchema.index({ category: 1, status: 1 });
-PostSchema.index({ deletedAt: 1 });
 
 // ─── Model export (safe for Next.js hot-reload) ───────────────────────────────
 

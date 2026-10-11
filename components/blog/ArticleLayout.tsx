@@ -1,3 +1,4 @@
+import "@/app/styles/rich-content.css";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import type { BlogPost } from "@/lib/blog/types";
 import ArticleToc from "./ArticleToc";

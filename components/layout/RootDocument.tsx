@@ -12,7 +12,16 @@ import "@/app/globals.css";
  * The <html> and <body> shell shared by the localized site and the dev showcase.
  * `dark` is server-rendered so the first paint is already the default theme.
  */
-export default async function RootDocument({ locale, children }: { locale: Locale; children: React.ReactNode }) {
+export default async function RootDocument({
+  locale,
+  children,
+  tracking = true,
+}: {
+  locale: Locale;
+  children: React.ReactNode;
+  /** false for the team portals: no analytics, so no consent banner (they set only the strictly necessary sign-in cookie). */
+  tracking?: boolean;
+}) {
   const [messages, t] = await Promise.all([getMessages({ locale }), getTranslations({ locale, namespace: "common" })]);
   const { tag, dir } = LOCALES[locale];
   return (
@@ -27,10 +36,10 @@ export default async function RootDocument({ locale, children }: { locale: Local
             The toggle stores an explicit choice, which then wins. The script runs before first paint, so there is no flash. */}
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}
-            <CookieConsent />
+            {tracking && <CookieConsent />}
             <RevealObserver />
           </ThemeProvider>
-          <Analytics />
+          {tracking && <Analytics />}
         </NextIntlClientProvider>
       </body>
     </html>

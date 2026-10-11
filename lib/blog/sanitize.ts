@@ -24,7 +24,11 @@ export function prepareArticle(raw: string): { html: string; toc: TocItem[] } {
     },
     allowedClasses: {},
   });
+  return withHeadingIds(clean);
+}
 
+/** Gives h2 and h3 headings in already-sanitized HTML stable ids and returns the table of contents. */
+export function withHeadingIds(clean: string): { html: string; toc: TocItem[] } {
   const toc: TocItem[] = [];
   const used = new Map<string, number>();
   const html = clean.replace(/<h([23])>([\s\S]*?)<\/h\1>/g, (_m, level: string, inner: string) => {
