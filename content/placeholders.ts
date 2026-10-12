@@ -247,9 +247,9 @@ export const SAMPLE_PORTAL_ADMIN: PortalActor = { id: sampleId(1), email: "admin
 export const SAMPLE_PORTAL_STAFF: PortalActor = { id: sampleId(2), email: "writer@example.com", name: "Sample Writer", role: 999 };
 
 export const SAMPLE_PORTAL_POSTS: PortalPostRow[] = [
-  { id: sampleId(11), title: "Sample post: how a site move works", slug: "sample-site-move", status: "published", locked: true, authorName: "Sample Writer", updatedAt: "2026-01-02T09:30:00.000Z" },
-  { id: sampleId(12), title: "Sample post: choosing a plan", slug: "sample-choosing-a-plan", status: "draft", locked: false, authorName: "Sample Writer", updatedAt: "2026-01-03T14:00:00.000Z" },
-  { id: sampleId(13), title: "Sample post: backups explained", slug: "sample-backups", status: "published", locked: false, authorName: "Sample Admin", updatedAt: "2026-01-04T08:15:00.000Z" },
+  { id: sampleId(11), kind: "post", title: "Sample post: how a site move works", slug: "sample-site-move", status: "published", locked: true, authorName: "Sample Writer", updatedAt: "2026-01-02T09:30:00.000Z" },
+  { id: sampleId(12), kind: "post", title: "Sample post: choosing a plan", slug: "sample-choosing-a-plan", status: "draft", locked: false, authorName: "Sample Writer", updatedAt: "2026-01-03T14:00:00.000Z" },
+  { id: sampleId(13), kind: "post", title: "Sample post: backups explained", slug: "sample-backups", status: "published", locked: false, authorName: "Sample Admin", updatedAt: "2026-01-04T08:15:00.000Z" },
 ];
 
 export const SAMPLE_PORTAL_DOC: PortalDoc = {
@@ -283,3 +283,29 @@ export const SAMPLE_PORTAL_ANNOUNCEMENTS: PortalAnnouncement[] = [
   { id: sampleId(31), message: "Sample notice: planned maintenance on Saturday from 02:00 to 03:00 UTC.", linkUrl: "/contact", startsAt: "2026-01-01T00:00:00.000Z", endsAt: "2026-12-31T00:00:00.000Z", active: true, updatedAt: "2026-01-01T09:00:00.000Z" },
   { id: sampleId(32), message: "Sample notice: switched off.", linkUrl: null, startsAt: null, endsAt: null, active: false, updatedAt: "2026-01-02T09:00:00.000Z" },
 ];
+
+/** A sample page for the page builder on /v2: a section with text and columns, then a call to action. */
+export const SAMPLE_PORTAL_BUILDER_DOC: import("@/lib/builder/model").BuilderDoc = {
+  version: 1,
+  blocks: [
+    {
+      id: "bsamplesec1",
+      type: "section",
+      props: { width: "text" },
+      children: [
+        { id: "bsamplehd01", type: "heading", props: { text: "Sample heading", level: 2 } },
+        { id: "bsampletxt1", type: "richtext", props: { content: SAMPLE_PORTAL_DOC } },
+        {
+          id: "bsamplecol1",
+          type: "columns",
+          props: { layout: "1-1" },
+          columns: [
+            { id: "bsamplecl01", children: [{ id: "bsamplehd02", type: "heading", props: { text: "Sample column one", level: 3 } }] },
+            { id: "bsamplecl02", children: [{ id: "bsampleimg1", type: "image", props: { src: "", alt: "", caption: "" } }] },
+          ],
+        },
+      ],
+    },
+    { id: "bsamplecta1", type: "site", section: { type: "CTABand", content: { h2: "Sample call to action", ctaPrimary: { label: "See the plans", href: "/pricing" } } } },
+  ],
+};

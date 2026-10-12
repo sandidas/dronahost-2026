@@ -35,7 +35,7 @@ export default function ArticleLayout({ post, children }: { post: BlogPost; chil
 
       <div className="mx-auto mt-12 grid max-w-5xl gap-10 lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-14">
         <div className="order-2 lg:order-1">
-          <div className="article" dangerouslySetInnerHTML={{ __html: post.html }} />
+          {post.body ? <div className="min-w-0">{post.body}</div> : <div className="article" dangerouslySetInnerHTML={{ __html: post.html }} />}
           <AuthorBox author={post.author} />
         </div>
         <aside className="order-1 lg:order-2 lg:sticky lg:top-24 lg:self-start">

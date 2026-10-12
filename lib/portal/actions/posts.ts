@@ -6,10 +6,11 @@ import { getActor } from "@/lib/auth/session";
 import { createPost, deletePost, setLocked, setPublished, updatePost, type PostChange } from "../posts";
 import { fail, type Actor, type Result } from "../result";
 
-/** Refreshes the cached public blog pages (list, post and sitemap) after a change visitors can see. */
+/** Refreshes the cached public pages (the blog or the builder page, and the sitemap) after a change visitors can see. */
 function refreshPublicBlog(change: PostChange, always = false): void {
   if (!always && change.status !== "published") return;
-  revalidatePath("/[locale]/(marketing)/blog", "layout");
+  if (change.kind === "page") revalidatePath("/[locale]/(marketing)/[slug]", "page");
+  else revalidatePath("/[locale]/(marketing)/blog", "layout");
   revalidatePath("/sitemap.xml");
 }
 

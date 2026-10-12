@@ -9,6 +9,8 @@ export type BlogPost = {
   excerpt: string;
   /** Sanitized HTML with ids on h2 and h3. Safe for dangerouslySetInnerHTML. */
   html: string;
+  /** Posts made in the page builder: the rendered blocks, shown instead of `html`. Server-rendered only. */
+  body?: React.ReactNode;
   toc: TocItem[];
   /** ISO timestamps. */
   published: string;
@@ -19,7 +21,7 @@ export type BlogPost = {
   readingMinutes: number;
 };
 
-export type BlogListItem = Omit<BlogPost, "html" | "toc">;
+export type BlogListItem = Omit<BlogPost, "html" | "toc" | "body">;
 
 export type BlogCategory = { name: string; slug: string; count: number };
 

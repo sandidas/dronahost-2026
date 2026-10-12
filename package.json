@@ -16,7 +16,7 @@
     "qa:entities": "tsx scripts/qa/entities.ts",
     "qa": "npm run check:contrast && npm run qa:axe && npm run qa:links && npm run qa:jsonld && npm run qa:entities",
     "test:e2e": "playwright test",
-    "test:portal": "tsx --test --test-timeout=60000 lib/auth/permissions.test.ts tests/portal/posts.test.ts tests/portal/team.test.ts tests/portal/announcements.test.ts",
+    "test:portal": "tsx --test --test-timeout=60000 lib/auth/permissions.test.ts tests/portal/posts.test.ts tests/portal/team.test.ts tests/portal/announcements.test.ts tests/portal/builder.test.ts",
     "check:copy-source": "tsx scripts/check-copy-source.ts",
     "content:page-map": "tsx scripts/page-map.ts",
     "check:pages": "tsx content-engine/tools/check-content.ts content/pages",

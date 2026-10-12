@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },
 };
 
-/** Team portals (/dashboard, /office) and their sign-in pages. Not localized, never indexed. */
+/** The team dashboard (/dashboard) and its sign-in pages. Not localized, never indexed. */
 export default function PortalLayout({ children }: { children: React.ReactNode }) {
   setRequestLocale(DEFAULT_LOCALE);
   return <RootDocument locale={DEFAULT_LOCALE} tracking={false}>{children}</RootDocument>;

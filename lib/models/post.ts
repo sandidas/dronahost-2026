@@ -1,4 +1,5 @@
 import mongoose, { Schema, type Model, type Types } from "mongoose";
+import type { BuilderDoc, PostKind } from "@/lib/builder/model";
 import type { TiptapDoc } from "@/lib/editor/schema";
 
 // ─── TypeScript interface ─────────────────────────────────────────────────────
@@ -8,8 +9,13 @@ export interface IPost {
   title: string;
   slug: string;
   excerpt: string;
-  /** Tiptap JSON for posts written in the portal. Older posts hold an HTML string; both render server-side. */
-  content: TiptapDoc | string;
+  /** "post" renders at /blog/<slug>; "page" is a standalone page at /<slug>. Older documents have no kind and are posts. */
+  kind?: PostKind;
+  /**
+   * The page builder's block tree (lib/builder/model.ts). Posts saved before the builder hold Tiptap JSON or, older
+   * still, an HTML string; all three render server-side, and the builder converts the older two on their next save.
+   */
+  content: BuilderDoc | TiptapDoc | string;
   coverImage: string;       // absolute URL or /public path, "" when there is none
   category: string;
   tags: string[];
@@ -37,6 +43,7 @@ const PostSchema = new Schema<IPost>(
     title: { type: String, required: true, trim: true, maxlength: 200 },
     slug: { type: String, required: true, unique: true, trim: true, lowercase: true },
     excerpt: { type: String, default: "", trim: true, maxlength: 300 },
+    kind: { type: String, enum: ["post", "page"], default: "post" },
     content: { type: Schema.Types.Mixed, required: true },
     coverImage: { type: String, default: "" },
     category: { type: String, default: "", trim: true },
@@ -71,8 +78,13 @@ PostSchema.index({ status: 1, publishedAt: -1 });
 PostSchema.index({ deletedAt: 1, status: 1, publishedAt: -1 });
 PostSchema.index({ deletedAt: 1, updatedAt: -1 });
 PostSchema.index({ category: 1, status: 1 });
+PostSchema.index({ kind: 1, deletedAt: 1, status: 1 });
 
 // ─── Model export (safe for Next.js hot-reload) ───────────────────────────────
+
+// A running dev server keeps the model it compiled first; when this file gains a field, that cached model would
+// silently drop it on save. Recompile when the cached schema is older than this one.
+if (mongoose.models.Post && !mongoose.models.Post.schema.path("kind")) mongoose.deleteModel("Post");
 
 export const Post: Model<IPost> =
   (mongoose.models.Post as Model<IPost>) ??

@@ -2,20 +2,31 @@ import { Post, type IPost } from "@/lib/models/post";
 import { connectToDatabase } from "@/lib/mongodb";
 import { docText } from "@/lib/editor/schema";
 import { renderTiptapHtml } from "@/lib/editor/render";
+import { isBuilderDoc, type BuilderDoc } from "@/lib/builder/model";
+import { readingMinutesOf, renderBuilderDoc } from "@/lib/builder/render";
 import { isSafeImageSrc } from "@/lib/editor/urls";
 import { prepareArticle, plainText, readingMinutes, withHeadingIds } from "./sanitize";
 import { BlogUnavailableError, type BlogCategory, type BlogListItem, type BlogPage, type BlogPost } from "./types";
 
 /** MongoDB source: posts written in the portal (and older imported posts). Used while WORDPRESS_API_URL is not set. */
 
-/** Portal posts store Tiptap JSON; posts from before the portal store HTML. Both come out sanitised. */
-function renderContent(content: IPost["content"]) {
+/** Builder posts render their blocks; older posts store Tiptap JSON or HTML. All come out sanitised. */
+function renderContent(content: IPost["content"]): { html: string; toc: BlogPost["toc"]; body?: React.ReactNode } {
+  if (isBuilderDoc(content)) {
+    const { body, toc } = renderBuilderDoc(content, "post");
+    return { html: "", toc, body };
+  }
   if (typeof content === "string") return prepareArticle(content);
   return withHeadingIds(renderTiptapHtml(content));
 }
 
-const contentMinutes = (content: IPost["content"]) =>
-  typeof content === "string" ? readingMinutes(content) : Math.max(1, Math.round(docText(content).split(/\s+/).filter(Boolean).length / 220));
+function contentMinutes(content: IPost["content"]): number {
+  if (isBuilderDoc(content)) return readingMinutesOf(builderText(content));
+  return typeof content === "string" ? readingMinutes(content) : Math.max(1, Math.round(docText(content).split(/\s+/).filter(Boolean).length / 220));
+}
+
+/** The words of a builder post, for reading time (rendering it once more is cheap and keeps one definition of "text"). */
+const builderText = (doc: BuilderDoc): string => renderBuilderDoc(doc, "post").text;
 
 const catSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
@@ -33,8 +44,8 @@ function toItem(p: IPost): BlogListItem {
   };
 }
 
-/** Visitors see published, undeleted posts only. Drafts never match, whatever slug is requested. */
-const live = { status: "published", deletedAt: null } as const;
+/** Visitors see published, undeleted posts only. Drafts never match, whatever slug is requested. Pages are not posts. */
+const live = { status: "published", deletedAt: null, kind: { $ne: "page" } } as const;
 
 async function db() {
   try {

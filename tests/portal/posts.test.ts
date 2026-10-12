@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { after, before, beforeEach, describe, it } from "node:test";
+import { renderToStaticMarkup } from "react-dom/server";
 import { startDb, stopDb } from "./setup";
 
 /** Service-level tests: the same calls the server actions make, so a staff request sent straight to the server is covered. */
@@ -14,7 +15,9 @@ const STAFF = { id: "65f000000000000000000002", email: "staff@example.com", name
 const GUEST = { id: "65f000000000000000000003", email: "guest@example.com", name: "Gil Guest", role: 888 as const };
 
 const doc = (text: string) => ({ type: "doc", content: [{ type: "paragraph", content: [{ type: "text", text }] }] });
-const input = (over: Record<string, unknown> = {}) => ({ title: "Hello world", slug: "", excerpt: "Short.", coverImage: "", content: doc("Body"), ...over });
+/** A builder document with one section holding one Rich text block. */
+const builderOf = (tiptap: unknown) => ({ version: 1, blocks: [{ id: "bsection01", type: "section", props: { width: "text" }, children: [{ id: "brichtext1", type: "richtext", props: { content: tiptap } }] }] });
+const input = (over: Record<string, unknown> = {}) => ({ title: "Hello world", slug: "", excerpt: "Short.", coverImage: "", content: builderOf(doc("Body")), ...over });
 
 async function createAs(actor: typeof ADMIN | typeof STAFF, over: Record<string, unknown> = {}) {
   const res = await posts.createPost(actor, input(over));
@@ -169,7 +172,7 @@ describe("validation and public visibility", () => {
     const video = { type: "doc", content: [{ type: "youtube", attrs: { src: "https://evil.example/embed/x" } }] };
     const unknownNode = { type: "doc", content: [{ type: "script", content: [] }] };
     for (const content of [link, img, video, unknownNode]) {
-      assert.equal((await posts.createPost(ADMIN, input({ content, slug: "" }))).ok, false);
+      assert.equal((await posts.createPost(ADMIN, input({ content: builderOf(content), slug: "" }))).ok, false);
     }
   });
 
@@ -183,15 +186,16 @@ describe("validation and public visibility", () => {
         { type: "codeBlock", attrs: { language: "javascript" }, content: [{ type: "text", text: "const a = 1;" }] },
       ],
     };
-    const created = await createAs(ADMIN, { slug: "rendered", content });
+    const created = await createAs(ADMIN, { slug: "rendered", content: builderOf(content) });
     await posts.setPublished(ADMIN, created.id, true);
     const post = await blog.getPost("rendered");
-    assert.ok(post);
-    assert.match(post.html, /<h2 id="intro">Intro<\/h2>/);
-    assert.doesNotMatch(post.html, /<script/);
-    assert.match(post.html, /&lt;script&gt;/);
-    assert.match(post.html, /<iframe[^>]+src="https:\/\/www\.youtube-nocookie\.com\/embed\/dQw4w9WgXcQ/);
-    assert.match(post.html, /<span class="hljs-keyword">const<\/span>/);
+    assert.ok(post?.body);
+    const html = renderToStaticMarkup(post.body);
+    assert.match(html, /<h2 id="intro">Intro<\/h2>/);
+    assert.doesNotMatch(html, /<script/);
+    assert.match(html, /&lt;script&gt;/);
+    assert.match(html, /<iframe[^>]+src="https:\/\/www\.youtube-nocookie\.com\/embed\/dQw4w9WgXcQ/);
+    assert.match(html, /<span class="hljs-keyword">const<\/span>/);
     assert.equal(post.toc[0]?.text, "Intro");
   });
 

@@ -6,12 +6,12 @@ import { requirePortal } from "@/lib/auth/session";
 
 export const metadata: Metadata = { title: POSTS_TEXT.title };
 
-export default async function AdminPostsPage({ searchParams }: { searchParams: Promise<{ status?: string }> }) {
+export default async function AdminPostsPage({ searchParams }: { searchParams: Promise<{ status?: string; kind?: string }> }) {
   const actor = await requirePortal("portal.dashboard", "/dashboard/posts");
-  const { status } = await searchParams;
+  const params = await searchParams;
   return (
     <PortalShell actor={actor}>
-      <PostsView actor={actor} filter={toFilter(status)} />
+      <PostsView actor={actor} filter={toFilter(params)} />
     </PortalShell>
   );
 }

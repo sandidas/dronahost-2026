@@ -1,23 +1,23 @@
+import { BuilderApp } from "@/components/builder/BuilderApp";
 import { AnnouncementsManager } from "@/components/portal/AnnouncementsManager";
 import { GoogleSignInButton } from "@/components/portal/GoogleSignInButton";
 import { OverviewCards } from "@/components/portal/OverviewView";
 import { PortalError } from "@/components/portal/PortalError";
 import { PortalHeader } from "@/components/portal/PortalShell";
-import { PostAdminControls } from "@/components/portal/PostAdminControls";
-import { PostForm } from "@/components/portal/PostForm";
 import { PostsList } from "@/components/portal/PostsView";
 import { SignOutButton } from "@/components/portal/SignOutButton";
 import { TeamManager } from "@/components/portal/TeamManager";
 import {
   SAMPLE_PORTAL_ADMIN,
   SAMPLE_PORTAL_ANNOUNCEMENTS,
-  SAMPLE_PORTAL_DOC,
+  SAMPLE_PORTAL_BUILDER_DOC,
   SAMPLE_PORTAL_INVITES,
   SAMPLE_PORTAL_POSTS,
   SAMPLE_PORTAL_STAFF,
   SAMPLE_PORTAL_TEAM,
 } from "@/content/placeholders";
 import { PORTAL_ERRORS } from "@/content/portal-strings";
+import { FEATURE_LIBRARY } from "@/lib/content/features";
 import type { Actor } from "@/lib/portal/result";
 import ShowcaseSection from "./ShowcaseSection";
 
@@ -27,8 +27,6 @@ const pane = `${frame} p-4 sm:p-6`;
 
 /** Fixed clock for the announcements list, so the start and end badges render the same on every visit. */
 const SAMPLE_NOW = "2026-06-01T00:00:00.000Z";
-
-const [published] = SAMPLE_PORTAL_POSTS;
 
 const HEADERS: { label: string; actor: Actor }[] = [
   { label: "Admin", actor: SAMPLE_PORTAL_ADMIN },
@@ -73,48 +71,41 @@ export default function PortalShowcase() {
         </div>
       </ShowcaseSection>
 
-      <ShowcaseSection id="portal-posts" title="PostsList" status="built" notes="Post list for both portals (PostsView loads the rows). Status filter as links (all, drafts, published), lock column, author and last update. Staff see the same list; editing a locked post opens it read-only.">
+      <ShowcaseSection id="portal-posts" title="PostsList" status="built" notes="Posts and pages in one list (PostsView loads the rows). Type and status filters as links, lock column, author and last update. Staff see the same list; a locked post opens read-only.">
         <div className="space-y-6">
           <div>
             <p className={variantLabel}>Admin, all posts</p>
             <div className={pane}>
-              <PostsList actor={SAMPLE_PORTAL_ADMIN} filter="all" res={{ ok: true, data: SAMPLE_PORTAL_POSTS }} />
+              <PostsList actor={SAMPLE_PORTAL_ADMIN} filter={{ status: "all", kind: "all" }} res={{ ok: true, data: SAMPLE_PORTAL_POSTS }} />
             </div>
           </div>
           <div>
             <p className={variantLabel}>Staff, empty filter</p>
             <div className={pane}>
-              <PostsList actor={SAMPLE_PORTAL_STAFF} filter="draft" res={{ ok: true, data: [] }} />
+              <PostsList actor={SAMPLE_PORTAL_STAFF} filter={{ status: "draft", kind: "all" }} res={{ ok: true, data: [] }} />
             </div>
           </div>
         </div>
       </ShowcaseSection>
 
-      <ShowcaseSection id="portal-post-editor" title="PostForm and PostAdminControls" status="built" notes="Title, slug (filled from the title until edited), excerpt, cover image and the Tiptap editor (headings 2 to 4, lists, quote, code with highlighting, link, image, YouTube). Admins get the side panel: publish (which locks), unpublish, lock or unlock, view and delete with confirmation. Image upload shows only when S3 storage is configured; it is off here.">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem]">
-          <PostForm
-           
-            post={{ id: published.id, title: published.title, slug: published.slug, excerpt: "Sample excerpt.", coverImage: "", content: SAMPLE_PORTAL_DOC, status: published.status, locked: published.locked }}
-            canEdit
-            isAdmin
-            uploadEnabled={false}
-          />
-          <aside className="lg:sticky lg:top-20 lg:self-start">
-            <PostAdminControls id={published.id} slug={published.slug} status={published.status} locked={published.locked} publishedLine="Published by Sample Admin on 2 January 2026, 09:30 UTC" />
-          </aside>
-        </div>
-      </ShowcaseSection>
-
-      <ShowcaseSection id="portal-post-locked" title="PostForm: locked for staff" status="built" notes="What staff see on a post an admin has published or locked: a notice and read-only fields. The server refuses staff edits to locked posts whatever the form sends.">
-        <div className="max-w-4xl">
-          <PostForm
-           
-            post={{ id: published.id, title: published.title, slug: published.slug, excerpt: "Sample excerpt.", coverImage: "", content: SAMPLE_PORTAL_DOC, status: "published", locked: true }}
-            canEdit={false}
-            isAdmin={false}
-            uploadEnabled={false}
-          />
-        </div>
+      <ShowcaseSection id="portal-builder" title="Page builder (BuilderApp)" status="built" notes="The editor at /dashboard/posts/new and /dashboard/posts/<slug>, here in a box with a sample page. Left: Add (search, Layout, Content, Site sections) and Layers. Middle: the page, with drag and drop, a toolbar on the selected block and drop lines that show only where the dragged block fits. Right: Block, Page and SEO settings. Site sections render on the server with the real component; signed out, they show a sign-in message instead. Saving needs a session.">
+        <BuilderApp
+          embedded
+          actorName={SAMPLE_PORTAL_ADMIN.name}
+          features={FEATURE_LIBRARY.map((f) => ({ id: f.id, title: f.tile.title }))}
+          init={{
+            postId: null,
+            kind: "page",
+            status: "draft",
+            locked: false,
+            canEdit: true,
+            isAdmin: true,
+            uploadEnabled: false,
+            meta: { title: "Sample page", slug: "sample-page", excerpt: "Sample summary for lists and search results.", coverImage: "" },
+            doc: SAMPLE_PORTAL_BUILDER_DOC,
+            publishedLine: null,
+          }}
+        />
       </ShowcaseSection>
 
       <ShowcaseSection id="portal-team" title="TeamManager" status="built" notes="Admins only. Add a member by email (an existing account changes role at once; anyone else is invited and gets the role at first sign-in), change roles, remove with confirmation (the person becomes a guest and is signed out). ADMIN_EMAILS members and the last admin cannot be demoted or removed. Signed in as an admin, adding a member here is real.">
