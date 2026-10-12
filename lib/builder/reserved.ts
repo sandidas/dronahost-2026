@@ -51,7 +51,7 @@ export const RESERVED_PAGE_SLUGS: ReadonlySet<string> = new Set([
   "logo",
   "screenshots",
   "fonts",
-  // The editor uses /dashboard/posts/new for a new post or page.
+  // /dashboard/posts/new was the editor's address for a new post; old links still lead there.
   "new",
 ]);
 

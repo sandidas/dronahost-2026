@@ -23,6 +23,7 @@ let PostModel: typeof import("@/lib/models/post").Post;
 
 const ADMIN = { id: "65f000000000000000000001", email: "admin@example.com", name: "Ada Admin", role: 1001 as const };
 const STAFF = { id: "65f000000000000000000002", email: "staff@example.com", name: "Sam Staff", role: 999 as const };
+const GUEST = { id: "65f000000000000000000003", email: "guest@example.com", name: "Gil Guest", role: 888 as const };
 
 const para = (text: string) => ({ type: "doc" as const, content: [{ type: "paragraph" as const, content: [{ type: "text" as const, text }] }] });
 const withHeading = (h: string, text: string) => ({ type: "doc" as const, content: [{ type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: h }] }, ...para(text).content] });
@@ -414,6 +415,29 @@ describe("posts and pages (database)", () => {
     const updated = await posts.updatePost(STAFF, res.data.id, save());
     assert.ok(updated.ok);
     assert.equal((await PostModel.findById(res.data.id).lean())?.kind, "page");
+  });
+
+  it("New post saves an empty draft that the editor opens by slug, and it needs a title to publish", async () => {
+    const draft = await posts.createDraft(STAFF);
+    assert.ok(draft.ok, draft.ok ? "" : draft.error);
+    assert.match(draft.data.slug, /^draft-[a-f0-9]{8}$/);
+    assert.deepEqual([draft.data.kind, draft.data.status], ["post", "draft"]);
+    const opened = await posts.getPortalPostBySlug(STAFF, draft.data.slug);
+    assert.ok(opened.ok && opened.data.title === "" && opened.data.content.blocks.length === 0);
+    assert.equal((await posts.createDraft(GUEST)).ok, false, "guests cannot create");
+    const untitled = await posts.setPublished(ADMIN, draft.data.id, true);
+    assert.equal(untitled.ok, false);
+    assert.ok(!untitled.ok && untitled.fieldErrors?.title);
+  });
+
+  it("a new draft's first title gives it a free slug", async () => {
+    assert.ok((await posts.createPost(ADMIN, save({ slug: "spring-offer" }))).ok);
+    const draft = await posts.createDraft(ADMIN);
+    assert.ok(draft.ok);
+    const named = await posts.updatePost(ADMIN, draft.data.id, { ...save({ slug: "spring-offer" }), autoSlug: true, slugWords: ["hosting"] });
+    assert.ok(named.ok, named.ok ? "" : named.error);
+    assert.equal(named.data.slug, "hosting-spring-offer");
+    assert.ok((await posts.setPublished(ADMIN, draft.data.id, true)).ok);
   });
 
   it("the switcher moves the same blocks between the blog and the pages", async () => {

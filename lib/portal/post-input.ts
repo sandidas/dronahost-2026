@@ -14,7 +14,8 @@ import { SLUG_MAX, SLUG_PATTERN, slugify } from "./slug";
  * published-by value in the request is ignored: publishing and locking have their own admin-only actions.
  */
 const PostFields = z.object({
-  title: z.string({ error: PORTAL_ERRORS.title }).trim().min(1, PORTAL_ERRORS.title).max(200, PORTAL_ERRORS.title),
+  // Empty while a new draft has no title yet; publishing needs one (lib/portal/posts.ts).
+  title: z.string({ error: PORTAL_ERRORS.title }).trim().max(200, PORTAL_ERRORS.title).default(""),
   slug: z
     .string()
     .trim()
@@ -70,7 +71,7 @@ export function parsePostInput(raw: unknown, kind: PostKind): Result<PostInput> 
   if (!doc.ok) return fail(doc.error, { content: doc.error });
   const slug = parsed.data.slug || slugify(parsed.data.title);
   if (!SLUG_PATTERN.test(slug)) return fail(PORTAL_ERRORS.slug, { slug: PORTAL_ERRORS.slug });
-  // "new" is the editor's own address (/dashboard/posts/new); a page also cannot take an address the site already uses.
+  // "new" stays reserved (/dashboard/posts/new sends old links to the list); a page also cannot take an address the site already uses.
   if (slug === "new" || (kind === "page" && isReservedPageSlug(slug))) return fail(PORTAL_ERRORS.reservedSlug, { slug: PORTAL_ERRORS.reservedSlug });
   return { ok: true, data: { ...parsed.data, slug, content: doc.doc } };
 }

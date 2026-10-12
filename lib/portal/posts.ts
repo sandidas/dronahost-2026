@@ -1,10 +1,10 @@
-import type { Types } from "mongoose";
+import { Types } from "mongoose";
 import { PORTAL_ERRORS } from "@/content/portal-strings";
 import { assertCan, can } from "@/lib/auth/permissions";
 import { ROLES } from "@/lib/auth/roles";
 import { BUILDER_PROBLEMS } from "@/content/portal-strings";
 import { toBuilderDoc } from "@/lib/builder/legacy";
-import type { BuilderDoc, PostKind } from "@/lib/builder/model";
+import { EMPTY_BUILDER_DOC, type BuilderDoc, type PostKind } from "@/lib/builder/model";
 import { normalizeSeo, type PostSeo } from "@/lib/builder/seo";
 import { publishProblems, type Problem } from "@/lib/builder/validate";
 import { Post, type IPost } from "@/lib/models/post";
@@ -168,6 +168,39 @@ export async function checkSlug(actor: Actor, raw: unknown): Promise<Result<Slug
 }
 
 /**
+ * "New post" in the list: an empty blog post saved as a draft straight away, so the editor always opens an existing
+ * record at /dashboard/posts/<slug>. It has no title yet and a placeholder slug ("draft-1a2b3c4d") that the editor
+ * replaces from the first title; the Page tab switches it to a page.
+ */
+export async function createDraft(actor: Actor): Promise<Result<PostChange>> {
+  return guarded("portal.posts.draft", async () => {
+    assertCan(actor.role, "post.create");
+    await portalDb();
+    for (let attempt = 0; ; attempt++) {
+      try {
+        const doc = await Post.create({
+          title: "",
+          slug: `draft-${new Types.ObjectId().toString().slice(-8)}`,
+          excerpt: "",
+          content: EMPTY_BUILDER_DOC,
+          kind: "post",
+          status: "draft",
+          locked: false,
+          author: { name: actor.name || actor.email, bio: "", avatar: "" },
+          authorId: toObjectId(actor.id),
+          publishedAt: null,
+          publishedBy: null,
+        });
+        return ok(change(doc.toObject() as IPost));
+      } catch (err) {
+        if (attempt < 2 && isDuplicateKey(err, "slug")) continue;
+        throw err;
+      }
+    }
+  });
+}
+
+/**
  * New posts and pages are always drafts and unlocked, whoever creates them; the author is the signed-in person. The
  * kind (post or page) only decides where it prints (/blog/<slug> or /<slug>); a save can switch it.
  */
@@ -221,8 +254,14 @@ export async function updatePost(actor: Actor, rawId: unknown, raw: unknown): Pr
     const kind: PostKind = asked === "page" || asked === "post" ? asked : currentKind;
     const input = parsePostInput(raw, kind);
     if (!input.ok) return input;
+    // A draft whose slug still follows its title (a new draft's first titles) moves aside for an existing slug, as on create.
+    if (current.status === "draft" && (raw as { autoSlug?: unknown }).autoSlug === true) {
+      const free = await checkSlug(actor, { slug: input.data.slug, kind, postId: String(id), words: (raw as { slugWords?: unknown }).slugWords });
+      if (free.ok) input.data.slug = free.data.suggestion;
+    }
     // A live page changes straight away, so it must pass the publishing checks: nothing on it may silently disappear.
     if (current.status === "published") {
+      if (!input.data.title) return fail(PORTAL_ERRORS.title, { title: PORTAL_ERRORS.title });
       const problems = publishProblems(input.data.content);
       if (problems.length) return fail(BUILDER_PROBLEMS.updateBlocked, problemsByBlock(problems));
     }
@@ -251,6 +290,7 @@ export async function setPublished(actor: Actor, rawId: unknown, publish: boolea
     const current = await findLive(id);
     if (!current) return fail(PORTAL_ERRORS.notFound);
     if (publish) {
+      if (!current.title?.trim()) return fail(PORTAL_ERRORS.titleToPublish, { title: PORTAL_ERRORS.titleToPublish });
       // The same rules as the hand-built pages: every site section passes its schema, images have alt text, ...
       const problems = publishProblems(toBuilderDoc(current.content));
       if (problems.length) return fail(BUILDER_PROBLEMS.publishBlocked, problemsByBlock(problems));

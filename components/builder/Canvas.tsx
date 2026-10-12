@@ -8,7 +8,7 @@ import { blockDef, blockName } from "@/lib/builder/blocks";
 import { h1Block, pageBands, pageFrame } from "@/lib/builder/doc";
 import { fieldProblems } from "@/lib/builder/fields";
 import type { Block } from "@/lib/builder/model";
-import { templatesFor } from "@/lib/builder/templates";
+import { TEMPLATES } from "@/lib/builder/templates";
 import { cn } from "@/utils/cn";
 import { CanvasFrame } from "./CanvasFrame";
 import { BLOCK_ICONS } from "./icons";
@@ -229,7 +229,6 @@ function BlockBody({ block, selected }: { block: Block; selected: boolean }) {
 
 /** On an empty page: pick a starting layout, or start blank. */
 function TemplatePicker({ onBlank }: { onBlank: () => void }) {
-  const kind = useBuilder((s) => s.kind);
   const applyTemplate = useBuilder((s) => s.applyTemplate);
   const TT = BUILDER_TEXT.templates;
   return (
@@ -239,7 +238,7 @@ function TemplatePicker({ onBlank }: { onBlank: () => void }) {
       </h2>
       <p className="mt-1 text-sm text-muted-foreground">{TT.intro}</p>
       <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {templatesFor(kind).map((t) => (
+        {TEMPLATES.map((t) => (
           <li key={t.id}>
             <button
               type="button"

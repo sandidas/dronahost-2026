@@ -5,28 +5,8 @@ import { formatDateTime } from "@/lib/portal/format";
 import type { PostDetail } from "@/lib/portal/posts";
 import type { Actor } from "@/lib/portal/result";
 import { storageConfigured } from "@/lib/storage/s3";
-import { EMPTY_BUILDER_DOC, type PostKind } from "./model";
-import { DEFAULT_SEO } from "./seo";
-
-const now = () => new Date().toISOString();
 
 const flags = (actor: Actor) => ({ isAdmin: can(actor.role, "post.publish"), uploadEnabled: storageConfigured() && can(actor.role, "media.upload") });
-
-export function newEditorInit(actor: Actor, kind: PostKind): BuilderInit {
-  return {
-    postId: null,
-    kind,
-    status: "draft",
-    locked: false,
-    canEdit: can(actor.role, "post.create"),
-    ...flags(actor),
-    meta: { title: "", slug: "", excerpt: "", coverImage: "", coverImageAlt: "", seo: DEFAULT_SEO },
-    // Starts empty: the canvas offers the templates (lib/builder/templates.ts).
-    doc: EMPTY_BUILDER_DOC,
-    dates: { published: now(), modified: now() },
-    publishedLine: null,
-  };
-}
 
 export function existingEditorInit(actor: Actor, post: PostDetail): BuilderInit {
   return {

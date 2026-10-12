@@ -54,7 +54,8 @@ export const NO_ACCESS_TEXT = {
 export const POSTS_TEXT = {
   title: "Posts and pages",
   newPost: "New post",
-  newPage: "New page",
+  untitled: "Untitled draft",
+  createFailed: "The new post was not created. Try again.",
   filterLabel: "Filter by status",
   kindFilterLabel: "Filter by type",
   filters: { all: "Any status", draft: "Drafts", published: "Published" },
@@ -248,6 +249,7 @@ export const PORTAL_ERRORS = {
   },
   slug: "Use lowercase letters, numbers and single hyphens in the slug.",
   title: "Give the post a title of up to 200 characters.",
+  titleToPublish: "Add a title in the Page tab and save before you publish.",
   excerpt: "Keep the excerpt to 300 characters or fewer.",
   coverImage: "Use an image address that starts with https:// or http://.",
   coverImageAlt: "Keep the image description to 200 characters or fewer.",

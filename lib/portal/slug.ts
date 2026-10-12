@@ -13,3 +13,7 @@ export function slugify(input: string): string {
     .slice(0, SLUG_MAX)
     .replace(/-+$/g, "");
 }
+
+/** The slug a new draft gets before it has a title ("draft-1a2b3c4d"); the editor replaces it from the first title. */
+export const DRAFT_SLUG = /^draft-[a-f0-9]{8}$/;
+export const isDraftSlug = (slug: string): boolean => DRAFT_SLUG.test(slug);

@@ -45,7 +45,8 @@ export interface IPost {
 
 const PostSchema = new Schema<IPost>(
   {
-    title: { type: String, required: true, trim: true, maxlength: 200 },
+    // Empty only on a new draft; publishing needs a title (lib/portal/posts.ts).
+    title: { type: String, default: "", trim: true, maxlength: 200 },
     slug: { type: String, required: true, unique: true, trim: true, lowercase: true },
     excerpt: { type: String, default: "", trim: true, maxlength: 300 },
     kind: { type: String, enum: ["post", "page"], default: "post" },

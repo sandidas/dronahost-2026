@@ -1,30 +1,26 @@
 import type { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { BuilderApp } from "@/components/builder/BuilderApp";
 import { PortalError } from "@/components/portal/PortalError";
 import { PortalShell } from "@/components/portal/PortalShell";
 import { BUILDER_TEXT } from "@/content/portal-strings";
-import { can } from "@/lib/auth/permissions";
 import { requirePortal } from "@/lib/auth/session";
-import { existingEditorInit, newEditorInit } from "@/lib/builder/editor-init";
+import { existingEditorInit } from "@/lib/builder/editor-init";
 import { getPortalPost, getPortalPostBySlug } from "@/lib/portal/posts";
 
 export const metadata: Metadata = { title: BUILDER_TEXT.ui.editorTitle };
 
 /**
- * One page for creating and editing posts and pages: /dashboard/posts/new (?kind=page for a page) and
- * /dashboard/posts/<slug>. Staff and admins; what each may change is decided on the server for every action.
+ * The editor for posts and pages alike, at /dashboard/posts/<slug>. Every record opened here already exists: "New post"
+ * in the list saves an empty draft first. Staff and admins; what each may change is decided on the server for every action.
  */
-export default async function EditorPage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ kind?: string }> }) {
+export default async function EditorPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const actor = await requirePortal("portal.dashboard", `/dashboard/posts/${encodeURIComponent(slug)}`);
   const actorName = actor.name || actor.email;
 
-  if (slug === "new") {
-    if (!can(actor.role, "post.create")) notFound();
-    const kind = (await searchParams).kind === "page" ? "page" : "post";
-    return <BuilderApp init={newEditorInit(actor, kind)} actorName={actorName} />;
-  }
+  // The old "new post" address: drafts are now created from the list.
+  if (slug === "new") redirect("/dashboard/posts");
 
   const res = await getPortalPostBySlug(actor, slug);
   if (!res.ok) {

@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { PORTAL_ERRORS } from "@/content/portal-strings";
 import { getActor } from "@/lib/auth/session";
-import { checkSlug, createPost, deletePost, setLocked, setPublished, updatePost, type PostChange, type SlugCheckResult } from "../posts";
+import { checkSlug, createDraft, createPost, deletePost, setLocked, setPublished, updatePost, type PostChange, type SlugCheckResult } from "../posts";
 import { fail, type Actor, type Result } from "../result";
 
 /**
@@ -32,6 +32,11 @@ export async function savePostAction(id: string | null, input: unknown): Promise
     if (res.ok) refreshPublicBlog(res.data);
     return res;
   });
+}
+
+/** "New post": saves an empty draft and returns its slug; the list then opens it at /dashboard/posts/<slug>. */
+export async function createDraftAction(): Promise<Result<PostChange>> {
+  return withActor((actor) => createDraft(actor));
 }
 
 /** Whether a slug is free, and a free one when it is not (the SEO and Page tabs). Changes nothing. */

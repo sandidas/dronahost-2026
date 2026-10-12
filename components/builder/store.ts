@@ -8,7 +8,7 @@ import { duplicateBlock, indexOf, insertBlock, moveBlock, nudgeBlock, removeBloc
 import type { Block, BuilderDoc, PageSettings, PostKind } from "@/lib/builder/model";
 import type { PostSeo } from "@/lib/builder/seo";
 import { publishProblems } from "@/lib/builder/validate";
-import { slugify } from "@/lib/portal/slug";
+import { isDraftSlug, slugify } from "@/lib/portal/slug";
 
 export type Meta = { title: string; slug: string; excerpt: string; coverImage: string; coverImageAlt: string; seo: PostSeo };
 export type SaveState = "new" | "saved" | "dirty" | "saving" | "error";
@@ -117,10 +117,12 @@ export function createBuilderStore(init: BuilderInit & { actorName: string }) {
         };
         return {
           ...init,
-          slugTouched: init.postId !== null,
+          // A new draft keeps the placeholder slug until its first title, which the slug then follows until saved.
+          slugTouched: !isDraftSlug(init.meta.slug),
           selectedId: null,
           leftTab: "add",
-          rightTab: init.postId ? "block" : "page",
+          // A new draft opens on the Page tab, where its title goes.
+          rightTab: isDraftSlug(init.meta.slug) ? "page" : "block",
           preview: false,
           device: "desktop",
           saveState: init.postId ? "saved" : "new",
@@ -140,7 +142,7 @@ export function createBuilderStore(init: BuilderInit & { actorName: string }) {
             const { meta, slugTouched } = get();
             const next = { ...meta, ...patch };
             const touched = slugTouched || patch.slug !== undefined;
-            if (!touched && patch.title !== undefined) next.slug = slugify(patch.title);
+            if (!touched && patch.title !== undefined) next.slug = slugify(patch.title) || meta.slug;
             edit({ meta: next, slugTouched: touched, ...(next.slug !== meta.slug && { slugCheck: null }) }, "meta");
           },
           setKind: (kind) => {

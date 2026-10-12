@@ -1,6 +1,5 @@
-import { FileText, Lock, LockOpen, Plus } from "lucide-react";
+import { FileText, Lock, LockOpen } from "lucide-react";
 import Badge from "@/components/ui/Badge";
-import Button from "@/components/ui/Button";
 import EmptyState from "@/components/ui/EmptyState";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { POSTS_TEXT } from "@/content/portal-strings";
@@ -10,6 +9,7 @@ import { formatDateTime } from "@/lib/portal/format";
 import { listPortalPosts, type PostRow } from "@/lib/portal/posts";
 import type { Actor, Result } from "@/lib/portal/result";
 import { cn } from "@/utils/cn";
+import { NewPostButton } from "./NewPostButton";
 import { PortalError } from "./PortalError";
 import { PORTAL_HOME } from "./PortalShell";
 
@@ -76,7 +76,7 @@ function PostTable({ rows, actor }: { rows: PostRow[]; actor: Actor }) {
             <TableRow key={p.id} className="border-border">
               <TableCell className="min-w-56">
                 <Link href={`${PORTAL_HOME}/posts/${p.slug}`} className="font-semibold text-link underline-offset-4 hover:underline">
-                  {p.title}
+                  {p.title || POSTS_TEXT.untitled}
                 </Link>
                 <span className="sr-only"> ({editable ? POSTS_TEXT.edit : POSTS_TEXT.view})</span>
                 <span className="block text-xs text-subtle-foreground">{p.kind === "page" ? `/${p.slug}` : `/blog/${p.slug}`}</span>
@@ -115,16 +115,7 @@ export function PostsList({ actor, filter, res }: { actor: Actor; filter: ListFi
     <>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="t-h2 text-foreground">{POSTS_TEXT.title}</h1>
-        {canCreate && (
-          <div className="flex flex-wrap gap-2">
-            <Button href={`${PORTAL_HOME}/posts/new`} size="sm" leadingIcon={<Plus className="size-4" aria-hidden="true" />}>
-              {POSTS_TEXT.newPost}
-            </Button>
-            <Button href={`${PORTAL_HOME}/posts/new?kind=page`} size="sm" variant="secondary" leadingIcon={<Plus className="size-4" aria-hidden="true" />}>
-              {POSTS_TEXT.newPage}
-            </Button>
-          </div>
-        )}
+        {canCreate && <NewPostButton editorBase={`${PORTAL_HOME}/posts`} />}
       </div>
       <div className="mt-6">
         <Filters current={filter} />
@@ -137,7 +128,6 @@ export function PostsList({ actor, filter, res }: { actor: Actor; filter: ListFi
           icon={FileText}
           title={POSTS_TEXT.empty.title}
           body={unfiltered ? POSTS_TEXT.empty.body : POSTS_TEXT.empty.filtered}
-          action={unfiltered && canCreate ? { label: POSTS_TEXT.newPost, href: `${PORTAL_HOME}/posts/new` } : undefined}
         />
       ) : (
         <PostTable rows={res.data} actor={actor} />
