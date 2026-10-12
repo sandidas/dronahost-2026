@@ -87,6 +87,12 @@
       28px 28px;
   }
 
+  /* Editing controls on the builder canvas (block toolbar, placeholders, add buttons): the canvas frame is scaled to fit,
+     and `zoom` brings these back to their normal size (components/builder/CanvasFrame.tsx sets --canvas-zoom). */
+  .builder-ui {
+    zoom: var(--canvas-zoom, 1);
+  }
+
   /* A full section inside a post's text column (components/builder/layout.tsx POST_SECTION_GAP): the column already
      has the page gutter and rhythm, so the section drops its own container padding and uses tighter spacing. */
   .builder-in-post .container-site {

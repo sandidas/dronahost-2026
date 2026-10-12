@@ -53,7 +53,7 @@ export function RichTextEditor({ initialContent, editable, onChange, uploadEnabl
     return (
       <div className="portal-editor portal-editor-inline">
         {editor && editable && toolbar && (
-          <div className="sticky top-0 z-10 mb-2 overflow-hidden rounded-xl border border-border-strong bg-card shadow-sm">
+          <div className="builder-ui sticky top-0 z-10 mb-2 overflow-hidden rounded-xl border border-border-strong bg-card shadow-sm">
             <EditorToolbar editor={editor} uploadEnabled={uploadEnabled} />
           </div>
         )}

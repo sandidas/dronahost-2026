@@ -27,7 +27,7 @@ export function SiteBlockView({ block, className, inPost = false }: { block: Sit
   const Icon = entry ? BLOCK_ICONS[entry.icon] : undefined;
   const missing = siteSectionProblems(block);
   return (
-    <div className="m-4 flex flex-col items-center gap-2 rounded-xl border-2 border-dashed border-border-strong p-8 text-center text-sm text-muted-foreground">
+    <div className="builder-ui m-4 flex flex-col items-center gap-2 rounded-xl border-2 border-dashed border-border-strong p-8 text-center text-sm text-muted-foreground">
       {Icon && <Icon className="size-6 text-link" aria-hidden="true" />}
       <p className="font-semibold text-foreground">{entry?.label}</p>
       <p>{T.fillIn}</p>

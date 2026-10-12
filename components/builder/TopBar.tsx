@@ -59,8 +59,7 @@ export function TopBar({ onSave, onPublish, problemCount }: Props) {
       </div>
 
       <div className="hidden items-center gap-1 md:flex" role="group" aria-label={T.devices.label}>
-        {preview &&
-          DEVICES.map(({ id, icon: Icon }) => (
+        {DEVICES.map(({ id, icon: Icon }) => (
             <button key={id} type="button" className={iconButton} aria-pressed={device === id} onClick={() => set({ device: id })} title={T.devices[id]}>
               <Icon className="size-4" aria-hidden="true" />
               <span className="sr-only">{T.devices[id]}</span>

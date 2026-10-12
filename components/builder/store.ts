@@ -57,6 +57,8 @@ export type BuilderState = BuilderInit & {
   mobilePanel: "left" | "right" | null;
   /** The type being dragged, so only the drop zones that take it light up. */
   dragType: string | null;
+  /** The name shown on the chip that follows the pointer while a block is moved. */
+  dragLabel: string | null;
   /** The innermost block under the pointer (only it shows its toolbar). */
   hoverId: string | null;
   /** Bumped by undo and redo: rich text editors keep their own state, so they reload from the page when it changes. */
@@ -72,20 +74,26 @@ export type BuilderState = BuilderInit & {
   remove: (id: string) => void;
   update: (id: string, fn: (block: AnyBlock) => AnyBlock) => void;
   select: (id: string | null) => void;
-  set: (patch: Partial<Pick<BuilderState, "leftTab" | "rightTab" | "preview" | "device" | "dragType" | "hoverId" | "message" | "showProblems" | "mobilePanel">>) => void;
+  set: (patch: Partial<Pick<BuilderState, "leftTab" | "rightTab" | "preview" | "device" | "dragType" | "dragLabel" | "hoverId" | "message" | "showProblems" | "mobilePanel">>) => void;
   saving: () => void;
   saved: (result: { postId: string; slug: string }) => void;
   failed: (text: string, fieldErrors?: Record<string, string>) => void;
   statusChanged: (status: "draft" | "published", locked: boolean, publishedLine?: string | null) => void;
 };
 
-/** Groups a burst of changes (typing) into one undo step: the state before the burst is recorded once. */
-function burst<A extends unknown[]>(fn: (...args: A) => void, ms: number): (...args: A) => void {
-  let last = 0;
+/**
+ * Undo steps. Typing in one place (the same block, or the page settings) within a second is one step; every other change
+ * (add, move, duplicate, delete, template) is always a step of its own. `group.key` is set by the change being made.
+ */
+function grouped<A extends unknown[]>(fn: (...args: A) => void, group: { key: string }, ms: number): (...args: A) => void {
+  let lastKey = "";
+  let lastAt = 0;
   return (...args: A) => {
     const now = Date.now();
-    if (now - last > ms) fn(...args);
-    last = now;
+    const sameTyping = group.key !== "" && group.key === lastKey && now - lastAt < ms;
+    if (!sameTyping) fn(...args);
+    lastKey = group.key;
+    lastAt = now;
   };
 }
 
@@ -114,12 +122,14 @@ function defaultTarget(doc: BuilderDoc, selectedId: string | null, type: string)
 }
 
 export function createBuilderStore(init: BuilderInit & { actorName: string }) {
+  const group = { key: "" };
   return createStore<BuilderState>()(
     temporal(
       (set, get) => {
         /** Every change to the page goes through here: refused when the person cannot edit, and marks the page unsaved. */
-        const edit = (patch: Partial<BuilderState>) => {
+        const edit = (patch: Partial<BuilderState>, typingKey = "") => {
           if (!get().canEdit) return;
+          group.key = typingKey;
           set({ ...patch, saveState: "dirty", message: null });
         };
         return {
@@ -138,6 +148,7 @@ export function createBuilderStore(init: BuilderInit & { actorName: string }) {
           savedSlug: init.postId ? init.meta.slug : null,
           mobilePanel: null,
           dragType: null,
+          dragLabel: null,
           hoverId: null,
           historyRev: 0,
 
@@ -146,7 +157,7 @@ export function createBuilderStore(init: BuilderInit & { actorName: string }) {
             const next = { ...meta, ...patch };
             const touched = slugTouched || patch.slug !== undefined;
             if (!touched && patch.title !== undefined) next.slug = slugify(patch.title);
-            edit({ meta: next, slugTouched: touched });
+            edit({ meta: next, slugTouched: touched }, "meta");
           },
           addBlock: (type, target) => {
             const entry = entryByType(type);
@@ -190,7 +201,7 @@ export function createBuilderStore(init: BuilderInit & { actorName: string }) {
           },
           update: (id, fn) => {
             const next = updateBlock(get().doc, id, fn);
-            if (next !== get().doc) edit({ doc: next });
+            if (next !== get().doc) edit({ doc: next }, `block:${id}`);
           },
           select: (id) => set({ selectedId: id, ...(id && { rightTab: "block" as const }) }),
           set: (patch) => set(patch),
@@ -216,7 +227,7 @@ export function createBuilderStore(init: BuilderInit & { actorName: string }) {
         partialize: (s) => ({ doc: s.doc, meta: s.meta }),
         equality: (a, b) => a.doc === b.doc && a.meta === b.meta,
         limit: 100,
-        handleSet: (handleSet) => burst(handleSet, 600),
+        handleSet: (handleSet) => grouped(handleSet, group, 1000),
       },
     ),
   );

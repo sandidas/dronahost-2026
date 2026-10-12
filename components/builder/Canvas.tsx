@@ -1,6 +1,6 @@
 "use client";
 
-import { useDraggable, useDroppable } from "@dnd-kit/core";
+import { DragOverlay, useDraggable, useDroppable } from "@dnd-kit/core";
 import type { JSONContent } from "@tiptap/react";
 import { ArrowDown, ArrowUp, Copy, GripVertical, ImageIcon, Plus, Trash2, Video } from "lucide-react";
 import { createContext, useContext, useId, useMemo, useState, type ReactNode } from "react";
@@ -17,8 +17,9 @@ import { templatesFor } from "@/lib/builder/templates";
 import { accepts, ROOT, slotKey, type Slot } from "@/lib/builder/tree";
 import { cn } from "@/utils/cn";
 import { ColumnsGrid, COLUMN_CELL, Figure, pageBands, POST_SECTION_GAP, SectionShell, VideoFrame } from "./layout";
+import { CanvasFrame } from "./CanvasFrame";
 import { SiteBlockView } from "./SiteBlockView";
-import { useBuilder, useProblems } from "./store";
+import { useBuilder, useProblems, type Device } from "./store";
 
 const T = BUILDER_TEXT.ui;
 
@@ -30,18 +31,46 @@ export const dropId = (slot: Slot, index: number) => `drop:${slotKey(slot)}:${in
 /** Drag source id for a block already on the page. */
 export const moveId = (id: string) => `move:${id}`;
 
-/** A thin line between blocks that becomes a drop target while a block that fits here is dragged. */
+/** The MIME type of a block dragged from the Add panel (native drag and drop, which crosses into the canvas frame). */
+export const PALETTE_MIME = "application/x-dronahost-block";
+
+/**
+ * A thin line between blocks that becomes a drop target while a block that fits here is dragged: blocks moved on the
+ * canvas (dnd-kit) and new blocks dragged from the Add panel (native drag and drop).
+ */
 function DropZone({ slot, index, empty }: { slot: Slot; index: number; empty?: string }) {
   const dragType = useBuilder((s) => s.dragType);
   const canEdit = useBuilder((s) => s.canEdit);
+  const addBlock = useBuilder((s) => s.addBlock);
+  const set = useBuilder((s) => s.set);
+  const [nativeOver, setNativeOver] = useState(false);
   const active = dragType !== null && accepts(slot, dragType as AnyBlock["type"]);
-  const { setNodeRef, isOver } = useDroppable({ id: dropId(slot, index), data: { slot, index }, disabled: !active });
+  const { setNodeRef, isOver: dndOver } = useDroppable({ id: dropId(slot, index), data: { slot, index }, disabled: !active });
+  const isOver = dndOver || nativeOver;
+  const native = {
+    onDragOver: (e: React.DragEvent) => {
+      if (!active || !e.dataTransfer.types.includes(PALETTE_MIME)) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "copy";
+      if (!nativeOver) setNativeOver(true);
+    },
+    onDragLeave: () => setNativeOver(false),
+    onDrop: (e: React.DragEvent) => {
+      const type = e.dataTransfer.getData(PALETTE_MIME);
+      setNativeOver(false);
+      if (!active || !type) return;
+      e.preventDefault();
+      set({ dragType: null });
+      addBlock(type, { slot, index });
+    },
+  };
   if (empty && canEdit) {
     return (
       <div
         ref={setNodeRef}
+        {...native}
         className={cn(
-          "flex min-h-20 items-center justify-center rounded-xl border-2 border-dashed px-4 text-center text-sm text-muted-foreground transition-colors",
+          "builder-ui flex min-h-20 items-center justify-center rounded-xl border-2 border-dashed px-4 text-center text-sm text-muted-foreground transition-colors",
           isOver ? "border-accent bg-accent/12" : active ? "border-accent/60" : "border-border-strong",
         )}
       >
@@ -51,7 +80,7 @@ function DropZone({ slot, index, empty }: { slot: Slot; index: number; empty?: s
   }
   if (!active) return null;
   return (
-    <div ref={setNodeRef} className="relative h-3" aria-hidden="true">
+    <div ref={setNodeRef} {...native} className="relative h-6" aria-hidden="true">
       <div className={cn("absolute inset-x-0 top-1/2 h-1 -translate-y-1/2 rounded-full transition-colors", isOver ? "bg-accent" : "bg-accent/25")} />
     </div>
   );
@@ -125,7 +154,7 @@ function BlockFrame({ block }: { block: AnyBlock }) {
       )}
     >
       {showChip && (
-        <div className={cn("absolute -top-3.5 start-2 z-20 flex items-center gap-0.5 rounded-md bg-accent px-1 text-xs font-semibold text-accent-foreground shadow-md", block.type === "site" && "top-2")}>
+        <div className={cn("builder-ui absolute -top-3.5 start-2 z-20 flex items-center gap-0.5 rounded-md bg-accent px-1 text-xs font-semibold text-accent-foreground shadow-md", block.type === "site" && "top-2")}>
           {canEdit && (
             <button type="button" ref={setNodeRef} {...attributes} {...listeners} className="inline-flex size-7 cursor-grab items-center justify-center rounded-md hover:bg-accent-hover active:cursor-grabbing" title={T.toolbar.drag}>
               <GripVertical className="size-4" aria-hidden="true" />
@@ -153,7 +182,7 @@ function BlockFrame({ block }: { block: AnyBlock }) {
       )}
       <BlockBody block={block} selected={selected} />
       {problems && (
-        <ul className="relative z-10 m-2 list-disc rounded-lg border border-danger/40 bg-danger-surface py-2 pe-3 ps-7 text-sm text-danger">
+        <ul className="builder-ui relative z-10 m-2 list-disc rounded-lg border border-danger/40 bg-danger-surface py-2 pe-3 ps-7 text-sm text-danger">
           {problems.map((p) => (
             <li key={p}>{p}</li>
           ))}
@@ -236,7 +265,7 @@ function RichTextView({ block, selected }: { block: Extract<LeafBlock, { type: "
 /** Only on the canvas: where an image or video will go once its address is set. The public page shows nothing here. */
 function Placeholder({ icon, text }: { icon: ReactNode; text: string }) {
   return (
-    <div className="mt-6 flex min-h-32 flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border-strong p-4 text-center text-sm text-muted-foreground">
+    <div className="builder-ui mt-6 flex min-h-32 flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border-strong p-4 text-center text-sm text-muted-foreground">
       {icon}
       {text}
     </div>
@@ -280,7 +309,7 @@ function TemplatePicker({ onBlank }: { onBlank: () => void }) {
   const applyTemplate = useBuilder((s) => s.applyTemplate);
   const TT = BUILDER_TEXT.templates;
   return (
-    <section aria-labelledby="builder-templates" className="mx-4 my-6 rounded-xl border border-border bg-card p-5 sm:mx-8">
+    <section aria-labelledby="builder-templates" className="builder-ui mx-4 my-6 rounded-xl border border-border bg-card p-5 sm:mx-8">
       <h2 id="builder-templates" className="text-base font-semibold text-foreground">
         {TT.title}
       </h2>
@@ -351,7 +380,7 @@ function RootBlocks() {
     <>
       <SlotList slot={ROOT} blocks={blocks} empty={T.canvas.empty} />
       {canEdit && (
-        <div className="my-6 flex justify-center">
+        <div className="builder-ui my-6 flex justify-center">
           <button
             type="button"
             onClick={(e) => {
@@ -374,7 +403,10 @@ function RootBlocks() {
  * The page as visitors will see it, with editing on top: posts inside the real article layout (title, meta line,
  * featured image, contents, author), pages with the same title hero and bands as the public page.
  */
-export function Canvas() {
+/** Page widths the canvas lays out at; the frame is scaled to fit between the panels. */
+export const DEVICE_WIDTH: Record<Device, number> = { desktop: 1280, tablet: 820, phone: 390 };
+
+export function Canvas({ onKeyDown }: { onKeyDown?: (e: KeyboardEvent) => void }) {
   const kind = useBuilder((s) => s.kind);
   const doc = useBuilder((s) => s.doc);
   const meta = useBuilder((s) => s.meta);
@@ -386,10 +418,12 @@ export function Canvas() {
   const first = doc.blocks[0];
   const heroShows = kind === "page" && first?.type === "site" && first.section.type === "Hero" && prepareSection("Hero", first.section.content) !== null;
   const dates = useBuilder((s) => s.dates);
+  const device = useBuilder((s) => s.device);
+  const dragLabel = useBuilder((s) => s.dragLabel);
   return (
-    <div className="min-h-0 flex-1 overflow-y-auto bg-muted/50 p-3 sm:p-6" onClick={() => select(null)} onMouseLeave={() => set({ hoverId: null })}>
+    <CanvasFrame width={DEVICE_WIDTH[device]} onKeyDown={onKeyDown}>
       {/* look-luxe: the same page look as the public layout (app/[locale]/(marketing)/layout.tsx), so sections match. */}
-      <div role="region" aria-label={T.canvas.label} className="look-luxe mx-auto min-h-full max-w-[90rem] overflow-hidden rounded-xl border border-border bg-background shadow-sm">
+      <div role="region" aria-label={T.canvas.label} className="look-luxe min-h-screen bg-background text-foreground" onClick={() => select(null)} onMouseLeave={() => set({ hoverId: null })}>
         {!canEdit && <p className="border-b border-warning/40 bg-warning-surface px-4 py-2 text-sm text-foreground">{T.readOnly}</p>}
         <CanvasContext.Provider value={{ bands, firstId: first?.id }}>
           {kind === "post" ? (
@@ -418,7 +452,9 @@ export function Canvas() {
             </>
           )}
         </CanvasContext.Provider>
+        {/* Inside the frame, so the dragged chip follows the pointer in the frame's own coordinates. */}
+        <DragOverlay dropAnimation={null}>{dragLabel ? <div className="inline-flex rounded-md bg-accent px-3 py-1.5 text-sm font-semibold text-accent-foreground shadow-lg">{dragLabel}</div> : null}</DragOverlay>
       </div>
-    </div>
+    </CanvasFrame>
   );
 }

@@ -1,8 +1,8 @@
 "use client";
 
-import { closestCenter, DndContext, DragOverlay, PointerSensor, pointerWithin, useSensor, useSensors, type CollisionDetection, type DragEndEvent, type DragStartEvent } from "@dnd-kit/core";
+import { closestCenter, DndContext, PointerSensor, pointerWithin, useSensor, useSensors, type CollisionDetection, type DragEndEvent, type DragStartEvent } from "@dnd-kit/core";
 import { PanelLeft, PanelRight, X } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { BUILDER_TEXT } from "@/content/portal-strings";
 import { findBlock, slotKey, type Slot } from "@/lib/builder/tree";
 import { cn } from "@/utils/cn";
@@ -27,8 +27,14 @@ const collision: CollisionDetection = (args) => {
   return hits.length ? hits : closestCenter(args);
 };
 
-/** True while the person is typing in a field or the rich text editor, so shortcuts leave the keys alone. */
-const typing = (target: EventTarget | null) => target instanceof HTMLElement && (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName));
+/**
+ * True while the person is typing in a field or the rich text editor, so shortcuts leave the keys alone. Duck-typed: an
+ * element inside the canvas frame belongs to another window, so `instanceof HTMLElement` would be false for it.
+ */
+const typing = (target: EventTarget | null) => {
+  const el = target as { isContentEditable?: boolean; tagName?: string } | null;
+  return Boolean(el && (el.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName ?? "")));
+};
 
 function Shell({ actorName, embedded }: { actorName: string; embedded: boolean }) {
   const api = useBuilderApi();
@@ -43,7 +49,6 @@ function Shell({ actorName, embedded }: { actorName: string; embedded: boolean }
   const problems = useMemo(() => (showProblems ? groupProblems(docForChecks, kind) : {}), [showProblems, docForChecks, kind]);
   const problemCount = Object.keys(problems).length;
   const set = useBuilder((s) => s.set);
-  const [dragLabel, setDragLabel] = useState<string | null>(null);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
 
   // Autosave: drafts save a few seconds after the last change. A published page changes only when someone presses Update.
@@ -69,8 +74,8 @@ function Shell({ actorName, embedded }: { actorName: string; embedded: boolean }
   }, [api]);
 
   // Keyboard: Ctrl/Cmd+S save, Ctrl/Cmd+Z undo, Ctrl/Cmd+Shift+Z or Ctrl+Y redo, Ctrl/Cmd+D duplicate, Delete removes, Escape deselects.
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
+  const onKey = useCallback(
+    (e: KeyboardEvent) => {
       const mod = e.metaKey || e.ctrlKey;
       const key = e.key.toLowerCase();
       const s = api.getState();
@@ -96,20 +101,22 @@ function Shell({ actorName, embedded }: { actorName: string; embedded: boolean }
       } else if (key === "escape") {
         s.select(null);
       }
-    };
+    },
+    [api, publishing, undo, redo],
+  );
+  // The editor window; the canvas frame passes its own key presses to the same handler.
+  useEffect(() => {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [api, publishing, undo, redo]);
+  }, [onKey]);
 
   const onDragStart = (e: DragStartEvent) => {
     const data = e.active.data.current as DragData | undefined;
-    set({ dragType: data?.blockType ?? null, hoverId: null });
-    setDragLabel(data?.label ?? null);
+    set({ dragType: data?.blockType ?? null, dragLabel: data?.label ?? null, hoverId: null });
   };
 
   const onDragEnd = (e: DragEndEvent) => {
-    set({ dragType: null });
-    setDragLabel(null);
+    set({ dragType: null, dragLabel: null });
     const data = e.active.data.current as DragData | undefined;
     const target = e.over?.data.current as { slot: Slot; index: number } | undefined;
     if (!data || !target) return;
@@ -138,14 +145,14 @@ function Shell({ actorName, embedded }: { actorName: string; embedded: boolean }
             </button>
           </div>
         )}
-        <DndContext id="page-builder" sensors={sensors} collisionDetection={collision} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragCancel={() => set({ dragType: null })}>
+        <DndContext id="page-builder" sensors={sensors} collisionDetection={collision} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragCancel={() => set({ dragType: null, dragLabel: null })}>
           <div className="relative flex min-h-0 flex-1">
             {!preview && (
               <div className={cn("absolute inset-y-0 start-0 z-30 shadow-xl lg:static lg:z-auto lg:flex lg:shadow-none", mobilePanel === "left" ? "flex" : "hidden")}>
                 <LeftPanel />
               </div>
             )}
-            {preview ? <PreviewFrame /> : <Canvas />}
+            {preview ? <PreviewFrame /> : <Canvas onKeyDown={onKey} />}
             {!preview && (
               <div className={cn("absolute inset-y-0 end-0 z-30 shadow-xl lg:static lg:z-auto lg:flex lg:shadow-none", mobilePanel === "right" ? "flex" : "hidden")}>
                 <Inspector publishing={publishing} />
@@ -164,7 +171,6 @@ function Shell({ actorName, embedded }: { actorName: string; embedded: boolean }
               </div>
             )}
           </div>
-          <DragOverlay dropAnimation={null}>{dragLabel ? <div className="inline-flex rounded-md bg-accent px-3 py-1.5 text-sm font-semibold text-accent-foreground shadow-lg">{dragLabel}</div> : null}</DragOverlay>
         </DndContext>
       </div>
     </ProblemsContext.Provider>

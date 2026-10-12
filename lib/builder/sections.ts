@@ -85,7 +85,8 @@ const image = (v: unknown): Img | undefined => {
   const src = text(i?.src);
   return src && isSafeImageSrc(src) ? { src, alt: text(i?.alt) ?? "" } : undefined;
 };
-const list = (v: unknown): string[] => (Array.isArray(v) ? v.map(text).filter((s): s is string => Boolean(s)) : []);
+/** A list of short texts: empty entries dropped, and an exact repeat shown once (the site's lists key items by their text). */
+const list = (v: unknown): string[] => (Array.isArray(v) ? [...new Set(v.map(text).filter((s): s is string => Boolean(s)))] : []);
 const items = <T>(v: unknown, keep: (item: Record<string, unknown>) => T | undefined): T[] =>
   Array.isArray(v) ? v.flatMap((i) => (i && typeof i === "object" ? [keep(i as Record<string, unknown>)].filter((x): x is T => x !== undefined) : [])) : [];
 const iconOf = (v: unknown): IconName | undefined => ((ICON_NAMES as readonly string[]).includes(v as string) ? (v as IconName) : undefined);

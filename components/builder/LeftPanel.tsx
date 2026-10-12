@@ -1,6 +1,5 @@
 "use client";
 
-import { useDraggable } from "@dnd-kit/core";
 import { ArrowDown, ArrowUp, Search } from "lucide-react";
 import { useId, useMemo, useState } from "react";
 import { BUILDER_TEXT } from "@/content/portal-strings";
@@ -11,30 +10,38 @@ import { cn } from "@/utils/cn";
 import { BLOCK_ICONS } from "./icons";
 import { useBuilder, useProblems } from "./store";
 import { sectionHeading } from "./Inspector";
+import { PALETTE_MIME } from "./Canvas";
 import { iconButton } from "./TopBar";
 
 const T = BUILDER_TEXT.ui;
 const GROUPS: CatalogGroup[] = ["layout", "content", "sections", "banners"];
 
-/** Drag source id for a new block from the panel. The canvas reads `data` to know what is being dragged. */
-export const paletteId = (type: string) => `new:${type}`;
-
 function PaletteTile({ entry }: { entry: CatalogEntry }) {
   const addBlock = useBuilder((s) => s.addBlock);
-  const created = useMemo(() => entry.create(), [entry]);
-  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id: paletteId(entry.type), data: { source: "palette", type: entry.type, blockType: created.type, label: entry.label } });
+  const set = useBuilder((s) => s.set);
+  const blockType = useMemo(() => entry.create().type, [entry]);
+  const [dragging, setDragging] = useState(false);
   const Icon = BLOCK_ICONS[entry.icon];
   return (
     <button
-      ref={setNodeRef}
       type="button"
-      {...attributes}
-      {...listeners}
+      draggable
+      // Native drag and drop: it carries the block into the canvas frame, where dnd-kit's pointer events cannot follow.
+      onDragStart={(e) => {
+        e.dataTransfer.setData(PALETTE_MIME, entry.type);
+        e.dataTransfer.effectAllowed = "copy";
+        setDragging(true);
+        set({ dragType: blockType, hoverId: null });
+      }}
+      onDragEnd={() => {
+        setDragging(false);
+        set({ dragType: null });
+      }}
       onClick={() => addBlock(entry.type)}
       title={entry.hint}
       className={cn(
-        "flex min-h-20 flex-col items-center justify-center gap-1.5 rounded-xl border border-border bg-background p-2 text-center text-xs font-semibold text-foreground transition-colors hover:border-accent hover:bg-muted",
-        isDragging && "opacity-50",
+        "flex min-h-20 cursor-grab flex-col items-center justify-center gap-1.5 rounded-xl border border-border bg-background p-2 text-center text-xs font-semibold text-foreground transition-colors hover:border-accent hover:bg-muted active:cursor-grabbing",
+        dragging && "opacity-50",
       )}
     >
       {Icon && <Icon className="size-5 text-link" aria-hidden="true" />}
