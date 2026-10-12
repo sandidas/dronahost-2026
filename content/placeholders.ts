@@ -229,3 +229,57 @@ export const SAMPLE_BANNERS = {
     cta: { label: "Start the plan finder", href: "/pricing" },
   },
 } as const;
+
+/**
+ * Sample records for the team portal components on /v2 (development only). The real portals read MongoDB.
+ * Ids are all-zero ObjectIds that match no record, so a button pressed on /v2 changes nothing.
+ */
+type PortalTeamMember = import("@/lib/portal/team").TeamMember;
+type PortalInvite = import("@/lib/portal/team").PendingInvite;
+type PortalPostRow = import("@/lib/portal/posts").PostRow;
+type PortalAnnouncement = import("@/lib/portal/announcements").AnnouncementView;
+type PortalActor = import("@/lib/portal/result").Actor;
+type PortalDoc = import("@/lib/editor/schema").TiptapDoc;
+
+const sampleId = (n: number) => n.toString(16).padStart(24, "0");
+
+export const SAMPLE_PORTAL_ADMIN: PortalActor = { id: sampleId(1), email: "admin@example.com", name: "Sample Admin", role: 1001 };
+export const SAMPLE_PORTAL_STAFF: PortalActor = { id: sampleId(2), email: "writer@example.com", name: "Sample Writer", role: 999 };
+
+export const SAMPLE_PORTAL_POSTS: PortalPostRow[] = [
+  { id: sampleId(11), title: "Sample post: how a site move works", slug: "sample-site-move", status: "published", locked: true, authorName: "Sample Writer", updatedAt: "2026-01-02T09:30:00.000Z" },
+  { id: sampleId(12), title: "Sample post: choosing a plan", slug: "sample-choosing-a-plan", status: "draft", locked: false, authorName: "Sample Writer", updatedAt: "2026-01-03T14:00:00.000Z" },
+  { id: sampleId(13), title: "Sample post: backups explained", slug: "sample-backups", status: "published", locked: false, authorName: "Sample Admin", updatedAt: "2026-01-04T08:15:00.000Z" },
+];
+
+export const SAMPLE_PORTAL_DOC: PortalDoc = {
+  type: "doc",
+  content: [
+    { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Sample heading" }] },
+    {
+      type: "paragraph",
+      content: [
+        { type: "text", text: "Sample paragraph with " },
+        { type: "text", marks: [{ type: "bold" }], text: "bold text" },
+        { type: "text", text: " and " },
+        { type: "text", marks: [{ type: "link", attrs: { href: "/pricing" } }], text: "a link" },
+        { type: "text", text: "." },
+      ],
+    },
+    { type: "bulletList", content: [{ type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "Sample list item" }] }] }] },
+    { type: "codeBlock", attrs: { language: "bash" }, content: [{ type: "text", text: "wp plugin list --status=active" }] },
+  ],
+};
+
+export const SAMPLE_PORTAL_TEAM: PortalTeamMember[] = [
+  { id: sampleId(1), name: "Sample Admin", email: "admin@example.com", role: 1001, joinedAt: "2026-01-01T10:00:00.000Z", envAdmin: true, isSelf: true },
+  { id: sampleId(3), name: "Sample Editor", email: "editor@example.com", role: 1001, joinedAt: "2026-01-05T10:00:00.000Z", envAdmin: false, isSelf: false },
+  { id: sampleId(2), name: "Sample Writer", email: "writer@example.com", role: 999, joinedAt: "2026-01-06T10:00:00.000Z", envAdmin: false, isSelf: false },
+];
+
+export const SAMPLE_PORTAL_INVITES: PortalInvite[] = [{ id: sampleId(21), email: "new-writer@example.com", role: 999, createdAt: "2026-01-07T10:00:00.000Z" }];
+
+export const SAMPLE_PORTAL_ANNOUNCEMENTS: PortalAnnouncement[] = [
+  { id: sampleId(31), message: "Sample notice: planned maintenance on Saturday from 02:00 to 03:00 UTC.", linkUrl: "/contact", startsAt: "2026-01-01T00:00:00.000Z", endsAt: "2026-12-31T00:00:00.000Z", active: true, updatedAt: "2026-01-01T09:00:00.000Z" },
+  { id: sampleId(32), message: "Sample notice: switched off.", linkUrl: null, startsAt: null, endsAt: null, active: false, updatedAt: "2026-01-02T09:00:00.000Z" },
+];

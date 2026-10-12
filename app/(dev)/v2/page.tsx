@@ -4,6 +4,7 @@ import { Link } from "@/i18n/link";
 import ShowcaseSection from "./_components/ShowcaseSection";
 import ShowcaseSidebar from "./_components/ShowcaseSidebar";
 import ShowcaseLayout from "./_components/ShowcaseLayout";
+import PortalShowcase from "./_components/PortalShowcase";
 
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
@@ -320,7 +321,7 @@ export default function V2ShowcasePage() {
             id="announcement-bar"
             title="Announcement Bar"
             status="built"
-            notes="Reads content/announcement.ts and renders nothing while disabled. The sample below is forced on for review only. Dismissal is remembered per message id."
+            notes="Reads active announcements from MongoDB (managed on /dashboard/announcements; cached for 60 seconds) plus content/announcement.ts when enabled, and renders nothing when none are active. The sample below is passed as props for review only. Dismissal is remembered per message and edit."
           >
             <div className="overflow-hidden rounded-lg border border-border">
               <AnnouncementBar
@@ -1076,6 +1077,9 @@ export default function V2ShowcasePage() {
           <ShowcaseSection id="domain-search" title="Domain search" status="needs-work" notes="UI and /api/domains/search are built on the WHMCS DomainWhois action. Off until FEATURES.domainSearch is true and WHMCS credentials are set. Shows availability only; registering goes through the contact form until checkout exists.">
             <DomainSearch />
           </ShowcaseSection>
+
+          {/* ── Team portals (/dashboard and /office), sample records ── */}
+          <PortalShowcase />
 
           {/* ── JsonLd ── */}
           <ShowcaseSection

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import RootDocument from "@/components/layout/RootDocument";
 import { DEFAULT_LOCALE } from "@/lib/i18n/config";
-import "@/app/styles/rich-content.css";
 
 // Every portal page depends on the signed-in person, so nothing here is prerendered or cached.
 export const dynamic = "force-dynamic";

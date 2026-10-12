@@ -3,8 +3,8 @@ import { PORTAL_TEXT } from "@/content/portal-strings";
 import { Link } from "@/i18n/link";
 import { can } from "@/lib/auth/permissions";
 import { countActiveAnnouncements } from "@/lib/portal/announcements";
-import { countPosts } from "@/lib/portal/posts";
-import type { Actor } from "@/lib/portal/result";
+import { countPosts, type PostCounts } from "@/lib/portal/posts";
+import type { Actor, Result } from "@/lib/portal/result";
 import { countMembers } from "@/lib/portal/team";
 import { PortalError } from "./PortalError";
 import type { PortalBase } from "./PortalShell";
@@ -13,13 +13,21 @@ type Card = { label: string; value: number; href: string; icon: LucideIcon };
 
 /** Portal home: counts that link to the matching list. Admins also see team and announcement counts. */
 export async function OverviewView({ base, actor }: { base: PortalBase; actor: Actor }) {
-  const T = PORTAL_TEXT.overview;
   const admin = base === "/dashboard" && can(actor.role, "team.manage");
   const [posts, members, announcements] = await Promise.all([
     countPosts(actor),
     admin ? countMembers(actor) : Promise.resolve(null),
     admin ? countActiveAnnouncements(actor) : Promise.resolve(null),
   ]);
+  return <OverviewCards base={base} counts={{ posts, members, announcements }} />;
+}
+
+export type OverviewCounts = { posts: Result<PostCounts>; members: Result<number> | null; announcements: Result<number> | null };
+
+/** The overview itself, given the loaded counts (also rendered with sample counts on /v2). */
+export function OverviewCards({ base, counts }: { base: PortalBase; counts: OverviewCounts }) {
+  const T = PORTAL_TEXT.overview;
+  const { posts, members, announcements } = counts;
 
   const cards: Card[] = posts.ok
     ? [

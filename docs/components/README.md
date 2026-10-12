@@ -92,11 +92,15 @@ Local intent is served without a local claim: no office, phone or map, no "near 
 
 ## Layout chrome (`layouts`, `components/layout`)
 
-`Header` (**client**: sticky, hosting mega menu that is always in the HTML, keyboard support), `MobileMenu` (focus trap, `inert` when closed), `Footer` (four unique columns; company details only when set), `AnnouncementBar` (disabled by default), `CurrencySelector` (**client**, behind `FEATURES.currencySelector`).
+`Header` (**client**: sticky, hosting mega menu that is always in the HTML, keyboard support), `MobileMenu` (focus trap, `inert` when closed), `Footer` (four unique columns; company details only when set), `AnnouncementBar` (active announcements from `/dashboard/announcements`, plus `content/announcement.ts` when enabled; renders nothing when none are active), `CurrencySelector` (**client**, behind `FEATURES.currencySelector`).
 
 ## Page templates
 
 `components/templates/ServicePage` builds a standard service page (hero, feature grid, FAQ, CTA, JSON-LD) from an entry in `content/services.ts`.
+
+## Team portals (`components/portal`)
+
+Used by `/dashboard` (admins) and `/office` (staff); see `docs/reference/PORTALS.md`. Shown on `/v2` under "Team portals" with sample records from `content/placeholders.ts`. Server views load data and pass it to a component that only renders, so `/v2` can show it without a database: `PostsView` → `PostsList`, `OverviewView` → `OverviewCards`, `PortalShell` → `PortalHeader`. **Client**: `PostForm` with `editor/RichTextEditor` (Tiptap; imports `app/styles/rich-content.css` itself), `PostAdminControls`, `TeamManager`, `InviteForm`, `AnnouncementsManager`, `AnnouncementForm`, `GoogleSignInButton`, `SignOutButton`. Buttons call the real server actions, which check `lib/auth/permissions.ts`: signed out, `/v2` changes nothing; signed in to a portal in the same browser, adding a member or saving an announcement there creates a real record (sample ids match nothing, so edits, deletes and role changes still do nothing).
 
 ## Structured data
 

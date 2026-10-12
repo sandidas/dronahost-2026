@@ -38,4 +38,5 @@ WordPress instead and portal posts are not shown.
 
 - `npm run test:portal`: permission table, post, team, sign-in adapter and announcement tests against a throwaway MongoDB
   (mongodb-memory-server using a local `mongod` when installed, or `TEST_MONGODB_URI`).
+- `/v2` (development only) shows every portal component with sample records, under "Team portals".
 - `scripts/portal-dev-session.ts` (development only) creates a user and a session cookie value for trying the portals without Google.

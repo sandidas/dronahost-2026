@@ -8,7 +8,7 @@ import { Link } from "@/i18n/link";
 import { can } from "@/lib/auth/permissions";
 import { formatDateTime } from "@/lib/portal/format";
 import { listPortalPosts, type PostRow } from "@/lib/portal/posts";
-import type { Actor } from "@/lib/portal/result";
+import type { Actor, Result } from "@/lib/portal/result";
 import { cn } from "@/utils/cn";
 import { PortalError } from "./PortalError";
 import type { PortalBase } from "./PortalShell";
@@ -84,6 +84,11 @@ function PostTable({ base, rows, actor }: { base: PortalBase; rows: PostRow[]; a
 /** Post list shared by /dashboard/posts and /office/posts. */
 export async function PostsView({ base, actor, filter }: { base: PortalBase; actor: Actor; filter: Filter }) {
   const res = await listPortalPosts(actor, { status: filter === "all" ? undefined : filter });
+  return <PostsList base={base} actor={actor} filter={filter} res={res} />;
+}
+
+/** The list itself, given the loaded rows (also rendered with sample rows on /v2). */
+export function PostsList({ base, actor, filter, res }: { base: PortalBase; actor: Actor; filter: Filter; res: Result<PostRow[]> }) {
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-4">

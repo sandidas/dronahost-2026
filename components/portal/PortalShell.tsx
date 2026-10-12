@@ -28,28 +28,35 @@ export function PortalShell({ base, actor, children }: { base: PortalBase; actor
   return (
     <>
       <AnnouncementBar />
-      <header className="border-b border-border bg-card">
-        <div className="container-site flex flex-wrap items-center justify-between gap-4 py-3">
-          <div className="flex items-center gap-3">
-            <Link href={base} aria-label={`${PORTAL_TEXT.brand} ${base === "/dashboard" ? PORTAL_TEXT.dashboardName : PORTAL_TEXT.officeName}`}>
-              <Logo size="sm" />
-            </Link>
-            <Badge variant={base === "/dashboard" ? "primary" : "secondary"}>{base === "/dashboard" ? PORTAL_TEXT.dashboardName : PORTAL_TEXT.officeName}</Badge>
-          </div>
-          <div className="flex items-center gap-3 text-sm">
-            <span className="hidden text-muted-foreground sm:inline">
-              {PORTAL_TEXT.signedInAs} <span className="font-semibold text-foreground">{actor.name || actor.email}</span> ({PORTAL_TEXT.roles[actor.role]})
-            </span>
-            <SignOutButton />
-          </div>
-        </div>
-        <div className="container-site">
-          <PortalNav items={navFor(base, actor)} label={PORTAL_TEXT.nav.label} />
-        </div>
-      </header>
+      <PortalHeader base={base} actor={actor} />
       <main id="main-content" tabIndex={-1} className="container-site flex-1 py-8 sm:py-10">
         {children}
       </main>
     </>
+  );
+}
+
+/** Top bar with navigation, who is signed in, and sign-out. */
+export function PortalHeader({ base, actor }: { base: PortalBase; actor: Actor }) {
+  return (
+    <header className="border-b border-border bg-card">
+      <div className="container-site flex flex-wrap items-center justify-between gap-4 py-3">
+        <div className="flex items-center gap-3">
+          <Link href={base} aria-label={`${PORTAL_TEXT.brand} ${base === "/dashboard" ? PORTAL_TEXT.dashboardName : PORTAL_TEXT.officeName}`}>
+            <Logo size="sm" />
+          </Link>
+          <Badge variant={base === "/dashboard" ? "primary" : "secondary"}>{base === "/dashboard" ? PORTAL_TEXT.dashboardName : PORTAL_TEXT.officeName}</Badge>
+        </div>
+        <div className="flex items-center gap-3 text-sm">
+          <span className="hidden text-muted-foreground sm:inline">
+            {PORTAL_TEXT.signedInAs} <span className="font-semibold text-foreground">{actor.name || actor.email}</span> ({PORTAL_TEXT.roles[actor.role]})
+          </span>
+          <SignOutButton />
+        </div>
+      </div>
+      <div className="container-site">
+        <PortalNav items={navFor(base, actor)} label={PORTAL_TEXT.nav.label} />
+      </div>
+    </header>
   );
 }

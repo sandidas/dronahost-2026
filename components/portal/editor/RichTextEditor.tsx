@@ -6,6 +6,8 @@ import { useEffect, useMemo } from "react";
 import { EDITOR_TEXT } from "@/content/portal-strings";
 import { blogExtensions } from "@/lib/editor/extensions";
 import { EditorToolbar } from "./EditorToolbar";
+// The editor carries its own content styles, so it looks the same in the portals and on /v2.
+import "@/app/styles/rich-content.css";
 
 type Props = {
   /** Tiptap JSON, or HTML for posts written before the portal. */

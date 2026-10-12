@@ -116,6 +116,19 @@ const categories: Category[] = [
     ],
   },
   {
+    label: "Team portals",
+    items: [
+      { id: "portal-header", label: "PortalHeader" },
+      { id: "portal-overview", label: "OverviewCards" },
+      { id: "portal-posts", label: "PostsList" },
+      { id: "portal-post-editor", label: "PostForm (admin)" },
+      { id: "portal-post-locked", label: "PostForm: locked" },
+      { id: "portal-team", label: "TeamManager" },
+      { id: "portal-announcements", label: "AnnouncementsManager" },
+      { id: "portal-sign-in", label: "Sign-in and errors" },
+    ],
+  },
+  {
     label: "SEO",
     items: [
       { id: "json-ld", label: "JsonLd" },
