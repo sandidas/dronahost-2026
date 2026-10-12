@@ -2,7 +2,7 @@ import { AnnouncementsManager } from "@/components/portal/AnnouncementsManager";
 import { GoogleSignInButton } from "@/components/portal/GoogleSignInButton";
 import { OverviewCards } from "@/components/portal/OverviewView";
 import { PortalError } from "@/components/portal/PortalError";
-import { PortalHeader, type PortalBase } from "@/components/portal/PortalShell";
+import { PortalHeader } from "@/components/portal/PortalShell";
 import { PostAdminControls } from "@/components/portal/PostAdminControls";
 import { PostForm } from "@/components/portal/PostForm";
 import { PostsList } from "@/components/portal/PostsView";
@@ -30,26 +30,26 @@ const SAMPLE_NOW = "2026-06-01T00:00:00.000Z";
 
 const [published] = SAMPLE_PORTAL_POSTS;
 
-const HEADERS: { label: string; base: PortalBase; actor: Actor }[] = [
-  { label: "Dashboard, admin", base: "/dashboard", actor: SAMPLE_PORTAL_ADMIN },
-  { label: "Office, staff", base: "/office", actor: SAMPLE_PORTAL_STAFF },
+const HEADERS: { label: string; actor: Actor }[] = [
+  { label: "Admin", actor: SAMPLE_PORTAL_ADMIN },
+  { label: "Staff (no Team or Announcements)", actor: SAMPLE_PORTAL_STAFF },
 ];
 
 /**
- * The /dashboard and /office components with sample records from content/placeholders.ts. Nothing here reads the
+ * The /dashboard components with sample records from content/placeholders.ts. Nothing here reads the
  * database. Buttons call the real server actions: without a portal session they are refused; with one, sample ids
  * match no record, but adding a member or saving a new announcement creates a real one.
  */
 export default function PortalShowcase() {
   return (
     <>
-      <ShowcaseSection id="portal-header" title="PortalHeader" status="built" notes="Top bar of both portals: logo, portal badge, who is signed in with their role, sign-out and the section navigation. Admins also get a link to the office; staff never see dashboard links. PortalShell adds the announcement banner and the main landmark around it.">
+      <ShowcaseSection id="portal-header" title="PortalHeader" status="built" notes="Top bar of the dashboard: logo, badge, who is signed in with their role, sign-out and the section navigation. Team and Announcements show only for admins. PortalShell adds the announcement banner and the main landmark around it.">
         <div className="space-y-6">
-          {HEADERS.map(({ label, base, actor }) => (
+          {HEADERS.map(({ label, actor }) => (
             <div key={label}>
               <p className={variantLabel}>{label}</p>
               <div className={frame}>
-                <PortalHeader base={base} actor={actor} />
+                <PortalHeader actor={actor} />
               </div>
             </div>
           ))}
@@ -61,13 +61,13 @@ export default function PortalShowcase() {
           <div>
             <p className={variantLabel}>Dashboard</p>
             <div className={pane}>
-              <OverviewCards base="/dashboard" counts={{ posts: { ok: true, data: { draft: 2, published: 5, locked: 4 } }, members: { ok: true, data: 3 }, announcements: { ok: true, data: 1 } }} />
+              <OverviewCards counts={{ posts: { ok: true, data: { draft: 2, published: 5, locked: 4 } }, members: { ok: true, data: 3 }, announcements: { ok: true, data: 1 } }} />
             </div>
           </div>
           <div>
-            <p className={variantLabel}>Office, with a load error</p>
+            <p className={variantLabel}>Staff, with a load error</p>
             <div className={pane}>
-              <OverviewCards base="/office" counts={{ posts: { ok: false, error: PORTAL_ERRORS.database }, members: null, announcements: null }} />
+              <OverviewCards counts={{ posts: { ok: false, error: PORTAL_ERRORS.database }, members: null, announcements: null }} />
             </div>
           </div>
         </div>
@@ -78,13 +78,13 @@ export default function PortalShowcase() {
           <div>
             <p className={variantLabel}>Admin, all posts</p>
             <div className={pane}>
-              <PostsList base="/dashboard" actor={SAMPLE_PORTAL_ADMIN} filter="all" res={{ ok: true, data: SAMPLE_PORTAL_POSTS }} />
+              <PostsList actor={SAMPLE_PORTAL_ADMIN} filter="all" res={{ ok: true, data: SAMPLE_PORTAL_POSTS }} />
             </div>
           </div>
           <div>
             <p className={variantLabel}>Staff, empty filter</p>
             <div className={pane}>
-              <PostsList base="/office" actor={SAMPLE_PORTAL_STAFF} filter="draft" res={{ ok: true, data: [] }} />
+              <PostsList actor={SAMPLE_PORTAL_STAFF} filter="draft" res={{ ok: true, data: [] }} />
             </div>
           </div>
         </div>
@@ -93,7 +93,7 @@ export default function PortalShowcase() {
       <ShowcaseSection id="portal-post-editor" title="PostForm and PostAdminControls" status="built" notes="Title, slug (filled from the title until edited), excerpt, cover image and the Tiptap editor (headings 2 to 4, lists, quote, code with highlighting, link, image, YouTube). Admins get the side panel: publish (which locks), unpublish, lock or unlock, view and delete with confirmation. Image upload shows only when S3 storage is configured; it is off here.">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem]">
           <PostForm
-            base="/dashboard"
+           
             post={{ id: published.id, title: published.title, slug: published.slug, excerpt: "Sample excerpt.", coverImage: "", content: SAMPLE_PORTAL_DOC, status: published.status, locked: published.locked }}
             canEdit
             isAdmin
@@ -108,7 +108,7 @@ export default function PortalShowcase() {
       <ShowcaseSection id="portal-post-locked" title="PostForm: locked for staff" status="built" notes="What staff see on a post an admin has published or locked: a notice and read-only fields. The server refuses staff edits to locked posts whatever the form sends.">
         <div className="max-w-4xl">
           <PostForm
-            base="/office"
+           
             post={{ id: published.id, title: published.title, slug: published.slug, excerpt: "Sample excerpt.", coverImage: "", content: SAMPLE_PORTAL_DOC, status: "published", locked: true }}
             canEdit={false}
             isAdmin={false}

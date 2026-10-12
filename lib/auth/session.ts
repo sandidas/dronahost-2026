@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { cache } from "react";
 import type { Actor } from "@/lib/portal/result";
 import { DEV_BYPASS_EMAIL, devBypassRole } from "./dev-bypass";
-import { can, homeFor } from "./permissions";
+import { can, homeFor, type Action } from "./permissions";
 import { toRole, type Role } from "./roles";
 import { authOptions } from "./options";
 
@@ -35,16 +35,16 @@ async function devBypassActor(role: Role): Promise<Actor> {
 /** Paths a sign-in may return to. Anything else goes to the role's home. */
 export function safeNext(next: unknown): string | null {
   if (typeof next !== "string" || next.length > 300) return null;
-  return /^\/(dashboard|office)(\/[A-Za-z0-9/_-]*)?(\?[A-Za-z0-9=&_-]*)?$/.test(next) ? next : null;
+  return /^\/dashboard(\/[A-Za-z0-9/_-]*)?(\?[A-Za-z0-9=&_-]*)?$/.test(next) ? next : null;
 }
 
 /**
- * Page guard for the portals. Signed-out visitors go to sign-in; a signed-in person without the role goes
- * to their own home (staff to /office, guests to the no-access page).
+ * Page guard for the dashboard. Signed-out visitors go to sign-in; a signed-in person who may not use the page goes to
+ * their home (staff on an admin-only page to /dashboard, guests to the no-access page).
  */
-export async function requirePortal(portal: "portal.dashboard" | "portal.office", path: string): Promise<Actor> {
+export async function requirePortal(action: Action, path: string): Promise<Actor> {
   const actor = await getActor();
   if (!actor) redirect(`/sign-in?next=${encodeURIComponent(path)}`);
-  if (!can(actor.role, portal)) redirect(homeFor(actor.role));
+  if (!can(actor.role, action)) redirect(homeFor(actor.role));
   return actor;
 }

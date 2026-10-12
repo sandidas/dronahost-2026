@@ -9,8 +9,8 @@ export const metadata: Metadata = { title: POST_FORM_TEXT.newTitle };
 export default async function AdminNewPostPage() {
   const actor = await requirePortal("portal.dashboard", "/dashboard/posts/new");
   return (
-    <PortalShell base="/dashboard" actor={actor}>
-      <NewPostView base="/dashboard" actor={actor} />
+    <PortalShell actor={actor}>
+      <NewPostView actor={actor} />
     </PortalShell>
   );
 }

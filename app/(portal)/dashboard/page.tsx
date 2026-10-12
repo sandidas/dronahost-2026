@@ -9,8 +9,8 @@ export const metadata: Metadata = { title: PORTAL_TEXT.dashboardName };
 export default async function AdminHomePage() {
   const actor = await requirePortal("portal.dashboard", "/dashboard");
   return (
-    <PortalShell base="/dashboard" actor={actor}>
-      <OverviewView base="/dashboard" actor={actor} />
+    <PortalShell actor={actor}>
+      <OverviewView actor={actor} />
     </PortalShell>
   );
 }

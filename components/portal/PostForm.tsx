@@ -10,14 +10,14 @@ import { slugify } from "@/lib/portal/slug";
 import { errorClass, helpClass, inputClass, labelClass } from "./field-styles";
 import { RichTextEditor } from "./editor/RichTextEditor";
 import { uploadImage } from "./editor/upload-image";
-import type { PortalBase } from "./PortalShell";
+import { PORTAL_HOME } from "./PortalShell";
 
 export type PostFormValues = { id: string | null; title: string; slug: string; excerpt: string; coverImage: string; content: JSONContent | string; status: "draft" | "published"; locked: boolean };
 
-type Props = { base: PortalBase; post: PostFormValues; canEdit: boolean; isAdmin: boolean; uploadEnabled: boolean };
+type Props = { post: PostFormValues; canEdit: boolean; isAdmin: boolean; uploadEnabled: boolean };
 
 /** Create and edit form shared by both portals. Read-only (with a notice) when the post is locked for this person. */
-export function PostForm({ base, post, canEdit, isAdmin, uploadEnabled }: Props) {
+export function PostForm({ post, canEdit, isAdmin, uploadEnabled }: Props) {
   const id = useId();
   const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
@@ -46,7 +46,7 @@ export function PostForm({ base, post, canEdit, isAdmin, uploadEnabled }: Props)
       setErrors({});
       setSlug(res.data.slug);
       if (post.id === null) {
-        router.push(`${base}/posts/${res.data.id}`);
+        router.push(`${PORTAL_HOME}/posts/${res.data.id}`);
         return;
       }
       setMessage({ kind: "ok", text: POST_FORM_TEXT.saved });

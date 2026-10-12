@@ -15,8 +15,7 @@ export type Action =
   | "team.manage"
   | "announcement.manage"
   | "media.upload"
-  | "portal.dashboard"
-  | "portal.office";
+  | "portal.dashboard";
 
 /** The part of a post a permission depends on. */
 export type PostGuard = { locked: boolean };
@@ -27,10 +26,9 @@ const ADMIN_ONLY: ReadonlySet<Action> = new Set<Action>([
   "post.delete",
   "team.manage",
   "announcement.manage",
-  "portal.dashboard",
 ]);
 
-const STAFF_AND_ADMIN: ReadonlySet<Action> = new Set<Action>(["post.list", "post.view", "post.create", "media.upload", "portal.office"]);
+const STAFF_AND_ADMIN: ReadonlySet<Action> = new Set<Action>(["post.list", "post.view", "post.create", "media.upload", "portal.dashboard"]);
 
 export function can(role: Role | null | undefined, action: Action, post?: PostGuard): boolean {
   if (role !== ROLES.ADMIN && role !== ROLES.STAFF) return false;
@@ -53,9 +51,7 @@ export function assertCan(role: Role | null | undefined, action: Action, post?: 
   if (!can(role, action, post)) throw new PermissionError(action);
 }
 
-/** Which portal home a role lands on after sign-in. */
-export function homeFor(role: Role | null | undefined): "/dashboard" | "/office" | "/no-access" {
-  if (role === ROLES.ADMIN) return "/dashboard";
-  if (role === ROLES.STAFF) return "/office";
-  return "/no-access";
+/** Where a role lands after sign-in: admins and staff share one dashboard; admin-only screens check their own action. */
+export function homeFor(role: Role | null | undefined): "/dashboard" | "/no-access" {
+  return can(role, "portal.dashboard") ? "/dashboard" : "/no-access";
 }

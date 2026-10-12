@@ -1,6 +1,6 @@
 /**
  * Portal roles, stored as numbers on the user record. Use these names everywhere; never write the numbers.
- * ADMIN opens /dashboard and /office, STAFF opens /office, GUEST (every new sign-up) opens neither.
+ * ADMIN and STAFF open /dashboard (Team and Announcements are admin only), GUEST (every new sign-up) opens nothing.
  */
 export const ROLES = {
   ADMIN: 1001,

@@ -7,33 +7,33 @@ import { countPosts, type PostCounts } from "@/lib/portal/posts";
 import type { Actor, Result } from "@/lib/portal/result";
 import { countMembers } from "@/lib/portal/team";
 import { PortalError } from "./PortalError";
-import type { PortalBase } from "./PortalShell";
+import { PORTAL_HOME } from "./PortalShell";
 
 type Card = { label: string; value: number; href: string; icon: LucideIcon };
 
 /** Portal home: counts that link to the matching list. Admins also see team and announcement counts. */
-export async function OverviewView({ base, actor }: { base: PortalBase; actor: Actor }) {
-  const admin = base === "/dashboard" && can(actor.role, "team.manage");
+export async function OverviewView({ actor }: { actor: Actor }) {
+  const admin = can(actor.role, "team.manage");
   const [posts, members, announcements] = await Promise.all([
     countPosts(actor),
     admin ? countMembers(actor) : Promise.resolve(null),
     admin ? countActiveAnnouncements(actor) : Promise.resolve(null),
   ]);
-  return <OverviewCards base={base} counts={{ posts, members, announcements }} />;
+  return <OverviewCards counts={{ posts, members, announcements }} />;
 }
 
 export type OverviewCounts = { posts: Result<PostCounts>; members: Result<number> | null; announcements: Result<number> | null };
 
 /** The overview itself, given the loaded counts (also rendered with sample counts on /v2). */
-export function OverviewCards({ base, counts }: { base: PortalBase; counts: OverviewCounts }) {
+export function OverviewCards({ counts }: { counts: OverviewCounts }) {
   const T = PORTAL_TEXT.overview;
   const { posts, members, announcements } = counts;
 
   const cards: Card[] = posts.ok
     ? [
-        { label: T.drafts, value: posts.data.draft, href: `${base}/posts?status=draft`, icon: FileText },
-        { label: T.published, value: posts.data.published, href: `${base}/posts?status=published`, icon: Send },
-        { label: T.locked, value: posts.data.locked, href: `${base}/posts`, icon: Lock },
+        { label: T.drafts, value: posts.data.draft, href: `${PORTAL_HOME}/posts?status=draft`, icon: FileText },
+        { label: T.published, value: posts.data.published, href: `${PORTAL_HOME}/posts?status=published`, icon: Send },
+        { label: T.locked, value: posts.data.locked, href: `${PORTAL_HOME}/posts`, icon: Lock },
       ]
     : [];
   if (members?.ok) cards.push({ label: T.members, value: members.data, href: "/dashboard/team", icon: Users });
@@ -41,7 +41,7 @@ export function OverviewCards({ base, counts }: { base: PortalBase; counts: Over
 
   return (
     <>
-      <h1 className="t-h2 text-foreground">{base === "/dashboard" ? T.adminTitle : T.officeTitle}</h1>
+      <h1 className="t-h2 text-foreground">{T.title}</h1>
       <p className="mt-3 max-w-2xl text-muted-foreground">{T.intro}</p>
       {!posts.ok && <PortalError message={posts.error} />}
       <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

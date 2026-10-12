@@ -11,20 +11,20 @@ import { listPortalPosts, type PostRow } from "@/lib/portal/posts";
 import type { Actor, Result } from "@/lib/portal/result";
 import { cn } from "@/utils/cn";
 import { PortalError } from "./PortalError";
-import type { PortalBase } from "./PortalShell";
+import { PORTAL_HOME } from "./PortalShell";
 
 type Filter = "all" | "draft" | "published";
 const FILTERS: Filter[] = ["all", "draft", "published"];
 
 export const toFilter = (v: unknown): Filter => (v === "draft" || v === "published" ? v : "all");
 
-function StatusFilter({ base, current }: { base: PortalBase; current: Filter }) {
+function StatusFilter({ current }: { current: Filter }) {
   return (
     <nav aria-label={POSTS_TEXT.filterLabel} className="flex flex-wrap gap-2">
       {FILTERS.map((f) => (
         <Link
           key={f}
-          href={f === "all" ? `${base}/posts` : `${base}/posts?status=${f}`}
+          href={f === "all" ? `${PORTAL_HOME}/posts` : `${PORTAL_HOME}/posts?status=${f}`}
           aria-current={current === f ? "page" : undefined}
           className={cn(
             "inline-flex min-h-11 items-center rounded-full border px-4 text-sm font-semibold",
@@ -38,7 +38,7 @@ function StatusFilter({ base, current }: { base: PortalBase; current: Filter }) 
   );
 }
 
-function PostTable({ base, rows, actor }: { base: PortalBase; rows: PostRow[]; actor: Actor }) {
+function PostTable({ rows, actor }: { rows: PostRow[]; actor: Actor }) {
   return (
     <Table className="mt-6">
       <TableHeader>
@@ -56,7 +56,7 @@ function PostTable({ base, rows, actor }: { base: PortalBase; rows: PostRow[]; a
           return (
             <TableRow key={p.id} className="border-border">
               <TableCell className="min-w-56">
-                <Link href={`${base}/posts/${p.id}`} className="font-semibold text-link underline-offset-4 hover:underline">
+                <Link href={`${PORTAL_HOME}/posts/${p.id}`} className="font-semibold text-link underline-offset-4 hover:underline">
                   {p.title}
                 </Link>
                 <span className="sr-only"> ({editable ? POSTS_TEXT.edit : POSTS_TEXT.view})</span>
@@ -82,25 +82,25 @@ function PostTable({ base, rows, actor }: { base: PortalBase; rows: PostRow[]; a
 }
 
 /** Post list shared by /dashboard/posts and /office/posts. */
-export async function PostsView({ base, actor, filter }: { base: PortalBase; actor: Actor; filter: Filter }) {
+export async function PostsView({ actor, filter }: { actor: Actor; filter: Filter }) {
   const res = await listPortalPosts(actor, { status: filter === "all" ? undefined : filter });
-  return <PostsList base={base} actor={actor} filter={filter} res={res} />;
+  return <PostsList actor={actor} filter={filter} res={res} />;
 }
 
 /** The list itself, given the loaded rows (also rendered with sample rows on /v2). */
-export function PostsList({ base, actor, filter, res }: { base: PortalBase; actor: Actor; filter: Filter; res: Result<PostRow[]> }) {
+export function PostsList({ actor, filter, res }: { actor: Actor; filter: Filter; res: Result<PostRow[]> }) {
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="t-h2 text-foreground">{POSTS_TEXT.title}</h1>
         {can(actor.role, "post.create") && (
-          <Button href={`${base}/posts/new`} size="sm" leadingIcon={<Plus className="size-4" aria-hidden="true" />}>
+          <Button href={`${PORTAL_HOME}/posts/new`} size="sm" leadingIcon={<Plus className="size-4" aria-hidden="true" />}>
             {POSTS_TEXT.newPost}
           </Button>
         )}
       </div>
       <div className="mt-6">
-        <StatusFilter base={base} current={filter} />
+        <StatusFilter current={filter} />
       </div>
       {!res.ok ? (
         <PortalError message={res.error} />
@@ -110,10 +110,10 @@ export function PostsList({ base, actor, filter, res }: { base: PortalBase; acto
           icon={FileText}
           title={POSTS_TEXT.empty.title}
           body={filter === "all" ? POSTS_TEXT.empty.body : POSTS_TEXT.empty.filtered}
-          action={filter === "all" && can(actor.role, "post.create") ? { label: POSTS_TEXT.newPost, href: `${base}/posts/new` } : undefined}
+          action={filter === "all" && can(actor.role, "post.create") ? { label: POSTS_TEXT.newPost, href: `${PORTAL_HOME}/posts/new` } : undefined}
         />
       ) : (
-        <PostTable base={base} rows={res.data} actor={actor} />
+        <PostTable rows={res.data} actor={actor} />
       )}
     </>
   );

@@ -10,8 +10,8 @@ export default async function AdminEditPostPage({ params }: { params: Promise<{ 
   const { id } = await params;
   const actor = await requirePortal("portal.dashboard", `/dashboard/posts/${encodeURIComponent(id)}`);
   return (
-    <PortalShell base="/dashboard" actor={actor}>
-      <PostEditorView base="/dashboard" actor={actor} id={id} />
+    <PortalShell actor={actor}>
+      <PostEditorView actor={actor} id={id} />
     </PortalShell>
   );
 }

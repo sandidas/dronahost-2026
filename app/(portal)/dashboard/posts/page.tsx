@@ -10,8 +10,8 @@ export default async function AdminPostsPage({ searchParams }: { searchParams: P
   const actor = await requirePortal("portal.dashboard", "/dashboard/posts");
   const { status } = await searchParams;
   return (
-    <PortalShell base="/dashboard" actor={actor}>
-      <PostsView base="/dashboard" actor={actor} filter={toFilter(status)} />
+    <PortalShell actor={actor}>
+      <PostsView actor={actor} filter={toFilter(status)} />
     </PortalShell>
   );
 }

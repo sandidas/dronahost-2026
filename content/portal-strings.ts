@@ -1,13 +1,12 @@
 /**
- * UI text for the admin portal (/dashboard), the staff portal (/office), sign-in and site announcements.
+ * UI text for the team dashboard (/dashboard, admins and staff), sign-in, the page builder and site announcements.
  * Plain US English, per content-engine/rules/content-writing-rules.md sections 4 to 6.
  */
 export const PORTAL_TEXT = {
   brand: "DronaHost",
   /** Shown in the portal header while PORTAL_DEV_BYPASS is set (development only). */
   devBypass: "Test mode: sign-in is off",
-  dashboardName: "Admin",
-  officeName: "Office",
+  dashboardName: "Dashboard",
   nav: {
     label: "Portal",
     overview: "Overview",
@@ -15,16 +14,13 @@ export const PORTAL_TEXT = {
     newPost: "New post",
     team: "Team",
     announcements: "Announcements",
-    office: "Office view",
-    dashboard: "Admin view",
     viewSite: "View site",
   },
   signOut: "Sign out",
   signedInAs: "Signed in as",
   roles: { 1001: "Admin", 999: "Staff", 888: "Guest" } as Record<number, string>,
   overview: {
-    adminTitle: "Admin dashboard",
-    officeTitle: "Office",
+    title: "Dashboard",
     intro: "Write and manage blog posts. Staff save drafts; an admin reviews and publishes them.",
     drafts: "Drafts",
     published: "Published",

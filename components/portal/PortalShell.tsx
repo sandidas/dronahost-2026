@@ -9,27 +9,26 @@ import type { Actor } from "@/lib/portal/result";
 import { PortalNav, type NavItem } from "./PortalNav";
 import { SignOutButton } from "./SignOutButton";
 
-export type PortalBase = "/dashboard" | "/office";
+/** The one portal home. Admin-only screens (Team, Announcements) sit inside it and check their own action. */
+export const PORTAL_HOME = "/dashboard";
 
-function navFor(base: PortalBase, actor: Actor): NavItem[] {
+function navFor(actor: Actor): NavItem[] {
   const items: NavItem[] = [
-    { href: base, label: PORTAL_TEXT.nav.overview, exact: true },
-    { href: `${base}/posts`, label: PORTAL_TEXT.nav.posts },
+    { href: PORTAL_HOME, label: PORTAL_TEXT.nav.overview, exact: true },
+    { href: `${PORTAL_HOME}/posts`, label: PORTAL_TEXT.nav.posts },
   ];
-  if (base === "/dashboard") {
-    items.push({ href: "/dashboard/team", label: PORTAL_TEXT.nav.team }, { href: "/dashboard/announcements", label: PORTAL_TEXT.nav.announcements });
-  }
-  if (base === "/dashboard" && can(actor.role, "portal.office")) items.push({ href: "/office", label: PORTAL_TEXT.nav.office, exact: true, secondary: true });
-  if (base === "/office" && can(actor.role, "portal.dashboard")) items.push({ href: "/dashboard", label: PORTAL_TEXT.nav.dashboard, exact: true, secondary: true });
+  if (can(actor.role, "team.manage")) items.push({ href: `${PORTAL_HOME}/team`, label: PORTAL_TEXT.nav.team });
+  if (can(actor.role, "announcement.manage")) items.push({ href: `${PORTAL_HOME}/announcements`, label: PORTAL_TEXT.nav.announcements });
+  items.push({ href: "/", label: PORTAL_TEXT.nav.viewSite, exact: true, secondary: true });
   return items;
 }
 
-/** Frame for both portals: announcements, top bar with navigation, who is signed in, and sign-out. */
-export function PortalShell({ base, actor, children }: { base: PortalBase; actor: Actor; children: React.ReactNode }) {
+/** Frame for the dashboard: announcements, top bar with navigation, who is signed in, and sign-out. */
+export function PortalShell({ actor, children }: { actor: Actor; children: React.ReactNode }) {
   return (
     <>
       <AnnouncementBar />
-      <PortalHeader base={base} actor={actor} />
+      <PortalHeader actor={actor} />
       <main id="main-content" tabIndex={-1} className="container-site flex-1 py-8 sm:py-10">
         {children}
       </main>
@@ -38,15 +37,15 @@ export function PortalShell({ base, actor, children }: { base: PortalBase; actor
 }
 
 /** Top bar with navigation, who is signed in, and sign-out. */
-export function PortalHeader({ base, actor }: { base: PortalBase; actor: Actor }) {
+export function PortalHeader({ actor }: { actor: Actor }) {
   return (
     <header className="border-b border-border bg-card">
       <div className="container-site flex flex-wrap items-center justify-between gap-4 py-3">
         <div className="flex items-center gap-3">
-          <Link href={base} aria-label={`${PORTAL_TEXT.brand} ${base === "/dashboard" ? PORTAL_TEXT.dashboardName : PORTAL_TEXT.officeName}`}>
+          <Link href={PORTAL_HOME} aria-label={`${PORTAL_TEXT.brand} ${PORTAL_TEXT.dashboardName}`}>
             <Logo size="sm" />
           </Link>
-          <Badge variant={base === "/dashboard" ? "primary" : "secondary"}>{base === "/dashboard" ? PORTAL_TEXT.dashboardName : PORTAL_TEXT.officeName}</Badge>
+          <Badge variant="primary">{PORTAL_TEXT.dashboardName}</Badge>
           {devBypassRole() !== null && <Badge variant="warning">{PORTAL_TEXT.devBypass}</Badge>}
         </div>
         <div className="flex items-center gap-3 text-sm">
@@ -57,7 +56,7 @@ export function PortalHeader({ base, actor }: { base: PortalBase; actor: Actor }
         </div>
       </div>
       <div className="container-site">
-        <PortalNav items={navFor(base, actor)} label={PORTAL_TEXT.nav.label} />
+        <PortalNav items={navFor(actor)} label={PORTAL_TEXT.nav.label} />
       </div>
     </header>
   );

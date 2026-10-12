@@ -51,7 +51,7 @@ describe("staff attempts that must be refused", () => {
 });
 
 describe("signed-out and unknown roles", () => {
-  const actions: Action[] = ["post.list", "post.view", "post.create", "post.edit", "post.publish", "post.lock", "post.delete", "team.manage", "announcement.manage", "media.upload", "portal.dashboard", "portal.office"];
+  const actions: Action[] = ["post.list", "post.view", "post.create", "post.edit", "post.publish", "post.lock", "post.delete", "team.manage", "announcement.manage", "media.upload", "portal.dashboard"];
   it("a signed-out visitor can do nothing", () => {
     for (const a of actions) assert.equal(can(null, a, unlocked), false, a);
     for (const a of actions) assert.equal(can(undefined, a, unlocked), false, a);
@@ -64,19 +64,21 @@ describe("signed-out and unknown roles", () => {
 });
 
 describe("portal access", () => {
-  it("only admins open the dashboard", () => {
+  it("admins and staff share the dashboard; guests do not open it", () => {
     assert.equal(can(ADMIN, "portal.dashboard"), true);
-    assert.equal(can(STAFF, "portal.dashboard"), false);
+    assert.equal(can(STAFF, "portal.dashboard"), true);
     assert.equal(can(GUEST, "portal.dashboard"), false);
   });
-  it("admins and staff open the office", () => {
-    assert.equal(can(ADMIN, "portal.office"), true);
-    assert.equal(can(STAFF, "portal.office"), true);
-    assert.equal(can(GUEST, "portal.office"), false);
+  it("Team and Announcements inside the dashboard are admin only", () => {
+    for (const a of ["team.manage", "announcement.manage"] as const) {
+      assert.equal(can(ADMIN, a), true);
+      assert.equal(can(STAFF, a), false);
+      assert.equal(can(GUEST, a), false);
+    }
   });
   it("sends each role to its home after sign-in", () => {
     assert.equal(homeFor(ADMIN), "/dashboard");
-    assert.equal(homeFor(STAFF), "/office");
+    assert.equal(homeFor(STAFF), "/dashboard");
     assert.equal(homeFor(GUEST), "/no-access");
     assert.equal(homeFor(null), "/no-access");
   });
