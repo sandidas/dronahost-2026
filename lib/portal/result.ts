@@ -48,7 +48,8 @@ export async function guarded<T>(event: string, run: () => Promise<Result<T>>): 
 export function fieldErrorsFrom(issues: readonly { path: PropertyKey[]; message: string }[]): Record<string, string> {
   const out: Record<string, string> = {};
   for (const issue of issues) {
-    const key = String(issue.path[0] ?? "form");
+    // Nested fields keep their full path ("seo.title"), so the form can show the message next to the right input.
+    const key = issue.path.map(String).join(".") || "form";
     out[key] ??= issue.message;
   }
   return out;

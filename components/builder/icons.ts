@@ -1,4 +1,4 @@
-import { CircleHelp, Columns3, Heading, Image, LayoutGrid, ListOrdered, Megaphone, PanelTop, Pilcrow, Rows3, Video, type LucideIcon } from "lucide-react";
+import { BadgePercent, CircleHelp, Columns3, Heading, Image, LayoutGrid, ListOrdered, Map as MapIcon, Megaphone, MessageCircleQuestion, MousePointerClick, PanelTop, Pilcrow, Rows3, Signpost, Split, Video, type LucideIcon } from "lucide-react";
 
 /** Icons for the block names used in lib/builder/catalog.ts. */
 export const BLOCK_ICONS: Record<string, LucideIcon> = {
@@ -13,4 +13,10 @@ export const BLOCK_ICONS: Record<string, LucideIcon> = {
   "list-ordered": ListOrdered,
   "circle-help": CircleHelp,
   megaphone: Megaphone,
+  split: Split,
+  signpost: Signpost,
+  "badge-percent": BadgePercent,
+  map: MapIcon,
+  "mouse-pointer-click": MousePointerClick,
+  "message-circle-question": MessageCircleQuestion,
 };

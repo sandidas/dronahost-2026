@@ -1,5 +1,6 @@
 import mongoose, { Schema, type Model, type Types } from "mongoose";
 import type { BuilderDoc, PostKind } from "@/lib/builder/model";
+import type { PostSeo } from "@/lib/builder/seo";
 import type { TiptapDoc } from "@/lib/editor/schema";
 
 // ─── TypeScript interface ─────────────────────────────────────────────────────
@@ -17,6 +18,8 @@ export interface IPost {
    */
   content: BuilderDoc | TiptapDoc | string;
   coverImage: string;       // absolute URL or /public path, "" when there is none
+  /** Search settings from the builder's SEO tab. Older documents have none; read them through normalizeSeo. */
+  seo?: Partial<PostSeo>;
   category: string;
   tags: string[];
   author: {
@@ -46,6 +49,23 @@ const PostSchema = new Schema<IPost>(
     kind: { type: String, enum: ["post", "page"], default: "post" },
     content: { type: Schema.Types.Mixed, required: true },
     coverImage: { type: String, default: "" },
+    seo: {
+      type: new Schema(
+        {
+          title: { type: String, default: "", maxlength: 70 },
+          description: { type: String, default: "", maxlength: 170 },
+          focusKeyword: { type: String, default: "", maxlength: 60 },
+          canonical: { type: String, default: "", maxlength: 500 },
+          noindex: { type: Boolean, default: false },
+          ogTitle: { type: String, default: "", maxlength: 90 },
+          ogDescription: { type: String, default: "", maxlength: 200 },
+          ogImage: { type: String, default: "" },
+          faqSchema: { type: Boolean, default: true },
+        },
+        { _id: false },
+      ),
+      default: () => ({}),
+    },
     category: { type: String, default: "", trim: true },
     tags: { type: [String], default: [] },
     author: {
@@ -84,7 +104,7 @@ PostSchema.index({ kind: 1, deletedAt: 1, status: 1 });
 
 // A running dev server keeps the model it compiled first; when this file gains a field, that cached model would
 // silently drop it on save. Recompile when the cached schema is older than this one.
-if (mongoose.models.Post && !mongoose.models.Post.schema.path("kind")) mongoose.deleteModel("Post");
+if (mongoose.models.Post && !mongoose.models.Post.schema.path("seo")) mongoose.deleteModel("Post");
 
 export const Post: Model<IPost> =
   (mongoose.models.Post as Model<IPost>) ??

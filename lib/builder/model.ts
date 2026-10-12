@@ -12,12 +12,19 @@ import type { TiptapDoc } from "@/lib/editor/schema";
 export type PostKind = "post" | "page";
 export const POST_KINDS: readonly PostKind[] = ["post", "page"];
 
-export const SITE_SECTION_TYPES = ["ProductHero", "BentoGrid", "ProcessTimeline", "FAQSection", "CTABand"] as const;
+/** Sections from the page-spec registry (lib/content/registry.tsx): the same JSON shape as content/pages/*.json. */
+export const REGISTRY_SECTION_TYPES = ["ProductHero", "BentoGrid", "ProcessTimeline", "FAQSection", "CTABand"] as const;
+/** Sections whose content is written entirely in the builder (lib/builder/free-sections.ts). */
+export const FREE_SECTION_TYPES = ["OfferBanner", "GuideBanner", "ActionBand", "AnswerBanner", "SplitSection", "FeatureCards", "LinkTiles"] as const;
+export const SITE_SECTION_TYPES = [...REGISTRY_SECTION_TYPES, ...FREE_SECTION_TYPES] as const;
 export type SiteSectionType = (typeof SITE_SECTION_TYPES)[number];
+export type RegistrySectionType = (typeof REGISTRY_SECTION_TYPES)[number];
+
+export const isRegistrySection = (type: SiteSectionType): type is RegistrySectionType => (REGISTRY_SECTION_TYPES as readonly string[]).includes(type);
 
 /** Blog posts already have an H1 (the post title), so the hero is for pages only. */
 export const SITE_SECTIONS_FOR: Record<PostKind, readonly SiteSectionType[]> = {
-  post: ["BentoGrid", "ProcessTimeline", "FAQSection", "CTABand"],
+  post: SITE_SECTION_TYPES.filter((t) => t !== "ProductHero"),
   page: SITE_SECTION_TYPES,
 };
 

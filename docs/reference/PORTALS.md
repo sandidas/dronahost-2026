@@ -36,11 +36,21 @@ from the database on every request, so a role change or removal applies on the n
 
 The editor (`components/builder/`) has Add and Layers on the left, the page in the middle, and Block, Page and SEO settings on the right.
 
-- **Blocks** (`lib/builder/catalog.ts`): Section and Columns (layout); Heading, Rich text (Tiptap, edited in place), Image and
-  YouTube video (content); and five site sections: Hero (pages only, first block), Feature grid, Steps, FAQ and Call to action.
-  Site sections are the site's own registered sections (`lib/content/registry.tsx`), so a builder page looks exactly like the
-  hand-built pages. To offer another registered section, add it to `SITE_SECTION_TYPES` (`lib/builder/model.ts`), give it a
-  catalog entry with its fields, and add its schema to `SITE_SCHEMAS` (`lib/builder/validate.ts`).
+- **Blocks** (`lib/builder/catalog.ts`):
+  - Layout: Section, Columns. Content: Heading, Rich text (Tiptap, edited in place), Image, YouTube video.
+  - Page sections from the page-spec registry (`lib/content/registry.tsx`): Hero (pages only, first block), Feature grid
+    (feature library), Steps, FAQ, Call to action.
+  - Free-content sections and banners, written entirely in the builder (`lib/builder/free-sections.ts`, each wrapping an
+    existing site component): Split section, Feature cards, Link tiles, Offer banner, Guide banner, Action band, Answer banner.
+  - To offer another section, add its type to `REGISTRY_SECTION_TYPES` or `FREE_SECTION_TYPES` (`lib/builder/model.ts`), give
+    it a catalog entry with its fields, a schema (`SITE_SCHEMAS` or `FREE_SCHEMAS`) and, for a free section, a renderer in
+    `FREE_RENDER` (`lib/builder/render.tsx`).
+- **Templates** (`lib/builder/templates.ts`): a new page offers Landing page, Service page, Guide or Blank; a new post offers
+  Article, How-to or Blank. Template blocks start empty, so nothing goes live until each is filled in.
+- **SEO tab** (stored as `seo` on the post, `lib/builder/seo.ts`): search title, meta description, focus keyword with an
+  11-point checklist, canonical (a site path or an https address on this site), noindex (keeps "follow" and leaves the sitemap),
+  share title, description and image, and FAQPage structured data from FAQ blocks. Empty fields fall back to the title,
+  summary, own address and cover image (`lib/builder/seo-metadata.ts`). Published builder pages are in the sitemap.
 - **Stored shape** (`lib/builder/model.ts`): the post's `content` is `{ version: 1, blocks }`. Root blocks are Sections or site
   sections; a Section holds content blocks and Columns; a column holds content blocks. `kind` is `"post"` (at `/blog/<slug>`)
   or `"page"` (at `/<slug>`) and never changes after creation. Posts saved before the builder (Tiptap JSON or HTML) open as one

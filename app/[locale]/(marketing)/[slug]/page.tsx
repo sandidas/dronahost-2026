@@ -5,7 +5,7 @@ import CenteredHero from "@/components/sections/CenteredHero";
 import JsonLd from "@/components/sections/JsonLd";
 import { getPublishedPage, listPublishedPageSlugs } from "@/lib/builder/pages";
 import { renderBuilderDoc } from "@/lib/builder/render";
-import { isSafeImageSrc } from "@/lib/editor/urls";
+import { builderFaqSchema, builderMetadata } from "@/lib/builder/seo-metadata";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 import { breadcrumbSchema } from "@/lib/seo/jsonld";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug, locale } = await params;
   const page = await getPublishedPage(slug).catch(() => null);
   if (!page) return buildMetadata({ locale, title: "Page not found", description: "The page you are looking for could not be found.", path: `/${slug}`, noIndex: true });
-  return buildMetadata({ locale, title: page.title, description: page.excerpt || page.title, path: `/${slug}`, ogImage: isSafeImageSrc(page.coverImage) ? page.coverImage : undefined });
+  return builderMetadata({ seo: page.seo, title: page.title, excerpt: page.excerpt, coverImage: page.coverImage, path: `/${slug}`, locale, type: "website" });
 }
 
 export default async function BuilderPage({ params }: Params) {
@@ -40,9 +40,10 @@ export default async function BuilderPage({ params }: Params) {
   const page = await getPublishedPage(slug);
   if (!page) notFound();
   const { body, hasHero } = renderBuilderDoc(page.content, "page");
+  const faq = builderFaqSchema(page.content, page.seo);
   return (
     <>
-      <JsonLd schema={breadcrumbSchema(buildBreadcrumbs(`/${page.slug}`, { [page.slug]: page.title }))} />
+      <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs(`/${page.slug}`, { [page.slug]: page.title })), ...(faq ? [faq] : [])]} />
       {/* The page keeps exactly one H1: the hero's when the page starts with one, otherwise the page title. */}
       {!hasHero && <CenteredHero title={page.title} description={page.excerpt} />}
       {body}

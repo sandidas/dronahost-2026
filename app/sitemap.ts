@@ -52,6 +52,11 @@ const STATIC_PAGES: MetadataRoute.Sitemap = ALL_STATIC_PAGES.filter((p) => {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fetch published blog post slugs + updatedAt from MongoDB.
   // Falls back to empty array if DB is unreachable at build time.
+  // Published pages from the page builder (/dashboard), except those set to noindex in their SEO tab. Started before the
+  // blog query so both share one database wait when the database is unreachable at build time.
+  const builderPagesPromise = import("@/lib/builder/pages")
+    .then(({ listPublishedPageSlugs }) => listPublishedPageSlugs({ indexable: true }))
+    .catch(() => [] as { slug: string; modified: string }[]);
   let blogEntries: MetadataRoute.Sitemap = [];
 
   try {
@@ -67,9 +72,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // DB unreachable at build time — sitemap still valid without blog entries
   }
 
+  const builderPages: MetadataRoute.Sitemap = (await builderPagesPromise).map((p) => ({
+    url: `${SITE_URL}/${p.slug}`,
+    lastModified: new Date(p.modified),
+    priority: 0.6,
+    changeFrequency: "monthly" as const,
+  }));
+
   // One entry per live locale; with several live locales each entry lists every version (hreflang).
   const toLocale = (url: string, locale: (typeof LIVE_LOCALES)[number]) => `${SITE_URL}${localePath(url.slice(SITE_URL.length) || "/", locale)}`;
-  return [...STATIC_PAGES, ...blogEntries].flatMap((entry) =>
+  return [...STATIC_PAGES, ...blogEntries, ...builderPages].flatMap((entry) =>
     LIVE_LOCALES.map((locale) => ({
       ...entry,
       url: toLocale(entry.url, locale),

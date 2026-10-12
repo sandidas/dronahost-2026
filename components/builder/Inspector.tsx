@@ -7,7 +7,9 @@ import { errorClass, helpClass, inputClass, labelClass } from "@/components/port
 import { BUILDER_TEXT } from "@/content/portal-strings";
 import { entryFor } from "@/lib/builder/catalog";
 import { columnCount, type AnyBlock, type BuilderDoc } from "@/lib/builder/model";
+import { faqEntries, seoChecks } from "@/lib/builder/seo";
 import { findBlock, flatten, resizeColumns } from "@/lib/builder/tree";
+import { isSafeImageSrc } from "@/lib/editor/urls";
 import type { TiptapNode } from "@/lib/editor/schema";
 import { cn } from "@/utils/cn";
 import { FieldControl, type FeatureOption } from "./FieldControl";
@@ -227,6 +229,13 @@ function PageTab({ publishing }: { publishing: Publishing }) {
 
 type Heading = { level: number; text: string };
 
+/** The visible heading of a site section, whatever its content calls it. */
+export function sectionHeading(content: unknown): string {
+  const c = (content ?? {}) as Record<string, unknown>;
+  const value = c.h2 ?? c.title ?? c.label ?? c.question;
+  return typeof value === "string" ? value : "";
+}
+
 function tiptapHeadings(node: TiptapNode, out: Heading[]): void {
   if (node.type === "heading") out.push({ level: Number(node.attrs?.level ?? 2), text: (node.content ?? []).map((c) => c.text ?? "").join("") });
   for (const child of node.content ?? []) tiptapHeadings(child, out);
@@ -241,7 +250,7 @@ function outline(doc: BuilderDoc, title: string, kind: "post" | "page"): Heading
     if (block.type === "heading") out.push({ level: block.props.level, text: block.props.text });
     if (block.type === "richtext" && typeof block.props.content !== "string") tiptapHeadings(block.props.content, out);
     if (block.type === "site" && block !== hero) {
-      const h2 = (block.section.content as { h2?: string } | undefined)?.h2;
+      const h2 = sectionHeading(block.section.content);
       if (h2) out.push({ level: 2, text: h2 });
     }
   }
@@ -252,26 +261,106 @@ function SeoTab() {
   const meta = useBuilder((s) => s.meta);
   const kind = useBuilder((s) => s.kind);
   const doc = useBuilder((s) => s.doc);
+  const canEdit = useBuilder((s) => s.canEdit);
+  const uploadEnabled = useBuilder((s) => s.uploadEnabled);
+  const errors = useBuilder((s) => s.fieldErrors);
+  const setMeta = useBuilder((s) => s.setMeta);
+  const S = T.seo;
+  const seo = meta.seo;
+  const setSeo = (patch: Partial<typeof seo>) => setMeta({ seo: { ...seo, ...patch } });
   const headings = outline(doc, meta.title, kind);
   const path = kind === "page" ? `/${meta.slug}` : `/blog/${meta.slug}`;
-  const meter = (n: number, max: number) => <span className={cn("tabular-nums", n > max ? "text-danger" : "text-foreground")}>{`${n}/${max}`}</span>;
+  const searchTitle = seo.title || meta.title;
+  const description = seo.description || meta.excerpt;
+  const checks = seoChecks({ seo, title: meta.title, excerpt: meta.excerpt, slug: meta.slug, doc, kind });
+  const passing = checks.filter((c) => c.ok).length;
+  const faqCount = faqEntries(doc).length;
+  const shareImage = seo.ogImage || meta.coverImage;
   return (
     <>
-      <Section title={T.seo.snippet}>
-        <div className="rounded-xl border border-border bg-background p-3">
+      <Section title={S.search}>
+        <div className="rounded-xl border border-border bg-background p-3" aria-label={S.snippet}>
           <p className="truncate text-xs text-muted-foreground">{`dronahost.com${path}`}</p>
-          <p className="mt-1 line-clamp-2 text-base font-semibold text-link">{meta.title || T.untitled}</p>
-          <p className="mt-1 line-clamp-3 text-sm text-muted-foreground">{meta.excerpt}</p>
+          <p className="mt-1 line-clamp-2 text-base font-semibold text-link">{searchTitle || T.untitled}</p>
+          <p className="mt-1 line-clamp-3 text-sm text-muted-foreground">{description}</p>
         </div>
-        <p className="text-sm text-muted-foreground">
-          {T.seo.titleLength}: {meter(meta.title.length, 60)}. {T.seo.titleAdvice}
-        </p>
-        <p className="text-sm text-muted-foreground">
-          {T.seo.descriptionLength}: {meter(meta.excerpt.length, 155)}. {T.seo.descriptionAdvice}
-        </p>
+        <TextInput label={S.focusKeyword} help={S.focusKeywordHelp} value={seo.focusKeyword} onChange={(v) => setSeo({ focusKeyword: v })} error={errors["seo.focusKeyword"]} max={60} readOnly={!canEdit} />
+        <TextInput label={S.searchTitle} help={S.searchTitleHelp} value={seo.title} onChange={(v) => setSeo({ title: v })} error={errors["seo.title"]} max={70} readOnly={!canEdit} />
+        <div>
+          <div className="flex items-baseline justify-between gap-2">
+            <label htmlFor="builder-seo-description" className={labelClass}>
+              {S.description}
+            </label>
+            <span className={cn("text-xs tabular-nums", seo.description.length > 160 ? "text-danger" : "text-subtle-foreground")}>{`${seo.description.length}/160`}</span>
+          </div>
+          <textarea id="builder-seo-description" value={seo.description} readOnly={!canEdit} maxLength={170} rows={3} onChange={(e) => setSeo({ description: e.target.value })} className={cn(inputClass, "min-h-20 px-3 py-2 text-sm")} />
+          <p className={helpClass}>{S.descriptionHelp}</p>
+          {errors["seo.description"] && <p className={errorClass}>{errors["seo.description"]}</p>}
+        </div>
       </Section>
-      <Section title={T.seo.outline}>
-        {headings.length <= 1 && <p className="text-sm text-muted-foreground">{T.seo.outlineEmpty}</p>}
+
+      <Section title={S.checklist}>
+        <p className="text-sm font-semibold text-foreground">{S.score(passing, checks.length)}</p>
+        <ul className="space-y-1.5 text-sm">
+          {checks.map((c) => (
+            <li key={c.id} className="flex gap-2">
+              <span className={cn("mt-1.5 size-2 shrink-0 rounded-full", c.ok ? "bg-success" : "bg-warning")} aria-hidden="true" />
+              <span className={c.ok ? "text-muted-foreground" : "text-foreground"}>
+                {S.checks[c.id as keyof typeof S.checks]}
+                <span className="sr-only">{` ${c.ok ? S.pass : S.fail}`}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      <Section title={S.advanced}>
+        <TextInput label={S.canonical} help={S.canonicalHelp} value={seo.canonical} onChange={(v) => setSeo({ canonical: v.trim() })} error={errors["seo.canonical"]} max={500} readOnly={!canEdit} />
+        <div>
+          <label className="flex min-h-10 cursor-pointer items-center gap-3 text-sm font-semibold text-foreground">
+            <input type="checkbox" checked={seo.noindex} disabled={!canEdit} onChange={(e) => setSeo({ noindex: e.target.checked })} className="size-4 accent-[var(--accent)]" />
+            {S.noindex}
+          </label>
+          <p className={helpClass}>{S.noindexHelp}</p>
+        </div>
+        <div>
+          <label className="flex min-h-10 cursor-pointer items-center gap-3 text-sm font-semibold text-foreground">
+            <input type="checkbox" checked={seo.faqSchema} disabled={!canEdit} onChange={(e) => setSeo({ faqSchema: e.target.checked })} className="size-4 accent-[var(--accent)]" />
+            {S.faqSchema}
+          </label>
+          <p className={helpClass}>{S.faqSchemaHelp(faqCount)}</p>
+        </div>
+      </Section>
+
+      <Section title={S.social}>
+        {/* The share card as most networks draw it: image, title, then the description. */}
+        <div className="overflow-hidden rounded-xl border border-border bg-background">
+          {isSafeImageSrc(shareImage) ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={shareImage} alt="" className="aspect-[1200/630] w-full object-cover" />
+          ) : (
+            <div className="aspect-[1200/630] w-full bg-muted" aria-hidden="true" />
+          )}
+          <div className="p-3">
+            <p className="text-xs uppercase text-muted-foreground">dronahost.com</p>
+            <p className="mt-1 line-clamp-2 text-sm font-semibold text-foreground">{seo.ogTitle || searchTitle || T.untitled}</p>
+            <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{seo.ogDescription || description}</p>
+          </div>
+        </div>
+        <TextInput label={S.ogTitle} value={seo.ogTitle} onChange={(v) => setSeo({ ogTitle: v })} error={errors["seo.ogTitle"]} max={90} readOnly={!canEdit} />
+        <TextInput label={S.ogDescription} value={seo.ogDescription} onChange={(v) => setSeo({ ogDescription: v })} error={errors["seo.ogDescription"]} max={200} readOnly={!canEdit} />
+        <FieldControl
+          field={{ kind: "image", path: "ogImage", label: S.ogImage, help: S.ogImageHelp }}
+          data={seo}
+          onChange={(next) => setSeo({ ogImage: (next as typeof seo).ogImage ?? "" })}
+          readOnly={!canEdit}
+          uploadEnabled={uploadEnabled}
+          features={[]}
+        />
+      </Section>
+
+      <Section title={S.outline}>
+        {headings.length <= 1 && <p className="text-sm text-muted-foreground">{S.outlineEmpty}</p>}
         <ol className="space-y-1 text-sm">
           {headings.map((h, i) => (
             <li key={i} className="flex gap-2" style={{ paddingInlineStart: `${(h.level - 1) * 0.75}rem` }}>

@@ -3,12 +3,13 @@
 import { useDraggable, useDroppable } from "@dnd-kit/core";
 import type { JSONContent } from "@tiptap/react";
 import { ArrowDown, ArrowUp, Copy, GripVertical, ImageIcon, Plus, Trash2, Video } from "lucide-react";
-import { useId, type ReactNode } from "react";
+import { useId, useState, type ReactNode } from "react";
 import { BUILDER_TEXT } from "@/content/portal-strings";
 import { RichTextEditor } from "@/components/portal/editor/RichTextEditor";
 import { entryFor } from "@/lib/builder/catalog";
 import { youtubeEmbedSrc, youtubeId, type AnyBlock, type ColumnsBlock, type LeafBlock, type SectionBlock } from "@/lib/builder/model";
 import { isSafeImageSrc } from "@/lib/editor/urls";
+import { templatesFor } from "@/lib/builder/templates";
 import { accepts, ROOT, slotKey, type Slot } from "@/lib/builder/tree";
 import { cn } from "@/utils/cn";
 import { SiteBlockView } from "./SiteBlockView";
@@ -311,6 +312,47 @@ function PageHeading() {
   );
 }
 
+/** On an empty page: pick a starting layout, or start blank. */
+function TemplatePicker({ onBlank }: { onBlank: () => void }) {
+  const kind = useBuilder((s) => s.kind);
+  const applyTemplate = useBuilder((s) => s.applyTemplate);
+  const TT = BUILDER_TEXT.templates;
+  return (
+    <section aria-labelledby="builder-templates" className="mx-4 my-6 rounded-xl border border-border bg-card p-5 sm:mx-8">
+      <h2 id="builder-templates" className="text-base font-semibold text-foreground">
+        {TT.title}
+      </h2>
+      <p className="mt-1 text-sm text-muted-foreground">{TT.intro}</p>
+      <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {templatesFor(kind).map((t) => (
+          <li key={t.id}>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                applyTemplate(t.blocks());
+              }}
+              className="flex h-full w-full flex-col items-start gap-1 rounded-xl border border-border bg-background p-4 text-start hover:border-accent hover:bg-muted"
+            >
+              <span className="text-sm font-semibold text-foreground">{t.label}</span>
+              <span className="text-xs text-muted-foreground">{t.hint}</span>
+            </button>
+          </li>
+        ))}
+        <li>
+          <button type="button" onClick={(e) => {
+              e.stopPropagation();
+              onBlank();
+            }} className="flex h-full w-full flex-col items-start gap-1 rounded-xl border border-dashed border-border-strong p-4 text-start hover:bg-muted">
+            <span className="text-sm font-semibold text-foreground">{TT.blank.label}</span>
+            <span className="text-xs text-muted-foreground">{TT.blank.hint}</span>
+          </button>
+        </li>
+      </ul>
+    </section>
+  );
+}
+
 export function Canvas() {
   const kind = useBuilder((s) => s.kind);
   const blocks = useBuilder((s) => s.doc.blocks);
@@ -318,6 +360,7 @@ export function Canvas() {
   const select = useBuilder((s) => s.select);
   const set = useBuilder((s) => s.set);
   const addBlock = useBuilder((s) => s.addBlock);
+  const [blank, setBlank] = useState(false);
   return (
     <div className="min-h-0 flex-1 overflow-y-auto bg-muted/50 p-3 sm:p-6" onClick={() => select(null)} onMouseLeave={() => set({ hoverId: null })}>
       {/* look-luxe: the same page look as the public layout (app/[locale]/(marketing)/layout.tsx), so sections match. */}
@@ -325,7 +368,7 @@ export function Canvas() {
         {!canEdit && <p className="rounded-t-xl border-b border-warning/40 bg-warning-surface px-4 py-2 text-sm text-foreground">{T.readOnly}</p>}
         <PageHeading />
         <div className={cn(kind === "post" ? "mx-auto max-w-3xl px-4 pt-6 sm:px-8" : "px-0 pt-2")}>
-          <SlotList slot={ROOT} blocks={blocks} empty={T.canvas.empty} />
+          {blocks.length === 0 && canEdit && !blank ? <TemplatePicker onBlank={() => setBlank(true)} /> : <SlotList slot={ROOT} blocks={blocks} empty={T.canvas.empty} />}
           {canEdit && (
             <div className="mt-6 flex justify-center">
               <button

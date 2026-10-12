@@ -4,6 +4,8 @@ import { docText } from "@/lib/editor/schema";
 import { renderTiptapHtml } from "@/lib/editor/render";
 import { isBuilderDoc, type BuilderDoc } from "@/lib/builder/model";
 import { readingMinutesOf, renderBuilderDoc } from "@/lib/builder/render";
+import { normalizeSeo } from "@/lib/builder/seo";
+import { builderFaqSchema } from "@/lib/builder/seo-metadata";
 import { isSafeImageSrc } from "@/lib/editor/urls";
 import { prepareArticle, plainText, readingMinutes, withHeadingIds } from "./sanitize";
 import { BlogUnavailableError, type BlogCategory, type BlogListItem, type BlogPage, type BlogPost } from "./types";
@@ -68,7 +70,8 @@ export async function getPost(slug: string): Promise<BlogPost | null> {
   await db();
   const p = (await Post.findOne({ slug, ...live }).lean()) as unknown as IPost | null;
   if (!p) return null;
-  return { ...toItem(p), ...renderContent(p.content), excerpt: plainText(p.excerpt) };
+  const builder = isBuilderDoc(p.content) ? { seo: normalizeSeo(p.seo), faqSchema: builderFaqSchema(p.content, normalizeSeo(p.seo)) } : {};
+  return { ...toItem(p), ...renderContent(p.content), excerpt: plainText(p.excerpt), ...builder };
 }
 
 export async function listCategories(): Promise<BlogCategory[]> {
@@ -85,6 +88,7 @@ export async function listCategories(): Promise<BlogCategory[]> {
 
 export async function listSlugs(): Promise<{ slug: string; modified: string }[]> {
   await db();
-  const rows = (await Post.find(live, { slug: 1, updatedAt: 1 }).lean()) as unknown as IPost[];
-  return rows.map((p) => ({ slug: p.slug, modified: new Date(p.updatedAt).toISOString() }));
+  const rows = (await Post.find(live, { slug: 1, updatedAt: 1, seo: 1 }).lean()) as unknown as IPost[];
+  // Posts set to noindex in the editor's SEO tab stay out of the sitemap.
+  return rows.filter((p) => !normalizeSeo(p.seo).noindex).map((p) => ({ slug: p.slug, modified: new Date(p.updatedAt).toISOString() }));
 }

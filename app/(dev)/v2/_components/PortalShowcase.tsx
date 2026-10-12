@@ -17,6 +17,7 @@ import {
   SAMPLE_PORTAL_TEAM,
 } from "@/content/placeholders";
 import { PORTAL_ERRORS } from "@/content/portal-strings";
+import { DEFAULT_SEO } from "@/lib/builder/seo";
 import { FEATURE_LIBRARY } from "@/lib/content/features";
 import type { Actor } from "@/lib/portal/result";
 import ShowcaseSection from "./ShowcaseSection";
@@ -101,7 +102,7 @@ export default function PortalShowcase() {
             canEdit: true,
             isAdmin: true,
             uploadEnabled: false,
-            meta: { title: "Sample page", slug: "sample-page", excerpt: "Sample summary for lists and search results.", coverImage: "" },
+            meta: { title: "Sample page", slug: "sample-page", excerpt: "Sample summary for lists and search results.", coverImage: "", seo: { ...DEFAULT_SEO, focusKeyword: "sample" } },
             doc: SAMPLE_PORTAL_BUILDER_DOC,
             publishedLine: null,
           }}

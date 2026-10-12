@@ -264,7 +264,8 @@ function SelectField({ field, value, set, readOnly }: { field: Extract<Field, { 
         disabled={readOnly}
         onChange={(e) => {
           const option = field.options.find((o) => String(o.value) === e.target.value);
-          if (option) set(option.value);
+          // An optional choice left empty (for example "No icon") is removed from the data.
+          if (option) set(field.optional && option.value === "" ? undefined : option.value);
         }}
         className={fieldInput}
       >
@@ -288,6 +289,13 @@ export function FieldControl({ field, data, onChange, readOnly, uploadEnabled, f
       return <TextField field={field} value={typeof raw === "string" ? raw : ""} readOnly={readOnly} set={(v) => write(field.optional && v === "" ? undefined : v)} />;
     case "select":
       return <SelectField field={field} value={raw} set={write} readOnly={readOnly} />;
+    case "toggle":
+      return (
+        <label className="flex min-h-10 cursor-pointer items-center gap-3 text-sm font-semibold text-foreground">
+          <input type="checkbox" checked={raw === true} disabled={readOnly} onChange={(e) => write(e.target.checked)} className="size-4 accent-[var(--accent)]" />
+          {field.label}
+        </label>
+      );
     case "image":
       return <ImageField field={field} value={typeof raw === "string" ? raw : ""} set={write} readOnly={readOnly} uploadEnabled={uploadEnabled} />;
     case "cta":

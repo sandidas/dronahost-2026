@@ -5,10 +5,11 @@ import { temporal } from "zundo";
 import { createStore, useStore, type StoreApi } from "zustand";
 import { entryByType } from "@/lib/builder/catalog";
 import { isRootType, accepts, duplicateBlock, findBlock, insertBlock, moveBlock, nudgeBlock, removeBlock, slotBlocks, updateBlock, ROOT, type Slot } from "@/lib/builder/tree";
-import type { AnyBlock, BuilderDoc, PostKind } from "@/lib/builder/model";
+import type { AnyBlock, BuilderDoc, PostKind, RootBlock } from "@/lib/builder/model";
+import type { PostSeo } from "@/lib/builder/seo";
 import { slugify } from "@/lib/portal/slug";
 
-export type Meta = { title: string; slug: string; excerpt: string; coverImage: string };
+export type Meta = { title: string; slug: string; excerpt: string; coverImage: string; seo: PostSeo };
 export type SaveState = "new" | "saved" | "dirty" | "saving" | "error";
 export type Device = "desktop" | "tablet" | "phone";
 export type Message = { kind: "ok" | "error"; text: string } | null;
@@ -55,6 +56,8 @@ export type BuilderState = BuilderInit & {
 
   setMeta: (patch: Partial<Meta>) => void;
   addBlock: (type: string, target?: { slot: Slot; index: number }) => void;
+  /** Replaces an empty page with a template's blocks. */
+  applyTemplate: (blocks: RootBlock[]) => void;
   move: (id: string, slot: Slot, index: number) => void;
   nudge: (id: string, delta: -1 | 1) => void;
   duplicate: (id: string) => void;
@@ -152,6 +155,10 @@ export function createBuilderStore(init: BuilderInit) {
             const next = insertBlock(doc, place.slot, place.index, block);
             if (next === doc) return;
             edit({ doc: next, selectedId: block.id, rightTab: "block" });
+          },
+          applyTemplate: (blocks) => {
+            if (get().doc.blocks.length > 0) return;
+            edit({ doc: { version: 1, blocks }, selectedId: blocks[0]?.id ?? null, rightTab: "block" });
           },
           move: (id, slot, index) => {
             const next = moveBlock(get().doc, id, slot, index);

@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
 import { after, before, beforeEach, describe, it } from "node:test";
+import { NextIntlClientProvider } from "next-intl";
+import { createElement, type ComponentProps } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import type { BuilderDoc, LeafBlock, RootBlock } from "@/lib/builder/model";
 import { startDb, stopDb } from "./setup";
@@ -274,5 +276,131 @@ describe("posts and pages (database)", () => {
     assert.equal((await posts.getPortalPostBySlug(STAFF, { $ne: "" })).ok, false);
     const listed = await posts.listPortalPosts(STAFF, { kind: "page" });
     assert.ok(listed.ok && listed.data.length === 0);
+  });
+});
+
+describe("free-content sections", () => {
+  const site = (section: Record<string, unknown>, id = "bfree00001") => ({ id, type: "site" as const, section: section as never });
+  const VALID: Record<string, Record<string, unknown>> = {
+    OfferBanner: { type: "OfferBanner", content: { title: "Move your site this week", description: "We copy the site, check it privately and switch when you agree.", primaryCta: { label: "Plan my move", href: "/migration" }, ticketLabel: "Site move", layout: "split", scope: "ink" } },
+    GuideBanner: { type: "GuideBanner", content: { title: "How a site move works", summary: "A short guide for owners moving to a new host, step by step.", learn: ["Make a copy", "Check it privately", "Switch the domain"], layout: "line", numbered: true, scope: "ink" } },
+    ActionBand: { type: "ActionBand", content: { label: "Need a hand?", line: "Write to the support desk any time.", cta: { label: "Contact us", href: "/contact" }, variant: "split" } },
+    AnswerBanner: { type: "AnswerBanner", content: { question: "Do I need to change my email?", answer: "No. Email stays where it is unless you ask us to move it as well.", layout: "entry" } },
+    SplitSection: { type: "SplitSection", content: { title: "Backups you can restore yourself", features: ["Two copies a day"], image: { src: "/images/sample.png", alt: "The backup screen" }, imagePosition: "right" } },
+    FeatureCards: { type: "FeatureCards", content: { title: "What every plan includes", items: [{ icon: "shield-check", title: "Firewall", description: "Blocks known attacks before they reach the site." }, { title: "Backups", description: "Two copies a day, kept for a week." }], columns: 3, variant: "cards" } },
+    LinkTiles: { type: "LinkTiles", content: { title: "Where would you like to go?", items: [{ title: "Pricing", line: "Plans and prices", href: "/pricing" }, { title: "Support", line: "Ask the team", href: "/contact" }], layout: "tiles", columns: 2 } },
+  };
+
+  it("a complete section of each kind publishes and renders its heading", () => {
+    for (const [type, section] of Object.entries(VALID)) {
+      const block = site(section);
+      assert.deepEqual(validate.siteSectionProblems(block), [], type);
+      const { node } = render.renderSiteSection(block);
+      assert.ok(node, type);
+      // The site's links (next-intl) need the locale provider the layout normally supplies.
+      const html = renderToStaticMarkup(createElement(NextIntlClientProvider, { locale: "en-us", messages: {} } as ComponentProps<typeof NextIntlClientProvider>, node as never));
+      const heading = (section.content as Record<string, string>).title ?? (section.content as Record<string, string>).label ?? (section.content as Record<string, string>).question;
+      assert.ok(html.includes(heading.replace(/'/g, "&#x27;")), `${type} shows its heading`);
+      assert.match(html, /<h2[\s>]/, `${type} uses an H2`);
+    }
+  });
+
+  it("starts empty and names what is missing", () => {
+    for (const type of Object.keys(VALID)) {
+      const fresh = catalog.entryByType(type)!.create() as never;
+      assert.ok(validate.siteSectionProblems(fresh).length > 0, type);
+      assert.ok(validate.parseBuilderDoc(docOf(fresh), "post").ok, `${type} saves as a draft`);
+    }
+  });
+
+  it("refuses unsafe images and links to other sites", () => {
+    const badImage = site({ ...VALID.SplitSection, content: { ...(VALID.SplitSection.content as object), image: { src: "javascript:alert(1)", alt: "An image" } } });
+    assert.ok(validate.siteSectionProblems(badImage).length > 0);
+    const external = site({ ...VALID.LinkTiles, content: { ...(VALID.LinkTiles.content as object), items: [{ title: "Elsewhere", line: "Another site", href: "https://evil.example" }, { title: "Pricing", line: "Plans", href: "/pricing" }] } });
+    assert.ok(validate.siteSectionProblems(external).length > 0);
+  });
+});
+
+describe("templates", () => {
+  it("every template is a valid draft for its kind, and post templates have no hero", async () => {
+    const { TEMPLATES } = await import("@/lib/builder/templates");
+    for (const t of TEMPLATES) {
+      const doc = docOf(...t.blocks());
+      assert.ok(validate.parseBuilderDoc(doc, t.kind).ok, t.id);
+      assert.ok(doc.blocks.length > 0, t.id);
+      if (t.kind === "post") assert.ok(!doc.blocks.some((b) => b.type === "site" && b.section.type === "ProductHero"), t.id);
+    }
+  });
+});
+
+describe("SEO settings", () => {
+  type SeoModule = typeof import("@/lib/builder/seo");
+  let seoLib: SeoModule;
+  let meta: typeof import("@/lib/builder/seo-metadata");
+  before(async () => {
+    seoLib = await import("@/lib/builder/seo");
+    meta = await import("@/lib/builder/seo-metadata");
+  });
+  const save = (seo: Record<string, unknown>, over: Record<string, unknown> = {}) => ({ title: "Spring offer for small sites", slug: "", excerpt: "Short.", coverImage: "", content: docOf(section("bsecaaaa01", [rich("brich00001", "Body")])), seo, ...over });
+
+  it("stores the settings and refuses a canonical on another site", async () => {
+    const ok = await posts.createPost(ADMIN, save({ title: "Spring offer", focusKeyword: "spring offer", canonical: "/pricing", noindex: true }));
+    assert.ok(ok.ok, ok.ok ? "" : ok.error);
+    const saved = await posts.getPortalPost(ADMIN, ok.data.id);
+    assert.ok(saved.ok);
+    assert.equal(saved.data.seo.focusKeyword, "spring offer");
+    assert.equal(saved.data.seo.noindex, true);
+    assert.equal(saved.data.seo.faqSchema, true, "defaults fill the rest");
+    const bad = await posts.createPost(ADMIN, save({ canonical: "https://evil.example/page" }, { slug: "other" }));
+    assert.equal(bad.ok, false);
+    assert.ok(!bad.ok && bad.fieldErrors?.["seo.canonical"]);
+  });
+
+  it("older documents read as the defaults", () => {
+    assert.deepEqual(seoLib.normalizeSeo(undefined), seoLib.DEFAULT_SEO);
+    assert.equal(seoLib.normalizeSeo({ noindex: "yes", title: 5 }).noindex, false);
+  });
+
+  it("metadata uses the SEO tab, falls back to the title and summary, and honours noindex and canonical", () => {
+    const m = meta.builderMetadata({ seo: { ...seoLib.DEFAULT_SEO, title: "Search title", noindex: true, canonical: "/pricing", ogTitle: "Share me" }, title: "Page", excerpt: "Summary", coverImage: "", path: "/page", locale: "en-us", type: "website" });
+    assert.equal(m.title, "Search title");
+    assert.equal(m.description, "Summary");
+    assert.deepEqual(m.robots, { index: false, follow: true });
+    assert.match(String(m.alternates?.canonical), /\/pricing$/);
+    assert.equal((m.openGraph as { title?: string }).title, "Share me");
+    const plain = meta.builderMetadata({ seo: seoLib.DEFAULT_SEO, title: "Page", excerpt: "", coverImage: "", path: "/page", locale: "en-us", type: "website" });
+    assert.equal(plain.title, "Page");
+    assert.match(String(plain.alternates?.canonical), /\/page$/);
+  });
+
+  it("builds FAQ structured data from FAQ blocks unless it is switched off", () => {
+    const d = docOf({ id: "bfaq000001", type: "site", section: validFaq } as RootBlock);
+    const schema = meta.builderFaqSchema(d, seoLib.DEFAULT_SEO) as { mainEntity?: unknown[] } | null;
+    assert.equal(schema?.mainEntity?.length, 3);
+    assert.equal(meta.builderFaqSchema(d, { ...seoLib.DEFAULT_SEO, faqSchema: false }), null);
+    assert.equal(meta.builderFaqSchema(docOf(), seoLib.DEFAULT_SEO), null);
+  });
+
+  it("the checklist follows the focus keyword through title, description, headline, address and opening text", () => {
+    const doc = docOf(section("bsecaaaa01", [rich("brich00001", "Our spring offer covers the first year.")]));
+    const all = (seo: Partial<import("@/lib/builder/seo").PostSeo>, slug = "spring-offer") =>
+      Object.fromEntries(seoLib.seoChecks({ seo: { ...seoLib.DEFAULT_SEO, ...seo }, title: "The spring offer for new sites", excerpt: "x", slug, doc, kind: "post" }).map((c) => [c.id, c.ok]));
+    const good = all({ focusKeyword: "spring offer", description: "The spring offer gives new sites a first year at one price, with backups and support included." });
+    for (const id of ["keywordSet", "keywordInTitle", "keywordInDescription", "keywordInH1", "keywordInSlug", "keywordInOpening", "titleLength", "descriptionLength", "indexable"]) assert.equal(good[id], true, id);
+    const none = all({}, "other");
+    assert.equal(none.keywordSet, false);
+    assert.equal(none.keywordInSlug, false);
+    assert.equal(all({ noindex: true }).indexable, false);
+  });
+
+  it("noindex pages and posts stay out of the sitemap lists", async () => {
+    const page = await posts.createPost(ADMIN, { ...save({ noindex: true }, { slug: "hidden-page" }), kind: "page" });
+    const shown = await posts.createPost(ADMIN, { ...save({}, { slug: "shown-page" }), kind: "page" });
+    const post = await posts.createPost(ADMIN, save({ noindex: true }, { slug: "hidden-post" }));
+    assert.ok(page.ok && shown.ok && post.ok);
+    for (const id of [page.data.id, shown.data.id, post.data.id]) assert.ok((await posts.setPublished(ADMIN, id, true)).ok);
+    assert.deepEqual((await pages.listPublishedPageSlugs({ indexable: true })).map((p) => p.slug), ["shown-page"]);
+    assert.equal((await pages.listPublishedPageSlugs()).length, 2, "prerendering still lists every published page");
+    assert.deepEqual(await blog.listSlugs(), []);
   });
 });

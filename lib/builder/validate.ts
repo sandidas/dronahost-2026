@@ -4,6 +4,7 @@ import * as S from "@/lib/content/schemas/sections";
 import { docText, parseTiptapDoc } from "@/lib/editor/schema";
 import { isSafeImageSrc, isYoutubeUrl } from "@/lib/editor/urls";
 import { entryFor, type Field } from "./catalog";
+import { FREE_SCHEMAS } from "./free-sections";
 import { BLOCK_ID, COLUMNS_LAYOUTS, SITE_SECTIONS_FOR, SITE_SECTION_TYPES, columnCount, youtubeId, type AnyBlock, type BuilderDoc, type PostKind, type SiteSectionType } from "./model";
 import { flatten } from "./tree";
 
@@ -118,6 +119,7 @@ export const SITE_SCHEMAS: Record<SiteSectionType, ZodType> = {
   ProcessTimeline: S.ProcessTimeline,
   FAQSection: S.FAQSection,
   CTABand: S.CTABand,
+  ...FREE_SCHEMAS,
 };
 
 export type Problem = { blockId: string; message: string };

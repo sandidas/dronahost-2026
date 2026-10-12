@@ -10,10 +10,11 @@ import { flatten } from "@/lib/builder/tree";
 import { cn } from "@/utils/cn";
 import { BLOCK_ICONS } from "./icons";
 import { useBuilder } from "./store";
+import { sectionHeading } from "./Inspector";
 import { iconButton } from "./TopBar";
 
 const T = BUILDER_TEXT.ui;
-const GROUPS: CatalogGroup[] = ["layout", "content", "site"];
+const GROUPS: CatalogGroup[] = ["layout", "content", "sections", "banners"];
 
 /** Drag source id for a new block from the panel. The canvas reads `data` to know what is being dragged. */
 export const paletteId = (type: string) => `new:${type}`;
@@ -86,7 +87,7 @@ export function blockSummary(block: AnyBlock): string {
   if (block.type === "video") return block.props.title;
   if (block.type === "site") {
     const content = block.section.content as Record<string, unknown> | undefined;
-    return String(content?.h1 ?? content?.h2 ?? "");
+    return typeof content?.h1 === "string" ? content.h1 : sectionHeading(content);
   }
   return "";
 }

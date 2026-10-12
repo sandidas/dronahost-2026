@@ -11,6 +11,9 @@ export type BlogPost = {
   html: string;
   /** Posts made in the page builder: the rendered blocks, shown instead of `html`. Server-rendered only. */
   body?: React.ReactNode;
+  /** Builder posts: the SEO tab's settings and FAQPage structured data (null when off or without questions). */
+  seo?: import("@/lib/builder/seo").PostSeo;
+  faqSchema?: Record<string, unknown> | null;
   toc: TocItem[];
   /** ISO timestamps. */
   published: string;
@@ -21,7 +24,7 @@ export type BlogPost = {
   readingMinutes: number;
 };
 
-export type BlogListItem = Omit<BlogPost, "html" | "toc" | "body">;
+export type BlogListItem = Omit<BlogPost, "html" | "toc" | "body" | "seo" | "faqSchema">;
 
 export type BlogCategory = { name: string; slug: string; count: number };
 

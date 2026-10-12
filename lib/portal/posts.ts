@@ -4,6 +4,7 @@ import { assertCan, can } from "@/lib/auth/permissions";
 import { ROLES } from "@/lib/auth/roles";
 import { BUILDER_PROBLEMS } from "@/content/portal-strings";
 import { toBuilderDoc, type BuilderDoc, type PostKind } from "@/lib/builder/model";
+import { normalizeSeo, type PostSeo } from "@/lib/builder/seo";
 import { publishProblems } from "@/lib/builder/validate";
 import { Post, type IPost } from "@/lib/models/post";
 import { portalDb } from "./db";
@@ -29,6 +30,7 @@ export type PostDetail = PostRow & {
   coverImage: string;
   /** The builder document. Older posts (Tiptap JSON or HTML) arrive converted to one Rich text block. */
   content: BuilderDoc;
+  seo: PostSeo;
   publishedAt: string | null;
   publishedByName: string | null;
   canEdit: boolean;
@@ -83,6 +85,7 @@ function toDetail(actor: Actor, p: IPost): PostDetail {
     excerpt: typeof p.excerpt === "string" ? p.excerpt : "",
     coverImage: typeof p.coverImage === "string" ? p.coverImage : "",
     content: toBuilderDoc(p.content),
+    seo: normalizeSeo(p.seo),
     publishedAt: p.publishedAt ? new Date(p.publishedAt).toISOString() : null,
     publishedByName: p.publishedBy?.name || null,
     canEdit: can(actor.role, "post.edit", { locked: Boolean(p.locked) }),

@@ -2,6 +2,8 @@ import { z } from "zod";
 import { PORTAL_ERRORS } from "@/content/portal-strings";
 import type { BuilderDoc, PostKind } from "@/lib/builder/model";
 import { isReservedPageSlug } from "@/lib/builder/reserved";
+import { DEFAULT_SEO, type PostSeo } from "@/lib/builder/seo";
+import { SITE_URL } from "@/lib/seo/config";
 import { parseBuilderDoc } from "@/lib/builder/validate";
 import { isSafeImageSrc } from "@/lib/editor/urls";
 import { fail, fieldErrorsFrom, type Result } from "./result";
@@ -28,9 +30,33 @@ const PostFields = z.object({
     .refine((v) => v === "" || isSafeImageSrc(v), PORTAL_ERRORS.coverImage)
     .default(""),
   content: z.unknown(),
+  seo: z
+    .object({
+      title: z.string().trim().max(70, PORTAL_ERRORS.seo.title).default(""),
+      description: z.string().trim().max(170, PORTAL_ERRORS.seo.description).default(""),
+      focusKeyword: z.string().trim().max(60, PORTAL_ERRORS.seo.keyword).default(""),
+      canonical: z.string().trim().max(500, PORTAL_ERRORS.seo.canonical).refine((v) => v === "" || isCanonical(v), PORTAL_ERRORS.seo.canonical).default(""),
+      noindex: z.boolean().default(false),
+      ogTitle: z.string().trim().max(90, PORTAL_ERRORS.seo.ogTitle).default(""),
+      ogDescription: z.string().trim().max(200, PORTAL_ERRORS.seo.ogDescription).default(""),
+      ogImage: z.string().trim().max(2048).refine((v) => v === "" || isSafeImageSrc(v), PORTAL_ERRORS.coverImage).default(""),
+      faqSchema: z.boolean().default(true),
+    })
+    .default(DEFAULT_SEO),
 });
 
-export type PostInput = { title: string; slug: string; excerpt: string; coverImage: string; content: BuilderDoc };
+/** A canonical address is a site path or a full https address on this site, never another domain. */
+function isCanonical(value: string): boolean {
+  if (/^\/(?!\/)[A-Za-z0-9\-_/.]*$/.test(value)) return true;
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && url.hostname === new URL(SITE_URL).hostname;
+  } catch {
+    return false;
+  }
+}
+
+export type PostInput = { title: string; slug: string; excerpt: string; coverImage: string; content: BuilderDoc; seo: PostSeo };
 
 /** Validates a save. `kind` comes from the stored post (or the create request), never from the fields being saved. */
 export function parsePostInput(raw: unknown, kind: PostKind): Result<PostInput> {

@@ -8,6 +8,7 @@ import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 import { SITE_URL } from "@/lib/seo/config";
 import { blogPostingSchema, breadcrumbSchema } from "@/lib/seo/jsonld";
 import { buildMetadata } from "@/lib/seo/metadata";
+import { builderMetadata } from "@/lib/builder/seo-metadata";
 
 export const revalidate = 3600;
 
@@ -25,6 +26,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   try {
     const post = await getPost(slug);
     if (!post) return buildMetadata({ locale, title: "Post not found", description: "The article you are looking for could not be found.", path: `/blog/${slug}`, noIndex: true });
+    // Posts made in the page builder carry their own search settings (the editor's SEO tab).
+    if (post.seo) return builderMetadata({ seo: post.seo, title: post.title, excerpt: post.excerpt, coverImage: post.image?.url ?? "", path: `/blog/${slug}`, locale, type: "article" });
     return buildMetadata({
       locale,
       title: `${post.title}`,
@@ -59,6 +62,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             dateModified: post.modified,
           }),
           breadcrumbSchema(buildBreadcrumbs(`/blog/${post.slug}`, { [post.slug]: post.title })),
+          ...(post.faqSchema ? [post.faqSchema] : []),
         ]}
       />
       <ArticleLayout post={post} />
