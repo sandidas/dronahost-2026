@@ -405,15 +405,39 @@ describe("page addresses", () => {
 describe("posts and pages (database)", () => {
   const save = (over: Record<string, unknown> = {}) => ({ title: "Spring offer", slug: "", excerpt: "Short.", coverImage: "", content: docOf(textBlock("btext00001", "Hello")), ...over });
 
-  it("staff create pages as drafts; the kind cannot change afterwards", async () => {
+  it("staff create pages as drafts; a save without a kind keeps the stored one", async () => {
     const res = await posts.createPost(STAFF, { ...save(), kind: "page", status: "published" });
     assert.ok(res.ok, res.ok ? "" : res.error);
     assert.equal(res.data.kind, "page");
     const saved = await PostModel.findById(res.data.id).lean();
     assert.equal(saved?.status, "draft");
-    const updated = await posts.updatePost(STAFF, res.data.id, { ...save(), kind: "post" });
+    const updated = await posts.updatePost(STAFF, res.data.id, save());
     assert.ok(updated.ok);
     assert.equal((await PostModel.findById(res.data.id).lean())?.kind, "page");
+  });
+
+  it("the switcher moves the same blocks between the blog and the pages", async () => {
+    const created = await posts.createPost(ADMIN, save({ slug: "moving-day" }));
+    assert.ok(created.ok);
+    assert.ok((await posts.setPublished(ADMIN, created.data.id, true)).ok);
+    assert.ok(await blog.getPost("moving-day"), "starts as a blog post");
+    const moved = await posts.updatePost(ADMIN, created.data.id, { ...save({ slug: "moving-day" }), kind: "page" });
+    assert.ok(moved.ok, moved.ok ? "" : moved.error);
+    assert.deepEqual([moved.data.previousKind, moved.data.kind], ["post", "page"]);
+    assert.equal(await blog.getPost("moving-day"), null, "gone from the blog");
+    assert.ok(await pages.getPublishedPage("moving-day"), "prints at /moving-day");
+    const back = await posts.updatePost(ADMIN, created.data.id, { ...save({ slug: "moving-day" }), kind: "post" });
+    assert.ok(back.ok);
+    assert.ok(await blog.getPost("moving-day"));
+    assert.equal(await pages.getPublishedPage("moving-day"), null);
+  });
+
+  it("a post cannot switch to a page on an address the site already uses", async () => {
+    const created = await posts.createPost(ADMIN, save({ slug: "pricing" }));
+    assert.ok(created.ok, "a blog post may use it: it prints at /blog/pricing");
+    const moved = await posts.updatePost(ADMIN, created.data.id, { ...save({ slug: "pricing" }), kind: "page" });
+    assert.equal(moved.ok, false);
+    assert.equal((await PostModel.findById(created.data.id).lean())?.kind ?? "post", "post");
   });
 
   it("refuses page slugs the site already uses, and the slug 'new'", async () => {

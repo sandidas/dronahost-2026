@@ -6,11 +6,16 @@ import { getActor } from "@/lib/auth/session";
 import { checkSlug, createPost, deletePost, setLocked, setPublished, updatePost, type PostChange, type SlugCheckResult } from "../posts";
 import { fail, type Actor, type Result } from "../result";
 
-/** Refreshes the cached public pages (the blog or the builder page, and the sitemap) after a change visitors can see. */
+/**
+ * Refreshes the cached public pages (the blog or the builder page, and the sitemap) after a change visitors can see.
+ * A switch between post and page refreshes both, so the old address stops printing it.
+ */
 function refreshPublicBlog(change: PostChange, always = false): void {
   if (!always && change.status !== "published") return;
-  if (change.kind === "page") revalidatePath("/[locale]/(marketing)/[slug]", "page");
-  else revalidatePath("/[locale]/(marketing)/blog", "layout");
+  for (const kind of new Set([change.kind, change.previousKind])) {
+    if (kind === "page") revalidatePath("/[locale]/(marketing)/[slug]", "page");
+    else revalidatePath("/[locale]/(marketing)/blog", "layout");
+  }
   revalidatePath("/sitemap.xml");
 }
 
@@ -20,7 +25,7 @@ async function withActor<T>(run: (actor: Actor) => Promise<Result<T>>): Promise<
   return run(actor);
 }
 
-/** Creates (id null) or saves a post. Only title, slug, excerpt, cover image and content are read from the input. */
+/** Creates (id null) or saves a post. Only the kind, title, slug, excerpt, cover image and content are read from the input. */
 export async function savePostAction(id: string | null, input: unknown): Promise<Result<PostChange>> {
   return withActor(async (actor) => {
     const res = id === null ? await createPost(actor, input) : await updatePost(actor, id, input);

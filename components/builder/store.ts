@@ -68,6 +68,8 @@ export type BuilderState = BuilderInit & {
   slugCheck: SlugCheck;
 
   setMeta: (patch: Partial<Meta>) => void;
+  /** Where the blocks print: a page at /<slug>, a blog post at /blog/<slug> under its title. The blocks do not change. */
+  setKind: (kind: PostKind) => void;
   /** Adds a block at `index`, or after the selected block, or at the end. */
   addBlock: (type: string, index?: number) => void;
   /** Replaces an empty page with a template's blocks. */
@@ -140,6 +142,9 @@ export function createBuilderStore(init: BuilderInit & { actorName: string }) {
             const touched = slugTouched || patch.slug !== undefined;
             if (!touched && patch.title !== undefined) next.slug = slugify(patch.title);
             edit({ meta: next, slugTouched: touched, ...(next.slug !== meta.slug && { slugCheck: null }) }, "meta");
+          },
+          setKind: (kind) => {
+            if (kind !== get().kind) edit({ kind, slugCheck: null });
           },
           addBlock: (type, index) => {
             const { doc, selectedId } = get();

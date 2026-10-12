@@ -59,7 +59,7 @@ function isCanonical(value: string): boolean {
 
 export type PostInput = { title: string; slug: string; excerpt: string; coverImage: string; coverImageAlt: string; content: BuilderDoc; seo: PostSeo };
 
-/** Validates a save. `kind` comes from the stored post (or the create request), never from the fields being saved. */
+/** Validates a save. `kind` is where it will print, read by the caller: a page cannot take an address the site uses. */
 export function parsePostInput(raw: unknown, kind: PostKind): Result<PostInput> {
   const parsed = PostFields.safeParse(raw);
   if (!parsed.success) {

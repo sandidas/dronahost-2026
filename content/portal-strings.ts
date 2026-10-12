@@ -470,9 +470,13 @@ export const BUILDER_TEXT = {
       dropHere: "Drop here",
     },
     page: {
-      kind: "Type",
+      kind: "Publish as",
+      kindHelp: {
+        post: "A blog post prints at /blog/ and the address, with this title as its headline (H1) above the blocks.",
+        page: "A page prints at / and the address with the blocks only. The first centred hero is its headline (H1).",
+      },
       title: "Title",
-      titleHelp: { post: "The post headline (H1), the only thing the blog prints above the blocks.", page: "The page name, for lists, the browser tab and search results. It is not printed on the page: add a hero for the headline." },
+      titleHelp: { post: "The post headline (H1). The blog prints it above the blocks; the canvas shows the blocks only.", page: "The page name, for lists, the browser tab and search results. It is not printed on the page: add a hero for the headline." },
       slug: "Slug",
       slugHelp: "Lowercase letters, numbers and hyphens.",
       address: "Address",

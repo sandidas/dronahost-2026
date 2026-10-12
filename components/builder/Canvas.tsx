@@ -4,7 +4,6 @@ import { DragOverlay, useDraggable, useDroppable } from "@dnd-kit/core";
 import { ArrowDown, ArrowUp, Copy, GripVertical, Plus, Trash2 } from "lucide-react";
 import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
 import { BUILDER_TEXT } from "@/content/portal-strings";
-import BuilderPost from "@/components/blog/BuilderPost";
 import { blockDef, blockName } from "@/lib/builder/blocks";
 import { h1Block, pageBands, pageFrame } from "@/lib/builder/doc";
 import { fieldProblems } from "@/lib/builder/fields";
@@ -273,27 +272,6 @@ function TemplatePicker({ onBlank }: { onBlank: () => void }) {
   );
 }
 
-/** The post title, edited in place of the post's H1. */
-function TitleInput() {
-  const kind = useBuilder((s) => s.kind);
-  const title = useBuilder((s) => s.meta.title);
-  const canEdit = useBuilder((s) => s.canEdit);
-  const setMeta = useBuilder((s) => s.setMeta);
-  if (!canEdit) return <>{title}</>;
-  return (
-    <textarea
-      value={title}
-      onChange={(e) => setMeta({ title: e.target.value.replace(/\n/g, " ") })}
-      onClick={(e) => e.stopPropagation()}
-      placeholder={T.newTitle[kind]}
-      aria-label={T.page.title}
-      rows={1}
-      maxLength={200}
-      className="w-full resize-none overflow-hidden bg-transparent outline-none [field-sizing:content] [font:inherit] [letter-spacing:inherit] placeholder:text-subtle-foreground"
-    />
-  );
-}
-
 function RootBlocks() {
   const blocks = useBuilder((s) => s.doc.blocks);
   const canEdit = useBuilder((s) => s.canEdit);
@@ -328,8 +306,8 @@ function RootBlocks() {
 export const DEVICE_WIDTH: Record<Device, number> = { desktop: 1280, tablet: 820, phone: 390 };
 
 /**
- * The page as visitors will see it, with editing on top. Posts and pages draw their blocks the same way: a post under
- * its title (edited in place), as the blog prints it, and a page with nothing of its own above the blocks.
+ * The blocks as visitors will see them, with editing on top. The canvas is the same for posts and pages: the blocks
+ * only. The blog prints a post's title (the Page tab) as the H1 above them on the public page.
  */
 export function Canvas({ onKeyDown }: { onKeyDown?: (e: KeyboardEvent) => void }) {
   const kind = useBuilder((s) => s.kind);
@@ -352,13 +330,7 @@ export function Canvas({ onKeyDown }: { onKeyDown?: (e: KeyboardEvent) => void }
       <div role="region" aria-label={T.canvas.label} className="look-luxe min-h-screen bg-background text-foreground" onClick={() => select(null)} onMouseLeave={() => set({ hoverId: null })}>
         {!canEdit && <p className="border-b border-warning/40 bg-warning-surface px-4 py-2 text-sm text-foreground">{T.readOnly}</p>}
         <LookContext.Provider value={look}>
-          {kind === "post" ? (
-            <BuilderPost title="" titleSlot={<TitleInput />}>
-              {blocks}
-            </BuilderPost>
-          ) : (
-            blocks
-          )}
+          {blocks}
         </LookContext.Provider>
         {/* Inside the frame, so the dragged chip follows the pointer in the frame's own coordinates. */}
         <DragOverlay dropAnimation={null}>{dragLabel ? <div className="inline-flex rounded-md bg-accent px-3 py-1.5 text-sm font-semibold text-accent-foreground shadow-lg">{dragLabel}</div> : null}</DragOverlay>

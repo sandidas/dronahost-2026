@@ -105,6 +105,35 @@ function GenerateButton({ onClick, label }: { onClick: () => void; label: string
   );
 }
 
+/** Page or blog post: where the same blocks print (/<slug> or /blog/<slug>). The canvas is the same for both. */
+function KindSwitch({ readOnly }: { readOnly: boolean }) {
+  const kind = useBuilder((s) => s.kind);
+  const setKind = useBuilder((s) => s.setKind);
+  const helpId = useId();
+  return (
+    <fieldset aria-describedby={helpId}>
+      <legend className={labelClass}>{T.page.kind}</legend>
+      <div className="grid grid-cols-2 gap-1 rounded-lg border border-border-strong bg-card p-1">
+        {(["page", "post"] as const).map((k) => (
+          <label
+            key={k}
+            className={cn(
+              "flex min-h-9 cursor-pointer items-center justify-center rounded-md text-sm font-semibold text-muted-foreground has-[:checked]:bg-muted has-[:checked]:text-foreground has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring",
+              readOnly && "cursor-default opacity-60",
+            )}
+          >
+            <input type="radio" name="builder-kind" value={k} checked={kind === k} disabled={readOnly} onChange={() => setKind(k)} className="sr-only" />
+            {BUILDER_TEXT.kinds[k]}
+          </label>
+        ))}
+      </div>
+      <p id={helpId} className={helpClass}>
+        {T.page.kindHelp[kind]}
+      </p>
+    </fieldset>
+  );
+}
+
 /** The slug field: the address prefix, a Generate button and whether the address is free (checked against the database). */
 function SlugInput({ readOnly, error }: { readOnly: boolean; error?: string }) {
   const api = useBuilderApi();
@@ -227,9 +256,7 @@ function PageTab({ publishing }: { publishing: Publishing }) {
     <>
       <ProblemList />
       <Section>
-        <p className="text-sm text-muted-foreground">
-          {T.page.kind}: <span className="font-semibold text-foreground">{BUILDER_TEXT.kinds[kind]}</span>
-        </p>
+        <KindSwitch readOnly={!canEdit} />
         <TextInput label={T.page.title} help={T.page.titleHelp[kind]} value={meta.title} onChange={(title) => setMeta({ title })} error={errors.title} max={200} readOnly={!canEdit} />
         <SlugInput error={errors.slug} readOnly={!canEdit} />
         <div>

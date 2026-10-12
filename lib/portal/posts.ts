@@ -40,7 +40,7 @@ export type PostDetail = PostRow & {
 };
 
 /** What a successful change returns, so the caller can refresh the public pages. */
-export type PostChange = { id: string; kind: PostKind; slug: string; previousSlug: string; status: PostStatus };
+export type PostChange = { id: string; kind: PostKind; previousKind: PostKind; slug: string; previousSlug: string; status: PostStatus };
 
 const notDeleted = { deletedAt: null } as const;
 
@@ -69,7 +69,14 @@ const toRow = (p: IPost): PostRow => ({
   updatedAt: new Date(p.updatedAt ?? p.createdAt ?? 0).toISOString(),
 });
 
-const change = (p: IPost, previousSlug = p.slug): PostChange => ({ id: String(p._id), kind: p.kind ?? "post", slug: p.slug, previousSlug, status: p.status });
+const change = (p: IPost, previousSlug = p.slug, previousKind: PostKind = p.kind ?? "post"): PostChange => ({
+  id: String(p._id),
+  kind: p.kind ?? "post",
+  previousKind,
+  slug: p.slug,
+  previousSlug,
+  status: p.status,
+});
 
 async function findLive(id: Types.ObjectId): Promise<IPost | null> {
   return (await Post.findOne({ _id: id, ...notDeleted }).lean()) as IPost | null;
@@ -162,7 +169,7 @@ export async function checkSlug(actor: Actor, raw: unknown): Promise<Result<Slug
 
 /**
  * New posts and pages are always drafts and unlocked, whoever creates them; the author is the signed-in person. The
- * kind (post or page) is set here and never changes afterwards.
+ * kind (post or page) only decides where it prints (/blog/<slug> or /<slug>); a save can switch it.
  */
 export async function createPost(actor: Actor, raw: unknown): Promise<Result<PostChange>> {
   return guarded("portal.posts.create", async () => {
@@ -198,8 +205,9 @@ export async function createPost(actor: Actor, raw: unknown): Promise<Result<Pos
 }
 
 /**
- * Saves title, slug, excerpt, cover image and content only. For staff the write is conditional on the
- * post still being unlocked, so an admin locking it a moment earlier wins.
+ * Saves the kind, title, slug, excerpt, cover image and content only. The kind moves the record between the blog
+ * (/blog/<slug>) and the pages (/<slug>); the blocks stay the same. For staff the write is conditional on the post still
+ * being unlocked, so an admin locking it a moment earlier wins.
  */
 export async function updatePost(actor: Actor, rawId: unknown, raw: unknown): Promise<Result<PostChange>> {
   return guarded("portal.posts.update", async () => {
@@ -208,7 +216,10 @@ export async function updatePost(actor: Actor, rawId: unknown, raw: unknown): Pr
     await portalDb();
     const current = await findLive(id);
     if (!current) return fail(PORTAL_ERRORS.notFound);
-    const input = parsePostInput(raw, current.kind ?? "post");
+    const currentKind: PostKind = current.kind ?? "post";
+    const asked = (raw as { kind?: unknown } | null)?.kind;
+    const kind: PostKind = asked === "page" || asked === "post" ? asked : currentKind;
+    const input = parsePostInput(raw, kind);
     if (!input.ok) return input;
     // A live page changes straight away, so it must pass the publishing checks: nothing on it may silently disappear.
     if (current.status === "published") {
@@ -220,9 +231,9 @@ export async function updatePost(actor: Actor, rawId: unknown, raw: unknown): Pr
     }
     const condition = actor.role === ROLES.ADMIN ? {} : { locked: { $ne: true } };
     try {
-      const updated = (await Post.findOneAndUpdate({ _id: id, ...notDeleted, ...condition }, { $set: input.data }, { returnDocument: "after" }).lean()) as IPost | null;
+      const updated = (await Post.findOneAndUpdate({ _id: id, ...notDeleted, ...condition }, { $set: { ...input.data, kind } }, { returnDocument: "after" }).lean()) as IPost | null;
       if (!updated) return fail(PORTAL_ERRORS.locked);
-      return ok(change(updated, current.slug));
+      return ok(change(updated, current.slug, currentKind));
     } catch (err) {
       if (isDuplicateKey(err, "slug")) return fail(PORTAL_ERRORS.duplicateSlug, { slug: PORTAL_ERRORS.duplicateSlug });
       throw err;
