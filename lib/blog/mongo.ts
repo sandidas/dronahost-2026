@@ -2,6 +2,7 @@ import { Post, type IPost } from "@/lib/models/post";
 import { connectToDatabase } from "@/lib/mongodb";
 import { docText } from "@/lib/editor/schema";
 import { renderTiptapHtml } from "@/lib/editor/render";
+import { toBuilderDoc } from "@/lib/builder/legacy";
 import { isBuilderDoc, type BuilderDoc } from "@/lib/builder/model";
 import { readingMinutesOf, renderBuilderDoc } from "@/lib/builder/render";
 import { normalizeSeo } from "@/lib/builder/seo";
@@ -15,7 +16,8 @@ import { BlogUnavailableError, type BlogCategory, type BlogListItem, type BlogPa
 /** Builder posts render their blocks; older posts store Tiptap JSON or HTML. All come out sanitised. */
 function renderContent(content: IPost["content"]): { html: string; toc: BlogPost["toc"]; body?: React.ReactNode } {
   if (isBuilderDoc(content)) {
-    const { body, toc } = renderBuilderDoc(content, "post");
+    // Through toBuilderDoc, so sections saved by the first builder version render in their current form.
+    const { body, toc } = renderBuilderDoc(toBuilderDoc(content), "post");
     return { html: "", toc, body };
   }
   if (typeof content === "string") return prepareArticle(content);
@@ -23,7 +25,7 @@ function renderContent(content: IPost["content"]): { html: string; toc: BlogPost
 }
 
 function contentMinutes(content: IPost["content"]): number {
-  if (isBuilderDoc(content)) return readingMinutesOf(builderText(content));
+  if (isBuilderDoc(content)) return readingMinutesOf(builderText(toBuilderDoc(content)));
   return typeof content === "string" ? readingMinutes(content) : Math.max(1, Math.round(docText(content).split(/\s+/).filter(Boolean).length / 220));
 }
 
@@ -41,7 +43,7 @@ function toItem(p: IPost): BlogListItem {
     modified: new Date(p.updatedAt).toISOString(),
     category: p.category ? { name: p.category, slug: catSlug(p.category) } : null,
     author: { name: p.author?.name || "DronaHost team", bio: p.author?.bio?.trim() || null, avatar: p.author?.avatar || null },
-    image: isSafeImageSrc(p.coverImage) ? { url: p.coverImage, alt: "", width: 1200, height: 630 } : null,
+    image: isSafeImageSrc(p.coverImage) ? { url: p.coverImage, alt: p.coverImageAlt ?? "", width: 1200, height: 630 } : null,
     readingMinutes: contentMinutes(p.content),
   };
 }
@@ -70,7 +72,7 @@ export async function getPost(slug: string): Promise<BlogPost | null> {
   await db();
   const p = (await Post.findOne({ slug, ...live }).lean()) as unknown as IPost | null;
   if (!p) return null;
-  const builder = isBuilderDoc(p.content) ? { seo: normalizeSeo(p.seo), faqSchema: builderFaqSchema(p.content, normalizeSeo(p.seo)) } : {};
+  const builder = isBuilderDoc(p.content) ? { seo: normalizeSeo(p.seo), faqSchema: builderFaqSchema(toBuilderDoc(p.content), normalizeSeo(p.seo)) } : {};
   return { ...toItem(p), ...renderContent(p.content), excerpt: plainText(p.excerpt), ...builder };
 }
 

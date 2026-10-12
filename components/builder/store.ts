@@ -7,9 +7,10 @@ import { entryByType } from "@/lib/builder/catalog";
 import { isRootType, accepts, duplicateBlock, findBlock, insertBlock, moveBlock, nudgeBlock, removeBlock, slotBlocks, updateBlock, ROOT, type Slot } from "@/lib/builder/tree";
 import type { AnyBlock, BuilderDoc, PostKind, RootBlock } from "@/lib/builder/model";
 import type { PostSeo } from "@/lib/builder/seo";
+import { publishProblems } from "@/lib/builder/validate";
 import { slugify } from "@/lib/portal/slug";
 
-export type Meta = { title: string; slug: string; excerpt: string; coverImage: string; seo: PostSeo };
+export type Meta = { title: string; slug: string; excerpt: string; coverImage: string; coverImageAlt: string; seo: PostSeo };
 export type SaveState = "new" | "saved" | "dirty" | "saving" | "error";
 export type Device = "desktop" | "tablet" | "phone";
 export type Message = { kind: "ok" | "error"; text: string } | null;
@@ -25,9 +26,13 @@ export type BuilderInit = {
   meta: Meta;
   doc: BuilderDoc;
   publishedLine: string | null;
+  /** Dates shown in the post's meta line on the canvas (ISO), fixed by the server so both renders agree. */
+  dates: { published: string; modified: string };
 };
 
 export type BuilderState = BuilderInit & {
+  /** Shown as the author on the post canvas, as on the published post. */
+  actorName: string;
   /** True once someone has edited the slug, so the title stops filling it in. */
   slugTouched: boolean;
   selectedId: string | null;
@@ -39,8 +44,11 @@ export type BuilderState = BuilderInit & {
   message: Message;
   /** Field errors from the last save (title, slug, ...). */
   fieldErrors: Record<string, string>;
-  /** Publish problems by block id ("page" for the document as a whole). */
-  problems: Record<string, string[]>;
+  /**
+   * Set when a publish (or a save of a live page) was refused: from then on the editor checks the page as it changes
+   * and marks what is still unfinished (useProblems), so each mark goes away as soon as it is fixed.
+   */
+  showProblems: boolean;
   /** Bumped by every saved change, so the preview frame reloads. */
   savedVersion: number;
   /** The slug as last saved: the preview loads the saved version, which an unsaved slug edit does not move. */
@@ -64,7 +72,7 @@ export type BuilderState = BuilderInit & {
   remove: (id: string) => void;
   update: (id: string, fn: (block: AnyBlock) => AnyBlock) => void;
   select: (id: string | null) => void;
-  set: (patch: Partial<Pick<BuilderState, "leftTab" | "rightTab" | "preview" | "device" | "dragType" | "hoverId" | "message" | "problems" | "mobilePanel">>) => void;
+  set: (patch: Partial<Pick<BuilderState, "leftTab" | "rightTab" | "preview" | "device" | "dragType" | "hoverId" | "message" | "showProblems" | "mobilePanel">>) => void;
   saving: () => void;
   saved: (result: { postId: string; slug: string }) => void;
   failed: (text: string, fieldErrors?: Record<string, string>) => void;
@@ -105,7 +113,7 @@ function defaultTarget(doc: BuilderDoc, selectedId: string | null, type: string)
   return lastSection ? { slot: { kind: "section", id: lastSection.id }, index: lastSection.children.length } : null;
 }
 
-export function createBuilderStore(init: BuilderInit) {
+export function createBuilderStore(init: BuilderInit & { actorName: string }) {
   return createStore<BuilderState>()(
     temporal(
       (set, get) => {
@@ -125,7 +133,7 @@ export function createBuilderStore(init: BuilderInit) {
           saveState: init.postId ? "saved" : "new",
           message: null,
           fieldErrors: {},
-          problems: {},
+          showProblems: false,
           savedVersion: 0,
           savedSlug: init.postId ? init.meta.slug : null,
           mobilePanel: null,
@@ -200,7 +208,7 @@ export function createBuilderStore(init: BuilderInit) {
             })),
           failed: (text, fieldErrors = {}) => set({ saveState: "error", message: { kind: "error", text }, fieldErrors }),
           statusChanged: (status, locked, publishedLine) =>
-            set((s) => ({ status, locked, publishedLine: publishedLine === undefined ? s.publishedLine : publishedLine, problems: {}, savedVersion: s.savedVersion + 1 })),
+            set((s) => ({ status, locked, publishedLine: publishedLine === undefined ? s.publishedLine : publishedLine, showProblems: false, savedVersion: s.savedVersion + 1 })),
         };
       },
       {
@@ -217,6 +225,17 @@ export function createBuilderStore(init: BuilderInit) {
 export type BuilderStore = ReturnType<typeof createBuilderStore>;
 
 export const BuilderContext = createContext<BuilderStore | null>(null);
+
+/** Unfinished blocks by id ("page" for the page as a whole), computed by the editor shell. Empty until a publish is refused. */
+export const ProblemsContext = createContext<Record<string, string[]>>({});
+export const useProblems = (): Record<string, string[]> => useContext(ProblemsContext);
+
+/** The publishing checks run in the browser, grouped by block. */
+export function groupProblems(doc: BuilderDoc, kind: PostKind): Record<string, string[]> {
+  const out: Record<string, string[]> = {};
+  for (const p of publishProblems(doc, kind)) (out[p.blockId || "page"] ??= []).push(p.message);
+  return out;
+}
 
 function useStoreApi(): BuilderStore {
   const store = useContext(BuilderContext);

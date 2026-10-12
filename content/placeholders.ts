@@ -306,6 +306,6 @@ export const SAMPLE_PORTAL_BUILDER_DOC: import("@/lib/builder/model").BuilderDoc
         },
       ],
     },
-    { id: "bsamplecta1", type: "site", section: { type: "CTABand", content: { h2: "Sample call to action", ctaPrimary: { label: "See the plans", href: "/pricing" } } } },
+    { id: "bsamplecta1", type: "site", section: { type: "CtaBand", content: { title: "Sample call to action", primaryCta: { label: "See the plans", href: "/pricing" } } } },
   ],
 };

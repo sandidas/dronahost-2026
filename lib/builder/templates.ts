@@ -18,11 +18,11 @@ function section(...children: string[]): RootBlock {
 }
 
 export const TEMPLATES: readonly Template[] = [
-  { id: "landing", kind: "page", ...T.landing, blocks: () => [block("ProductHero"), block("SplitSection"), block("FeatureCards"), block("FAQSection"), block("CTABand")] },
-  { id: "service", kind: "page", ...T.service, blocks: () => [block("ProductHero"), block("FeatureCards"), block("ProcessTimeline"), block("SplitSection"), block("FAQSection"), block("OfferBanner")] },
-  { id: "guide", kind: "page", ...T.guide, blocks: () => [block("GuideBanner"), section("heading", "richtext"), block("AnswerBanner"), block("FAQSection"), block("ActionBand")] },
+  { id: "landing", kind: "page", ...T.landing, blocks: () => [block("Hero"), block("SplitSection"), block("FeatureCards"), block("Faq"), block("CtaBand")] },
+  { id: "service", kind: "page", ...T.service, blocks: () => [block("Hero"), block("FeatureCards"), block("Steps"), block("SplitSection"), block("Faq"), block("OfferBanner")] },
+  { id: "guide", kind: "page", ...T.guide, blocks: () => [block("GuideBanner"), section("heading", "richtext"), block("AnswerBanner"), block("Faq"), block("ActionBand")] },
   { id: "article", kind: "post", ...T.article, blocks: () => [section("richtext")] },
-  { id: "how-to", kind: "post", ...T.howTo, blocks: () => [section("richtext"), block("ProcessTimeline"), section("heading", "richtext"), block("FAQSection")] },
+  { id: "how-to", kind: "post", ...T.howTo, blocks: () => [section("richtext"), block("Steps"), section("heading", "richtext"), block("Faq")] },
 ];
 
 export const templatesFor = (kind: PostKind): Template[] => TEMPLATES.filter((t) => t.kind === kind);

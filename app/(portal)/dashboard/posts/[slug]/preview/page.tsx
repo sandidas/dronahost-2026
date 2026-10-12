@@ -45,7 +45,7 @@ export default async function PreviewPage({ params }: { params: Promise<{ slug: 
           modified: post.updatedAt,
           category: null,
           author: { name: post.authorName || actor.name, bio: null, avatar: null },
-          image: isSafeImageSrc(post.coverImage) ? { url: post.coverImage, alt: "", width: 1200, height: 630 } : null,
+          image: isSafeImageSrc(post.coverImage) ? { url: post.coverImage, alt: post.coverImageAlt, width: 1200, height: 630 } : null,
           readingMinutes: readingMinutesOf(text),
         }}
       />

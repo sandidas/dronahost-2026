@@ -9,7 +9,7 @@ import type { AnyBlock } from "@/lib/builder/model";
 import { flatten } from "@/lib/builder/tree";
 import { cn } from "@/utils/cn";
 import { BLOCK_ICONS } from "./icons";
-import { useBuilder } from "./store";
+import { useBuilder, useProblems } from "./store";
 import { sectionHeading } from "./Inspector";
 import { iconButton } from "./TopBar";
 
@@ -95,7 +95,7 @@ export function blockSummary(block: AnyBlock): string {
 function LayersTab() {
   const doc = useBuilder((s) => s.doc);
   const selectedId = useBuilder((s) => s.selectedId);
-  const problems = useBuilder((s) => s.problems);
+  const problems = useProblems();
   const select = useBuilder((s) => s.select);
   const nudge = useBuilder((s) => s.nudge);
   const canEdit = useBuilder((s) => s.canEdit);

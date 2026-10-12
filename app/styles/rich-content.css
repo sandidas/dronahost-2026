@@ -73,6 +73,30 @@
     color: var(--foreground);
     line-height: 1.7;
   }
+  /* Page builder bands: every second section on a builder page (components/builder/layout.tsx pageBands). The same light
+     and dot texture as the hand-built pages' alternate sections (app/styles/look-luxe.css), set by class so the editor
+     canvas and the public page match. */
+  .builder-band {
+    background-image:
+      radial-gradient(circle 42rem at 94% -8%, var(--glow-teal), transparent 70%),
+      radial-gradient(circle 30rem at -6% 110%, var(--glow-orange), transparent 70%),
+      radial-gradient(var(--grid-line) 1px, transparent 1px);
+    background-size:
+      auto,
+      auto,
+      28px 28px;
+  }
+
+  /* A full section inside a post's text column (components/builder/layout.tsx POST_SECTION_GAP): the column already
+     has the page gutter and rhythm, so the section drops its own container padding and uses tighter spacing. */
+  .builder-in-post .container-site {
+    max-width: none;
+    padding-inline: 0;
+  }
+  .builder-in-post .section-y {
+    padding-block: 2.5rem;
+  }
+
   /* The page builder canvas: the text sits in the page like the published article, without a frame. */
   .portal-editor-inline .ProseMirror {
     min-height: 2.5rem;

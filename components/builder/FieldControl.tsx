@@ -1,17 +1,17 @@
 "use client";
 
-import { ArrowDown, ArrowUp, Plus, Trash2, Upload } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronDown, Images, Loader2, Plus, Trash2, Upload } from "lucide-react";
 import { useId, useState } from "react";
 import { errorClass, helpClass, inputClass, labelClass } from "@/components/portal/field-styles";
 import { uploadImage } from "@/components/portal/editor/upload-image";
 import { BUILDER_TEXT } from "@/content/portal-strings";
 import { getAt, setAt, type Field } from "@/lib/builder/catalog";
 import { cn } from "@/utils/cn";
+import { isSafeImageSrc } from "@/lib/editor/urls";
+import { MediaLibrary } from "./MediaLibrary";
 import { iconButton } from "./TopBar";
 
 const F = BUILDER_TEXT.fields;
-
-export type FeatureOption = { id: string; title: string };
 
 type Props = {
   field: Field;
@@ -20,7 +20,6 @@ type Props = {
   onChange: (next: unknown) => void;
   readOnly: boolean;
   uploadEnabled: boolean;
-  features: readonly FeatureOption[];
 };
 
 const fieldInput = cn(inputClass, "min-h-10 px-3 text-sm");
@@ -65,45 +64,75 @@ function TextField({ field, value, set, readOnly }: { field: Extract<Field, { ki
   );
 }
 
-function ImageField({ field, value, set, readOnly, uploadEnabled }: { field: Extract<Field, { kind: "image" }>; value: string; set: (v: string) => void; readOnly: boolean; uploadEnabled: boolean }) {
+type ImagePickerProps = { label: string; help?: string; value: string; onChange: (url: string) => void; readOnly: boolean; uploadEnabled: boolean; preview?: boolean };
+
+/**
+ * An image: upload from the computer (to S3), choose one uploaded before, or paste an address. Upload and the library
+ * need storage settings; without them the buttons stay visible but say why they are off.
+ */
+export function ImagePicker({ label, help, value, onChange, readOnly, uploadEnabled, preview = true }: ImagePickerProps) {
   const id = useId();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [library, setLibrary] = useState(false);
+  const M = BUILDER_TEXT.media;
+  const button = "inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border px-3 text-sm font-semibold text-foreground hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50";
   return (
     <div>
       <label htmlFor={id} className={labelClass}>
-        {field.label}
+        {label}
       </label>
-      <input id={id} type="url" value={value} readOnly={readOnly} onChange={(e) => set(e.target.value.trim())} className={fieldInput} />
-      {field.help && <p className={helpClass}>{field.help}</p>}
-      {uploadEnabled && !readOnly && (
-        <label className="mt-2 inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-lg border border-border px-3 text-sm font-semibold text-foreground hover:bg-muted">
-          <Upload className="size-4" aria-hidden="true" />
-          {busy ? F.uploading : F.upload}
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp,image/gif"
-            className="sr-only"
-            disabled={busy}
-            onChange={async (e) => {
-              const file = e.target.files?.[0];
-              e.target.value = "";
-              if (!file) return;
-              setBusy(true);
-              setError(null);
-              const res = await uploadImage(file);
-              setBusy(false);
-              if ("url" in res) set(res.url);
-              else setError(res.error);
-            }}
-          />
-        </label>
+      {preview && isSafeImageSrc(value) && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={value} alt="" className="mt-2 aspect-[16/9] w-full rounded-lg border border-border bg-muted object-cover" />
       )}
+      {!readOnly && (
+        <div className="mt-2 flex flex-wrap gap-2">
+          <label className={cn(button, "cursor-pointer", (!uploadEnabled || busy) && "pointer-events-none opacity-50")} aria-disabled={!uploadEnabled || busy}>
+            {busy ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Upload className="size-4" aria-hidden="true" />}
+            {busy ? M.uploading : M.upload}
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              className="sr-only"
+              disabled={!uploadEnabled || busy}
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                e.target.value = "";
+                if (!file) return;
+                setBusy(true);
+                setError(null);
+                const res = await uploadImage(file);
+                setBusy(false);
+                if ("url" in res) onChange(res.url);
+                else setError(res.error);
+              }}
+            />
+          </label>
+          <button type="button" className={button} disabled={!uploadEnabled} onClick={() => setLibrary(true)}>
+            <Images className="size-4" aria-hidden="true" />
+            {M.library}
+          </button>
+          {value && (
+            <button type="button" className={cn(button, "text-danger")} onClick={() => onChange("")}>
+              <Trash2 className="size-4" aria-hidden="true" />
+              {M.remove}
+            </button>
+          )}
+        </div>
+      )}
+      {!uploadEnabled && !readOnly && <p className={helpClass}>{M.notConfigured}</p>}
+      <label htmlFor={id} className="mt-3 block text-xs font-semibold text-muted-foreground">
+        {M.address}
+      </label>
+      <input id={id} type="url" value={value} readOnly={readOnly} placeholder="https://" onChange={(e) => onChange(e.target.value.trim())} className={cn(fieldInput, "mt-1")} />
+      {help && <p className={helpClass}>{help}</p>}
       {error && (
         <p className={errorClass} role="alert">
           {error}
         </p>
       )}
+      {uploadEnabled && <MediaLibrary open={library} onClose={() => setLibrary(false)} onChoose={onChange} />}
     </div>
   );
 }
@@ -162,61 +191,46 @@ function StringsField({ field, value, set, readOnly }: { field: Extract<Field, {
   );
 }
 
-function FeaturesField({ field, value, set, readOnly, features }: { field: Extract<Field, { kind: "features" }>; value: string[]; set: (v: unknown) => void; readOnly: boolean; features: readonly FeatureOption[] }) {
-  const chosen = new Set(value);
-  return (
-    <fieldset>
-      <legend className={labelClass}>{field.label}</legend>
-      {field.help && <p className={helpClass}>{field.help}</p>}
-      {features.length === 0 && <p className={helpClass}>{F.noFeatures}</p>}
-      <ul className="mt-2 space-y-1">
-        {features.map((f) => {
-          const ref = `feature:${f.id}`;
-          const checked = chosen.has(ref);
-          return (
-            <li key={f.id}>
-              <label className="flex min-h-9 items-center gap-2 rounded-lg px-1 text-sm text-foreground hover:bg-muted">
-                <input
-                  type="checkbox"
-                  checked={checked}
-                  disabled={readOnly || (!checked && value.length >= field.max)}
-                  onChange={() => set(checked ? value.filter((v) => v !== ref) : [...value, ref])}
-                  className="size-4 accent-[var(--accent)]"
-                />
-                {f.title}
-              </label>
-            </li>
-          );
-        })}
-      </ul>
-    </fieldset>
-  );
-}
-
-function ListField({ field, value, set, readOnly, uploadEnabled, features }: { field: Extract<Field, { kind: "list" }>; value: Record<string, unknown>[]; set: (v: unknown) => void; readOnly: boolean; uploadEnabled: boolean; features: readonly FeatureOption[] }) {
+function ListField({ field, value, set, readOnly, uploadEnabled }: { field: Extract<Field, { kind: "list" }>; value: Record<string, unknown>[]; set: (v: unknown) => void; readOnly: boolean; uploadEnabled: boolean }) {
+  const id = useId();
+  // Which items are open is the person's choice: typing never collapses an item. The first item starts open.
+  const [open, setOpen] = useState<Set<number>>(() => new Set([0]));
+  const toggle = (i: number) => setOpen((prev) => (prev.has(i) ? new Set([...prev].filter((x) => x !== i)) : new Set([...prev, i])));
   const move = (i: number, d: -1 | 1) => {
     const j = i + d;
     if (j < 0 || j >= value.length) return;
     const next = [...value];
     [next[i], next[j]] = [next[j]!, next[i]!];
     set(next);
+    // The open state follows the item that moved.
+    setOpen((prev) => new Set([...prev].map((x) => (x === i ? j : x === j ? i : x))));
   };
+  const remove = (i: number) => {
+    set(value.filter((_, j) => j !== i));
+    setOpen((prev) => new Set([...prev].filter((x) => x !== i).map((x) => (x > i ? x - 1 : x))));
+  };
+  const firstPath = field.item.find((f) => f.kind === "text" || f.kind === "textarea")?.path ?? "";
   return (
     <fieldset>
       <legend className={labelClass}>
         {field.label} ({value.length})
       </legend>
       <ol className="mt-2 space-y-2">
-        {value.map((item, i) => (
-          <li key={i}>
-            <details className="group rounded-xl border border-border" open={i === value.length - 1 && !Object.values(item).some(Boolean)}>
-              <summary className="flex min-h-10 cursor-pointer list-none items-center gap-2 px-3 text-sm font-semibold text-foreground">
-                <span className="min-w-0 flex-1 truncate">
-                  {`${field.itemTitle} ${i + 1}`}
-                  {typeof item[field.item[0]?.path ?? ""] === "string" && item[field.item[0]!.path] ? <span className="font-normal text-muted-foreground">{`: ${String(item[field.item[0]!.path])}`}</span> : null}
-                </span>
+        {value.map((item, i) => {
+          const isOpen = open.has(i);
+          const summary = typeof item[firstPath] === "string" ? (item[firstPath] as string) : "";
+          return (
+            <li key={i} className="rounded-xl border border-border">
+              <div className="flex min-h-10 items-center gap-1 ps-1 pe-1">
+                <button type="button" onClick={() => toggle(i)} aria-expanded={isOpen} aria-controls={`${id}-${i}`} className="flex min-h-10 min-w-0 flex-1 items-center gap-2 rounded-lg px-2 text-start text-sm font-semibold text-foreground hover:bg-muted">
+                  <ChevronDown className={cn("size-4 shrink-0 transition-transform", !isOpen && "-rotate-90")} aria-hidden="true" />
+                  <span className="truncate">
+                    {`${field.itemTitle} ${i + 1}`}
+                    {summary && <span className="font-normal text-muted-foreground">{`: ${summary}`}</span>}
+                  </span>
+                </button>
                 {!readOnly && (
-                  <span className="flex" onClick={(e) => e.preventDefault()}>
+                  <>
                     <button type="button" className={cn(iconButton, "size-8")} onClick={() => move(i, -1)} title={F.moveUp}>
                       <ArrowUp className="size-3.5" aria-hidden="true" />
                       <span className="sr-only">{`${F.moveUp}: ${field.itemTitle} ${i + 1}`}</span>
@@ -225,24 +239,33 @@ function ListField({ field, value, set, readOnly, uploadEnabled, features }: { f
                       <ArrowDown className="size-3.5" aria-hidden="true" />
                       <span className="sr-only">{`${F.moveDown}: ${field.itemTitle} ${i + 1}`}</span>
                     </button>
-                    <button type="button" className={cn(iconButton, "size-8")} disabled={value.length <= field.min} onClick={() => set(value.filter((_, j) => j !== i))} title={F.removeItem}>
+                    <button type="button" className={cn(iconButton, "size-8")} disabled={value.length <= field.min} onClick={() => remove(i)} title={F.removeItem}>
                       <Trash2 className="size-3.5" aria-hidden="true" />
                       <span className="sr-only">{`${F.removeItem}: ${field.itemTitle} ${i + 1}`}</span>
                     </button>
-                  </span>
+                  </>
                 )}
-              </summary>
-              <div className="space-y-4 border-t border-border p-3">
-                {field.item.map((sub) => (
-                  <FieldControl key={sub.path} field={sub} data={item} onChange={(nextItem) => set(value.map((v, j) => (j === i ? (nextItem as Record<string, unknown>) : v)))} readOnly={readOnly} uploadEnabled={uploadEnabled} features={features} />
-                ))}
               </div>
-            </details>
-          </li>
-        ))}
+              {isOpen && (
+                <div id={`${id}-${i}`} className="space-y-4 border-t border-border p-3">
+                  {field.item.map((sub) => (
+                    <FieldControl key={sub.path} field={sub} data={item} onChange={(nextItem) => set(value.map((v, j) => (j === i ? (nextItem as Record<string, unknown>) : v)))} readOnly={readOnly} uploadEnabled={uploadEnabled} />
+                  ))}
+                </div>
+              )}
+            </li>
+          );
+        })}
       </ol>
       {!readOnly && value.length < field.max && (
-        <button type="button" onClick={() => set([...value, field.empty()])} className="mt-2 inline-flex min-h-9 items-center gap-1 rounded-lg px-2 text-sm font-semibold text-link hover:bg-muted">
+        <button
+          type="button"
+          onClick={() => {
+            set([...value, field.empty()]);
+            setOpen((prev) => new Set([...prev, value.length]));
+          }}
+          className="mt-2 inline-flex min-h-9 items-center gap-1 rounded-lg px-2 text-sm font-semibold text-link hover:bg-muted"
+        >
           <Plus className="size-4" aria-hidden="true" />
           {`${F.addItem}: ${field.itemTitle}`}
         </button>
@@ -280,7 +303,7 @@ function SelectField({ field, value, set, readOnly }: { field: Extract<Field, { 
 }
 
 /** One field of the Block panel. Reads `field.path` from `data` and reports the whole updated object. */
-export function FieldControl({ field, data, onChange, readOnly, uploadEnabled, features }: Props) {
+export function FieldControl({ field, data, onChange, readOnly, uploadEnabled }: Props) {
   const raw = getAt(data, field.path);
   const write = (v: unknown) => onChange(setAt(data, field.path, v));
   switch (field.kind) {
@@ -297,14 +320,12 @@ export function FieldControl({ field, data, onChange, readOnly, uploadEnabled, f
         </label>
       );
     case "image":
-      return <ImageField field={field} value={typeof raw === "string" ? raw : ""} set={write} readOnly={readOnly} uploadEnabled={uploadEnabled} />;
+      return <ImagePicker label={field.label} help={field.help} value={typeof raw === "string" ? raw : ""} onChange={write} readOnly={readOnly} uploadEnabled={uploadEnabled} />;
     case "cta":
       return <CtaField field={field} value={raw as { label?: string; href?: string } | undefined} set={write} readOnly={readOnly} />;
     case "strings":
       return <StringsField field={field} value={Array.isArray(raw) ? (raw as string[]) : []} set={write} readOnly={readOnly} />;
-    case "features":
-      return <FeaturesField field={field} value={Array.isArray(raw) ? (raw as string[]) : []} set={write} readOnly={readOnly} features={features} />;
     case "list":
-      return <ListField field={field} value={Array.isArray(raw) ? (raw as Record<string, unknown>[]) : []} set={write} readOnly={readOnly} uploadEnabled={uploadEnabled} features={features} />;
+      return <ListField field={field} value={Array.isArray(raw) ? (raw as Record<string, unknown>[]) : []} set={write} readOnly={readOnly} uploadEnabled={uploadEnabled} />;
   }
 }

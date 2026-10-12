@@ -12,8 +12,8 @@ import { findBlock, flatten, resizeColumns } from "@/lib/builder/tree";
 import { isSafeImageSrc } from "@/lib/editor/urls";
 import type { TiptapNode } from "@/lib/editor/schema";
 import { cn } from "@/utils/cn";
-import { FieldControl, type FeatureOption } from "./FieldControl";
-import { useBuilder } from "./store";
+import { FieldControl, ImagePicker } from "./FieldControl";
+import { useBuilder, useProblems } from "./store";
 
 const T = BUILDER_TEXT.ui;
 const fieldInput = cn(inputClass, "min-h-10 px-3 text-sm");
@@ -37,12 +37,13 @@ function withData(block: AnyBlock, next: unknown): AnyBlock {
   return { ...block, props: next } as AnyBlock;
 }
 
-function BlockTab({ features }: { features: readonly FeatureOption[] }) {
+function BlockTab() {
   const selectedId = useBuilder((s) => s.selectedId);
   const doc = useBuilder((s) => s.doc);
   const canEdit = useBuilder((s) => s.canEdit);
   const uploadEnabled = useBuilder((s) => s.uploadEnabled);
-  const problems = useBuilder((s) => (s.selectedId ? s.problems[s.selectedId] : undefined));
+  const all = useProblems();
+  const problems = selectedId ? all[selectedId] : undefined;
   const update = useBuilder((s) => s.update);
   const block = selectedId ? findBlock(doc, selectedId)?.block : undefined;
   if (!block) return <p className="p-4 text-sm text-muted-foreground">{T.block.none}</p>;
@@ -73,7 +74,6 @@ function BlockTab({ features }: { features: readonly FeatureOption[] }) {
             data={data}
             readOnly={!canEdit}
             uploadEnabled={uploadEnabled}
-            features={features}
             onChange={(next) => update(block.id, (b) => withData(b, next))}
           />
         ))}
@@ -107,7 +107,7 @@ function TextInput({ label, help, value, onChange, error, max, readOnly, prefix 
 }
 
 function ProblemList() {
-  const problems = useBuilder((s) => s.problems);
+  const problems = useProblems();
   const doc = useBuilder((s) => s.doc);
   const select = useBuilder((s) => s.select);
   const entries = Object.entries(problems);
@@ -174,15 +174,19 @@ function PageTab({ publishing }: { publishing: Publishing }) {
           <p className={helpClass}>{`${T.page.excerptHelp} ${meta.excerpt.length}/300`}</p>
           {errors.excerpt && <p className={errorClass}>{errors.excerpt}</p>}
         </div>
-        <FieldControl
-          field={{ kind: "image", path: "coverImage", label: T.page.coverImage, help: T.page.coverImageHelp }}
-          data={meta}
-          onChange={(next) => setMeta({ coverImage: (next as typeof meta).coverImage ?? "" })}
+      </Section>
+      <Section title={T.page.featured}>
+        <ImagePicker
+          label={T.page.featuredImage}
+          help={kind === "post" ? T.page.featuredHelp.post : T.page.featuredHelp.page}
+          value={meta.coverImage}
+          onChange={(coverImage) => setMeta({ coverImage })}
           readOnly={!canEdit}
           uploadEnabled={uploadEnabled}
-          features={[]}
+          preview
         />
         {errors.coverImage && <p className={errorClass}>{errors.coverImage}</p>}
+        <TextInput label={T.page.featuredAlt} help={T.page.featuredAltHelp} value={meta.coverImageAlt} onChange={(coverImageAlt) => setMeta({ coverImageAlt })} error={errors.coverImageAlt} max={200} readOnly={!canEdit} />
       </Section>
       <Section title={T.page.publishing}>
         {publishedLine && status === "published" && <p className="text-sm text-muted-foreground">{publishedLine}</p>}
@@ -244,8 +248,9 @@ function tiptapHeadings(node: TiptapNode, out: Heading[]): void {
 /** The page's heading outline as visitors' screen readers will hear it, so skipped levels are easy to spot. */
 function outline(doc: BuilderDoc, title: string, kind: "post" | "page"): Heading[] {
   const out: Heading[] = [];
-  const hero = doc.blocks[0]?.type === "site" && doc.blocks[0].section.type === "ProductHero" ? doc.blocks[0] : null;
-  out.push({ level: 1, text: hero && kind === "page" ? String((hero.section.content as { h1?: string })?.h1 ?? "") : title });
+  const first = doc.blocks[0];
+  const hero = kind === "page" && first?.type === "site" && first.section.type === "Hero" ? first : null;
+  out.push({ level: 1, text: hero ? String(hero.section.content.title ?? "") : title });
   for (const { block } of flatten(doc)) {
     if (block.type === "heading") out.push({ level: block.props.level, text: block.props.text });
     if (block.type === "richtext" && typeof block.props.content !== "string") tiptapHeadings(block.props.content, out);
@@ -355,7 +360,6 @@ function SeoTab() {
           onChange={(next) => setSeo({ ogImage: (next as typeof seo).ogImage ?? "" })}
           readOnly={!canEdit}
           uploadEnabled={uploadEnabled}
-          features={[]}
         />
       </Section>
 
@@ -374,7 +378,7 @@ function SeoTab() {
   );
 }
 
-export function Inspector({ features, publishing }: { features: readonly FeatureOption[]; publishing: Publishing }) {
+export function Inspector({ publishing }: { publishing: Publishing }) {
   const tab = useBuilder((s) => s.rightTab);
   const set = useBuilder((s) => s.set);
   return (
@@ -387,7 +391,7 @@ export function Inspector({ features, publishing }: { features: readonly Feature
         ))}
       </div>
       <div role="tabpanel" className="min-h-0 flex-1 overflow-y-auto">
-        {tab === "block" ? <BlockTab features={features} /> : tab === "page" ? <PageTab publishing={publishing} /> : <SeoTab />}
+        {tab === "block" ? <BlockTab /> : tab === "page" ? <PageTab publishing={publishing} /> : <SeoTab />}
       </div>
     </aside>
   );

@@ -29,6 +29,7 @@ const PostFields = z.object({
     .max(2048, PORTAL_ERRORS.coverImage)
     .refine((v) => v === "" || isSafeImageSrc(v), PORTAL_ERRORS.coverImage)
     .default(""),
+  coverImageAlt: z.string().trim().max(200, PORTAL_ERRORS.coverImageAlt).default(""),
   content: z.unknown(),
   seo: z
     .object({
@@ -56,7 +57,7 @@ function isCanonical(value: string): boolean {
   }
 }
 
-export type PostInput = { title: string; slug: string; excerpt: string; coverImage: string; content: BuilderDoc; seo: PostSeo };
+export type PostInput = { title: string; slug: string; excerpt: string; coverImage: string; coverImageAlt: string; content: BuilderDoc; seo: PostSeo };
 
 /** Validates a save. `kind` comes from the stored post (or the create request), never from the fields being saved. */
 export function parsePostInput(raw: unknown, kind: PostKind): Result<PostInput> {

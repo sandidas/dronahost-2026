@@ -3,14 +3,16 @@ import { PORTAL_ERRORS } from "@/content/portal-strings";
 import { can } from "@/lib/auth/permissions";
 import { getActor } from "@/lib/auth/session";
 import { rateLimited } from "@/lib/forms/guard";
-import { logError } from "@/lib/portal/result";
+import { Media } from "@/lib/models/media";
+import { portalDb } from "@/lib/portal/db";
+import { logError, toObjectId } from "@/lib/portal/result";
 import { MAX_UPLOAD_BYTES, isUploadType, matchesSignature, storageConfigured, uploadImage } from "@/lib/storage/s3";
 
 export const runtime = "nodejs";
 
 type UploadResponse = { url: string } | { error: string };
 
-/** Blog image upload for signed-in staff and admins. JPEG, PNG, WebP or GIF, up to 5 MB. */
+/** Image upload from the page builder, for signed-in staff and admins. JPEG, PNG, WebP or GIF, up to 5 MB, stored in S3. */
 export async function POST(req: Request): Promise<NextResponse<UploadResponse>> {
   try {
     // Same-site requests only (the session cookie is SameSite=Lax as well).
@@ -34,7 +36,11 @@ export async function POST(req: Request): Promise<NextResponse<UploadResponse>> 
     const bytes = new Uint8Array(await file.arrayBuffer());
     if (!matchesSignature(file.type, bytes)) return NextResponse.json({ error: PORTAL_ERRORS.upload.type }, { status: 415 });
 
-    const url = await uploadImage(file.type, bytes);
+    const { url, key } = await uploadImage(file.type, bytes);
+    // Recorded for the media library; a failure here still returns the uploaded image.
+    await portalDb()
+      .then(() => Media.create({ url, key, name: file.name.slice(0, 200), type: file.type, size: file.size, uploadedBy: toObjectId(actor.id) }))
+      .catch((err: unknown) => logError("api.portal.media_record_failed", err));
     return NextResponse.json({ url });
   } catch (err) {
     logError("api.portal.upload_failed", err);

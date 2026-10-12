@@ -3,26 +3,27 @@
 import { useDraggable, useDroppable } from "@dnd-kit/core";
 import type { JSONContent } from "@tiptap/react";
 import { ArrowDown, ArrowUp, Copy, GripVertical, ImageIcon, Plus, Trash2, Video } from "lucide-react";
-import { useId, useState, type ReactNode } from "react";
+import { createContext, useContext, useId, useMemo, useState, type ReactNode } from "react";
 import { BUILDER_TEXT } from "@/content/portal-strings";
 import { RichTextEditor } from "@/components/portal/editor/RichTextEditor";
 import { entryFor } from "@/lib/builder/catalog";
-import { youtubeEmbedSrc, youtubeId, type AnyBlock, type ColumnsBlock, type LeafBlock, type SectionBlock } from "@/lib/builder/model";
+import ArticleLayout from "@/components/blog/ArticleLayout";
+import CenteredHero from "@/components/sections/CenteredHero";
+import { youtubeId, type AnyBlock, type ColumnsBlock, type LeafBlock, type SectionBlock } from "@/lib/builder/model";
+import { prepareSection } from "@/lib/builder/sections";
+import { docToc, readingMinutes } from "@/lib/builder/text";
 import { isSafeImageSrc } from "@/lib/editor/urls";
 import { templatesFor } from "@/lib/builder/templates";
 import { accepts, ROOT, slotKey, type Slot } from "@/lib/builder/tree";
 import { cn } from "@/utils/cn";
+import { ColumnsGrid, COLUMN_CELL, Figure, pageBands, POST_SECTION_GAP, SectionShell, VideoFrame } from "./layout";
 import { SiteBlockView } from "./SiteBlockView";
-import { useBuilder } from "./store";
+import { useBuilder, useProblems } from "./store";
 
 const T = BUILDER_TEXT.ui;
 
-const GRID: Record<ColumnsBlock["props"]["layout"], string> = {
-  "1-1": "md:grid-cols-2",
-  "2-1": "md:grid-cols-[2fr_1fr]",
-  "1-2": "md:grid-cols-[1fr_2fr]",
-  "1-1-1": "md:grid-cols-3",
-};
+/** Page-wide facts every block needs: post or page, and which root blocks get the muted band. */
+const CanvasContext = createContext<{ bands: Map<string, string>; firstId: string | undefined }>({ bands: new Map(), firstId: undefined });
 
 /** Drop target id. `onDragEnd` in BuilderApp reads the slot and index from the droppable's data. */
 export const dropId = (slot: Slot, index: number) => `drop:${slotKey(slot)}:${index}`;
@@ -92,7 +93,7 @@ function ToolButton({ label, onClick, children, danger }: { label: string; onCli
 function BlockFrame({ block }: { block: AnyBlock }) {
   const selected = useBuilder((s) => s.selectedId === block.id);
   const hovered = useBuilder((s) => s.hoverId === block.id);
-  const problems = useBuilder((s) => s.problems[block.id]);
+  const problems = useProblems()[block.id];
   const canEdit = useBuilder((s) => s.canEdit);
   const preview = useBuilder((s) => s.preview);
   const select = useBuilder((s) => s.select);
@@ -164,26 +165,23 @@ function BlockFrame({ block }: { block: AnyBlock }) {
 
 function SectionView({ block }: { block: SectionBlock }) {
   const kind = useBuilder((s) => s.kind);
+  const { bands, firstId } = useContext(CanvasContext);
   return (
-    <section className={cn(kind === "page" ? "py-10 sm:py-14" : "py-2")}>
-      <div className={kind === "page" ? "container-site" : undefined}>
-        <div className={cn("article [&>div:first-child>*]:mt-0", block.props.width === "text" ? "mx-auto" : "max-w-none")}>
-          <SlotList slot={{ kind: "section", id: block.id }} blocks={block.children} empty={T.canvas.emptySection} />
-        </div>
-      </div>
-    </section>
+    <SectionShell kind={kind} width={block.props.width} band={bands.get(block.id)} first={firstId === block.id}>
+      <SlotList slot={{ kind: "section", id: block.id }} blocks={block.children} empty={T.canvas.emptySection} />
+    </SectionShell>
   );
 }
 
 function ColumnsView({ block }: { block: ColumnsBlock }) {
   return (
-    <div className={cn("mt-8 grid gap-6", GRID[block.props.layout])}>
+    <ColumnsGrid layout={block.props.layout}>
       {block.columns.map((col, i) => (
-        <div key={col.id} className="min-w-0 rounded-lg p-1">
+        <div key={col.id} className={COLUMN_CELL}>
           <SlotList slot={{ kind: "column", id: block.id, index: i }} blocks={col.children} empty={T.canvas.emptyColumn} />
         </div>
       ))}
-    </div>
+    </ColumnsGrid>
   );
 }
 
@@ -216,7 +214,7 @@ function RichTextView({ block, selected }: { block: Extract<LeafBlock, { type: "
   const rev = useBuilder((s) => s.historyRev);
   const labelId = useId();
   return (
-    <div className="mt-4">
+    <>
       <span id={labelId} className="sr-only">
         {entryFor(block)?.label}
       </span>
@@ -231,10 +229,11 @@ function RichTextView({ block, selected }: { block: Extract<LeafBlock, { type: "
         labelledBy={labelId}
         onChange={(json) => update(block.id, (b) => ({ ...b, props: { content: json } }) as AnyBlock)}
       />
-    </div>
+    </>
   );
 }
 
+/** Only on the canvas: where an image or video will go once its address is set. The public page shows nothing here. */
 function Placeholder({ icon, text }: { icon: ReactNode; text: string }) {
   return (
     <div className="mt-6 flex min-h-32 flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border-strong p-4 text-center text-sm text-muted-foreground">
@@ -252,64 +251,27 @@ function LeafView({ block, selected }: { block: LeafBlock; selected: boolean }) 
       return <RichTextView block={block} selected={selected} />;
     case "image":
       return isSafeImageSrc(block.props.src) ? (
-        <figure className="mt-6">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={block.props.src} alt={block.props.alt} className="h-auto w-full rounded-xl border border-border" />
-          {block.props.caption && <figcaption className="t-small mt-2 text-muted-foreground">{block.props.caption}</figcaption>}
-        </figure>
+        <Figure src={block.props.src} alt={block.props.alt} caption={block.props.caption} />
       ) : (
         <Placeholder icon={<ImageIcon className="size-6" aria-hidden="true" />} text={T.canvas.imageEmpty} />
       );
     case "video": {
       const id = youtubeId(block.props.url);
-      return id ? (
-        <div data-youtube-video="" className="pointer-events-none">
-          <iframe src={youtubeEmbedSrc(id)} title={block.props.title || entryFor(block)?.label} loading="lazy" tabIndex={-1} />
-        </div>
-      ) : (
-        <Placeholder icon={<Video className="size-6" aria-hidden="true" />} text={T.canvas.videoEmpty} />
-      );
+      return id ? <VideoFrame id={id} title={block.props.title} inert /> : <Placeholder icon={<Video className="size-6" aria-hidden="true" />} text={T.canvas.videoEmpty} />;
     }
   }
 }
 
 function BlockBody({ block, selected }: { block: AnyBlock; selected: boolean }) {
+  const kind = useBuilder((s) => s.kind);
+  const { bands } = useContext(CanvasContext);
   if (block.type === "section") return <SectionView block={block} />;
   if (block.type === "columns") return <ColumnsView block={block} />;
-  if (block.type === "site") return <SiteBlockView block={block} />;
+  if (block.type === "site") {
+    const view = <SiteBlockView block={block} className={bands.get(block.id)} inPost={kind === "post"} />;
+    return kind === "post" ? <div className={POST_SECTION_GAP}>{view}</div> : view;
+  }
   return <LeafView block={block} selected={selected} />;
-}
-
-/** The post title and summary as the article shows them; a page without a hero shows its title as the headline. */
-function PageHeading() {
-  const kind = useBuilder((s) => s.kind);
-  const meta = useBuilder((s) => s.meta);
-  const canEdit = useBuilder((s) => s.canEdit);
-  const setMeta = useBuilder((s) => s.setMeta);
-  const hasHero = useBuilder((s) => s.doc.blocks[0]?.type === "site" && s.doc.blocks[0].section.type === "ProductHero");
-  if (kind === "page" && hasHero) return null;
-  return (
-    <header className={cn("px-4 pt-10 sm:px-8", kind === "page" && "border-b border-border pb-10 text-center")}>
-      <div className={cn("mx-auto", kind === "post" ? "max-w-3xl" : "max-w-4xl")}>
-        <h1 className="t-h1 text-foreground">
-          {canEdit ? (
-            <textarea
-              value={meta.title}
-              onChange={(e) => setMeta({ title: e.target.value.replace(/\n/g, " ") })}
-              placeholder={T.newTitle[kind]}
-              aria-label={T.page.title}
-              rows={1}
-              maxLength={200}
-              className={cn("w-full resize-none bg-transparent outline-none [field-sizing:content] [font:inherit] [letter-spacing:inherit] placeholder:text-subtle-foreground", kind === "page" && "text-center")}
-            />
-          ) : (
-            meta.title
-          )}
-        </h1>
-        {meta.excerpt && <p className="t-lead mt-4">{meta.excerpt}</p>}
-      </div>
-    </header>
-  );
 }
 
 /** On an empty page: pick a starting layout, or start blank. */
@@ -340,10 +302,14 @@ function TemplatePicker({ onBlank }: { onBlank: () => void }) {
           </li>
         ))}
         <li>
-          <button type="button" onClick={(e) => {
+          <button
+            type="button"
+            onClick={(e) => {
               e.stopPropagation();
               onBlank();
-            }} className="flex h-full w-full flex-col items-start gap-1 rounded-xl border border-dashed border-border-strong p-4 text-start hover:bg-muted">
+            }}
+            className="flex h-full w-full flex-col items-start gap-1 rounded-xl border border-dashed border-border-strong p-4 text-start hover:bg-muted"
+          >
             <span className="text-sm font-semibold text-foreground">{TT.blank.label}</span>
             <span className="text-xs text-muted-foreground">{TT.blank.hint}</span>
           </button>
@@ -353,39 +319,105 @@ function TemplatePicker({ onBlank }: { onBlank: () => void }) {
   );
 }
 
-export function Canvas() {
+/** The post title, edited in place of the article's H1. */
+function TitleInput() {
   const kind = useBuilder((s) => s.kind);
+  const title = useBuilder((s) => s.meta.title);
+  const canEdit = useBuilder((s) => s.canEdit);
+  const setMeta = useBuilder((s) => s.setMeta);
+  if (!canEdit) return <>{title}</>;
+  return (
+    <textarea
+      value={title}
+      onChange={(e) => setMeta({ title: e.target.value.replace(/\n/g, " ") })}
+      onClick={(e) => e.stopPropagation()}
+      placeholder={T.newTitle[kind]}
+      aria-label={T.page.title}
+      rows={1}
+      maxLength={200}
+      className="w-full resize-none bg-transparent outline-none [field-sizing:content] [font:inherit] [letter-spacing:inherit] placeholder:text-subtle-foreground"
+    />
+  );
+}
+
+function RootBlocks() {
   const blocks = useBuilder((s) => s.doc.blocks);
   const canEdit = useBuilder((s) => s.canEdit);
   const select = useBuilder((s) => s.select);
-  const set = useBuilder((s) => s.set);
   const addBlock = useBuilder((s) => s.addBlock);
   const [blank, setBlank] = useState(false);
+  if (blocks.length === 0 && canEdit && !blank) return <TemplatePicker onBlank={() => setBlank(true)} />;
+  return (
+    <>
+      <SlotList slot={ROOT} blocks={blocks} empty={T.canvas.empty} />
+      {canEdit && (
+        <div className="my-6 flex justify-center">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              select(null);
+              addBlock("section", { slot: ROOT, index: blocks.length });
+            }}
+            className="inline-flex min-h-10 items-center gap-1.5 rounded-full bg-accent px-4 text-sm font-semibold text-accent-foreground shadow-sm hover:bg-accent-hover"
+          >
+            <Plus className="size-4" aria-hidden="true" />
+            {T.canvas.addSection}
+          </button>
+        </div>
+      )}
+    </>
+  );
+}
+
+/**
+ * The page as visitors will see it, with editing on top: posts inside the real article layout (title, meta line,
+ * featured image, contents, author), pages with the same title hero and bands as the public page.
+ */
+export function Canvas() {
+  const kind = useBuilder((s) => s.kind);
+  const doc = useBuilder((s) => s.doc);
+  const meta = useBuilder((s) => s.meta);
+  const canEdit = useBuilder((s) => s.canEdit);
+  const select = useBuilder((s) => s.select);
+  const set = useBuilder((s) => s.set);
+  const actorName = useBuilder((s) => s.actorName);
+  const bands = useMemo(() => pageBands(doc, kind), [doc, kind]);
+  const first = doc.blocks[0];
+  const heroShows = kind === "page" && first?.type === "site" && first.section.type === "Hero" && prepareSection("Hero", first.section.content) !== null;
+  const dates = useBuilder((s) => s.dates);
   return (
     <div className="min-h-0 flex-1 overflow-y-auto bg-muted/50 p-3 sm:p-6" onClick={() => select(null)} onMouseLeave={() => set({ hoverId: null })}>
       {/* look-luxe: the same page look as the public layout (app/[locale]/(marketing)/layout.tsx), so sections match. */}
-      <div role="region" aria-label={T.canvas.label} className={cn("look-luxe mx-auto min-h-full rounded-xl border border-border bg-background pb-10 shadow-sm", kind === "post" ? "max-w-4xl" : "max-w-[90rem]")}>
-        {!canEdit && <p className="rounded-t-xl border-b border-warning/40 bg-warning-surface px-4 py-2 text-sm text-foreground">{T.readOnly}</p>}
-        <PageHeading />
-        <div className={cn(kind === "post" ? "mx-auto max-w-3xl px-4 pt-6 sm:px-8" : "px-0 pt-2")}>
-          {blocks.length === 0 && canEdit && !blank ? <TemplatePicker onBlank={() => setBlank(true)} /> : <SlotList slot={ROOT} blocks={blocks} empty={T.canvas.empty} />}
-          {canEdit && (
-            <div className="mt-6 flex justify-center">
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  select(null);
-                  addBlock("section", { slot: ROOT, index: blocks.length });
-                }}
-                className="inline-flex min-h-10 items-center gap-1.5 rounded-full bg-accent px-4 text-sm font-semibold text-accent-foreground shadow-sm hover:bg-accent-hover"
-              >
-                <Plus className="size-4" aria-hidden="true" />
-                {T.canvas.addSection}
-              </button>
-            </div>
+      <div role="region" aria-label={T.canvas.label} className="look-luxe mx-auto min-h-full max-w-[90rem] overflow-hidden rounded-xl border border-border bg-background shadow-sm">
+        {!canEdit && <p className="border-b border-warning/40 bg-warning-surface px-4 py-2 text-sm text-foreground">{T.readOnly}</p>}
+        <CanvasContext.Provider value={{ bands, firstId: first?.id }}>
+          {kind === "post" ? (
+            <ArticleLayout
+              inertChrome
+              titleSlot={<TitleInput />}
+              post={{
+                slug: meta.slug || "post",
+                title: meta.title || T.newTitle.post,
+                excerpt: meta.excerpt,
+                html: "",
+                body: <RootBlocks />,
+                toc: docToc(doc),
+                published: dates.published,
+                modified: dates.modified,
+                category: null,
+                author: { name: actorName, bio: null, avatar: null },
+                image: isSafeImageSrc(meta.coverImage) ? { url: meta.coverImage, alt: meta.coverImageAlt, width: 1200, height: 630 } : null,
+                readingMinutes: readingMinutes(doc),
+              }}
+            />
+          ) : (
+            <>
+              {!heroShows && <CenteredHero title={meta.title || T.newTitle.page} description={meta.excerpt} />}
+              <RootBlocks />
+            </>
           )}
-        </div>
+        </CanvasContext.Provider>
       </div>
     </div>
   );

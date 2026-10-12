@@ -4,10 +4,18 @@ import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { BUILDER_TEXT, POST_FORM_TEXT } from "@/content/portal-strings";
 import { deletePostAction, savePostAction, setLockedAction, setPublishedAction } from "@/lib/portal/actions/posts";
+import { BLOCK_ID } from "@/lib/builder/model";
 import { formatDateTime } from "@/lib/portal/format";
 import { useBuilderApi } from "./store";
 
 const editorPath = (slug: string) => `/dashboard/posts/${slug}`;
+
+/** Field errors that belong to blocks (keyed by block id, or "page"), as lists of messages. */
+function blockProblems(fieldErrors: Record<string, string> | undefined): Record<string, string[]> {
+  const out: Record<string, string[]> = {};
+  for (const [key, text] of Object.entries(fieldErrors ?? {})) if (key === "page" || BLOCK_ID.test(key)) out[key] = text.split("\n");
+  return out;
+}
 
 /**
  * Save, publish, lock and delete for the builder. Every action is a server action that checks permissions again;
@@ -25,6 +33,13 @@ export function usePublishing(actorName: string) {
     const res = await savePostAction(s.postId, { kind: s.kind, ...s.meta, content: JSON.stringify(s.doc) });
     if (!res.ok) {
       api.getState().failed(res.error, res.fieldErrors);
+      // A live page refused for unfinished blocks: mark them on the canvas, like a refused publish.
+      const problems = blockProblems(res.fieldErrors);
+      if (Object.keys(problems).length) {
+        api.getState().set({ showProblems: true });
+        const first = Object.keys(problems).find((k) => k !== "page");
+        if (first) api.getState().select(first);
+      }
       return false;
     }
     api.getState().saved({ postId: res.data.id, slug: res.data.slug });
@@ -42,10 +57,9 @@ export function usePublishing(actorName: string) {
       if (!id) return;
       const res = await setPublishedAction(id, publish);
       if (!res.ok) {
-        const problems: Record<string, string[]> = {};
-        for (const [blockId, text] of Object.entries(res.fieldErrors ?? {})) problems[blockId] = text.split("\n");
+        const problems = blockProblems(res.fieldErrors);
         const first = Object.keys(problems).find((k) => k !== "page");
-        api.getState().set({ problems, message: { kind: "error", text: res.error } });
+        api.getState().set({ showProblems: Object.keys(problems).length > 0, message: { kind: "error", text: res.error } });
         if (first) api.getState().select(first);
         return;
       }

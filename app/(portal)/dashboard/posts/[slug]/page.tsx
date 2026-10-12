@@ -7,12 +7,9 @@ import { BUILDER_TEXT } from "@/content/portal-strings";
 import { can } from "@/lib/auth/permissions";
 import { requirePortal } from "@/lib/auth/session";
 import { existingEditorInit, newEditorInit } from "@/lib/builder/editor-init";
-import { FEATURE_LIBRARY } from "@/lib/content/features";
 import { getPortalPost, getPortalPostBySlug } from "@/lib/portal/posts";
 
 export const metadata: Metadata = { title: BUILDER_TEXT.ui.editorTitle };
-
-const FEATURES = FEATURE_LIBRARY.map((f) => ({ id: f.id, title: f.tile.title }));
 
 /**
  * One page for creating and editing posts and pages: /dashboard/posts/new (?kind=page for a page) and
@@ -26,7 +23,7 @@ export default async function EditorPage({ params, searchParams }: { params: Pro
   if (slug === "new") {
     if (!can(actor.role, "post.create")) notFound();
     const kind = (await searchParams).kind === "page" ? "page" : "post";
-    return <BuilderApp init={newEditorInit(actor, kind)} features={FEATURES} actorName={actorName} />;
+    return <BuilderApp init={newEditorInit(actor, kind)} actorName={actorName} />;
   }
 
   const res = await getPortalPostBySlug(actor, slug);
@@ -42,5 +39,5 @@ export default async function EditorPage({ params, searchParams }: { params: Pro
       </PortalShell>
     );
   }
-  return <BuilderApp init={existingEditorInit(actor, res.data)} features={FEATURES} actorName={actorName} />;
+  return <BuilderApp init={existingEditorInit(actor, res.data)} actorName={actorName} />;
 }

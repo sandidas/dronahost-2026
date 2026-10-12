@@ -15,7 +15,9 @@ let tree: Tree;
 let validate: Validate;
 let render: Render;
 let catalog: typeof import("@/lib/builder/catalog");
-let model: typeof import("@/lib/builder/model");
+let legacy: typeof import("@/lib/builder/legacy");
+let sections: typeof import("@/lib/builder/sections");
+let view: typeof import("@/components/builder/SectionView");
 let reserved: typeof import("@/lib/builder/reserved");
 let posts: typeof import("@/lib/portal/posts");
 let pages: typeof import("@/lib/builder/pages");
@@ -31,18 +33,21 @@ const rich = (id: string, text: string): LeafBlock => ({ id, type: "richtext", p
 const section = (id: string, children: (LeafBlock | Extract<RootBlock, { type: "section" }>["children"][number])[]): RootBlock => ({ id, type: "section", props: { width: "text" }, children });
 const docOf = (...blocks: RootBlock[]): BuilderDoc => ({ version: 1, blocks });
 
-const validCta = { type: "CTABand", content: { h2: "Ready to move your site?", ctaPrimary: { label: "See the plans", href: "/pricing" } } };
+const validCta = { type: "CtaBand", content: { title: "Ready to move your site?", primaryCta: { label: "See the plans", href: "/pricing" } } };
 const validFaq = {
-  type: "FAQSection",
+  type: "Faq",
   content: {
-    h2: "Questions about moving",
+    title: "Questions about moving",
     items: [
-      { q: "How long does a move take?", a: "Most moves finish within a day." },
-      { q: "Will my site go offline?", a: "No. The old copy stays live until the new one is ready." },
-      { q: "Do I need to change my email?", a: "No. Email stays where it is unless you ask us to move it." },
+      { question: "How long does a move take?", answer: "Most moves finish within a day." },
+      { question: "Will my site go offline?", answer: "No. The old copy stays live until the new one is ready." },
+      { question: "Do I need to change my email?", answer: "No. Email stays where it is unless you ask us to move it." },
     ],
   },
 };
+const site = (section: Record<string, unknown>, id = "bsite00001") => ({ id, type: "site" as const, section: section as never });
+/** Section markup, with the locale provider the site layout normally supplies (the site's links use next-intl). */
+const markup = (node: unknown) => renderToStaticMarkup(createElement(NextIntlClientProvider, { locale: "en-us", messages: {} } as ComponentProps<typeof NextIntlClientProvider>, node as never));
 
 before(async () => {
   await startDb();
@@ -50,7 +55,9 @@ before(async () => {
   validate = await import("@/lib/builder/validate");
   render = await import("@/lib/builder/render");
   catalog = await import("@/lib/builder/catalog");
-  model = await import("@/lib/builder/model");
+  legacy = await import("@/lib/builder/legacy");
+  sections = await import("@/lib/builder/sections");
+  view = await import("@/components/builder/SectionView");
   reserved = await import("@/lib/builder/reserved");
   posts = await import("@/lib/portal/posts");
   pages = await import("@/lib/builder/pages");
@@ -133,23 +140,37 @@ describe("saving (structure)", () => {
   });
 
   it("refuses the hero in a blog post", () => {
-    const d = docOf({ id: "bhero00001", type: "site", section: { type: "ProductHero", variant: "dashboard", content: { h1: "", lead: "", ctaPrimary: { label: "", href: "" } } } });
+    const d = docOf(site({ type: "Hero", content: { title: "" } }, "bhero00001"));
     assert.equal(validate.parseBuilderDoc(d, "post").ok, false);
     assert.ok(validate.parseBuilderDoc(d, "page").ok);
   });
 
   it("saves an unfinished site section as a draft", () => {
-    const fresh = catalog.entryByType("FAQSection")!.create() as RootBlock;
-    assert.ok(validate.parseBuilderDoc(docOf(fresh), "post").ok);
+    for (const entry of catalog.CATALOG) {
+      const fresh = entry.create() as RootBlock;
+      if (fresh.type !== "site") continue;
+      assert.ok(validate.parseBuilderDoc(docOf(fresh), "page").ok, entry.type);
+    }
   });
 });
 
 describe("publishing rules", () => {
-  it("names each missing field in the words of the Block panel", () => {
-    const faq = catalog.entryByType("FAQSection")!.create() as RootBlock;
+  it("names what is missing, and what would be left out, in the words of the Block panel", () => {
+    const faq = site({ type: "Faq", content: { title: "", items: [{ question: "Only a question", answer: "" }] } });
     const problems = validate.publishProblems(docOf(faq), "post").map((p) => p.message);
-    assert.ok(problems.includes("Heading: use at least 8 characters"), problems.join(" | "));
-    assert.ok(problems.some((m) => m.startsWith("Question 1: Question:")), problems.join(" | "));
+    assert.ok(problems.includes("Heading: write this before publishing."), problems.join(" | "));
+    assert.ok(problems.includes("Question 1 is not finished, so it is left out of the page."), problems.join(" | "));
+    assert.ok(problems.includes("Questions: add at least one."), problems.join(" | "));
+  });
+
+  it("has no minimum lengths: short text is fine", () => {
+    const short = site({ type: "CtaBand", content: { title: "234", primaryCta: { label: "Go", href: "/pricing" } } });
+    assert.deepEqual(validate.publishProblems(docOf(short), "post"), []);
+  });
+
+  it("reports a button whose link is unsafe or missing", () => {
+    const bad = site({ type: "OfferBanner", content: { title: "Offer", primaryCta: { label: "Click", href: "javascript:alert(1)" } } });
+    assert.ok(validate.publishProblems(docOf(bad), "post").some((p) => /link must start with/.test(p.message)));
   });
 
   it("requires alt text, a video title, content and a first-place hero", () => {
@@ -159,7 +180,7 @@ describe("publishing rules", () => {
         { id: "bvideo0001", type: "video", props: { url: "https://youtu.be/dQw4w9WgXcQ", title: "" } },
         heading("bhead00001", "  "),
       ]),
-      { id: "bhero00001", type: "site", section: { type: "ProductHero", variant: "dashboard", content: { h1: "", lead: "", ctaPrimary: { label: "", href: "" } } } },
+      site({ type: "Hero", content: { title: "" } }, "bhero00001"),
     );
     const byBlock = new Map<string, string[]>();
     for (const p of validate.publishProblems(d, "page")) byBlock.set(p.blockId, [...(byBlock.get(p.blockId) ?? []), p.message]);
@@ -196,20 +217,53 @@ describe("rendering", () => {
     assert.equal(out.hasHero, false);
   });
 
-  it("renders a complete site section with the real component and hides an unfinished one", () => {
-    const ok = render.renderSiteSection({ id: "bfaq000001", type: "site", section: validFaq as never });
-    assert.ok(ok.node);
-    assert.match(renderToStaticMarkup(ok.node as never), /How long does a move take\?/);
-    const unfinished = render.renderSiteSection(catalog.entryByType("CTABand")!.create() as never);
-    assert.equal(unfinished.node, null);
-    assert.ok(unfinished.problems.length > 0);
+  it("the public page draws sections with the same renderer as the editor canvas", () => {
+    const faq = site(validFaq, "bfaq000001");
+    const page = markup(render.renderBuilderDoc(docOf(faq), "page").body).replace(/^<div class="builder-page">([\s\S]*)<\/div>$/, "$1");
+    const canvas = markup(view.renderSection("Faq", validFaq.content));
+    // Identical apart from React's generated element ids.
+    const ids = (html: string) => html.replace(/_R_[A-Za-z0-9]+_/g, "_ID_");
+    assert.equal(ids(page), ids(canvas));
+    assert.match(page, /How long does a move take\?/);
+  });
+
+  it("shows exactly what was typed, and nothing for a section with nothing to show", () => {
+    assert.match(markup(view.renderSection("CtaBand", { title: "234", primaryCta: { label: "Go", href: "/x" } })), />234</);
+    assert.equal(view.renderSection("CtaBand", { title: "", primaryCta: { label: "", href: "" } }), null);
+    const partial = markup(view.renderSection("Faq", { title: "FAQ", items: [{ question: "Kept?", answer: "Yes." }, { question: "Dropped?", answer: "" }] }));
+    assert.match(partial, /Kept\?/);
+    assert.doesNotMatch(partial, /Dropped\?/);
+  });
+
+  it("drops unsafe links and images instead of rendering them", () => {
+    const html = markup(view.renderSection("SplitSection", { title: "Split", ctaPrimary: { label: "Bad", href: "javascript:alert(1)" }, image: { src: "javascript:x", alt: "x" } }));
+    assert.doesNotMatch(html, /javascript:/);
+    assert.doesNotMatch(html, />Bad</);
   });
 
   it("opens older posts as one Rich text block", () => {
-    const fromTiptap = model.toBuilderDoc(para("Old"));
+    const fromTiptap = legacy.toBuilderDoc(para("Old"));
     assert.equal(fromTiptap.blocks[0]?.type, "section");
-    assert.equal(model.toBuilderDoc("<p>Old</p>").blocks.length, 1);
-    assert.equal(model.toBuilderDoc("").blocks.length, 0);
+    assert.equal(legacy.toBuilderDoc("<p>Old</p>").blocks.length, 1);
+    assert.equal(legacy.toBuilderDoc("").blocks.length, 0);
+  });
+
+  it("converts first-version sections to the builder's own, keeping the words", () => {
+    const old = {
+      version: 1,
+      blocks: [
+        { id: "bold000001", type: "site", section: { type: "CTABand", content: { h2: "Old heading", ctaPrimary: { label: "Go", href: "/pricing" } } } },
+        { id: "bold000002", type: "site", section: { type: "BentoGrid", content: { h2: "Features", tiles: ["feature:staging"] } } },
+        { id: "bold000003", type: "site", section: { type: "FAQSection", content: { h2: "FAQ", items: [{ q: "Q?", a: "A." }] } } },
+      ],
+    };
+    const doc = legacy.toBuilderDoc(old);
+    const [cta, cards, faq] = doc.blocks as Extract<RootBlock, { type: "site" }>[];
+    assert.deepEqual(cta!.section, { type: "CtaBand", content: { title: "Old heading", primaryCta: { label: "Go", href: "/pricing" } } });
+    assert.equal(cards!.section.type, "FeatureCards");
+    assert.equal((cards!.section.content.items as { title: string }[])[0]?.title, "Staging with clone and sync");
+    assert.deepEqual(faq!.section.content.items, [{ question: "Q?", answer: "A." }]);
+    assert.ok(validate.parseBuilderDoc(doc, "page").ok, "the converted document saves");
   });
 });
 
@@ -247,13 +301,47 @@ describe("posts and pages (database)", () => {
   });
 
   it("publishing is refused until every block is complete, with the reasons per block", async () => {
-    const unfinished = catalog.entryByType("CTABand")!.create() as RootBlock;
+    const unfinished = catalog.entryByType("CtaBand")!.create() as RootBlock;
     const created = await posts.createPost(ADMIN, { ...save({ slug: "offer", content: docOf(unfinished) }), kind: "page" });
     assert.ok(created.ok);
     const res = await posts.setPublished(ADMIN, created.data.id, true);
     assert.equal(res.ok, false);
     assert.ok(!res.ok && res.fieldErrors?.[unfinished.id]);
     assert.equal((await PostModel.findById(created.data.id).lean())?.status, "draft");
+  });
+
+  it("a live page cannot be saved with an unfinished block, so nothing disappears from it silently", async () => {
+    const created = await posts.createPost(ADMIN, { ...save({ slug: "live-page" }), kind: "page" });
+    assert.ok(created.ok);
+    assert.ok((await posts.setPublished(ADMIN, created.data.id, true)).ok);
+    const unfinished = site({ type: "CtaBand", content: { title: "Half done", primaryCta: { label: "Go", href: "" } } }, "bcta000009");
+    const res = await posts.updatePost(ADMIN, created.data.id, { ...save({ slug: "live-page" }), content: docOf(section("bsecaaaa01", [heading("bhead00001", "Hello")]), unfinished) });
+    assert.equal(res.ok, false);
+    assert.ok(!res.ok && res.fieldErrors?.bcta000009);
+    const draft = await posts.createPost(ADMIN, { ...save({ slug: "draft-page", content: docOf(unfinished) }), kind: "page" });
+    assert.ok(draft.ok, "a draft saves whatever state it is in");
+  });
+
+  it("a published post saved by the first builder version still renders on the blog", async () => {
+    await PostModel.collection.insertOne({
+      title: "Old builder post",
+      slug: "old-builder-post",
+      excerpt: "",
+      kind: "post",
+      content: { version: 1, blocks: [{ id: "bold000001", type: "site", section: { type: "BentoGrid", content: { h2: "Features", tiles: ["feature:staging"] } } }] },
+      coverImage: "",
+      category: "",
+      tags: [],
+      author: { name: "Someone", bio: "", avatar: "" },
+      status: "published",
+      publishedAt: new Date(),
+      deletedAt: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    const post = await blog.getPost("old-builder-post");
+    assert.ok(post?.body);
+    assert.match(markup(post.body), /Staging with clone and sync/);
   });
 
   it("only published pages are public, and pages never appear in the blog", async () => {
@@ -279,45 +367,57 @@ describe("posts and pages (database)", () => {
   });
 });
 
-describe("free-content sections", () => {
-  const site = (section: Record<string, unknown>, id = "bfree00001") => ({ id, type: "site" as const, section: section as never });
+describe("every section", () => {
   const VALID: Record<string, Record<string, unknown>> = {
-    OfferBanner: { type: "OfferBanner", content: { title: "Move your site this week", description: "We copy the site, check it privately and switch when you agree.", primaryCta: { label: "Plan my move", href: "/migration" }, ticketLabel: "Site move", layout: "split", scope: "ink" } },
-    GuideBanner: { type: "GuideBanner", content: { title: "How a site move works", summary: "A short guide for owners moving to a new host, step by step.", learn: ["Make a copy", "Check it privately", "Switch the domain"], layout: "line", numbered: true, scope: "ink" } },
-    ActionBand: { type: "ActionBand", content: { label: "Need a hand?", line: "Write to the support desk any time.", cta: { label: "Contact us", href: "/contact" }, variant: "split" } },
-    AnswerBanner: { type: "AnswerBanner", content: { question: "Do I need to change my email?", answer: "No. Email stays where it is unless you ask us to move it as well.", layout: "entry" } },
+    Hero: { type: "Hero", content: { title: "Hosting that looks after itself", description: "Backups and support included.", primaryCta: { label: "See the plans", href: "/pricing" } } },
     SplitSection: { type: "SplitSection", content: { title: "Backups you can restore yourself", features: ["Two copies a day"], image: { src: "/images/sample.png", alt: "The backup screen" }, imagePosition: "right" } },
-    FeatureCards: { type: "FeatureCards", content: { title: "What every plan includes", items: [{ icon: "shield-check", title: "Firewall", description: "Blocks known attacks before they reach the site." }, { title: "Backups", description: "Two copies a day, kept for a week." }], columns: 3, variant: "cards" } },
-    LinkTiles: { type: "LinkTiles", content: { title: "Where would you like to go?", items: [{ title: "Pricing", line: "Plans and prices", href: "/pricing" }, { title: "Support", line: "Ask the team", href: "/contact" }], layout: "tiles", columns: 2 } },
+    FeatureCards: { type: "FeatureCards", content: { title: "What every plan includes", items: [{ icon: "shield-check", title: "Firewall", description: "Blocks known attacks." }], columns: 3, variant: "cards" } },
+    Steps: { type: "Steps", content: { title: "How a move works", steps: [{ title: "Copy", text: "We copy the site." }] } },
+    Faq: validFaq,
+    LinkTiles: { type: "LinkTiles", content: { title: "Where would you like to go?", items: [{ title: "Pricing", line: "Plans and prices", href: "/pricing" }, { title: "Partner", line: "Another site", href: "https://example.com" }], layout: "tiles", columns: 2 } },
+    CtaBand: validCta,
+    OfferBanner: { type: "OfferBanner", content: { title: "Move your site this week", description: "We copy the site and switch when you agree.", primaryCta: { label: "Plan my move", href: "/migration" }, ticketLabel: "Site move", layout: "split", scope: "ink" } },
+    GuideBanner: { type: "GuideBanner", content: { title: "How a site move works", summary: "Step by step.", learn: ["Make a copy"], layout: "line", numbered: true, scope: "ink" } },
+    ActionBand: { type: "ActionBand", content: { label: "Need a hand?", line: "Write to the support desk.", cta: { label: "Contact us", href: "mailto:support@example.com" }, variant: "split" } },
+    AnswerBanner: { type: "AnswerBanner", content: { question: "Do I need to change my email?", answer: "No. Email stays where it is.", layout: "entry" } },
   };
 
-  it("a complete section of each kind publishes and renders its heading", () => {
+  it("covers every section type", () => {
+    assert.deepEqual(Object.keys(VALID).sort(), [...sections.SECTION_TYPES].sort());
+  });
+
+  it("a filled-in section publishes and renders its heading", () => {
     for (const [type, section] of Object.entries(VALID)) {
       const block = site(section);
       assert.deepEqual(validate.siteSectionProblems(block), [], type);
-      const { node } = render.renderSiteSection(block);
-      assert.ok(node, type);
-      // The site's links (next-intl) need the locale provider the layout normally supplies.
-      const html = renderToStaticMarkup(createElement(NextIntlClientProvider, { locale: "en-us", messages: {} } as ComponentProps<typeof NextIntlClientProvider>, node as never));
-      const heading = (section.content as Record<string, string>).title ?? (section.content as Record<string, string>).label ?? (section.content as Record<string, string>).question;
+      const html = markup(view.renderSection(type as never, (section as { content: unknown }).content));
+      const c = (section as { content: Record<string, string> }).content;
+      const heading = c.title ?? c.label ?? c.question;
       assert.ok(html.includes(heading.replace(/'/g, "&#x27;")), `${type} shows its heading`);
-      assert.match(html, /<h2[\s>]/, `${type} uses an H2`);
+      assert.match(html, type === "Hero" ? /<h1[\s>]/ : /<h2[\s>]/, `${type} heading level`);
     }
   });
 
-  it("starts empty and names what is missing", () => {
+  it("starts empty: shows nothing, saves as a draft and says what to fill in", () => {
     for (const type of Object.keys(VALID)) {
-      const fresh = catalog.entryByType(type)!.create() as never;
+      const fresh = catalog.entryByType(type)!.create() as Extract<RootBlock, { type: "site" }>;
+      assert.equal(sections.prepareSection(fresh.section.type, fresh.section.content), null, type);
       assert.ok(validate.siteSectionProblems(fresh).length > 0, type);
-      assert.ok(validate.parseBuilderDoc(docOf(fresh), "post").ok, `${type} saves as a draft`);
+      assert.ok(validate.parseBuilderDoc(docOf(fresh), "page").ok, `${type} saves as a draft`);
     }
   });
 
-  it("refuses unsafe images and links to other sites", () => {
+  it("refuses unsafe images and links but allows other https sites", () => {
     const badImage = site({ ...VALID.SplitSection, content: { ...(VALID.SplitSection.content as object), image: { src: "javascript:alert(1)", alt: "An image" } } });
     assert.ok(validate.siteSectionProblems(badImage).length > 0);
-    const external = site({ ...VALID.LinkTiles, content: { ...(VALID.LinkTiles.content as object), items: [{ title: "Elsewhere", line: "Another site", href: "https://evil.example" }, { title: "Pricing", line: "Plans", href: "/pricing" }] } });
-    assert.ok(validate.siteSectionProblems(external).length > 0);
+    assert.deepEqual(validate.siteSectionProblems(site(VALID.LinkTiles)), []);
+    const badTile = site({ ...VALID.LinkTiles, content: { ...(VALID.LinkTiles.content as object), items: [{ title: "Bad", line: "x", href: "javascript:alert(1)" }] } });
+    assert.ok(validate.siteSectionProblems(badTile).length > 0);
+  });
+
+  it("an image needs a description", () => {
+    const noAlt = site({ type: "Hero", content: { title: "Hero", image: { src: "/images/a.png", alt: "" } } });
+    assert.ok(validate.siteSectionProblems(noAlt).some((m) => /describe the image/.test(m)));
   });
 });
 
@@ -328,7 +428,7 @@ describe("templates", () => {
       const doc = docOf(...t.blocks());
       assert.ok(validate.parseBuilderDoc(doc, t.kind).ok, t.id);
       assert.ok(doc.blocks.length > 0, t.id);
-      if (t.kind === "post") assert.ok(!doc.blocks.some((b) => b.type === "site" && b.section.type === "ProductHero"), t.id);
+      if (t.kind === "post") assert.ok(!doc.blocks.some((b) => b.type === "site" && b.section.type === "Hero"), t.id);
     }
   });
 });
@@ -402,5 +502,31 @@ describe("SEO settings", () => {
     assert.deepEqual((await pages.listPublishedPageSlugs({ indexable: true })).map((p) => p.slug), ["shown-page"]);
     assert.equal((await pages.listPublishedPageSlugs()).length, 2, "prerendering still lists every published page");
     assert.deepEqual(await blog.listSlugs(), []);
+  });
+});
+
+describe("image storage settings", () => {
+  const KEYS = ["S3_BUCKET", "S3_REGION", "S3_ACCESS_KEY_ID", "S3_SECRET_ACCESS_KEY", "S3_PUBLIC_URL", "S3_ENDPOINT", "AWS_REGION", "AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"] as const;
+  const withEnv = async (vars: Partial<Record<(typeof KEYS)[number], string>>, check: (configured: boolean) => void) => {
+    const saved = Object.fromEntries(KEYS.map((k) => [k, process.env[k]]));
+    for (const k of KEYS) delete process.env[k];
+    Object.assign(process.env, vars);
+    try {
+      check((await import("@/lib/storage/s3")).storageConfigured());
+    } finally {
+      for (const k of KEYS) {
+        if (saved[k] === undefined) delete process.env[k];
+        else process.env[k] = saved[k];
+      }
+    }
+  };
+
+  it("works with a bucket and the standard AWS keys", async () => {
+    await withEnv({ S3_BUCKET: "b", AWS_REGION: "eu-west-2", AWS_ACCESS_KEY_ID: "k", AWS_SECRET_ACCESS_KEY: "s" }, (on) => assert.equal(on, true));
+  });
+
+  it("is off without a bucket, and another S3 service needs its public address", async () => {
+    await withEnv({ AWS_REGION: "eu-west-2", AWS_ACCESS_KEY_ID: "k", AWS_SECRET_ACCESS_KEY: "s" }, (on) => assert.equal(on, false));
+    await withEnv({ S3_BUCKET: "b", S3_ENDPOINT: "https://r2.example", S3_REGION: "auto", S3_ACCESS_KEY_ID: "k", S3_SECRET_ACCESS_KEY: "s" }, (on) => assert.equal(on, false));
   });
 });

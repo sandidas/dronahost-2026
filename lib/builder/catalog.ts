@@ -5,14 +5,14 @@ import { newBlockId, SITE_SECTIONS_FOR, type AnyBlock, type BlockType, type Post
 
 /**
  * What the builder offers: each block's name, group, icon, starting values and the fields the Block panel shows.
- * Client-safe. Site sections start empty, so they cannot be published until someone has written their content.
+ * Client-safe. Sections start empty; the canvas shows them as soon as their main field is written.
  */
 
 const F = BUILDER_TEXT.fields;
 
 /**
  * One input in the Block panel. `path` is a dotted path inside the block's props (or, for site sections, inside `section`).
- * An `optional` field left empty is removed from the data, because the section schemas reject empty optional strings.
+ * An `optional` field left empty is removed from the data rather than stored as an empty string.
  */
 export type Field =
   | { kind: "text"; path: string; label: string; help?: string; min?: number; max: number; optional?: boolean }
@@ -22,7 +22,6 @@ export type Field =
   | { kind: "image"; path: string; label: string; help?: string }
   | { kind: "cta"; path: string; label: string; optional: boolean }
   | { kind: "strings"; path: string; label: string; max: number; itemMax: number }
-  | { kind: "features"; path: string; label: string; help?: string; max: number }
   | { kind: "list"; path: string; label: string; min: number; max: number; itemTitle: string; item: readonly Field[]; empty: () => Record<string, unknown> };
 
 export type CatalogGroup = "layout" | "content" | "sections" | "banners";
@@ -38,7 +37,7 @@ export type CatalogEntry = {
   fields: readonly Field[];
 };
 
-const site = (section: { type: SiteSectionType } & Record<string, unknown>): AnyBlock => ({ id: newBlockId(), type: "site", section });
+const site = (type: SiteSectionType, content: Record<string, unknown>): AnyBlock => ({ id: newBlockId(), type: "site", section: { type, content } });
 
 const cta = (path: string, label: string, optional: boolean): Field => ({ kind: "cta", path, label, optional });
 
@@ -47,6 +46,8 @@ const options = (labels: Record<string, string>, cast: (k: string) => string | n
 
 const ICON_OPTIONS = [{ value: "", label: F.noIcon }, ...ICON_NAMES.map((name) => ({ value: name, label: name.replace(/-/g, " ") }))];
 const card = () => ({ title: "", description: "" });
+const step = () => ({ title: "", text: "" });
+const qa = () => ({ question: "", answer: "" });
 const tile = () => ({ title: "", line: "", href: "" });
 
 export const CATALOG: readonly CatalogEntry[] = [
@@ -110,95 +111,21 @@ export const CATALOG: readonly CatalogEntry[] = [
     ],
   },
   {
-    type: "ProductHero",
+    type: "Hero",
     group: "sections",
     icon: "panel-top",
-    ...BUILDER_TEXT.blocks.ProductHero,
-    create: () => site({ type: "ProductHero", variant: "dashboard", content: { h1: "", lead: "", ctaPrimary: { label: "", href: "" } } }),
+    ...BUILDER_TEXT.blocks.Hero,
+    create: () => site("Hero", { title: "", description: "" }),
     fields: [
-      { kind: "text", path: "content.eyebrow", label: F.eyebrow, max: 40, optional: true },
-      { kind: "text", path: "content.h1", label: F.h1, min: 20, max: 70 },
-      { kind: "text", path: "content.accent", label: F.accent, help: F.accentHelp, min: 4, max: 70, optional: true },
-      { kind: "textarea", path: "content.lead", label: F.lead, max: 220 },
-      cta("content.ctaPrimary", F.ctaPrimary, false),
-      cta("content.ctaSecondary", F.ctaSecondary, true),
-      { kind: "strings", path: "content.highlights", label: F.highlights, max: 4, itemMax: 80 },
-    ],
-  },
-  {
-    type: "BentoGrid",
-    group: "sections",
-    icon: "layout-grid",
-    ...BUILDER_TEXT.blocks.BentoGrid,
-    create: () => site({ type: "BentoGrid", content: { h2: "", tiles: [] } }),
-    fields: [
-      { kind: "text", path: "content.eyebrow", label: F.eyebrow, max: 40, optional: true },
-      { kind: "text", path: "content.h2", label: F.h2, min: 8, max: 70 },
-      { kind: "textarea", path: "content.description", label: F.description, max: 220, optional: true },
-      { kind: "features", path: "content.tiles", label: F.tiles, help: F.tilesHelp, max: 6 },
-    ],
-  },
-  {
-    type: "ProcessTimeline",
-    group: "sections",
-    icon: "list-ordered",
-    ...BUILDER_TEXT.blocks.ProcessTimeline,
-    create: () => site({ type: "ProcessTimeline", content: { h2: "", steps: [{ title: "", text: "" }, { title: "", text: "" }, { title: "", text: "" }] } }),
-    fields: [
-      { kind: "text", path: "content.eyebrow", label: F.eyebrow, max: 40, optional: true },
-      { kind: "text", path: "content.h2", label: F.h2, min: 8, max: 70 },
-      { kind: "textarea", path: "content.description", label: F.description, max: 220, optional: true },
-      {
-        kind: "list",
-        path: "content.steps",
-        label: F.steps,
-        min: 2,
-        max: 6,
-        itemTitle: F.stepTitle,
-        item: [
-          { kind: "text", path: "title", label: F.stepTitle, min: 3, max: 40 },
-          { kind: "textarea", path: "text", label: F.stepText, max: 120 },
-        ],
-        empty: () => ({ title: "", text: "" }),
-      },
-    ],
-  },
-  {
-    type: "FAQSection",
-    group: "sections",
-    icon: "circle-help",
-    ...BUILDER_TEXT.blocks.FAQSection,
-    create: () => site({ type: "FAQSection", content: { h2: "", items: [{ q: "", a: "" }, { q: "", a: "" }, { q: "", a: "" }] } }),
-    fields: [
-      { kind: "text", path: "content.h2", label: F.h2, min: 8, max: 60 },
-      {
-        kind: "list",
-        path: "content.items",
-        label: F.items,
-        min: 3,
-        max: 10,
-        itemTitle: F.question,
-        item: [
-          { kind: "text", path: "q", label: F.question, min: 10, max: 120 },
-          { kind: "textarea", path: "a", label: F.answer, min: 10, max: 800, words: 80 },
-        ],
-        empty: () => ({ q: "", a: "" }),
-      },
-      cta("content.link", F.faqLink, true),
-    ],
-  },
-  {
-    type: "CTABand",
-    group: "sections",
-    icon: "megaphone",
-    ...BUILDER_TEXT.blocks.CTABand,
-    create: () => site({ type: "CTABand", content: { h2: "", ctaPrimary: { label: "", href: "" } } }),
-    fields: [
-      { kind: "text", path: "content.h2", label: F.h2, min: 8, max: 60 },
-      { kind: "textarea", path: "content.description", label: F.description, max: 220, optional: true },
-      cta("content.ctaPrimary", F.ctaPrimary, false),
-      cta("content.ctaSecondary", F.ctaSecondary, true),
-      { kind: "text", path: "content.note", label: F.note, max: 120, optional: true },
+      { kind: "text", path: "content.eyebrow", label: F.eyebrow, max: 60, optional: true },
+      { kind: "text", path: "content.title", label: F.h1, max: 120 },
+      { kind: "text", path: "content.accent", label: F.accent, help: F.accentHelp, max: 120, optional: true },
+      { kind: "textarea", path: "content.description", label: F.lead, max: 400 },
+      cta("content.primaryCta", F.ctaPrimary, true),
+      cta("content.secondaryCta", F.ctaSecondary, true),
+      { kind: "strings", path: "content.highlights", label: F.highlights, max: 4, itemMax: 120 },
+      { kind: "image", path: "content.image.src", label: F.heroImage, help: F.imageSrcHelp },
+      { kind: "text", path: "content.image.alt", label: F.imageAlt, max: 200 },
     ],
   },
   {
@@ -206,16 +133,16 @@ export const CATALOG: readonly CatalogEntry[] = [
     group: "sections",
     icon: "split",
     ...BUILDER_TEXT.blocks.SplitSection,
-    create: () => site({ type: "SplitSection", content: { title: "", image: { src: "", alt: "" }, imagePosition: "right" } }),
+    create: () => site("SplitSection", { title: "", imagePosition: "right" }),
     fields: [
-      { kind: "text", path: "content.eyebrow", label: F.eyebrow, max: 40, optional: true },
-      { kind: "text", path: "content.title", label: F.title, min: 8, max: 70 },
-      { kind: "textarea", path: "content.description", label: F.description, max: 300, optional: true },
-      { kind: "strings", path: "content.features", label: F.points, max: 6, itemMax: 120 },
+      { kind: "text", path: "content.eyebrow", label: F.eyebrow, max: 60, optional: true },
+      { kind: "text", path: "content.title", label: F.title, max: 120 },
+      { kind: "textarea", path: "content.description", label: F.description, max: 600, optional: true },
+      { kind: "strings", path: "content.features", label: F.points, max: 8, itemMax: 160 },
       cta("content.ctaPrimary", F.ctaPrimary, true),
       cta("content.ctaSecondary", F.ctaSecondary, true),
       { kind: "image", path: "content.image.src", label: F.imageSrc, help: F.imageSrcHelp },
-      { kind: "text", path: "content.image.alt", label: F.imageAlt, min: 5, max: 200 },
+      { kind: "text", path: "content.image.alt", label: F.imageAlt, max: 200 },
       { kind: "select", path: "content.imagePosition", label: F.imagePosition, options: options(F.imagePositions) },
     ],
   },
@@ -224,22 +151,22 @@ export const CATALOG: readonly CatalogEntry[] = [
     group: "sections",
     icon: "layout-grid",
     ...BUILDER_TEXT.blocks.FeatureCards,
-    create: () => site({ type: "FeatureCards", content: { title: "", items: [card(), card(), card()], columns: 3, variant: "cards" } }),
+    create: () => site("FeatureCards", { title: "", items: [card(), card(), card()], columns: 3, variant: "cards" }),
     fields: [
-      { kind: "text", path: "content.eyebrow", label: F.eyebrow, max: 40, optional: true },
-      { kind: "text", path: "content.title", label: F.title, min: 8, max: 70 },
-      { kind: "textarea", path: "content.description", label: F.description, max: 220, optional: true },
+      { kind: "text", path: "content.eyebrow", label: F.eyebrow, max: 60, optional: true },
+      { kind: "text", path: "content.title", label: F.title, max: 120, optional: true },
+      { kind: "textarea", path: "content.description", label: F.description, max: 400, optional: true },
       {
         kind: "list",
         path: "content.items",
         label: F.cards,
-        min: 2,
+        min: 1,
         max: 12,
         itemTitle: F.card,
         item: [
           { kind: "select", path: "icon", label: F.icon, options: ICON_OPTIONS, optional: true },
-          { kind: "text", path: "title", label: F.cardTitle, min: 3, max: 60 },
-          { kind: "textarea", path: "description", label: F.cardText, min: 10, max: 220 },
+          { kind: "text", path: "title", label: F.cardTitle, max: 80 },
+          { kind: "textarea", path: "description", label: F.cardText, max: 400 },
           cta("link", F.cardLink, true),
         ],
         empty: card,
@@ -249,27 +176,77 @@ export const CATALOG: readonly CatalogEntry[] = [
     ],
   },
   {
+    type: "Steps",
+    group: "sections",
+    icon: "list-ordered",
+    ...BUILDER_TEXT.blocks.Steps,
+    create: () => site("Steps", { title: "", steps: [step(), step(), step()] }),
+    fields: [
+      { kind: "text", path: "content.eyebrow", label: F.eyebrow, max: 60, optional: true },
+      { kind: "text", path: "content.title", label: F.title, max: 120 },
+      { kind: "textarea", path: "content.description", label: F.description, max: 400, optional: true },
+      {
+        kind: "list",
+        path: "content.steps",
+        label: F.steps,
+        min: 1,
+        max: 8,
+        itemTitle: F.stepTitle,
+        item: [
+          { kind: "text", path: "title", label: F.stepTitle, max: 80 },
+          { kind: "textarea", path: "text", label: F.stepText2, max: 300 },
+        ],
+        empty: step,
+      },
+    ],
+  },
+  {
+    type: "Faq",
+    group: "sections",
+    icon: "circle-help",
+    ...BUILDER_TEXT.blocks.Faq,
+    create: () => site("Faq", { title: "", items: [qa(), qa(), qa()] }),
+    fields: [
+      { kind: "text", path: "content.eyebrow", label: F.eyebrow, max: 60, optional: true },
+      { kind: "text", path: "content.title", label: F.title, max: 120 },
+      { kind: "textarea", path: "content.description", label: F.description, max: 400, optional: true },
+      {
+        kind: "list",
+        path: "content.items",
+        label: F.items,
+        min: 1,
+        max: 20,
+        itemTitle: F.question,
+        item: [
+          { kind: "text", path: "question", label: F.question, max: 200 },
+          { kind: "textarea", path: "answer", label: F.faqAnswer, max: 1500 },
+        ],
+        empty: qa,
+      },
+    ],
+  },
+  {
     type: "LinkTiles",
     group: "sections",
     icon: "signpost",
     ...BUILDER_TEXT.blocks.LinkTiles,
-    create: () => site({ type: "LinkTiles", content: { title: "", items: [tile(), tile(), tile()], layout: "tiles", columns: 3 } }),
+    create: () => site("LinkTiles", { title: "", items: [tile(), tile(), tile()], layout: "tiles", columns: 3 }),
     fields: [
-      { kind: "text", path: "content.eyebrow", label: F.eyebrow, max: 40, optional: true },
-      { kind: "text", path: "content.title", label: F.title, min: 8, max: 70 },
-      { kind: "textarea", path: "content.intro", label: F.intro, max: 220, optional: true },
+      { kind: "text", path: "content.eyebrow", label: F.eyebrow, max: 60, optional: true },
+      { kind: "text", path: "content.title", label: F.title, max: 120 },
+      { kind: "textarea", path: "content.intro", label: F.intro, max: 400, optional: true },
       {
         kind: "list",
         path: "content.items",
         label: F.linkTiles,
-        min: 2,
-        max: 6,
+        min: 1,
+        max: 8,
         itemTitle: F.tile,
         item: [
           { kind: "select", path: "icon", label: F.icon, options: ICON_OPTIONS, optional: true },
-          { kind: "text", path: "title", label: F.tileTitle, min: 3, max: 40 },
-          { kind: "text", path: "line", label: F.tileLine, min: 3, max: 100 },
-          { kind: "text", path: "href", label: F.tileHref, help: F.ctaHrefHelp, max: 300 },
+          { kind: "text", path: "title", label: F.tileTitle, max: 60 },
+          { kind: "text", path: "line", label: F.tileLine, max: 160 },
+          { kind: "text", path: "href", label: F.tileHref, help: F.ctaHrefHelp, max: 2048 },
         ],
         empty: tile,
       },
@@ -278,18 +255,32 @@ export const CATALOG: readonly CatalogEntry[] = [
     ],
   },
   {
+    type: "CtaBand",
+    group: "sections",
+    icon: "megaphone",
+    ...BUILDER_TEXT.blocks.CtaBand,
+    create: () => site("CtaBand", { title: "", primaryCta: { label: "", href: "" } }),
+    fields: [
+      { kind: "text", path: "content.title", label: F.title, max: 120 },
+      { kind: "textarea", path: "content.description", label: F.description, max: 400, optional: true },
+      cta("content.primaryCta", F.ctaPrimary, false),
+      cta("content.secondaryCta", F.ctaSecondary, true),
+      { kind: "text", path: "content.note", label: F.note, max: 200, optional: true },
+    ],
+  },
+  {
     type: "OfferBanner",
     group: "banners",
     icon: "badge-percent",
     ...BUILDER_TEXT.blocks.OfferBanner,
-    create: () => site({ type: "OfferBanner", content: { title: "", description: "", primaryCta: { label: "", href: "" }, ticketLabel: "", layout: "split", scope: "ink" } }),
+    create: () => site("OfferBanner", { title: "", description: "", primaryCta: { label: "", href: "" }, ticketLabel: "", layout: "split", scope: "ink" }),
     fields: [
-      { kind: "text", path: "content.eyebrow", label: F.eyebrow, max: 40, optional: true },
-      { kind: "text", path: "content.title", label: F.title, min: 8, max: 70 },
-      { kind: "textarea", path: "content.description", label: F.pitch, min: 20, max: 220 },
+      { kind: "text", path: "content.eyebrow", label: F.eyebrow, max: 60, optional: true },
+      { kind: "text", path: "content.title", label: F.title, max: 120 },
+      { kind: "textarea", path: "content.description", label: F.pitch, max: 400 },
       cta("content.primaryCta", F.ctaPrimary, false),
-      { kind: "text", path: "content.ticketLabel", label: F.ticketLabel, help: F.ticketLabelHelp, min: 3, max: 40 },
-      { kind: "text", path: "content.nextStep", label: F.nextStep, max: 140, optional: true },
+      { kind: "text", path: "content.ticketLabel", label: F.ticketLabel, help: F.ticketLabelHelp, max: 60 },
+      { kind: "text", path: "content.nextStep", label: F.nextStep, max: 200, optional: true },
       { kind: "select", path: "content.layout", label: F.bannerLayout, options: options(F.offerLayouts) },
       { kind: "select", path: "content.scope", label: F.background, options: options(F.backgrounds) },
     ],
@@ -299,12 +290,12 @@ export const CATALOG: readonly CatalogEntry[] = [
     group: "banners",
     icon: "map",
     ...BUILDER_TEXT.blocks.GuideBanner,
-    create: () => site({ type: "GuideBanner", content: { title: "", summary: "", learn: ["", "", ""], layout: "line", numbered: true, scope: "ink" } }),
+    create: () => site("GuideBanner", { title: "", summary: "", learn: ["", "", ""], layout: "line", numbered: true, scope: "ink" }),
     fields: [
-      { kind: "text", path: "content.eyebrow", label: F.eyebrow, max: 40, optional: true },
-      { kind: "text", path: "content.title", label: F.title, min: 8, max: 70 },
-      { kind: "textarea", path: "content.summary", label: F.summary, min: 20, max: 300 },
-      { kind: "strings", path: "content.learn", label: F.learn, max: 5, itemMax: 90 },
+      { kind: "text", path: "content.eyebrow", label: F.eyebrow, max: 60, optional: true },
+      { kind: "text", path: "content.title", label: F.title, max: 120 },
+      { kind: "textarea", path: "content.summary", label: F.summary, max: 500 },
+      { kind: "strings", path: "content.learn", label: F.learn, max: 6, itemMax: 160 },
       cta("content.cta", F.nextLink, true),
       { kind: "select", path: "content.layout", label: F.bannerLayout, options: options(F.guideLayouts) },
       { kind: "toggle", path: "content.numbered", label: F.numbered },
@@ -316,12 +307,12 @@ export const CATALOG: readonly CatalogEntry[] = [
     group: "banners",
     icon: "mouse-pointer-click",
     ...BUILDER_TEXT.blocks.ActionBand,
-    create: () => site({ type: "ActionBand", content: { label: "", line: "", cta: { label: "", href: "" }, variant: "split" } }),
+    create: () => site("ActionBand", { label: "", line: "", cta: { label: "", href: "" }, variant: "split" }),
     fields: [
-      { kind: "text", path: "content.label", label: F.bandLabel, min: 3, max: 60 },
-      { kind: "text", path: "content.line", label: F.bandLine, min: 8, max: 140 },
+      { kind: "text", path: "content.label", label: F.bandLabel, max: 80 },
+      { kind: "text", path: "content.line", label: F.bandLine, max: 200 },
       cta("content.cta", F.ctaPrimary, false),
-      { kind: "text", path: "content.note", label: F.note, max: 140, optional: true },
+      { kind: "text", path: "content.note", label: F.note, max: 200, optional: true },
       { kind: "select", path: "content.variant", label: F.bannerLayout, options: options(F.bandVariants) },
     ],
   },
@@ -330,11 +321,11 @@ export const CATALOG: readonly CatalogEntry[] = [
     group: "banners",
     icon: "message-circle-question",
     ...BUILDER_TEXT.blocks.AnswerBanner,
-    create: () => site({ type: "AnswerBanner", content: { question: "", answer: "", layout: "entry" } }),
+    create: () => site("AnswerBanner", { question: "", answer: "", layout: "entry" }),
     fields: [
-      { kind: "text", path: "content.eyebrow", label: F.eyebrow, max: 40, optional: true },
-      { kind: "text", path: "content.question", label: F.question, min: 10, max: 120 },
-      { kind: "textarea", path: "content.answer", label: F.answer, min: 20, max: 800, words: 80 },
+      { kind: "text", path: "content.eyebrow", label: F.eyebrow, max: 60, optional: true },
+      { kind: "text", path: "content.question", label: F.question, max: 200 },
+      { kind: "textarea", path: "content.answer", label: F.faqAnswer, max: 1200 },
       cta("content.next", F.nextLink, true),
       { kind: "select", path: "content.layout", label: F.bannerLayout, options: options(F.answerLayouts) },
     ],

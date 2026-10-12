@@ -17,7 +17,9 @@ export interface IPost {
    * still, an HTML string; all three render server-side, and the builder converts the older two on their next save.
    */
   content: BuilderDoc | TiptapDoc | string;
-  coverImage: string;       // absolute URL or /public path, "" when there is none
+  coverImage: string;       // the featured image: absolute URL or /public path, "" when there is none
+  /** What the featured image shows, for screen readers and as the share image's alt text. */
+  coverImageAlt?: string;
   /** Search settings from the builder's SEO tab. Older documents have none; read them through normalizeSeo. */
   seo?: Partial<PostSeo>;
   category: string;
@@ -49,6 +51,7 @@ const PostSchema = new Schema<IPost>(
     kind: { type: String, enum: ["post", "page"], default: "post" },
     content: { type: Schema.Types.Mixed, required: true },
     coverImage: { type: String, default: "" },
+    coverImageAlt: { type: String, default: "", maxlength: 200 },
     seo: {
       type: new Schema(
         {
@@ -104,7 +107,7 @@ PostSchema.index({ kind: 1, deletedAt: 1, status: 1 });
 
 // A running dev server keeps the model it compiled first; when this file gains a field, that cached model would
 // silently drop it on save. Recompile when the cached schema is older than this one.
-if (mongoose.models.Post && !mongoose.models.Post.schema.path("seo")) mongoose.deleteModel("Post");
+if (mongoose.models.Post && !mongoose.models.Post.schema.path("coverImageAlt")) mongoose.deleteModel("Post");
 
 export const Post: Model<IPost> =
   (mongoose.models.Post as Model<IPost>) ??

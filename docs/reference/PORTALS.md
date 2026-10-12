@@ -36,15 +36,24 @@ from the database on every request, so a role change or removal applies on the n
 
 The editor (`components/builder/`) has Add and Layers on the left, the page in the middle, and Block, Page and SEO settings on the right.
 
-- **Blocks** (`lib/builder/catalog.ts`):
+- **Blocks** (`lib/builder/catalog.ts`). Every word is written in the builder; no block pulls predefined site data.
   - Layout: Section, Columns. Content: Heading, Rich text (Tiptap, edited in place), Image, YouTube video.
-  - Page sections from the page-spec registry (`lib/content/registry.tsx`): Hero (pages only, first block), Feature grid
-    (feature library), Steps, FAQ, Call to action.
-  - Free-content sections and banners, written entirely in the builder (`lib/builder/free-sections.ts`, each wrapping an
-    existing site component): Split section, Feature cards, Link tiles, Offer banner, Guide banner, Action band, Answer banner.
-  - To offer another section, add its type to `REGISTRY_SECTION_TYPES` or `FREE_SECTION_TYPES` (`lib/builder/model.ts`), give
-    it a catalog entry with its fields, a schema (`SITE_SCHEMAS` or `FREE_SCHEMAS`) and, for a free section, a renderer in
-    `FREE_RENDER` (`lib/builder/render.tsx`).
+  - Page sections: Hero (pages only, first block), Split section, Feature cards, Steps, FAQ, Link tiles, Call to action.
+    Banners: Offer banner, Guide banner, Action band, Answer banner. Defined once in `lib/builder/sections.ts` (stored shape,
+    `prepareSection` for display, `sectionProblems` for publishing) and drawn by `components/builder/SectionView.tsx` with the
+    site's own components.
+  - **The editor canvas and the public page use the same renderer** (`SectionView.tsx` and `components/builder/layout.tsx`),
+    so a page looks the same while it is edited. A section shows what was typed (no minimum lengths); unsafe links and images
+    are dropped, and a section with nothing to show yet appears on the canvas as a dashed placeholder naming what to fill in.
+  - Documents saved by the first builder version (registry sections such as ProductHero, BentoGrid, CTABand) are converted
+    when read (`lib/builder/legacy.ts`).
+  - To add a section: its type in `SECTION_TYPES`, schema and `PREPARE` entry in `sections.ts`, a renderer in `SectionView.tsx`
+    and a catalog entry with its fields.
+- **Images**: every image field and the Featured image can upload from the computer to S3 (`POST /api/portal/upload`) or
+  choose an earlier upload from the media library (`GET /api/portal/media`, `media` collection). Storage settings are in
+  `.env.example`; without them the buttons say uploading is off and pasting an address still works.
+- **Featured image** (Page tab): shown at the top of a post, on its blog card and as the share image of posts and pages,
+  with a description for screen readers (`coverImage`, `coverImageAlt`).
 - **Templates** (`lib/builder/templates.ts`): a new page offers Landing page, Service page, Guide or Blank; a new post offers
   Article, How-to or Blank. Template blocks start empty, so nothing goes live until each is filled in.
 - **SEO tab** (stored as `seo` on the post, `lib/builder/seo.ts`): search title, meta description, focus keyword with an
@@ -57,9 +66,10 @@ The editor (`components/builder/`) has Add and Layers on the left, the page in t
   Rich text block and are stored in the new shape on their next save.
 - **Saving**: every save, drafts included, passes `parseBuilderDoc` (tree shape, ids, sizes, safe image and video addresses).
   Drafts save on their own three seconds after the last change; a published post or page changes only with "Update live page".
-- **Publishing** (admins): `publishProblems` runs every site section through its page-spec schema (the same rules as
-  `content/pages/*.json`) and checks alt text, video titles and empty blocks. Problems come back per block and are marked on the
-  canvas. Publishing locks the post, as before.
+- **Publishing** (admins): `publishProblems` lists what would be missing or left out (a section's heading, a button
+  without a safe link, an unfinished list item, image descriptions, video titles, empty blocks). Saving a published page
+  runs the same check, so nothing disappears from a live page silently. After a refused publish the editor marks unfinished
+  blocks live as they change. Publishing locks the post, as before.
 - **Addresses**: a page cannot take a slug the site already uses (`lib/builder/reserved.ts`; a test fails when a new folder under
   `app/[locale]/(marketing)` is missing there). `new` is reserved for the editor.
 - **Canvas and preview**: site sections on the canvas are rendered on the server by `previewSiteBlockAction` with the real

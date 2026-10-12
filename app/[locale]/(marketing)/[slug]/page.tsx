@@ -9,6 +9,8 @@ import { builderFaqSchema, builderMetadata } from "@/lib/builder/seo-metadata";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 import { breadcrumbSchema } from "@/lib/seo/jsonld";
 import { buildMetadata } from "@/lib/seo/metadata";
+// Article typography for text blocks and the builder bands (the editor canvas loads the same file).
+import "@/app/styles/rich-content.css";
 
 /**
  * Pages made in the page builder (/dashboard/posts, kind "page"). Every hand-built route wins over this one, and the

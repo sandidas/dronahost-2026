@@ -1,6 +1,7 @@
 import { Post, type IPost } from "@/lib/models/post";
 import { connectToDatabase } from "@/lib/mongodb";
 import { SLUG_PATTERN } from "@/lib/portal/slug";
+import { toBuilderDoc } from "./legacy";
 import { isBuilderDoc, type BuilderDoc } from "./model";
 import { isReservedPageSlug } from "./reserved";
 import { normalizeSeo, type PostSeo } from "./seo";
@@ -21,7 +22,7 @@ export async function getPublishedPage(slug: string): Promise<PublicPage | null>
     title: p.title,
     excerpt: p.excerpt ?? "",
     coverImage: p.coverImage ?? "",
-    content: p.content,
+    content: toBuilderDoc(p.content),
     seo: normalizeSeo(p.seo),
     published: new Date(p.publishedAt ?? p.createdAt).toISOString(),
     modified: new Date(p.updatedAt).toISOString(),

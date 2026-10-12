@@ -1,31 +1,25 @@
 import type { TiptapDoc } from "@/lib/editor/schema";
 
+import { SECTION_TYPES, type SectionType } from "./sections";
+
 /**
  * The page builder's document: what a post or page stores in `content`. Shared by the editor (client) and the
  * server (validation and rendering), so this file imports nothing server-only.
  *
- * Shape: root blocks are Sections or site sections. A Section holds content blocks and Columns; each column holds
- * content blocks. Site sections (ProductHero, FAQSection, ...) are the site's own registered sections, stored in
- * the same JSON shape as content/pages/*.json and rendered by lib/content/registry.tsx.
+ * Shape: root blocks are Sections or sections from lib/builder/sections.ts (hero, banners, FAQ, ...). A Section holds
+ * content blocks and Columns; each column holds content blocks. Every word comes from the builder.
  */
 
 export type PostKind = "post" | "page";
 export const POST_KINDS: readonly PostKind[] = ["post", "page"];
 
-/** Sections from the page-spec registry (lib/content/registry.tsx): the same JSON shape as content/pages/*.json. */
-export const REGISTRY_SECTION_TYPES = ["ProductHero", "BentoGrid", "ProcessTimeline", "FAQSection", "CTABand"] as const;
-/** Sections whose content is written entirely in the builder (lib/builder/free-sections.ts). */
-export const FREE_SECTION_TYPES = ["OfferBanner", "GuideBanner", "ActionBand", "AnswerBanner", "SplitSection", "FeatureCards", "LinkTiles"] as const;
-export const SITE_SECTION_TYPES = [...REGISTRY_SECTION_TYPES, ...FREE_SECTION_TYPES] as const;
-export type SiteSectionType = (typeof SITE_SECTION_TYPES)[number];
-export type RegistrySectionType = (typeof REGISTRY_SECTION_TYPES)[number];
-
-export const isRegistrySection = (type: SiteSectionType): type is RegistrySectionType => (REGISTRY_SECTION_TYPES as readonly string[]).includes(type);
+export const SITE_SECTION_TYPES = SECTION_TYPES;
+export type SiteSectionType = SectionType;
 
 /** Blog posts already have an H1 (the post title), so the hero is for pages only. */
 export const SITE_SECTIONS_FOR: Record<PostKind, readonly SiteSectionType[]> = {
-  post: SITE_SECTION_TYPES.filter((t) => t !== "ProductHero"),
-  page: SITE_SECTION_TYPES,
+  post: SECTION_TYPES.filter((t) => t !== "Hero"),
+  page: SECTION_TYPES,
 };
 
 export type HeadingLevel = 2 | 3 | 4;
@@ -46,8 +40,8 @@ export type ColumnsBlock = { id: string; type: "columns"; props: { layout: Colum
 export type SectionWidth = "text" | "wide";
 export type SectionBlock = { id: string; type: "section"; props: { width: SectionWidth }; children: (LeafBlock | ColumnsBlock)[] };
 
-/** A registered site section in page-spec JSON shape. `id` is filled from the block id when it renders. */
-export type SiteSection = { type: SiteSectionType } & Record<string, unknown>;
+/** A section and what was written in it. `content` is checked by SECTION_SCHEMAS (lib/builder/sections.ts). */
+export type SiteSection = { type: SiteSectionType; content: Record<string, unknown> };
 export type SiteBlock = { id: string; type: "site"; section: SiteSection };
 
 export type RootBlock = SectionBlock | SiteBlock;
@@ -91,16 +85,3 @@ export function youtubeId(url: string): string | null {
 
 /** Privacy-enhanced embed address (no cookies until the visitor plays the video). */
 export const youtubeEmbedSrc = (id: string): string => `https://www.youtube-nocookie.com/embed/${id}`;
-
-/**
- * Opens any stored content in the builder. Posts from before the builder (Tiptap JSON or HTML) become one Section with
- * one Rich text block; they are stored in the builder shape on their next save.
- */
-export function toBuilderDoc(content: unknown): BuilderDoc {
-  if (isBuilderDoc(content)) return content;
-  const isTiptap = typeof content === "object" && content !== null && (content as { type?: unknown }).type === "doc";
-  const isHtml = typeof content === "string" && content.trim().length > 0;
-  if (!isTiptap && !isHtml) return EMPTY_BUILDER_DOC;
-  const richtext: RichTextBlock = { id: newBlockId(), type: "richtext", props: { content: content as TiptapDoc | string } };
-  return { version: 1, blocks: [{ id: newBlockId(), type: "section", props: { width: "text" }, children: [richtext] }] };
-}

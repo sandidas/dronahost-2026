@@ -8,6 +8,8 @@ import { storageConfigured } from "@/lib/storage/s3";
 import { EMPTY_BUILDER_DOC, type PostKind } from "./model";
 import { DEFAULT_SEO } from "./seo";
 
+const now = () => new Date().toISOString();
+
 const flags = (actor: Actor) => ({ isAdmin: can(actor.role, "post.publish"), uploadEnabled: storageConfigured() && can(actor.role, "media.upload") });
 
 export function newEditorInit(actor: Actor, kind: PostKind): BuilderInit {
@@ -18,9 +20,10 @@ export function newEditorInit(actor: Actor, kind: PostKind): BuilderInit {
     locked: false,
     canEdit: can(actor.role, "post.create"),
     ...flags(actor),
-    meta: { title: "", slug: "", excerpt: "", coverImage: "", seo: DEFAULT_SEO },
+    meta: { title: "", slug: "", excerpt: "", coverImage: "", coverImageAlt: "", seo: DEFAULT_SEO },
     // Starts empty: the canvas offers the templates (lib/builder/templates.ts).
     doc: EMPTY_BUILDER_DOC,
+    dates: { published: now(), modified: now() },
     publishedLine: null,
   };
 }
@@ -33,8 +36,9 @@ export function existingEditorInit(actor: Actor, post: PostDetail): BuilderInit 
     locked: post.locked,
     canEdit: post.canEdit,
     ...flags(actor),
-    meta: { title: post.title, slug: post.slug, excerpt: post.excerpt, coverImage: post.coverImage, seo: post.seo },
+    meta: { title: post.title, slug: post.slug, excerpt: post.excerpt, coverImage: post.coverImage, coverImageAlt: post.coverImageAlt, seo: post.seo },
     doc: post.content,
+    dates: { published: post.publishedAt ?? post.updatedAt, modified: post.updatedAt },
     publishedLine: post.publishedAt && post.publishedByName ? `${POST_FORM_TEXT.admin.publishedBy} ${post.publishedByName} ${POST_FORM_TEXT.admin.publishedOn} ${formatDateTime(post.publishedAt)}` : null,
   };
 }

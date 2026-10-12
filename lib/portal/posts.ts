@@ -3,9 +3,10 @@ import { PORTAL_ERRORS } from "@/content/portal-strings";
 import { assertCan, can } from "@/lib/auth/permissions";
 import { ROLES } from "@/lib/auth/roles";
 import { BUILDER_PROBLEMS } from "@/content/portal-strings";
-import { toBuilderDoc, type BuilderDoc, type PostKind } from "@/lib/builder/model";
+import { toBuilderDoc } from "@/lib/builder/legacy";
+import type { BuilderDoc, PostKind } from "@/lib/builder/model";
 import { normalizeSeo, type PostSeo } from "@/lib/builder/seo";
-import { publishProblems } from "@/lib/builder/validate";
+import { publishProblems, type Problem } from "@/lib/builder/validate";
 import { Post, type IPost } from "@/lib/models/post";
 import { portalDb } from "./db";
 import { parsePostInput } from "./post-input";
@@ -28,6 +29,7 @@ export type PostRow = {
 export type PostDetail = PostRow & {
   excerpt: string;
   coverImage: string;
+  coverImageAlt: string;
   /** The builder document. Older posts (Tiptap JSON or HTML) arrive converted to one Rich text block. */
   content: BuilderDoc;
   seo: PostSeo;
@@ -40,6 +42,16 @@ export type PostDetail = PostRow & {
 export type PostChange = { id: string; kind: PostKind; slug: string; previousSlug: string; status: PostStatus };
 
 const notDeleted = { deletedAt: null } as const;
+
+/** Publishing problems as field errors keyed by block id ("page" for the document), one message per line. */
+function problemsByBlock(problems: Problem[]): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const p of problems) {
+    const key = p.blockId || "page";
+    out[key] = out[key] ? `${out[key]}\n${p.message}` : p.message;
+  }
+  return out;
+}
 
 /**
  * The collection also holds older records, some written by other tools with other field names, so every field gets a
@@ -84,6 +96,7 @@ function toDetail(actor: Actor, p: IPost): PostDetail {
     ...toRow(p),
     excerpt: typeof p.excerpt === "string" ? p.excerpt : "",
     coverImage: typeof p.coverImage === "string" ? p.coverImage : "",
+    coverImageAlt: typeof p.coverImageAlt === "string" ? p.coverImageAlt : "",
     content: toBuilderDoc(p.content),
     seo: normalizeSeo(p.seo),
     publishedAt: p.publishedAt ? new Date(p.publishedAt).toISOString() : null,
@@ -157,6 +170,11 @@ export async function updatePost(actor: Actor, rawId: unknown, raw: unknown): Pr
     if (!current) return fail(PORTAL_ERRORS.notFound);
     const input = parsePostInput(raw, current.kind ?? "post");
     if (!input.ok) return input;
+    // A live page changes straight away, so it must pass the publishing checks: nothing on it may silently disappear.
+    if (current.status === "published") {
+      const problems = publishProblems(input.data.content, current.kind ?? "post");
+      if (problems.length) return fail(BUILDER_PROBLEMS.updateBlocked, problemsByBlock(problems));
+    }
     if (!can(actor.role, "post.edit", { locked: Boolean(current.locked) })) {
       return fail(current.locked && actor.role === ROLES.STAFF ? PORTAL_ERRORS.locked : PORTAL_ERRORS.forbidden);
     }
@@ -184,11 +202,7 @@ export async function setPublished(actor: Actor, rawId: unknown, publish: boolea
     if (publish) {
       // The same rules as the hand-built pages: every site section passes its schema, images have alt text, ...
       const problems = publishProblems(toBuilderDoc(current.content), current.kind ?? "post");
-      if (problems.length) {
-        const byBlock: Record<string, string> = {};
-        for (const p of problems) byBlock[p.blockId || "page"] = byBlock[p.blockId || "page"] ? `${byBlock[p.blockId || "page"]}\n${p.message}` : p.message;
-        return fail(BUILDER_PROBLEMS.publishBlocked, byBlock);
-      }
+      if (problems.length) return fail(BUILDER_PROBLEMS.publishBlocked, problemsByBlock(problems));
     }
     const update = publish
       ? {

@@ -1,4 +1,5 @@
 import { Announcement } from "@/lib/models/announcement";
+import { Media } from "@/lib/models/media";
 import { Invitation } from "@/lib/models/invitation";
 import { Post } from "@/lib/models/post";
 import { Account, Session, User } from "@/lib/models/user";
@@ -22,5 +23,5 @@ export async function portalDb(): Promise<void> {
 }
 
 export async function ensurePortalIndexes(): Promise<void> {
-  await Promise.all([User, Account, Session, Post, Invitation, Announcement].map((m) => m.createIndexes()));
+  await Promise.all([User, Account, Session, Post, Invitation, Announcement, Media].map((m) => m.createIndexes()));
 }

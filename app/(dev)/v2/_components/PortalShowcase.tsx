@@ -18,7 +18,6 @@ import {
 } from "@/content/placeholders";
 import { PORTAL_ERRORS } from "@/content/portal-strings";
 import { DEFAULT_SEO } from "@/lib/builder/seo";
-import { FEATURE_LIBRARY } from "@/lib/content/features";
 import type { Actor } from "@/lib/portal/result";
 import ShowcaseSection from "./ShowcaseSection";
 
@@ -93,7 +92,6 @@ export default function PortalShowcase() {
         <BuilderApp
           embedded
           actorName={SAMPLE_PORTAL_ADMIN.name}
-          features={FEATURE_LIBRARY.map((f) => ({ id: f.id, title: f.tile.title }))}
           init={{
             postId: null,
             kind: "page",
@@ -102,9 +100,10 @@ export default function PortalShowcase() {
             canEdit: true,
             isAdmin: true,
             uploadEnabled: false,
-            meta: { title: "Sample page", slug: "sample-page", excerpt: "Sample summary for lists and search results.", coverImage: "", seo: { ...DEFAULT_SEO, focusKeyword: "sample" } },
+            meta: { title: "Sample page", slug: "sample-page", excerpt: "Sample summary for lists and search results.", coverImage: "", coverImageAlt: "", seo: { ...DEFAULT_SEO, focusKeyword: "sample" } },
             doc: SAMPLE_PORTAL_BUILDER_DOC,
             publishedLine: null,
+            dates: { published: "2026-01-02T09:30:00.000Z", modified: "2026-01-02T09:30:00.000Z" },
           }}
         />
       </ShowcaseSection>

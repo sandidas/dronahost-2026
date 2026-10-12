@@ -1,11 +1,10 @@
-import { z, type ZodType } from "zod";
+import { z } from "zod";
 import { BUILDER_PROBLEMS } from "@/content/portal-strings";
-import * as S from "@/lib/content/schemas/sections";
 import { docText, parseTiptapDoc } from "@/lib/editor/schema";
 import { isSafeImageSrc, isYoutubeUrl } from "@/lib/editor/urls";
 import { entryFor, type Field } from "./catalog";
-import { FREE_SCHEMAS } from "./free-sections";
-import { BLOCK_ID, COLUMNS_LAYOUTS, SITE_SECTIONS_FOR, SITE_SECTION_TYPES, columnCount, youtubeId, type AnyBlock, type BuilderDoc, type PostKind, type SiteSectionType } from "./model";
+import { BLOCK_ID, COLUMNS_LAYOUTS, SITE_SECTIONS_FOR, columnCount, youtubeId, type AnyBlock, type BuilderDoc, type PostKind } from "./model";
+import { SECTION_SCHEMAS, SECTION_TYPES, sectionProblems, type SectionProblem } from "./sections";
 import { flatten } from "./tree";
 
 /**
@@ -18,7 +17,6 @@ const MAX_BYTES = 1024 * 1024;
 const MAX_ROOT_BLOCKS = 60;
 const MAX_SECTION_CHILDREN = 80;
 const MAX_COLUMN_CHILDREN = 40;
-const MAX_SITE_DEPTH = 8;
 
 const Id = z.string().regex(BLOCK_ID);
 const emptyOr = (test: (v: string) => boolean) => (v: string) => v === "" || test(v);
@@ -71,16 +69,14 @@ const Section = z.strictObject({
   children: z.array(z.discriminatedUnion("type", [Heading, RichText, Image, Video, Columns])).max(MAX_SECTION_CHILDREN),
 });
 
-function depth(value: unknown): number {
-  if (!value || typeof value !== "object") return 0;
-  return 1 + Math.max(0, ...Object.values(value).map(depth));
-}
-
-/** A draft site section only needs the right type and a bounded shape; its content is checked when publishing. */
+/** A section: its type and what was written in it, in that type's shape (sizes only, so drafts always save). */
 const Site = z.strictObject({
   id: Id,
   type: z.literal("site"),
-  section: z.looseObject({ type: z.enum(SITE_SECTION_TYPES) }).refine((s) => depth(s) <= MAX_SITE_DEPTH, BUILDER_PROBLEMS.structure),
+  section: z.discriminatedUnion(
+    "type",
+    SECTION_TYPES.map((t) => z.strictObject({ type: z.literal(t), content: SECTION_SCHEMAS[t] })) as unknown as [z.ZodObject, ...z.ZodObject[]],
+  ),
 });
 
 const Doc = z.strictObject({
@@ -113,15 +109,6 @@ export function parseBuilderDoc(input: unknown, kind: PostKind): ParseResult {
   return { ok: true, doc };
 }
 
-export const SITE_SCHEMAS: Record<SiteSectionType, ZodType> = {
-  ProductHero: S.ProductHero,
-  BentoGrid: S.BentoGrid,
-  ProcessTimeline: S.ProcessTimeline,
-  FAQSection: S.FAQSection,
-  CTABand: S.CTABand,
-  ...FREE_SCHEMAS,
-};
-
 export type Problem = { blockId: string; message: string };
 
 /** The Block panel label for a data path, e.g. "Question 2: Answer". */
@@ -137,26 +124,32 @@ function labelFor(path: readonly string[], fields: readonly Field[]): string {
   return inner ? `${item}: ${inner}` : item;
 }
 
-/** Turns a schema issue into a sentence that names the field, using the labels from the Block panel. */
-function describe(issue: z.core.$ZodIssue, fields: readonly Field[]): string {
-  const label = labelFor(issue.path.map(String), fields);
-  const what = label || BUILDER_PROBLEMS.aField;
-  const i = issue as z.core.$ZodIssue & { minimum?: number | bigint; maximum?: number | bigint; origin?: string };
-  if (i.code === "too_small" && i.origin === "string") return Number(i.minimum) <= 1 ? `${what}: ${BUILDER_PROBLEMS.required}` : `${what}: ${BUILDER_PROBLEMS.minChars(Number(i.minimum))}`;
-  if (i.code === "too_big" && i.origin === "string") return `${what}: ${BUILDER_PROBLEMS.maxChars(Number(i.maximum))}`;
-  if (i.code === "too_small" && i.origin === "array") return `${what}: ${BUILDER_PROBLEMS.minItems(Number(i.minimum))}`;
-  if (i.code === "too_big" && i.origin === "array") return `${what}: ${BUILDER_PROBLEMS.maxItems(Number(i.maximum))}`;
-  if (i.code === "invalid_type") return `${what}: ${BUILDER_PROBLEMS.required}`;
-  return `${what}: ${issue.message}`;
+/** A section problem in the words of the Block panel. */
+function describe(problem: SectionProblem, fields: readonly Field[]): string {
+  const P = BUILDER_PROBLEMS.section;
+  const label = labelFor(["content", ...problem.field.split(".")], fields) || BUILDER_PROBLEMS.aField;
+  switch (problem.code) {
+    case "missing":
+      return P.missing(label);
+    case "badLink":
+      return P.badLink(label);
+    case "badImage":
+      return P.badImage(label);
+    case "imageAlt":
+      return P.imageAlt(label);
+    case "noItems":
+      return P.noItems(label);
+    case "incompleteItem": {
+      const list = fields.find((f) => f.path === `content.${problem.field}`);
+      return P.incompleteItem(list?.kind === "list" ? `${list.itemTitle} ${problem.index + 1}` : `${label} ${problem.index + 1}`);
+    }
+  }
 }
 
-/** Problems with one site section, in the words of the Block panel. Empty when it is ready to publish. */
+/** What would be missing or left out of a section on the live page, as sentences. Empty when it shows as written. */
 export function siteSectionProblems(block: Extract<AnyBlock, { type: "site" }>): string[] {
-  const schema = SITE_SCHEMAS[block.section.type];
-  const res = schema.safeParse({ ...block.section, id: block.id });
-  if (res.success) return [];
   const fields = entryFor(block)?.fields ?? [];
-  return [...new Set(res.error.issues.map((issue) => describe(issue, fields)))];
+  return sectionProblems(block.section.type, block.section.content).map((p) => describe(p, fields));
 }
 
 /** Everything that stops a document from being published. Empty means it can go live. */
@@ -165,7 +158,7 @@ export function publishProblems(doc: BuilderDoc, kind: PostKind): Problem[] {
   const add = (blockId: string, message: string) => problems.push({ blockId, message });
   if (doc.blocks.length === 0) add("", BUILDER_PROBLEMS.emptyDoc);
   doc.blocks.forEach((b, i) => {
-    if (b.type === "site" && b.section.type === "ProductHero" && (kind !== "page" || i !== 0)) add(b.id, BUILDER_PROBLEMS.heroFirst);
+    if (b.type === "site" && b.section.type === "Hero" && (kind !== "page" || i !== 0)) add(b.id, BUILDER_PROBLEMS.heroFirst);
   });
   for (const { block } of flatten(doc)) {
     switch (block.type) {
