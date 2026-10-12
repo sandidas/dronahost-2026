@@ -1,8 +1,7 @@
-import type { CSSProperties } from "react";
 import { blockDef, prepareBlock } from "./blocks";
 import type { Heading } from "./blocks/types";
 import { fieldImages, fieldText, type Img } from "./fields";
-import { newBlockId, type Block, type BuilderDoc, type PageSettings, type PostKind } from "./model";
+import { BAND_CLASS, newBlockId, type Block, type BuilderDoc, type PageSettings, type PostKind } from "./model";
 
 /**
  * Whole-document operations and readings. Every edit returns a new document and leaves the input alone, so undo and
@@ -59,10 +58,9 @@ export const setSettings = (doc: BuilderDoc, patch: Partial<PageSettings>): Buil
 
 // ─── Readings ─────────────────────────────────────────────────────────────────
 
-/** Muted band for every second block on the page background, counting only blocks that show something. Pages only. */
-export function pageBands(doc: BuilderDoc, kind: PostKind): Map<string, string> {
+/** The light band for every second section on the page background, counting only blocks that show something. */
+export function pageBands(doc: BuilderDoc): Map<string, string> {
   const bands = new Map<string, string>();
-  if (kind !== "page") return bands;
   let n = 0;
   for (const block of doc.blocks) {
     if (!blockDef(block.type)?.banded || prepareBlock(block) === null) continue;
@@ -72,24 +70,25 @@ export function pageBands(doc: BuilderDoc, kind: PostKind): Map<string, string> 
   return bands;
 }
 
-/** The band style (app/styles/rich-content.css): the same light and dot texture as the hand-built pages' alternate sections. */
-export const BAND_CLASS = "builder-band";
+export { BAND_CLASS };
 
-/** The first block when it brings the page's H1 (a hero on a page) and shows. The page title is the H1 otherwise. */
-export function leadBlock(doc: BuilderDoc, kind: PostKind): Block | null {
-  const first = doc.blocks[0];
-  const def = first && blockDef(first.type);
-  return kind === "page" && first && def?.first && prepareBlock(first) !== null ? first : null;
+/**
+ * The block whose heading is the page's H1: on a page, the first hero that shows (a page prints no title of its own).
+ * A post's H1 is its title, printed by the blog, so no block holds it there.
+ */
+export function h1Block(doc: BuilderDoc, kind: PostKind): Block | null {
+  if (kind !== "page") return null;
+  return doc.blocks.find((b) => blockDef(b.type)?.hero && prepareBlock(b) !== null) ?? null;
 }
 
-/** Every heading the page shows, H1 first, in order: the outline screen readers and search engines read. */
+/** Every heading the page shows, in order: the outline screen readers and search engines read. A post starts with its title. */
 export function docHeadings(doc: BuilderDoc, title: string, kind: PostKind): Heading[] {
-  const lead = leadBlock(doc, kind);
-  const out: Heading[] = lead ? [] : [{ level: 1, text: title }];
+  const lead = h1Block(doc, kind);
+  const out: Heading[] = kind === "post" ? [{ level: 1, text: title }] : [];
   for (const block of doc.blocks) {
     const def = blockDef(block.type);
     const p = prepareBlock(block);
-    if (def?.headings && p !== null) out.push(...def.headings(p));
+    if (def?.headings && p !== null) out.push(...def.headings(p, block === lead));
   }
   return out;
 }
@@ -117,10 +116,9 @@ export function faqEntries(doc: BuilderDoc): { question: string; answer: string 
   });
 }
 
-const WIDTH: Record<PageSettings["width"], string | undefined> = { default: undefined, "3xl": "48rem", "4xl": "56rem", "5xl": "64rem", "6xl": "72rem", "7xl": "80rem", full: "100%" };
-
-/** The wrapper for a page's blocks: content width through the site's container variable, spacing through a data attribute. */
-export function pageFrame(settings: PageSettings): { className: string; style: CSSProperties; "data-spacing": string } {
-  const max = WIDTH[settings.width];
-  return { className: "builder-page", style: (max ? { "--container-max": max } : {}) as CSSProperties, "data-spacing": settings.spacing };
-}
+/**
+ * The wrapper for the blocks, on the canvas and on the public page alike: the space between sections through a data
+ * attribute, and it keeps the site's position-based bands (`.look-luxe > section:nth-of-type(even)`) off, so the
+ * builder's own bands (pageBands) are in charge.
+ */
+export const pageFrame = (settings: PageSettings): { className: string; "data-spacing": string } => ({ className: "builder-page", "data-spacing": settings.spacing });

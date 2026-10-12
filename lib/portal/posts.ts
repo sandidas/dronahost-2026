@@ -212,7 +212,7 @@ export async function updatePost(actor: Actor, rawId: unknown, raw: unknown): Pr
     if (!input.ok) return input;
     // A live page changes straight away, so it must pass the publishing checks: nothing on it may silently disappear.
     if (current.status === "published") {
-      const problems = publishProblems(input.data.content, current.kind ?? "post");
+      const problems = publishProblems(input.data.content);
       if (problems.length) return fail(BUILDER_PROBLEMS.updateBlocked, problemsByBlock(problems));
     }
     if (!can(actor.role, "post.edit", { locked: Boolean(current.locked) })) {
@@ -241,7 +241,7 @@ export async function setPublished(actor: Actor, rawId: unknown, publish: boolea
     if (!current) return fail(PORTAL_ERRORS.notFound);
     if (publish) {
       // The same rules as the hand-built pages: every site section passes its schema, images have alt text, ...
-      const problems = publishProblems(toBuilderDoc(current.content), current.kind ?? "post");
+      const problems = publishProblems(toBuilderDoc(current.content));
       if (problems.length) return fail(BUILDER_PROBLEMS.publishBlocked, problemsByBlock(problems));
     }
     const update = publish

@@ -47,7 +47,12 @@ function TextField({ field, value, set, readOnly }: { field: Extract<Field, { ki
         </label>
         <Counter value={value} max={field.max} />
       </div>
-      {field.kind === "textarea" ? <textarea {...common} rows={3} className={cn(inputClass, "min-h-20 px-3 py-2 text-sm")} /> : <input {...common} type="text" className={fieldInput} />}
+      {field.kind === "textarea" ? (
+        // Code keeps its own spacing: no spell check, no wrapping, Tab stays a key for leaving the field.
+        <textarea {...common} rows={field.rows ?? 3} spellCheck={field.code ? false : undefined} wrap={field.code ? "off" : undefined} className={cn(inputClass, "min-h-20 px-3 py-2 text-sm", field.code && "font-mono text-xs leading-relaxed")} />
+      ) : (
+        <input {...common} type="text" className={fieldInput} />
+      )}
       {field.help && (
         <p id={helpId} className={helpClass}>
           {field.help}

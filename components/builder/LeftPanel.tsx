@@ -3,7 +3,7 @@
 import { ArrowDown, ArrowUp, Search } from "lucide-react";
 import { useId, useState } from "react";
 import { BUILDER_TEXT } from "@/content/portal-strings";
-import { blockDef, blockName, blocksFor, GROUPS, prepareBlock } from "@/lib/builder/blocks";
+import { BLOCKS, blockDef, blockName, GROUPS, prepareBlock } from "@/lib/builder/blocks";
 import type { BlockDef } from "@/lib/builder/blocks/types";
 import type { Block } from "@/lib/builder/model";
 import { cn } from "@/utils/cn";
@@ -49,11 +49,10 @@ function PaletteTile({ def }: { def: BlockDef }) {
 }
 
 function AddTab() {
-  const kind = useBuilder((s) => s.kind);
   const [query, setQuery] = useState("");
   const searchId = useId();
   const q = query.trim().toLowerCase();
-  const entries = blocksFor(kind).filter((d) => !q || `${blockName(d.type).label} ${blockName(d.type).hint}`.toLowerCase().includes(q));
+  const entries = BLOCKS.filter((d) => !q || `${blockName(d.type).label} ${blockName(d.type).hint}`.toLowerCase().includes(q));
   return (
     <div className="p-3">
       <label htmlFor={searchId} className="sr-only">
@@ -88,7 +87,7 @@ function AddTab() {
 /** A short description of a block for the Layers list: its first heading, where it shows one. */
 export function blockSummary(block: Block): string {
   const p = prepareBlock(block);
-  return (p !== null && blockDef(block.type)?.headings?.(p)[0]?.text) || "";
+  return (p !== null && blockDef(block.type)?.headings?.(p, false)[0]?.text) || "";
 }
 
 function LayersTab() {

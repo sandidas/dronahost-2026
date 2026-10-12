@@ -3,10 +3,10 @@ import Button from "@/components/ui/Button";
 import { cn } from "@/utils/cn";
 import type { HeroBaseProps } from "./types";
 
-type HeroContentProps = Pick<
-  HeroBaseProps,
-  "eyebrow" | "title" | "titleAccent" | "description" | "primaryCta" | "secondaryCta" | "highlights" | "note" | "headingLevel"
-> & {
+type HeroContentProps = Pick<HeroBaseProps, "eyebrow" | "titleAccent" | "primaryCta" | "secondaryCta" | "highlights" | "note" | "headingLevel"> & {
+  /** Optional here (the centred hero is used by the page builder, where nothing is required); what is empty is left out. */
+  title?: string;
+  description?: string;
   /** Heading id, so the parent section can use aria-labelledby. */
   headingId: string;
   /** Typographic scale: display for the product hero, h1 elsewhere. */
@@ -35,16 +35,18 @@ export default function HeroContent({
   return (
     <div className={cn("min-w-0", centered && "mx-auto flex max-w-3xl flex-col items-center text-center")}>
       {eyebrow && <p className="t-eyebrow">{eyebrow}</p>}
-      <Heading id={headingId} className={cn(scale === "display" ? "t-display" : "t-h1", "text-balance text-foreground", eyebrow && "mt-4")}>
-        {title}
-        {titleAccent && (
-          <>
-            {" "}
-            <span className="text-link">{titleAccent}</span>
-          </>
-        )}
-      </Heading>
-      <p className={cn("t-lead mt-5", centered && "mx-auto")}>{description}</p>
+      {(title || titleAccent) && (
+        <Heading id={headingId} className={cn(scale === "display" ? "t-display" : "t-h1", "text-balance text-foreground", eyebrow && "mt-4")}>
+          {title}
+          {titleAccent && (
+            <>
+              {" "}
+              <span className="text-link">{titleAccent}</span>
+            </>
+          )}
+        </Heading>
+      )}
+      {description && <p className={cn("t-lead mt-5", centered && "mx-auto")}>{description}</p>}
 
       {(primaryCta || secondaryCta) && (
       <div className={cn("mt-8 flex flex-wrap items-center gap-3", centered && "justify-center")}>

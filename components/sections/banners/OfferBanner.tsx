@@ -17,16 +17,17 @@ export type OfferPrice = {
   taxLine?: string;
 };
 
+/** Every text and the action are optional (the page builder requires nothing); what is empty is left out. */
 export type OfferBannerProps = {
   eyebrow?: string;
-  title: string;
+  title?: string;
   titleAccent?: string;
-  description: string;
+  description?: string;
   /** The name printed on the ticket: a plan or product family. */
   planName?: string;
   /** Omit while prices are hidden; the ticket then carries the action alone. */
   price?: OfferPrice;
-  primaryCta: { label: string; href: string };
+  primaryCta?: { label: string; href: string };
   /** The risk reducer under the action, with the page that states its terms. Only while its claim renders. */
   riskReducer?: { text: string; href: string };
   /** One sentence on what happens after the click. */
@@ -63,7 +64,7 @@ export default function OfferBanner({ eyebrow, title, titleAccent, description, 
   const centered = layout === "centered";
   const ink = scope === "ink";
 
-  const heading = (
+  const heading = (title || titleAccent) && (
     <Heading id={headingId} className={cn(compact ? "t-statement-sm" : "t-statement", "text-foreground")}>
       {title}
       {titleAccent && (
@@ -106,7 +107,7 @@ export default function OfferBanner({ eyebrow, title, titleAccent, description, 
       {compact && (
         <div className="mb-8">
           {heading}
-          <p className="t-lead mt-4">{description}</p>
+          {description && <p className={cn("t-lead", heading && "mt-4")}>{description}</p>}
         </div>
       )}
       {priceBlock}
@@ -116,9 +117,11 @@ export default function OfferBanner({ eyebrow, title, titleAccent, description, 
   const ticketStub = (
     <div className="flex h-full flex-col justify-between gap-6 p-7 sm:p-8">
       <div>
-        <PrimaryAction href={primaryCta.href} className="w-full whitespace-normal text-center">
-          {primaryCta.label}
-        </PrimaryAction>
+        {primaryCta && (
+          <PrimaryAction href={primaryCta.href} className="w-full whitespace-normal text-center">
+            {primaryCta.label}
+          </PrimaryAction>
+        )}
         {riskReducer && (
           <Link href={riskReducer.href} className="link-quiet t-small mt-3 inline-flex min-h-11 items-center text-muted-foreground hover:text-foreground">
             {riskReducer.text}
@@ -139,7 +142,7 @@ export default function OfferBanner({ eyebrow, title, titleAccent, description, 
 
   if (compact) {
     return (
-      <BannerShell headingId={headingId} size="section" className={cn(SCOPE[scope], bg, className)}>
+      <BannerShell headingId={heading ? headingId : undefined} size="section" className={cn(SCOPE[scope], bg, className)}>
         <Ticket row main={ticketMain} stub={ticketStub} stubWidth="19rem" />
       </BannerShell>
     );
@@ -153,7 +156,7 @@ export default function OfferBanner({ eyebrow, title, titleAccent, description, 
         </Kicker>
       )}
       {heading}
-      <p className={cn("t-lead mt-8", centered && "mx-auto")}>{description}</p>
+      {description && <p className={cn("t-lead", heading && "mt-8", centered && "mx-auto")}>{description}</p>}
       {highlights && highlights.length > 0 && !centered && (
         <ul className="mt-10 space-y-3">
           {highlights.map((h) => (
@@ -168,7 +171,7 @@ export default function OfferBanner({ eyebrow, title, titleAccent, description, 
   );
 
   return (
-    <BannerShell headingId={headingId} className={cn(SCOPE[scope], bg, className)}>
+    <BannerShell headingId={heading ? headingId : undefined} className={cn(SCOPE[scope], bg, className)}>
       {centered ? (
         <>
           {intro}

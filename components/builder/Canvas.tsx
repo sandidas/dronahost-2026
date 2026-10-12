@@ -4,14 +4,11 @@ import { DragOverlay, useDraggable, useDroppable } from "@dnd-kit/core";
 import { ArrowDown, ArrowUp, Copy, GripVertical, Plus, Trash2 } from "lucide-react";
 import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
 import { BUILDER_TEXT } from "@/content/portal-strings";
-import ArticleLayout from "@/components/blog/ArticleLayout";
-import CenteredHero from "@/components/sections/CenteredHero";
+import BuilderPost from "@/components/blog/BuilderPost";
 import { blockDef, blockName } from "@/lib/builder/blocks";
-import { leadBlock, pageBands, pageFrame } from "@/lib/builder/doc";
+import { h1Block, pageBands, pageFrame } from "@/lib/builder/doc";
 import { fieldProblems } from "@/lib/builder/fields";
 import type { Block } from "@/lib/builder/model";
-import { docToc, readingMinutes } from "@/lib/builder/text";
-import { isSafeImageSrc } from "@/lib/editor/urls";
 import { templatesFor } from "@/lib/builder/templates";
 import { cn } from "@/utils/cn";
 import { CanvasFrame } from "./CanvasFrame";
@@ -21,8 +18,9 @@ import { useBuilder, useProblems, type Device } from "./store";
 
 const T = BUILDER_TEXT.ui;
 
-/** Which blocks get the muted band, worked out once for the whole page. */
-const BandsContext = createContext<Map<string, string>>(new Map());
+/** Worked out once for the whole page: which blocks get the light band, and which block holds the page's H1. */
+type PageLook = { bands: Map<string, string>; h1Id: string | null };
+const LookContext = createContext<PageLook>({ bands: new Map(), h1Id: null });
 
 /** Drop target id. `onDragEnd` in BuilderApp reads the index from the droppable's data. */
 export const dropId = (index: number) => `drop:${index}`;
@@ -197,14 +195,13 @@ function BlockFrame({ block }: { block: Block }) {
  * page shows nothing there).
  */
 function BlockView({ block }: { block: Block }) {
-  const kind = useBuilder((s) => s.kind);
-  const band = useContext(BandsContext).get(block.id);
+  const look = useContext(LookContext);
   const def = blockDef(block.type);
   const prepared = def?.prepare(block.props);
   if (def && prepared !== null && prepared !== undefined) {
     return (
       <div inert className="select-none">
-        {def.render(prepared, { kind, band, editing: true })}
+        {def.render(prepared, { band: look.bands.get(block.id), h1: look.h1Id === block.id, editing: true })}
       </div>
     );
   }
@@ -227,9 +224,8 @@ function BlockView({ block }: { block: Block }) {
 }
 
 function BlockBody({ block, selected }: { block: Block; selected: boolean }) {
-  const band = useContext(BandsContext).get(block.id);
   const Inline = INLINE[block.type];
-  return Inline ? <Inline block={block} selected={selected} band={band} /> : <BlockView block={block} />;
+  return Inline ? <Inline block={block} selected={selected} /> : <BlockView block={block} />;
 }
 
 /** On an empty page: pick a starting layout, or start blank. */
@@ -277,7 +273,7 @@ function TemplatePicker({ onBlank }: { onBlank: () => void }) {
   );
 }
 
-/** The post title, edited in place of the article's H1. */
+/** The post title, edited in place of the post's H1. */
 function TitleInput() {
   const kind = useBuilder((s) => s.kind);
   const title = useBuilder((s) => s.meta.title);
@@ -293,7 +289,7 @@ function TitleInput() {
       aria-label={T.page.title}
       rows={1}
       maxLength={200}
-      className="w-full resize-none bg-transparent outline-none [field-sizing:content] [font:inherit] [letter-spacing:inherit] placeholder:text-subtle-foreground"
+      className="w-full resize-none overflow-hidden bg-transparent outline-none [field-sizing:content] [font:inherit] [letter-spacing:inherit] placeholder:text-subtle-foreground"
     />
   );
 }
@@ -328,61 +324,42 @@ function RootBlocks() {
   );
 }
 
-/**
- * The page as visitors will see it, with editing on top: posts inside the real article layout (title, meta line,
- * featured image, contents, author), pages with the same title hero and bands as the public page.
- */
 /** Page widths the canvas lays out at; the frame is scaled to fit between the panels. */
 export const DEVICE_WIDTH: Record<Device, number> = { desktop: 1280, tablet: 820, phone: 390 };
 
+/**
+ * The page as visitors will see it, with editing on top. Posts and pages draw their blocks the same way: a post under
+ * its title (edited in place), as the blog prints it, and a page with nothing of its own above the blocks.
+ */
 export function Canvas({ onKeyDown }: { onKeyDown?: (e: KeyboardEvent) => void }) {
   const kind = useBuilder((s) => s.kind);
   const doc = useBuilder((s) => s.doc);
-  const meta = useBuilder((s) => s.meta);
   const canEdit = useBuilder((s) => s.canEdit);
   const select = useBuilder((s) => s.select);
   const set = useBuilder((s) => s.set);
-  const actorName = useBuilder((s) => s.actorName);
-  const bands = useMemo(() => pageBands(doc, kind), [doc, kind]);
-  const heroShows = leadBlock(doc, kind) !== null;
-  const dates = useBuilder((s) => s.dates);
+  const look = useMemo<PageLook>(() => ({ bands: pageBands(doc), h1Id: h1Block(doc, kind)?.id ?? null }), [doc, kind]);
   const device = useBuilder((s) => s.device);
   const dragLabel = useBuilder((s) => s.dragLabel);
+  // The same wrapper as the public page (space between sections from the Page tab).
+  const blocks = (
+    <div {...pageFrame(doc.settings)}>
+      <RootBlocks />
+    </div>
+  );
   return (
     <CanvasFrame width={DEVICE_WIDTH[device]} onKeyDown={onKeyDown}>
       {/* look-luxe: the same page look as the public layout (app/[locale]/(marketing)/layout.tsx), so sections match. */}
       <div role="region" aria-label={T.canvas.label} className="look-luxe min-h-screen bg-background text-foreground" onClick={() => select(null)} onMouseLeave={() => set({ hoverId: null })}>
         {!canEdit && <p className="border-b border-warning/40 bg-warning-surface px-4 py-2 text-sm text-foreground">{T.readOnly}</p>}
-        <BandsContext.Provider value={bands}>
+        <LookContext.Provider value={look}>
           {kind === "post" ? (
-            <ArticleLayout
-              inertChrome
-              titleSlot={<TitleInput />}
-              post={{
-                slug: meta.slug || "post",
-                title: meta.title || T.newTitle.post,
-                excerpt: meta.excerpt,
-                html: "",
-                body: <RootBlocks />,
-                toc: docToc(doc),
-                published: dates.published,
-                modified: dates.modified,
-                category: null,
-                author: { name: actorName, bio: null, avatar: null },
-                image: isSafeImageSrc(meta.coverImage) ? { url: meta.coverImage, alt: meta.coverImageAlt, width: 1200, height: 630 } : null,
-                readingMinutes: readingMinutes(doc),
-              }}
-            />
+            <BuilderPost title="" titleSlot={<TitleInput />}>
+              {blocks}
+            </BuilderPost>
           ) : (
-            <>
-              {!heroShows && <CenteredHero title={meta.title || T.newTitle.page} description={meta.excerpt} />}
-              {/* The same wrapper as the public page: content width and spacing from the Page tab. */}
-              <div {...pageFrame(doc.settings)}>
-                <RootBlocks />
-              </div>
-            </>
+            blocks
           )}
-        </BandsContext.Provider>
+        </LookContext.Provider>
         {/* Inside the frame, so the dragged chip follows the pointer in the frame's own coordinates. */}
         <DragOverlay dropAnimation={null}>{dragLabel ? <div className="inline-flex rounded-md bg-accent px-3 py-1.5 text-sm font-semibold text-accent-foreground shadow-lg">{dragLabel}</div> : null}</DragOverlay>
       </div>

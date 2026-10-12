@@ -46,9 +46,8 @@ function Shell({ actorName, embedded }: { actorName: string; embedded: boolean }
   const message = useBuilder((s) => s.message);
   const mobilePanel = useBuilder((s) => s.mobilePanel);
   const showProblems = useBuilder((s) => s.showProblems);
-  const kind = useBuilder((s) => s.kind);
   const docForChecks = useBuilder((s) => s.doc);
-  const problems = useMemo(() => (showProblems ? groupProblems(docForChecks, kind) : {}), [showProblems, docForChecks, kind]);
+  const problems = useMemo(() => (showProblems ? groupProblems(docForChecks) : {}), [showProblems, docForChecks]);
   const problemCount = Object.keys(problems).length;
   const set = useBuilder((s) => s.set);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));

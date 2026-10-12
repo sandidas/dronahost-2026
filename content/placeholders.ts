@@ -286,10 +286,10 @@ export const SAMPLE_PORTAL_ANNOUNCEMENTS: PortalAnnouncement[] = [
 
 /** A sample page for the page builder on /v2: text, a photo gallery with no pictures yet, then a call to action. */
 export const SAMPLE_PORTAL_BUILDER_DOC: import("@/lib/builder/model").BuilderDoc = {
-  version: 2,
-  settings: { width: "default", spacing: "normal" },
+  version: 3,
+  settings: { spacing: "normal" },
   blocks: [
-    { id: "bsampletxt1", type: "Text", props: { content: SAMPLE_PORTAL_DOC, width: "text" } },
+    { id: "bsampletxt1", type: "Text", props: { content: SAMPLE_PORTAL_DOC, width: "narrow" } },
     { id: "bsamplegal1", type: "Gallery", props: { title: "Sample gallery", images: [{}, {}, {}], layout: "grid", columns: 3, aspect: "square", gap: "medium", lightbox: true } },
     { id: "bsamplecta1", type: "CtaBand", props: { title: "Sample call to action", primaryCta: { label: "See the plans", href: "/pricing" } } },
   ],

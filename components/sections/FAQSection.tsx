@@ -8,7 +8,8 @@ export type FaqItem = { question: string; answer: string };
 
 type FAQSectionProps = {
   eyebrow?: string;
-  title: string;
+  /** Optional for the page builder, where nothing is required. */
+  title?: string;
   description?: string;
   items: readonly FaqItem[];
   /** Optional side panel (left on large screens), e.g. contact prompt. */
@@ -32,11 +33,11 @@ export default function FAQSection({ eyebrow, title, description, items, aside, 
   if (items.length === 0) return null;
 
   return (
-    <section aria-labelledby={headingId} className={cn("section-y", className)}>
+    <section aria-labelledby={title ? headingId : undefined} className={cn("section-y", className)}>
       <div className="container-site">
         <div className={cn(aside && "grid gap-12 lg:grid-cols-[1fr_1.6fr] lg:gap-16")}>
           <div>
-            <SectionHeader id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} align={aside ? "start" : "center"} />
+            {title && <SectionHeader id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} align={aside ? "start" : "center"} />}
             {aside && (
               <div className="surface mt-8 p-6">
                 <p className="t-h4 text-foreground">{aside.title}</p>

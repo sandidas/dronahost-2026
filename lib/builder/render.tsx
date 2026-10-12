@@ -5,7 +5,7 @@ import { renderTiptapHtml } from "@/lib/editor/render";
 import type { TiptapDoc } from "@/lib/editor/schema";
 import { blockDef } from "./blocks";
 import type { RenderCtx } from "./blocks/types";
-import { docText, leadBlock, pageBands, pageFrame } from "./doc";
+import { docText, h1Block, pageBands, pageFrame } from "./doc";
 import type { BuilderDoc, PostKind } from "./model";
 
 /**
@@ -14,9 +14,12 @@ import type { BuilderDoc, PostKind } from "./model";
  * sanitised here; everything else is escaped by React.
  */
 
-export type RenderedDoc = { body: ReactNode; toc: TocItem[]; text: string; hasHero: boolean };
+export type RenderedDoc = { body: ReactNode; toc: TocItem[]; text: string };
 
-/** Posts render inside the article layout (the post title is the H1); pages render full width with alternating bands. */
+/**
+ * The blocks of a post or a page, drawn the same way. Only the H1 differs, because the routes differ: the blog prints
+ * the post title as the H1 above the blocks, while a page prints nothing of its own, so its first hero is the H1.
+ */
 export function renderBuilderDoc(doc: BuilderDoc, kind: PostKind): RenderedDoc {
   const used = new Map<string, number>();
   const toc: TocItem[] = [];
@@ -25,19 +28,16 @@ export function renderBuilderDoc(doc: BuilderDoc, kind: PostKind): RenderedDoc {
     toc.push(...res.toc);
     return res.html;
   };
-  const bands = pageBands(doc, kind);
+  const bands = pageBands(doc);
+  const lead = h1Block(doc, kind);
   const nodes = doc.blocks.map((block) => {
     const def = blockDef(block.type);
     const prepared = def?.prepare(block.props ?? {});
     if (!def || prepared === null || prepared === undefined) return null;
-    const ctx: RenderCtx = { kind, band: bands.get(block.id), editing: false, richHtml };
+    const ctx: RenderCtx = { band: bands.get(block.id), h1: block === lead, editing: false, richHtml };
     return <Fragment key={block.id}>{def.render(prepared, ctx)}</Fragment>;
   });
-  // The page keeps one H1: the hero's when it shows, otherwise the page title (rendered by the route).
-  const hasHero = leadBlock(doc, kind) !== null;
-  // One wrapper carries the page settings (width, spacing) and keeps the site's position-based bands
-  // (`.look-luxe > section:nth-of-type(even)`) off, so the builder's own bands (pageBands) are in charge, as on the canvas.
-  return { body: kind === "page" ? <div {...pageFrame(doc.settings)}>{nodes}</div> : <>{nodes}</>, toc, text: docText(doc), hasHero };
+  return { body: <div {...pageFrame(doc.settings)}>{nodes}</div>, toc, text: docText(doc) };
 }
 
 export { readingMinutesOf } from "./doc";

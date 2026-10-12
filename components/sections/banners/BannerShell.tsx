@@ -13,7 +13,8 @@ export type BannerScope = "page" | "ink" | "paper";
 export const SCOPE: Record<BannerScope, string> = { page: "", ink: "dark", paper: "light" };
 
 type BannerShellProps = {
-  headingId: string;
+  /** The heading that names the band. Leave it out when the banner shows no heading. */
+  headingId?: string;
   /** Background and scope classes for the band. Each banner brings its own art. */
   className?: string;
   /** hero (large), section or none (the banner sets its own padding). */

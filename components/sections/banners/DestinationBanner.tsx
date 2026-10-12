@@ -20,8 +20,8 @@ export type Destination = {
 
 export type DestinationBannerProps = {
   eyebrow?: string;
-  /** "Looking for something?" style heading. */
-  title: string;
+  /** "Looking for something?" style heading. Optional for the page builder, where nothing is required. */
+  title?: string;
   intro?: string;
   /** Two to six destinations, each a single link target. */
   items: readonly Destination[];
@@ -175,7 +175,7 @@ export default function DestinationBanner({
 
   return (
     <BannerShell
-      headingId={headingId}
+      headingId={title ? headingId : undefined}
       size="section"
       className={cn("bg-background", className)}
       art={art}
@@ -184,9 +184,11 @@ export default function DestinationBanner({
         <>
           <div className="max-w-3xl">
             {eyebrow && <Kicker className="mb-6">{eyebrow}</Kicker>}
-            <Heading id={headingId} className="t-statement-sm text-foreground">
-              {title}
-            </Heading>
+            {title && (
+              <Heading id={headingId} className="t-statement-sm text-foreground">
+                {title}
+              </Heading>
+            )}
             {intro && <p className="t-lead mt-5">{intro}</p>}
           </div>
           <div className="mt-12">{tiles}</div>
@@ -206,9 +208,11 @@ export default function DestinationBanner({
                 {eyebrow}
               </Kicker>
             )}
-            <Heading id={headingId} className="t-statement-sm text-foreground">
-              {title}
-            </Heading>
+            {title && (
+              <Heading id={headingId} className="t-statement-sm text-foreground">
+                {title}
+              </Heading>
+            )}
             {intro && (
               <p className={cn("t-lead mt-5", !split && "mx-auto")}>{intro}</p>
             )}

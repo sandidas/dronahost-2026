@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ArticleLayout from "@/components/blog/ArticleLayout";
+import BuilderPost from "@/components/blog/BuilderPost";
 import JsonLd from "@/components/sections/JsonLd";
 import ResourceGrid from "@/components/sections/ResourceGrid";
 import { getPost, listSlugs, relatedPosts } from "@/lib/blog";
@@ -46,7 +47,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   // A source outage throws to blog/[slug]/error.tsx; a missing post is a real 404.
   const post = await getPost(slug);
   if (!post) notFound();
-  const related = await relatedPosts(post);
+  // Posts made in the page builder print their title and their blocks, nothing else.
+  const related = post.body ? [] : await relatedPosts(post);
 
   return (
     <>
@@ -65,13 +67,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           ...(post.faqSchema ? [post.faqSchema] : []),
         ]}
       />
-      <ArticleLayout post={post} />
-      <ResourceGrid
-        eyebrow="Keep reading"
-        title="Related articles"
-        headingLevel="h2"
-        posts={related.map((p) => ({ title: p.title, description: p.excerpt, href: `/blog/${p.slug}`, category: p.category?.name, readTime: `${p.readingMinutes} min read`, date: p.published.slice(0, 10) }))}
-      />
+      {post.body ? (
+        <BuilderPost title={post.title}>{post.body}</BuilderPost>
+      ) : (
+        <>
+          <ArticleLayout post={post} />
+          <ResourceGrid
+            eyebrow="Keep reading"
+            title="Related articles"
+            headingLevel="h2"
+            posts={related.map((p) => ({ title: p.title, description: p.excerpt, href: `/blog/${p.slug}`, category: p.category?.name, readTime: `${p.readingMinutes} min read`, date: p.published.slice(0, 10) }))}
+          />
+        </>
+      )}
     </>
   );
 }

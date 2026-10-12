@@ -8,7 +8,8 @@ import { youtubeId } from "./model";
  * Block fields: one list per block (lib/builder/blocks) drives everything about its props.
  *
  *   propsSchema    what may be stored (sizes and shapes only, so a half-written draft always saves);
- *   fieldProblems  what a person must finish before publishing (a required field, a bad link, an image without alt text);
+ *   fieldProblems  what would break on the live page (a link or address that cannot work). No field is required: a
+ *                  block shows whatever has been filled in, and an empty field is simply left out;
  *   the Block panel (components/builder/FieldControl.tsx) draws one control per field.
  *
  * The cleaning helpers below (text, link, image, ...) are what blocks use to prepare their props for display, so the
@@ -18,19 +19,19 @@ import { youtubeId } from "./model";
 type Base = { key: string; label: string; help?: string };
 
 export type Field =
-  | (Base & { kind: "text"; max: number; required?: boolean; format?: "youtube" | "href" })
-  | (Base & { kind: "textarea"; max: number; required?: boolean })
+  | (Base & { kind: "text"; max: number; format?: "youtube" | "href" })
+  | (Base & { kind: "textarea"; max: number; rows?: number; code?: boolean })
   | (Base & { kind: "select"; options: readonly { value: string | number; label: string }[] })
   | (Base & { kind: "toggle" })
   /** Stored as { src, alt }. The alt text is asked for with the image. */
-  | (Base & { kind: "image"; required?: boolean })
+  | (Base & { kind: "image" })
   /** A button or link, stored as { label, href }. */
-  | (Base & { kind: "link"; required?: boolean })
-  | (Base & { kind: "strings"; max: number; itemMax: number; required?: boolean })
-  /** Repeated items (cards, questions, images). `required`: at least one complete item. */
-  | (Base & { kind: "list"; max: number; itemTitle: string; item: readonly Field[]; empty: () => Record<string, unknown>; required?: boolean })
+  | (Base & { kind: "link" })
+  | (Base & { kind: "strings"; max: number; itemMax: number })
+  /** Repeated items (cards, questions, images). An item shows once anything in it is filled in. */
+  | (Base & { kind: "list"; max: number; itemTitle: string; item: readonly Field[]; empty: () => Record<string, unknown> })
   /** Formatted text, written on the canvas itself rather than in the Block panel. */
-  | (Base & { kind: "richtext"; required?: boolean });
+  | (Base & { kind: "richtext" });
 
 export type Props = Record<string, unknown>;
 export type Cta = { label: string; href: string };
@@ -75,7 +76,7 @@ function formatOk(field: Extract<Field, { kind: "text" }>, v: string | undefined
   return true;
 }
 
-/** Whether a field holds something that will show. Used for required fields and to decide which list items are complete. */
+/** Whether a field holds something that will show. A list item shows when any of its fields does. */
 function filled(field: Field, v: unknown): boolean {
   switch (field.kind) {
     case "text":
@@ -83,7 +84,7 @@ function filled(field: Field, v: unknown): boolean {
     case "textarea":
       return Boolean(text(v));
     case "image":
-      return Boolean(image(v)?.alt);
+      return Boolean(image(v));
     case "link":
       return Boolean(link(v));
     case "strings":
@@ -98,11 +99,17 @@ function filled(field: Field, v: unknown): boolean {
   }
 }
 
-/** The items of a list whose required fields are all filled in. Incomplete items are left off the page. */
+/** The items of a list with something to show. Items nobody has filled in are left off the page. */
 export function completeItems(field: Extract<Field, { kind: "list" }>, v: unknown): Props[] {
   if (!Array.isArray(v)) return [];
-  return v.filter((item): item is Props => Boolean(item) && typeof item === "object" && field.item.every((f) => !("required" in f && f.required) || filled(f, (item as Props)[f.key])));
+  return v.filter((item): item is Props => Boolean(item) && typeof item === "object" && field.item.some((f) => f.kind !== "select" && f.kind !== "toggle" && filled(f, (item as Props)[f.key])));
 }
+
+/** Whether anything in the props will show: a block with nothing filled in shows nothing on the public page. */
+export const hasContent = (fields: readonly Field[], props: unknown): boolean => {
+  const p = (props && typeof props === "object" ? props : {}) as Props;
+  return fields.some((f) => f.kind !== "select" && f.kind !== "toggle" && filled(f, p[f.key]));
+};
 
 // ─── What may be stored ───────────────────────────────────────────────────────
 
@@ -141,7 +148,7 @@ export function propsSchema(fields: readonly Field[]): z.ZodObject {
   return z.strictObject(Object.fromEntries(fields.map((f) => [f.key, fieldSchema(f).optional()])));
 }
 
-// ─── What to finish before publishing ─────────────────────────────────────────
+// ─── What would break on the live page ────────────────────────────────────────
 
 const P = BUILDER_PROBLEMS.section;
 
@@ -172,46 +179,32 @@ function typed(field: Field, v: unknown): boolean {
   }
 }
 
-/** Everything that would be missing or left out on the live page, in the words of the Block panel. */
+/**
+ * What would not work on the live page, in the words of the Block panel: a link, image or video address that was typed
+ * but cannot be used (it would silently disappear). Empty fields are never a problem.
+ */
 export function fieldProblems(fields: readonly Field[], props: unknown, prefix = ""): string[] {
   const p = (props && typeof props === "object" ? props : {}) as Props;
   const out: string[] = [];
   for (const field of fields) {
     const v = p[field.key];
     const label = prefix ? `${prefix}: ${field.label}` : field.label;
-    const required = "required" in field && field.required === true;
     switch (field.kind) {
       case "link":
         if (started(v) && !link(v)) out.push(P.badLink(label));
-        else if (required && !link(v)) out.push(P.missing(label));
         break;
-      case "image": {
-        const src = text((v as Partial<Img> | undefined)?.src);
-        if (src && !image(v)) out.push(P.badImage(label));
-        else if (src && !text((v as Partial<Img>).alt)) out.push(P.imageAlt(label));
-        else if (required && !src) out.push(P.missing(label));
+      case "image":
+        if (text((v as Partial<Img> | undefined)?.src) && !image(v)) out.push(P.badImage(label));
         break;
-      }
       case "text":
         if (text(v) && !formatOk(field, text(v))) out.push(field.format === "youtube" ? P.badVideo(label) : P.badHref(label));
-        else if (required && !filled(field, v)) out.push(P.missing(label));
         break;
-      case "list": {
-        const items = Array.isArray(v) ? v : [];
-        items.forEach((item, i) => {
-          const name = `${field.itemTitle} ${i + 1}`;
-          const inner = fieldProblems(field.item, item, name);
-          // An item nobody has started is ignored; a started one names what it still needs.
-          if (field.item.some((f) => typed(f, (item as Props | undefined)?.[f.key]))) out.push(...inner);
+      case "list":
+        (Array.isArray(v) ? v : []).forEach((item, i) => {
+          // An item nobody has started is ignored.
+          if (field.item.some((f) => typed(f, (item as Props | undefined)?.[f.key]))) out.push(...fieldProblems(field.item, item, `${field.itemTitle} ${i + 1}`));
         });
-        if (required && !filled(field, v)) out.push(P.noItems(label));
         break;
-      }
-      case "strings":
-        if (required && !filled(field, v)) out.push(P.noItems(label));
-        break;
-      default:
-        if (required && !filled(field, v)) out.push(P.missing(label));
     }
   }
   return out;

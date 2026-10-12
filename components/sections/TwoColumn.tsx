@@ -8,7 +8,8 @@ type CtaItem = { label: string; href: string; variant?: "primary" | "secondary" 
 
 type TwoColumnProps = {
   eyebrow?: string;
-  title: string;
+  /** Optional for the page builder, where nothing is required. */
+  title?: string;
   /** Answer-first summary under the title. */
   description?: string;
   features?: readonly string[];
@@ -42,14 +43,16 @@ export default function TwoColumn({
   const visualFirst = visualPosition === "left";
 
   return (
-    <section aria-labelledby={headingId} className={cn("section-y", className)}>
+    <section aria-labelledby={title ? headingId : undefined} className={cn("section-y", className)}>
       <div className="container-site grid items-center gap-10 lg:grid-cols-2 lg:gap-20">
         <div className={cn("min-w-0", visualFirst && "lg:order-2")} {...reveal(0)}>
           {eyebrow && <p className="t-eyebrow">{eyebrow}</p>}
-          <Heading id={headingId} className={cn("t-h2 text-foreground", eyebrow && "mt-3")}>
-            {title}
-          </Heading>
-          {description && <p className="t-lead mt-4">{description}</p>}
+          {title && (
+            <Heading id={headingId} className={cn("t-h2 text-foreground", eyebrow && "mt-3")}>
+              {title}
+            </Heading>
+          )}
+          {description && <p className={cn("t-lead", (title || eyebrow) && "mt-4")}>{description}</p>}
 
           {features.length > 0 && (
             <ul className="mt-6 space-y-3">

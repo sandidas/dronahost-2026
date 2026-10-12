@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
-import CenteredHero from "@/components/sections/CenteredHero";
 import JsonLd from "@/components/sections/JsonLd";
 import { getPublishedPage, listPublishedPageSlugs } from "@/lib/builder/pages";
 import { renderBuilderDoc } from "@/lib/builder/render";
@@ -15,6 +14,7 @@ import "@/app/styles/rich-content.css";
 /**
  * Pages made in the page builder (/dashboard/posts, kind "page"). Every hand-built route wins over this one, and the
  * editor refuses slugs those routes use (lib/builder/reserved.ts). Publishing refreshes this route straight away.
+ * The page prints only its blocks: the title and summary are for lists, the browser tab and search results.
  */
 export const revalidate = 3600;
 
@@ -41,13 +41,11 @@ export default async function BuilderPage({ params }: Params) {
   setRequestLocale(locale);
   const page = await getPublishedPage(slug);
   if (!page) notFound();
-  const { body, hasHero } = renderBuilderDoc(page.content, "page");
+  const { body } = renderBuilderDoc(page.content, "page");
   const faq = builderFaqSchema(page.content, page.seo);
   return (
     <>
       <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs(`/${page.slug}`, { [page.slug]: page.title })), ...(faq ? [faq] : [])]} />
-      {/* The page keeps exactly one H1: the hero's when the page starts with one, otherwise the page title. */}
-      {!hasHero && <CenteredHero title={page.title} description={page.excerpt} />}
       {body}
     </>
   );

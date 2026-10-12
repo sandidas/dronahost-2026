@@ -1,7 +1,7 @@
 import { FEATURE_LIBRARY } from "@/lib/content/features";
 import type { TiptapDoc, TiptapNode } from "@/lib/editor/schema";
 import { blockDef } from "./blocks";
-import { DEFAULT_SETTINGS, EMPTY_BUILDER_DOC, isBuilderDoc, newBlockId, PAGE_SPACINGS, PAGE_WIDTHS, type Block, type BuilderDoc } from "./model";
+import { DEFAULT_SETTINGS, DOC_VERSION, EMPTY_BUILDER_DOC, isBuilderDoc, newBlockId, PAGE_SPACINGS, type Block, type BuilderDoc } from "./model";
 
 /**
  * Reads any stored content as a current builder document. Every place that loads a post or page (the editor, the
@@ -13,6 +13,9 @@ import { DEFAULT_SETTINGS, EMPTY_BUILDER_DOC, isBuilderDoc, newBlockId, PAGE_SPA
  *   headings and text becomes one Text block, with images and videos as their own blocks in the same order.
  * - Sections from the very first builder version, which used the site's page-spec registry, become the builder's own
  *   sections with the same words.
+ * - Version 2 documents had a page width setting, a hero with an optional picture, one offer banner with a layout
+ *   choice and an action band with three looks. Version 3 has none of those: the hero is the centred hero, each offer
+ *   layout is its own block, the action band is the split one, and text, image and video choose their own width.
  */
 
 type Old = Record<string, unknown>;
@@ -106,11 +109,32 @@ function fromV1Root(root: Old): Block[] {
   return [{ id: id(root.id), type: next.type, props: compact(next.content) }];
 }
 
+/** Version 2 block types and widths in version 3 terms. */
+const V2_TYPES: Record<string, (props: Old) => string> = { Hero: () => "CenteredHero", OfferBanner: (p) => (p.layout === "centered" ? "OfferCentered" : "OfferSplit") };
+const V2_WIDTHS: Record<string, string> = { text: "narrow", wide: "site" };
+
+/** A version 2 block in version 3: renamed where its type changed, and only the props its block still has. */
+function fromV2Block(raw: Old): Old {
+  const props = obj(raw.props);
+  const type = typeof raw.type === "string" ? (V2_TYPES[raw.type]?.(props) ?? raw.type) : "";
+  const def = blockDef(type);
+  if (!def) return { ...raw, type };
+  const next = { ...props, ...(typeof props.width === "string" && V2_WIDTHS[props.width] ? { width: V2_WIDTHS[props.width] } : {}) };
+  const keys = new Set(def.fields.map((f) => f.key));
+  return { id: raw.id, type, props: Object.fromEntries(Object.entries(next).filter(([k]) => keys.has(k))) };
+}
+
 /** Any stored or submitted document in the current shape (not yet checked: parseBuilderDoc does that). */
 export function upgradeDoc(raw: unknown): unknown {
   if (!isBuilderDoc(raw)) return raw;
-  if (raw.version === 2) return raw;
-  return { version: 2, settings: DEFAULT_SETTINGS, blocks: (raw.blocks as Old[]).flatMap((b) => fromV1Root(obj(b))) };
+  if (raw.version === DOC_VERSION) return raw;
+  const v2 = raw.version === 2 ? obj(raw) : { blocks: (raw.blocks as Old[]).flatMap((b) => fromV1Root(obj(b))) };
+  const spacing = obj(v2.settings).spacing;
+  return {
+    version: DOC_VERSION,
+    settings: { spacing: (PAGE_SPACINGS as readonly unknown[]).includes(spacing) ? spacing : DEFAULT_SETTINGS.spacing },
+    blocks: (Array.isArray(v2.blocks) ? (v2.blocks as Old[]) : []).map((b) => fromV2Block(obj(b))),
+  };
 }
 
 /** Stored content, whatever its age, as a document the editor and the renderer can use. Unknown blocks are left out. */
@@ -119,16 +143,13 @@ export function toBuilderDoc(content: unknown): BuilderDoc {
     const doc = obj(upgradeDoc(content));
     const settings = obj(doc.settings);
     return {
-      version: 2,
-      settings: {
-        width: (PAGE_WIDTHS as readonly unknown[]).includes(settings.width) ? (settings.width as BuilderDoc["settings"]["width"]) : DEFAULT_SETTINGS.width,
-        spacing: (PAGE_SPACINGS as readonly unknown[]).includes(settings.spacing) ? (settings.spacing as BuilderDoc["settings"]["spacing"]) : DEFAULT_SETTINGS.spacing,
-      },
+      version: DOC_VERSION,
+      settings: { spacing: (PAGE_SPACINGS as readonly unknown[]).includes(settings.spacing) ? (settings.spacing as BuilderDoc["settings"]["spacing"]) : DEFAULT_SETTINGS.spacing },
       blocks: (Array.isArray(doc.blocks) ? (doc.blocks as Old[]) : []).flatMap((b) => (typeof b.type === "string" && blockDef(b.type) ? [{ id: id(b.id), type: b.type, props: obj(b.props) }] : [])),
     };
   }
   const isTiptap = typeof content === "object" && content !== null && (content as { type?: unknown }).type === "doc";
   const isHtml = typeof content === "string" && content.trim().length > 0;
   if (!isTiptap && !isHtml) return EMPTY_BUILDER_DOC;
-  return { ...EMPTY_BUILDER_DOC, blocks: [{ id: newBlockId(), type: "Text", props: { content: content as TiptapDoc | string, width: "text" } }] };
+  return { ...EMPTY_BUILDER_DOC, blocks: [{ id: newBlockId(), type: "Text", props: { content: content as TiptapDoc | string, width: "narrow" } }] };
 }

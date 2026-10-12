@@ -66,7 +66,7 @@ export function parsePostInput(raw: unknown, kind: PostKind): Result<PostInput> 
     const fieldErrors = fieldErrorsFrom(parsed.error.issues);
     return fail(Object.values(fieldErrors)[0] ?? PORTAL_ERRORS.generic, fieldErrors);
   }
-  const doc = parseBuilderDoc(parsed.data.content, kind);
+  const doc = parseBuilderDoc(parsed.data.content);
   if (!doc.ok) return fail(doc.error, { content: doc.error });
   const slug = parsed.data.slug || slugify(parsed.data.title);
   if (!SLUG_PATTERN.test(slug)) return fail(PORTAL_ERRORS.slug, { slug: PORTAL_ERRORS.slug });

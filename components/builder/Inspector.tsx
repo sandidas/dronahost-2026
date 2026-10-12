@@ -7,7 +7,7 @@ import { errorClass, helpClass, inputClass, labelClass } from "@/components/port
 import { BUILDER_TEXT } from "@/content/portal-strings";
 import { blockDef, blockName } from "@/lib/builder/blocks";
 import { docHeadings, findBlock } from "@/lib/builder/doc";
-import { PAGE_SPACINGS, PAGE_WIDTHS, type PageSettings } from "@/lib/builder/model";
+import { PAGE_SPACINGS, type PageSettings } from "@/lib/builder/model";
 import { faqEntries, seoChecks } from "@/lib/builder/seo";
 import { suggestDescription, suggestKeyword, suggestSlug, suggestTitle } from "@/lib/builder/seo-generate";
 import { isSafeImageSrc } from "@/lib/editor/urls";
@@ -57,9 +57,10 @@ function BlockTab() {
       </Section>
       <Section>
         {def?.fields.length === 0 && <p className="text-sm text-muted-foreground">{T.block.noSettings}</p>}
-        {def?.fields.map((field) => (
+        {/* Rich text is written on the canvas: one hint for the block, however many text areas it has. */}
+        {def?.fields.map((field, i) => (field.kind === "richtext" && def.fields.findIndex((f) => f.kind === "richtext") !== i ? null : (
           <FieldControl key={`${block.id}-${field.key}`} field={field} data={block.props} readOnly={!canEdit} uploadEnabled={uploadEnabled} onChange={(next) => update(block.id, () => next)} />
-        ))}
+        )))}
       </Section>
     </>
   );
@@ -160,20 +161,16 @@ function Choice<V extends string>({ label, help, value, values, labels, onChange
   );
 }
 
-/** Page settings that apply to every block: the content width (Tailwind sizes) and the space between sections. */
+/**
+ * The one page-wide setting: the space between sections. The width is not a page setting: the blog and the page route
+ * set the frame, and each content block chooses its own width in the Block panel.
+ */
 function LayoutSettings() {
-  const kind = useBuilder((s) => s.kind);
   const settings = useBuilder((s) => s.doc.settings);
   const canEdit = useBuilder((s) => s.canEdit);
   const setSettings = useBuilder((s) => s.setSettings);
   const P = T.page;
-  if (kind !== "page") return <p className="text-sm text-muted-foreground">{P.postLayout}</p>;
-  return (
-    <>
-      <Choice<PageSettings["width"]> label={P.width} help={P.layoutHelp} value={settings.width} values={PAGE_WIDTHS} labels={P.widths} onChange={(width) => setSettings({ width })} readOnly={!canEdit} />
-      <Choice<PageSettings["spacing"]> label={P.spacing} value={settings.spacing} values={PAGE_SPACINGS} labels={P.spacings} onChange={(spacing) => setSettings({ spacing })} readOnly={!canEdit} />
-    </>
-  );
+  return <Choice<PageSettings["spacing"]> label={P.spacing} help={P.spacingHelp} value={settings.spacing} values={PAGE_SPACINGS} labels={P.spacings} onChange={(spacing) => setSettings({ spacing })} readOnly={!canEdit} />;
 }
 
 function ProblemList() {

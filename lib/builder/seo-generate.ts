@@ -1,5 +1,5 @@
 import { slugify } from "@/lib/portal/slug";
-import { blockText, docHeadings, leadBlock } from "./doc";
+import { blockText, docHeadings } from "./doc";
 import type { BuilderDoc, PostKind } from "./model";
 import { SEO_LIMITS } from "./seo";
 
@@ -29,9 +29,10 @@ function cut(s: string, max: number): string {
   return t.slice(0, at > max * 0.6 ? at : max).replace(/[\s,;:–—-]+$/, "");
 }
 
-/** The headline a visitor sees: the hero's H1 on a page that has one, otherwise the title. */
+/** The headline a visitor sees: the page's H1 (a post's title, a page's first hero), otherwise the title. */
 function headline({ doc, kind, title }: Input): string {
-  return (leadBlock(doc, kind) ? docHeadings(doc, title, kind)[0]?.text : undefined)?.trim() || title.trim();
+  const h1 = docHeadings(doc, title, kind).find((h) => h.level === 1);
+  return h1?.text.trim() || title.trim();
 }
 
 /** The page's words, headline and headings counted three times (they say what the page is about). */

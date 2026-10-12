@@ -73,7 +73,8 @@
     color: var(--foreground);
     line-height: 1.7;
   }
-  /* Page builder bands: every second section on a builder page (lib/builder/doc.ts pageBands). The same light
+  /* Page builder bands: every second section on a builder page or post (lib/builder/doc.ts pageBands), and the
+     "Light and dots" background a content block can choose. The same light
      and dot texture as the hand-built pages' alternate sections (app/styles/look-luxe.css), set by class so the editor
      canvas and the public page match. */
   .builder-band {
@@ -87,8 +88,8 @@
       28px 28px;
   }
 
-  /* Builder page settings (Page tab, Layout; lib/builder/doc.ts pageFrame): the content width is set through
-     --container-max on the wrapper, the space between sections here. "normal" keeps the site's own rhythm. */
+  /* Builder page setting (Page tab, Layout; lib/builder/doc.ts pageFrame): the space between sections. "normal" keeps
+     the site's own rhythm. A content block's own spacing (Block panel) replaces it for that block. */
   .builder-page[data-spacing="compact"] .section-y {
     padding-block: clamp(2rem, 1.5rem + 1.5vw, 3rem);
   }
@@ -100,16 +101,6 @@
      and `zoom` brings these back to their normal size (components/builder/CanvasFrame.tsx sets --canvas-zoom). */
   .builder-ui {
     zoom: var(--canvas-zoom, 1);
-  }
-
-  /* A full section inside a post's text column (components/builder/layout.tsx SectionFrame): the column already
-     has the page gutter and rhythm, so the section drops its own container padding and uses tighter spacing. */
-  .builder-in-post .container-site {
-    max-width: none;
-    padding-inline: 0;
-  }
-  .builder-in-post .section-y {
-    padding-block: 2.5rem;
   }
 
   /* The page builder canvas: the text sits in the page like the published article, without a frame. */

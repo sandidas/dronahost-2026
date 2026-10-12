@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { EDITOR_TEXT } from "@/content/portal-strings";
-import type { RenderCtx } from "@/lib/builder/blocks/types";
-import { youtubeEmbedSrc } from "@/lib/builder/model";
+import type { Frame } from "@/lib/builder/blocks/frame";
+import { BAND_CLASS, youtubeEmbedSrc } from "@/lib/builder/model";
 import { cn } from "@/utils/cn";
 
 /**
@@ -9,21 +9,23 @@ import { cn } from "@/utils/cn";
  * backgrounds match exactly on both.
  */
 
-/** Text and media blocks: a band of the page (pages), or a run of the post's text column (posts). */
-export function BlockShell({ ctx, width = "wide", article = false, children }: { ctx: RenderCtx; width?: "text" | "wide"; article?: boolean; children: ReactNode }) {
-  if (ctx.kind === "post") return <div className={cn(article ? "article max-w-none [&>:first-child]:mt-0" : "my-8")}>{children}</div>;
+const WIDTH: Record<Frame["width"], string> = { site: "container-site", narrow: "container-site max-w-3xl", full: "px-[var(--gutter)]" };
+const PADDING: Record<Frame["padding"], string> = { normal: "section-y", none: "", small: "py-6 sm:py-8", large: "py-20 sm:py-28 lg:py-32" };
+// `dark` switches the tokens to the dark theme (the same ink as the site's navy bands), so every colour pair stays checked.
+const BACKGROUND: Record<Frame["background"], string> = { default: "", muted: "border-y border-border bg-muted", texture: BAND_CLASS, dark: "dark bg-background text-foreground" };
+
+/**
+ * A content block (text, two columns, image, video, code) as a band of the page: the width, spacing and background
+ * chosen in the Block panel. `article` gives rich text the site's article typography, filling the chosen width.
+ */
+export function BlockShell({ frame, article = false, children }: { frame: Frame; article?: boolean; children: ReactNode }) {
   return (
-    <section className={cn("section-y", ctx.band)}>
-      <div className="container-site">
-        <div className={cn(article && "article [&>:first-child]:mt-0", width === "text" ? "mx-auto max-w-3xl" : "max-w-none")}>{children}</div>
+    <section className={cn(PADDING[frame.padding], BACKGROUND[frame.background])}>
+      <div className={WIDTH[frame.width]}>
+        <div className={cn(article && "article max-w-none [&>:first-child]:mt-0")}>{children}</div>
       </div>
     </section>
   );
-}
-
-/** A full section (hero, banner, FAQ, ...) inside a post's text column: spacing and padding fitted to the column. */
-export function SectionFrame({ ctx, children }: { ctx: RenderCtx; children: ReactNode }) {
-  return ctx.kind === "post" ? <div className="builder-in-post my-10">{children}</div> : <>{children}</>;
 }
 
 /** Sanitised rich text. `contents` keeps the article's spacing rules (`.article p`, `.article h2`) on the inner elements. */

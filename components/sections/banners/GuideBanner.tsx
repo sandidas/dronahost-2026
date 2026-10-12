@@ -12,9 +12,10 @@ import BannerShell, {
 
 export type GuideBannerProps = {
   eyebrow?: string;
-  title: string;
+  /** Optional for the page builder, where nothing is required. */
+  title?: string;
   /** Two or three sentences on what the guide covers and who it is for. */
-  summary: string;
+  summary?: string;
   meta?: { readingTime?: string; updatedOn?: string; reviewer?: string };
   /** Three to five outcomes the reader will have at the end: the stops on the route. */
   learn: readonly string[];
@@ -159,7 +160,7 @@ export default function GuideBanner({
 
   return (
     <BannerShell
-      headingId={headingId}
+      headingId={title ? headingId : undefined}
       className={cn(
         SCOPE[scope],
         ink ? "band-ink" : "bg-background",
@@ -175,13 +176,15 @@ export default function GuideBanner({
       >
         <div className="min-w-0">
           {eyebrow && <Kicker className="mb-7">{eyebrow}</Kicker>}
-          <Heading
-            id={headingId}
-            className="t-statement max-w-4xl text-foreground"
-          >
-            {title}
-          </Heading>
-          <p className="t-lead mt-7 max-w-[58ch]">{summary}</p>
+          {title && (
+            <Heading
+              id={headingId}
+              className="t-statement max-w-4xl text-foreground"
+            >
+              {title}
+            </Heading>
+          )}
+          {summary && <p className={cn("t-lead max-w-[58ch]", title && "mt-7")}>{summary}</p>}
           {sign}
           {cta && (
             <QuietLink href={cta.href} className="mt-6">
@@ -189,7 +192,7 @@ export default function GuideBanner({
             </QuietLink>
           )}
         </div>
-        <div className={cn(vertical && "lg:self-center")}>{route}</div>
+        {stops > 0 && <div className={cn(vertical && "lg:self-center")}>{route}</div>}
       </div>
     </BannerShell>
   );

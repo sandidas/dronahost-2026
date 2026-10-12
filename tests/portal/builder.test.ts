@@ -27,8 +27,8 @@ const STAFF = { id: "65f000000000000000000002", email: "staff@example.com", name
 const para = (text: string) => ({ type: "doc" as const, content: [{ type: "paragraph" as const, content: [{ type: "text" as const, text }] }] });
 const withHeading = (h: string, text: string) => ({ type: "doc" as const, content: [{ type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: h }] }, ...para(text).content] });
 const block = (type: string, props: Record<string, unknown>, id = `b${type.toLowerCase().padEnd(9, "0").slice(0, 9)}`): Block => ({ id, type, props });
-const textBlock = (id: string, text: string): Block => ({ id, type: "Text", props: { content: para(text), width: "text" } });
-const docOf = (...list: Block[]): BuilderDoc => ({ version: 2, settings: { width: "default", spacing: "normal" }, blocks: list });
+const textBlock = (id: string, text: string): Block => ({ id, type: "Text", props: { content: para(text), width: "narrow" } });
+const docOf = (...list: Block[]): BuilderDoc => ({ version: 3, settings: { spacing: "normal" }, blocks: list });
 
 const validCta = { title: "Ready to move your site?", primaryCta: { label: "See the plans", href: "/pricing" } };
 const validFaq = {
@@ -78,20 +78,31 @@ describe("block registry", () => {
     }
   });
 
-  it("a new block starts empty: it shows nothing, saves as a draft and says what to fill in", () => {
+  it("a new block starts empty: it shows nothing, saves, and nothing in it has to be filled in", () => {
     for (const def of blocks.BLOCKS) {
       const fresh = blocks.createBlock(def.type)!;
       assert.equal(blocks.prepareBlock(fresh), null, def.type);
-      assert.ok(problemsOf(fresh).length > 0, def.type);
-      assert.ok(validate.parseBuilderDoc(docOf(fresh), "page").ok, `${def.type} saves as a draft`);
+      assert.deepEqual(problemsOf(fresh), [], def.type);
+      assert.ok(validate.parseBuilderDoc(docOf(fresh)).ok, `${def.type} saves as a draft`);
     }
   });
 
-  it("the hero is for pages only, and only first", () => {
-    assert.ok(!blocks.blocksFor("post").some((d) => d.type === "Hero"));
-    const hero = block("Hero", { title: "Hosting that looks after itself" });
-    assert.equal(validate.parseBuilderDoc(docOf(hero), "post").ok, false);
-    assert.ok(validate.publishProblems(docOf(textBlock("btext00001", "Intro"), hero), "page").some((p) => p.blockId === hero.id));
+  it("offers the requested components: two columns, code, centred hero, both offer tickets, the split action band", () => {
+    for (const type of ["Text", "TwoColumn", "CodeBlock", "CenteredHero", "OfferSplit", "OfferCentered", "ActionBand", "Faq"]) assert.ok(blocks.blockDef(type), type);
+    for (const old of ["Hero", "OfferBanner"]) assert.equal(blocks.blockDef(old), undefined, `${old} is now converted on load`);
+  });
+
+  it("a hero may sit anywhere: on a page the first one is the H1, in a post the title is", () => {
+    const hero = block("CenteredHero", { title: "Hosting that looks after itself" }, "bhero00001");
+    const second = block("CenteredHero", { title: "Second hero" }, "bhero00002");
+    const doc = docOf(textBlock("btext00001", "Intro"), hero, second);
+    assert.ok(validate.parseBuilderDoc(doc).ok);
+    assert.deepEqual(validate.publishProblems(doc), []);
+    assert.deepEqual(docs.docHeadings(doc, "Page title", "page").map((h) => [h.level, h.text]), [[1, "Hosting that looks after itself"], [2, "Second hero"]]);
+    assert.deepEqual(docs.docHeadings(doc, "Post title", "post").map((h) => [h.level, h.text]), [[1, "Post title"], [2, "Hosting that looks after itself"], [2, "Second hero"]]);
+    const page = markup(render.renderBuilderDoc(doc, "page").body);
+    assert.match(page, /<h1[^>]*>Hosting that looks after itself<\/h1>/);
+    assert.doesNotMatch(markup(render.renderBuilderDoc(doc, "post").body), /<h1/, "the blog prints the post title as the H1");
   });
 });
 
@@ -112,64 +123,71 @@ describe("document operations", () => {
     assert.deepEqual(doc.blocks.map((x) => x.id), [a.id, b.id, c.id]);
   });
 
-  it("page settings change width and spacing, and the page wrapper carries them", () => {
-    const wide = docs.setSettings(doc, { width: "7xl", spacing: "roomy" });
-    assert.deepEqual(wide.settings, { width: "7xl", spacing: "roomy" });
-    const frame = docs.pageFrame(wide.settings);
-    assert.equal((frame.style as Record<string, string>)["--container-max"], "80rem");
-    assert.equal(frame["data-spacing"], "roomy");
-    assert.deepEqual(docs.pageFrame({ width: "default", spacing: "normal" }).style, {});
-    assert.equal(validate.parseBuilderDoc({ ...doc, settings: { width: "9xl", spacing: "normal" } }, "page").ok, false);
+  it("the page setting is the space between sections; there is no page width any more", () => {
+    const roomy = docs.setSettings(doc, { spacing: "roomy" });
+    assert.deepEqual(roomy.settings, { spacing: "roomy" });
+    assert.deepEqual(docs.pageFrame(roomy.settings), { className: "builder-page", "data-spacing": "roomy" });
+    assert.equal(validate.parseBuilderDoc({ ...doc, settings: { width: "7xl", spacing: "normal" } }).ok, false);
   });
 });
 
 describe("saving (structure)", () => {
   it("accepts a well-formed document, as an object or a JSON string", () => {
     const doc = docOf(textBlock("btext00001", "Hello"), block("CtaBand", validCta));
-    assert.ok(validate.parseBuilderDoc(doc, "page").ok);
-    assert.ok(validate.parseBuilderDoc(JSON.stringify(doc), "page").ok);
+    assert.ok(validate.parseBuilderDoc(doc).ok);
+    assert.ok(validate.parseBuilderDoc(JSON.stringify(doc)).ok);
   });
 
   it("refuses unknown blocks, unknown fields, repeated ids and unsafe rich text", () => {
-    assert.equal(validate.parseBuilderDoc(docOf(block("Marquee", {})), "page").ok, false);
-    assert.equal(validate.parseBuilderDoc(docOf(block("CtaBand", { ...validCta, script: "x" })), "page").ok, false);
-    assert.equal(validate.parseBuilderDoc(docOf(textBlock("bsame00001", "A"), textBlock("bsame00001", "B")), "page").ok, false);
+    assert.equal(validate.parseBuilderDoc(docOf(block("Marquee", {}))).ok, false);
+    assert.equal(validate.parseBuilderDoc(docOf(block("CtaBand", { ...validCta, script: "x" }))).ok, false);
+    assert.equal(validate.parseBuilderDoc(docOf(textBlock("bsame00001", "A"), textBlock("bsame00001", "B"))).ok, false);
     const unsafe = { type: "doc", content: [{ type: "image", attrs: { src: "javascript:alert(1)" } }] };
-    assert.equal(validate.parseBuilderDoc(docOf(block("Text", { content: unsafe })), "post").ok, false);
-    assert.equal(validate.parseBuilderDoc("{not json", "post").ok, false);
+    assert.equal(validate.parseBuilderDoc(docOf(block("Text", { content: unsafe }))).ok, false);
+    assert.equal(validate.parseBuilderDoc("{not json").ok, false);
   });
 });
 
 describe("publishing rules", () => {
-  it("names what is missing in the words of the Block panel", () => {
-    const messages = problemsOf(block("CtaBand", { title: "Go" }));
-    assert.ok(messages.some((m) => m.startsWith("Main action")), messages.join(" | "));
+  it("nothing is required: a partly filled block publishes and shows what is filled in", () => {
+    const partial = [
+      block("CtaBand", { title: "Go" }),
+      block("CtaBand", { description: "Only a line of text." }, "bcta000002"),
+      block("OfferSplit", { primaryCta: { label: "See the plans", href: "/pricing" } }),
+      block("ActionBand", { label: "Growth" }),
+      block("Image", { image: { src: "/images/a.png", alt: "" } }),
+      block("Video", { url: "https://youtu.be/dQw4w9WgXcQ" }),
+      block("Faq", { ...validFaq, items: [...validFaq.items, { question: "Half written?" }] }),
+    ];
+    assert.deepEqual(validate.publishProblems(docOf(...partial)), []);
+    const html = markup(render.renderBuilderDoc(docOf(...partial), "page").body);
+    for (const words of ["Go", "Only a line of text.", "See the plans", "Growth", "Half written?"]) assert.ok(html.includes(words), words);
+    assert.match(html, /<img[^>]*src="\/images\/a.png"[^>]*alt=""|alt=""[^>]*src="\/images\/a.png"/, "an image without a description shows as decorative");
+    assert.doesNotMatch(html, /<h2[^>]*><\/h2>/, "an empty heading is left out, not drawn empty");
   });
 
-  it("reports a broken link, an unsafe image, a missing description and a wrong video address", () => {
+  it("reports only what cannot work: a broken link, an unsafe image and a wrong video address", () => {
     assert.ok(problemsOf(block("CtaBand", { title: "Go", primaryCta: { label: "Go", href: "javascript:alert(1)" } })).some((m) => /link must start/.test(m)));
+    assert.ok(problemsOf(block("CtaBand", { primaryCta: { label: "", href: "/pricing" } })).some((m) => /needs text/.test(m)));
     assert.ok(problemsOf(block("Image", { image: { src: "javascript:alert(1)", alt: "x" } })).some((m) => /image address/.test(m)));
-    assert.ok(problemsOf(block("Image", { image: { src: "/images/a.png", alt: "" } })).some((m) => /describe the image/.test(m)));
     assert.ok(problemsOf(block("Video", { url: "https://vimeo.com/1", title: "Demo" })).some((m) => /youtube/.test(m)));
   });
 
-  it("an empty page, an empty text block and a half-finished list item are reported", () => {
-    assert.ok(validate.publishProblems(docOf(), "post").some((p) => p.blockId === ""));
-    assert.ok(validate.publishProblems(docOf(block("Text", { content: { type: "doc", content: [{ type: "paragraph" }] } })), "post").length > 0);
-    const faq = block("Faq", { ...validFaq, items: [...validFaq.items, { question: "Half written?" }] });
-    assert.ok(problemsOf(faq).some((m) => /Question 4/.test(m)));
+  it("an empty page cannot be published; an empty block is simply left out", () => {
+    assert.ok(validate.publishProblems(docOf()).some((p) => p.blockId === ""));
+    assert.deepEqual(validate.publishProblems(docOf(block("Text", { content: { type: "doc", content: [{ type: "paragraph" }] } }))), []);
   });
 
   it("a complete document has no problems", () => {
-    const doc = docOf(block("Hero", { title: "Hosting that looks after itself" }), textBlock("btext00001", "Body"), block("Faq", validFaq), block("CtaBand", validCta));
-    assert.deepEqual(validate.publishProblems(doc, "page"), []);
+    const doc = docOf(block("CenteredHero", { title: "Hosting that looks after itself" }), textBlock("btext00001", "Body"), block("Faq", validFaq), block("CtaBand", validCta));
+    assert.deepEqual(validate.publishProblems(doc), []);
   });
 });
 
 describe("rendering", () => {
   it("renders text with heading anchors and a table of contents, and media safely", () => {
     const doc = docOf(
-      block("Text", { content: withHeading("Getting started", "Hello there."), width: "text" }, "btext00001"),
+      block("Text", { content: withHeading("Getting started", "Hello there."), width: "narrow" }, "btext00001"),
       block("Image", { image: { src: "/images/a.png", alt: "The dashboard" }, caption: "Your dashboard" }, "bimage0001"),
       block("Video", { url: "https://youtu.be/dQw4w9WgXcQ", title: "Demo" }, "bvideo0001"),
     );
@@ -187,7 +205,7 @@ describe("rendering", () => {
     const def = blocks.blockDef("CtaBand")!;
     // Element ids (useId) differ between two separate renders; everything else must match.
     const noIds = (html: string) => html.replace(/ (?:id|aria-labelledby)="[^"]*"/g, "");
-    const canvas = noIds(markup(def.render(blocks.prepareBlock(b), { kind: "page", editing: true })));
+    const canvas = noIds(markup(def.render(blocks.prepareBlock(b), { editing: true })));
     const page = noIds(markup(render.renderBuilderDoc(docOf(b), "page").body));
     assert.ok(page.includes(canvas), "the public page holds exactly the canvas markup");
   });
@@ -200,25 +218,71 @@ describe("rendering", () => {
     assert.doesNotMatch(html, /javascript:/);
   });
 
-  it("the page wrapper applies the content width from the page settings", () => {
-    const doc = { ...docOf(block("CtaBand", validCta)), settings: { width: "5xl" as const, spacing: "compact" as const } };
-    assert.match(markup(render.renderBuilderDoc(doc, "page").body), /style="--container-max:64rem" data-spacing="compact"/);
+  it("a post and a page draw the same blocks the same way", () => {
+    const doc = docOf(textBlock("btext00001", "Body"), block("Faq", validFaq), block("CtaBand", validCta));
+    const noIds = (html: string) => html.replace(/ (?:id|aria-labelledby)="[^"]*"/g, "");
+    assert.equal(noIds(markup(render.renderBuilderDoc(doc, "post").body)), noIds(markup(render.renderBuilderDoc(doc, "page").body)));
   });
 
-  it("a gallery shows complete pictures only, with their captions", () => {
+  it("text chooses its width, spacing and background; the site width and the page background by default", () => {
+    const plain = markup(render.renderBuilderDoc(docOf(block("Text", { content: para("Hello.") })), "page").body);
+    assert.match(plain, /<section class="section-y"><div class="container-site"><div class="article max-w-none/);
+    const styled = markup(render.renderBuilderDoc(docOf(block("Text", { content: para("Hello."), width: "narrow", padding: "large", background: "dark" })), "page").body);
+    assert.match(styled, /<section class="py-20 sm:py-28 lg:py-32 dark bg-background text-foreground"><div class="container-site max-w-3xl">/);
+    assert.equal(validate.parseBuilderDoc(docOf(block("Text", { content: para("x"), width: "9xl" }))).ok, false);
+  });
+
+  it("two columns: each column's text fills its column, and the sizes are a choice", () => {
+    const cols = block("TwoColumn", { left: withHeading("Before", "Your old host."), right: para("After the move."), split: "wideLeft" });
+    const out = render.renderBuilderDoc(docOf(cols), "page");
+    const html = markup(out.body);
+    assert.match(html, /lg:grid-cols-\[2fr_1fr\]/);
+    assert.match(html, /<h2 id="before">Before<\/h2>[^]*After the move\./);
+    assert.equal((html.match(/class="article min-w-0 max-w-none/g) ?? []).length, 2);
+    assert.deepEqual(out.toc.map((t) => t.id), ["before"]);
+    assert.ok(blocks.prepareBlock(block("TwoColumn", { right: para("Only the right.") })), "one column is enough to show");
+  });
+
+  it("a code block keeps the code as written, escaped, with its title", () => {
+    const code = block("CodeBlock", { code: "\n  wp plugin list\n<script>\n\n", title: "Terminal", language: "bash" });
+    const html = markup(render.renderBuilderDoc(docOf(code), "page").body);
+    assert.match(html, /<code>  wp plugin list\n&lt;script&gt;<\/code>/);
+    assert.match(html, /Terminal/);
+  });
+
+  it("the offer tickets show no price, split beside the text or centred under it", () => {
+    const words = { title: "Move your site this week", description: "We copy it for you.", primaryCta: { label: "Start the move", href: "/migration" }, ticketLabel: "Migration" };
+    const split = markup(render.renderBuilderDoc(docOf(block("OfferSplit", words)), "page").body);
+    const centred = markup(render.renderBuilderDoc(docOf(block("OfferCentered", words)), "page").body);
+    for (const html of [split, centred]) {
+      assert.match(html, /Start the move/);
+      assert.doesNotMatch(html, /\$|£|€/, "no price");
+    }
+    assert.match(split, /lg:rotate-2/, "the upright ticket beside the text");
+    assert.match(centred, /mx-auto mt-14 max-w-4xl/, "the long ticket under the text");
+  });
+
+  it("the action band is the split one: the plan on navy, the action on the orange block", () => {
+    const html = markup(render.renderBuilderDoc(docOf(block("ActionBand", { label: "Growth plan", line: "For busy shops.", cta: { label: "Choose Growth", href: "/pricing" } })), "page").body);
+    assert.match(html, /band-ink/);
+    assert.match(html, /bg-primary/);
+    assert.match(html, /Choose Growth/);
+  });
+
+  it("a gallery shows every picture it has, with their captions", () => {
     const g = block("Gallery", { title: "Our office", images: [{ image: { src: "/images/a.png", alt: "Front desk" }, caption: "Reception" }, { image: { src: "/images/b.png", alt: "" } }, {}], layout: "masonry", columns: 4 });
     const html = markup(render.renderBuilderDoc(docOf(g), "page").body);
     assert.match(html, /alt="Front desk"/);
     assert.match(html, /Reception/);
-    assert.doesNotMatch(html, /b\.png/, "a picture without a description is left out");
-    assert.ok(problemsOf(g).some((m) => /Picture 2/.test(m)));
+    assert.match(html, /b\.png/, "a picture without a description shows too");
+    assert.deepEqual(problemsOf(g), []);
   });
 });
 
 describe("older content", () => {
   it("opens pre-builder posts as one Text block", () => {
     const doc = legacy.toBuilderDoc("<p>Old post</p>");
-    assert.equal(doc.version, 2);
+    assert.equal(doc.version, 3);
     assert.equal(doc.blocks[0]?.type, "Text");
   });
 
@@ -243,17 +307,41 @@ describe("older content", () => {
     };
     const doc = legacy.toBuilderDoc(v1);
     assert.deepEqual(doc.blocks.map((b) => b.type), ["Text", "Image", "Text", "CtaBand", "FeatureCards"]);
-    assert.equal(doc.blocks[0]?.props.width, "wide");
+    assert.equal(doc.blocks[0]?.props.width, "site");
     assert.match(JSON.stringify(doc.blocks[0]?.props.content), /Intro.*First words/);
-    assert.ok(validate.parseBuilderDoc(v1, "page").ok, "an editor tab still holding version 1 can save");
+    assert.ok(validate.parseBuilderDoc(v1).ok, "an editor tab still holding version 1 can save");
     assert.ok(markup(render.renderBuilderDoc(doc, "page").body).includes(await stagingTitle()));
+  });
+
+  it("turns version 2 documents into version 3: no page width, the new hero, offer and band blocks", () => {
+    const v2 = {
+      version: 2,
+      settings: { width: "7xl", spacing: "roomy" },
+      blocks: [
+        { id: "bhero00001", type: "Hero", props: { title: "Hello", image: { src: "/a.png", alt: "A" } } },
+        { id: "btext00001", type: "Text", props: { content: para("Body"), width: "wide" } },
+        { id: "bimg000001", type: "Image", props: { image: { src: "/a.png", alt: "A" }, width: "text" } },
+        { id: "boffer0001", type: "OfferBanner", props: { title: "Offer", layout: "centered", scope: "page" } },
+        { id: "boffer0002", type: "OfferBanner", props: { title: "Offer", layout: "compact" } },
+        { id: "bband00001", type: "ActionBand", props: { label: "Growth", variant: "pill" } },
+      ],
+    };
+    const doc = legacy.toBuilderDoc(v2);
+    assert.deepEqual(doc.settings, { spacing: "roomy" });
+    assert.deepEqual(doc.blocks.map((b) => b.type), ["CenteredHero", "Text", "Image", "OfferCentered", "OfferSplit", "ActionBand"]);
+    assert.deepEqual(doc.blocks[0]?.props, { title: "Hello" });
+    assert.equal(doc.blocks[1]?.props.width, "site");
+    assert.equal(doc.blocks[2]?.props.width, "narrow");
+    assert.deepEqual(doc.blocks[3]?.props, { title: "Offer", scope: "page" });
+    assert.deepEqual(doc.blocks[5]?.props, { label: "Growth" });
+    assert.ok(validate.parseBuilderDoc(v2).ok, "an editor tab still holding version 2 can save");
   });
 });
 
 describe("SEO generator", () => {
   const source = (over: Partial<import("@/lib/builder/seo-generate").SeoSource> = {}) => ({
     doc: docOf(
-      block("Text", { content: withHeading("Moving a WordPress site", "Moving a WordPress site takes about a day. We copy the files and the database first. Your site stays online while we work. Then we switch the address when you agree."), width: "text" }),
+      block("Text", { content: withHeading("Moving a WordPress site", "Moving a WordPress site takes about a day. We copy the files and the database first. Your site stays online while we work. Then we switch the address when you agree."), width: "narrow" }),
     ),
     kind: "post" as const,
     title: "How we move a WordPress site",
@@ -335,17 +423,21 @@ describe("posts and pages (database)", () => {
     assert.equal(post.ok, false);
   });
 
-  it("publishing is refused until every block is complete, with the reasons per block", async () => {
-    const unfinished = blocks.createBlock("CtaBand")!;
-    const created = await posts.createPost(ADMIN, { ...save({ slug: "offer", content: docOf(unfinished) }), kind: "page" });
+  it("publishing is refused only for a link or address that cannot work, with the reasons per block", async () => {
+    const empty = blocks.createBlock("CtaBand")!;
+    const half = await posts.createPost(ADMIN, { ...save({ slug: "offer", content: docOf(textBlock("btext00001", "Hello"), empty) }), kind: "page" });
+    assert.ok(half.ok);
+    assert.ok((await posts.setPublished(ADMIN, half.data.id, true)).ok, "empty blocks never stop publishing");
+    const broken = block("CtaBand", { title: "Go", primaryCta: { label: "Go", href: "javascript:alert(1)" } }, "bcta000008");
+    const created = await posts.createPost(ADMIN, { ...save({ slug: "offer-two", content: docOf(broken) }), kind: "page" });
     assert.ok(created.ok);
     const res = await posts.setPublished(ADMIN, created.data.id, true);
     assert.equal(res.ok, false);
-    assert.ok(!res.ok && res.fieldErrors?.[unfinished.id]);
+    assert.ok(!res.ok && res.fieldErrors?.[broken.id]);
     assert.equal((await PostModel.findById(created.data.id).lean())?.status, "draft");
   });
 
-  it("a live page cannot be saved with an unfinished block, so nothing disappears from it silently", async () => {
+  it("a live page cannot be saved with a broken link, so nothing disappears from it silently", async () => {
     const created = await posts.createPost(ADMIN, { ...save({ slug: "live-page" }), kind: "page" });
     assert.ok(created.ok);
     assert.ok((await posts.setPublished(ADMIN, created.data.id, true)).ok);
@@ -395,7 +487,7 @@ describe("posts and pages (database)", () => {
     const created = await posts.createPost(STAFF, save({ slug: "hello-post" }));
     assert.ok(created.ok);
     const opened = await posts.getPortalPostBySlug(STAFF, "hello-post");
-    assert.ok(opened.ok && opened.data.content.version === 2);
+    assert.ok(opened.ok && opened.data.content.version === 3);
     assert.equal((await posts.getPortalPostBySlug(STAFF, { $ne: "" })).ok, false);
     const listed = await posts.listPortalPosts(STAFF, { kind: "page" });
     assert.ok(listed.ok && listed.data.length === 0);
@@ -403,13 +495,12 @@ describe("posts and pages (database)", () => {
 });
 
 describe("templates", () => {
-  it("every template is a valid draft for its kind, and post templates have no hero", async () => {
+  it("every template is a valid draft", async () => {
     const { TEMPLATES } = await import("@/lib/builder/templates");
     for (const t of TEMPLATES) {
       const doc = docOf(...t.blocks());
-      assert.ok(validate.parseBuilderDoc(doc, t.kind).ok, t.id);
+      assert.ok(validate.parseBuilderDoc(doc).ok, t.id);
       assert.ok(doc.blocks.length > 0, t.id);
-      if (t.kind === "post") assert.ok(!doc.blocks.some((b) => b.type === "Hero"), t.id);
     }
   });
 });

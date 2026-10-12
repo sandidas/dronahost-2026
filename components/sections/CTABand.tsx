@@ -6,10 +6,11 @@ import type { HeroCta } from "./hero/types";
 
 type CTABandProps = {
   eyebrow?: string;
-  title: string;
+  /** Optional for the page builder, where nothing is required; what is empty is left out. */
+  title?: string;
   description?: string;
   /** The single primary action. */
-  primaryCta: HeroCta;
+  primaryCta?: HeroCta;
   secondaryCta?: HeroCta;
   /** Fine print under the actions. Only true statements. */
   note?: string;
@@ -22,20 +23,24 @@ export default function CTABand({ eyebrow, title, description, primaryCta, secon
   const headingId = useId();
   const Heading = headingLevel;
   return (
-    <section aria-labelledby={headingId} className={cn("section-y", className)}>
+    <section aria-labelledby={title ? headingId : undefined} className={cn("section-y", className)}>
       <div className="container-site">
         <div className="surface surface-raised grain relative isolate overflow-hidden px-6 py-14 text-center sm:px-12 sm:py-20" {...reveal()}>
           <div className="ambient-glow absolute inset-0 -z-10" aria-hidden="true" />
           <div className="bg-grid absolute inset-0 -z-10 opacity-50" aria-hidden="true" />
           {eyebrow && <p className="t-eyebrow">{eyebrow}</p>}
-          <Heading id={headingId} className={cn("t-h2 mx-auto max-w-2xl text-foreground", eyebrow && "mt-3")}>
-            {title}
-          </Heading>
+          {title && (
+            <Heading id={headingId} className={cn("t-h2 mx-auto max-w-2xl text-foreground", eyebrow && "mt-3")}>
+              {title}
+            </Heading>
+          )}
           {description && <p className="t-lead mx-auto mt-4">{description}</p>}
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Button href={primaryCta.href} size="lg">
-              {primaryCta.label}
-            </Button>
+            {primaryCta && (
+              <Button href={primaryCta.href} size="lg">
+                {primaryCta.label}
+              </Button>
+            )}
             {secondaryCta && (
               <Button href={secondaryCta.href} variant="secondary" size="lg">
                 {secondaryCta.label}

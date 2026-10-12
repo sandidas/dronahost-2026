@@ -8,9 +8,9 @@ import BannerShell, { QuietLink } from "./BannerShell";
 export type AnswerBannerProps = {
   eyebrow?: string;
   /** The question the reader typed, as the headword. */
-  question: string;
+  question?: string;
   /** The direct answer, 40 to 80 words, first sentence answers. Set as definition 1. */
-  answer: string;
+  answer?: string;
   /** The small line under the headword, like a word class: "noun phrase". */
   partOfSpeech?: string;
   /** Who reviewed it and when (ISO date). */
@@ -43,17 +43,20 @@ export default function AnswerBanner({ eyebrow, question, answer, partOfSpeech, 
   const entry = (
     <div className={cn("min-w-0", centered && "mx-auto max-w-4xl text-center")}>
       {eyebrow && <p className="t-meta mb-6 text-link">{eyebrow}</p>}
-      <Heading id={headingId} className="font-heading text-[clamp(2.375rem,1.3rem+3.4vw,4.5rem)] leading-[1.02] tracking-[-0.04em] text-balance text-foreground">
-        {question}
-      </Heading>
+      {question && (
+        <Heading id={headingId} className="font-heading text-[clamp(2.375rem,1.3rem+3.4vw,4.5rem)] leading-[1.02] tracking-[-0.04em] text-balance text-foreground">
+          {question}
+        </Heading>
+      )}
       {small.length > 0 && <p className="mt-5 font-sans text-xl text-muted-foreground">{small.join(" · ")}</p>}
-      <div className={cn("mt-10 flex gap-5 sm:gap-7", centered && "mx-auto max-w-3xl text-start")}>
+      {(answer || byline) && (
+      <div className={cn("flex gap-5 sm:gap-7", question && "mt-10", centered && "mx-auto max-w-3xl text-start")}>
         <span aria-hidden="true" className="font-heading text-4xl leading-none text-link sm:text-5xl">
           1.
         </span>
         <div className="min-w-0 border-s border-border ps-5 sm:ps-7">
           <p className="sr-only">{UI.banners.definition}</p>
-          <p className="text-lg leading-relaxed text-foreground sm:text-xl sm:leading-relaxed">{answer}</p>
+          {answer && <p className="text-lg leading-relaxed text-foreground sm:text-xl sm:leading-relaxed">{answer}</p>}
           {byline && (
             <p className="t-small mt-6 text-muted-foreground">
               {UI.banners.reviewedBy} <span className="font-sans text-lg text-foreground">{byline.reviewer}</span>, <time dateTime={byline.reviewedOn}>{longDate(byline.reviewedOn)}</time>
@@ -61,6 +64,7 @@ export default function AnswerBanner({ eyebrow, question, answer, partOfSpeech, 
           )}
         </div>
       </div>
+      )}
       {toc && toc.length > 0 && !margin && (
         <nav aria-label={UI.banners.inThisGuide} className={cn("mt-10 flex flex-wrap items-baseline gap-x-3 gap-y-2", centered && "justify-center")}>
           <span className="font-sans text-lg text-muted-foreground">{UI.banners.inThisGuide}:</span>
@@ -111,7 +115,7 @@ export default function AnswerBanner({ eyebrow, question, answer, partOfSpeech, 
 
   return (
     <BannerShell
-      headingId={headingId}
+      headingId={question ? headingId : undefined}
       className={cn(card ? "py-12 sm:py-16" : "bg-background", className)}
       size={card ? "none" : "hero"}
       art={

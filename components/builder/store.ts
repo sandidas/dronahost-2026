@@ -3,7 +3,7 @@
 import { createContext, useContext } from "react";
 import { temporal } from "zundo";
 import { createStore, useStore, type StoreApi } from "zustand";
-import { allowedIn, blockDef, createBlock } from "@/lib/builder/blocks";
+import { createBlock } from "@/lib/builder/blocks";
 import { duplicateBlock, indexOf, insertBlock, moveBlock, nudgeBlock, removeBlock, setSettings, updateProps } from "@/lib/builder/doc";
 import type { Block, BuilderDoc, PageSettings, PostKind } from "@/lib/builder/model";
 import type { PostSeo } from "@/lib/builder/seo";
@@ -142,13 +142,12 @@ export function createBuilderStore(init: BuilderInit & { actorName: string }) {
             edit({ meta: next, slugTouched: touched, ...(next.slug !== meta.slug && { slugCheck: null }) }, "meta");
           },
           addBlock: (type, index) => {
-            const { doc, selectedId, kind } = get();
-            const def = blockDef(type);
+            const { doc, selectedId } = get();
             const block = createBlock(type);
-            if (!def || !block || !allowedIn(def, kind)) return;
-            // Clicked in the Add panel: after the selected block, otherwise at the end. The hero always goes first.
+            if (!block) return;
+            // Clicked in the Add panel: after the selected block, otherwise at the end.
             const after = selectedId ? indexOf(doc, selectedId) : -1;
-            const at = def.first ? 0 : (index ?? (after >= 0 ? after + 1 : doc.blocks.length));
+            const at = index ?? (after >= 0 ? after + 1 : doc.blocks.length);
             edit({ doc: insertBlock(doc, at, block), selectedId: block.id, rightTab: "block" });
           },
           applyTemplate: (blocks) => {
@@ -213,14 +212,14 @@ export type BuilderStore = ReturnType<typeof createBuilderStore>;
 
 export const BuilderContext = createContext<BuilderStore | null>(null);
 
-/** Unfinished blocks by id ("page" for the page as a whole), computed by the editor shell. Empty until a publish is refused. */
+/** Broken links and addresses by block id ("page" for the page as a whole), computed by the editor shell. Empty until a publish is refused. */
 export const ProblemsContext = createContext<Record<string, string[]>>({});
 export const useProblems = (): Record<string, string[]> => useContext(ProblemsContext);
 
 /** The publishing checks run in the browser, grouped by block. */
-export function groupProblems(doc: BuilderDoc, kind: PostKind): Record<string, string[]> {
+export function groupProblems(doc: BuilderDoc): Record<string, string[]> {
   const out: Record<string, string[]> = {};
-  for (const p of publishProblems(doc, kind)) (out[p.blockId || "page"] ??= []).push(p.message);
+  for (const p of publishProblems(doc)) (out[p.blockId || "page"] ??= []).push(p.message);
   return out;
 }
 
