@@ -10,9 +10,9 @@ import { useBuilder } from "./store";
  * (desktop, tablet, phone), scaled to fit. Reloads after every save.
  */
 export function PreviewFrame() {
-  const slug = useBuilder((s) => s.savedSlug);
+  const postId = useBuilder((s) => s.postId);
   const version = useBuilder((s) => s.savedVersion);
   const device = useBuilder((s) => s.device);
-  if (!slug) return <p className="m-auto p-6 text-sm text-muted-foreground">{BUILDER_TEXT.ui.previewSaveFirst}</p>;
-  return <CanvasFrame width={DEVICE_WIDTH[device]} src={`/dashboard/posts/${slug}/preview?v=${version}`} />;
+  if (!postId) return <p className="m-auto p-6 text-sm text-muted-foreground">{BUILDER_TEXT.ui.previewSaveFirst}</p>;
+  return <CanvasFrame width={DEVICE_WIDTH[device]} src={`/dashboard/posts/${postId}/preview?v=${version}`} />;
 }

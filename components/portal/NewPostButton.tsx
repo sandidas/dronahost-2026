@@ -9,7 +9,7 @@ import { createDraftAction } from "@/lib/portal/actions/posts";
 
 /**
  * The one "New post" button (`editorBase` is /dashboard/posts, passed in so this client file never imports the
- * server-only portal shell): it saves an empty draft first, then opens it in the editor at /dashboard/posts/<slug>.
+ * server-only portal shell): it saves an empty draft first, then opens it in the editor at /dashboard/posts/<id>.
  * Posts and pages share the editor; the Page tab decides where it prints.
  */
 export function NewPostButton({ editorBase }: { editorBase: string }) {
@@ -26,7 +26,7 @@ export function NewPostButton({ editorBase }: { editorBase: string }) {
           setBusy(true);
           setError("");
           const res = await createDraftAction().catch(() => null);
-          if (res?.ok) return router.push(`${editorBase}/${res.data.slug}`);
+          if (res?.ok) return router.push(`${editorBase}/${res.data.id}`);
           setError(res && !res.ok ? res.error : POSTS_TEXT.createFailed);
           setBusy(false);
         }}

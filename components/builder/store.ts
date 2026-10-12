@@ -53,8 +53,6 @@ export type BuilderState = BuilderInit & {
   showProblems: boolean;
   /** Bumped by every saved change, so the preview frame reloads. */
   savedVersion: number;
-  /** The slug as last saved: the preview loads the saved version, which an unsaved slug edit does not move. */
-  savedSlug: string | null;
   /** Small screens: which side panel is open over the canvas. */
   mobilePanel: "left" | "right" | null;
   /** The type being dragged, so only the drop zones that take it light up. */
@@ -130,7 +128,6 @@ export function createBuilderStore(init: BuilderInit & { actorName: string }) {
           fieldErrors: {},
           showProblems: false,
           savedVersion: 0,
-          savedSlug: init.postId ? init.meta.slug : null,
           mobilePanel: null,
           dragType: null,
           dragLabel: null,
@@ -197,7 +194,6 @@ export function createBuilderStore(init: BuilderInit & { actorName: string }) {
               saveState: s.saveState === "saving" ? "saved" : s.saveState,
               fieldErrors: {},
               savedVersion: s.savedVersion + 1,
-              savedSlug: slug,
             })),
           failed: (text, fieldErrors = {}) => set({ saveState: "error", message: { kind: "error", text }, fieldErrors }),
           statusChanged: (status, locked, publishedLine) =>

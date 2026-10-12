@@ -75,7 +75,7 @@ function PostTable({ rows, actor }: { rows: PostRow[]; actor: Actor }) {
           return (
             <TableRow key={p.id} className="border-border">
               <TableCell className="min-w-56">
-                <Link href={`${PORTAL_HOME}/posts/${p.slug}`} className="font-semibold text-link underline-offset-4 hover:underline">
+                <Link href={`${PORTAL_HOME}/posts/${p.id}`} className="font-semibold text-link underline-offset-4 hover:underline">
                   {p.title || POSTS_TEXT.untitled}
                 </Link>
                 <span className="sr-only"> ({editable ? POSTS_TEXT.edit : POSTS_TEXT.view})</span>

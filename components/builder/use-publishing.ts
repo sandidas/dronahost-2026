@@ -10,8 +10,6 @@ import { formatDateTime } from "@/lib/portal/format";
 import { useBuilderApi } from "./store";
 import { seoSource } from "./use-slug-check";
 
-const editorPath = (slug: string) => `/dashboard/posts/${slug}`;
-
 /** Field errors that belong to blocks (keyed by block id, or "page"), as lists of messages. */
 function blockProblems(fieldErrors: Record<string, string> | undefined): Record<string, string[]> {
   const out: Record<string, string[]> = {};
@@ -47,8 +45,6 @@ export function usePublishing(actorName: string) {
       return false;
     }
     api.getState().saved({ postId: res.data.id, slug: res.data.slug });
-    // Keep the address in step with the slug without reloading the editor (and losing undo history).
-    if (window.location.pathname !== editorPath(res.data.slug)) window.history.replaceState(null, "", editorPath(res.data.slug));
     return true;
   }, [api]);
 

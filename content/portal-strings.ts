@@ -263,7 +263,7 @@ export const PORTAL_ERRORS = {
   },
 } as const;
 
-/** The page builder (/dashboard/posts/[slug]): block names, field labels, panels and messages. */
+/** The page builder (/dashboard/posts/[id]): block names, field labels, panels and messages. */
 export const BUILDER_TEXT = {
   kinds: { post: "Blog post", page: "Page" },
   groups: { text: "Text", media: "Media", sections: "Page sections", banners: "Banners" },
@@ -281,7 +281,7 @@ export const BUILDER_TEXT = {
     OfferSplit: { label: "Offer ticket, split", hint: "The text beside an upright ticket with one button." },
     OfferCentered: { label: "Offer ticket, centred", hint: "The text over a long ticket with one button. No price is shown." },
     GuideBanner: { label: "Guide banner", hint: "Opens a guide: what it covers and three to five things the reader will learn." },
-    ActionBand: { label: "Action band", hint: "A plan or service on navy, with the button on an orange block." },
+    ActionBand: { label: "Action band", hint: "A plan or service on navy, with its price and the button on an orange block." },
     AnswerBanner: { label: "Answer banner", hint: "A question readers ask, answered in up to 80 words." },
     SplitSection: { label: "Split section", hint: "Text, points and buttons beside an image." },
     FeatureCards: { label: "Feature cards", hint: "Two to twelve cards, each with an icon, a title, text and an optional link." },
@@ -347,6 +347,13 @@ export const BUILDER_TEXT = {
     learn: "What the reader will learn",
     numbered: "Number the steps",
     bandLabel: "Heading",
+    plan: "Price from",
+    planHelp: "Shows this plan's price from the price list, with its renewal price and the tax line. The price is never typed here.",
+    noPlan: "No price",
+    /** Printed on the site beside a plan's price (Action band). */
+    pricePeriod: "/month, billed annually",
+    /** The owner's tax rule (CLAUDE.md, Tax handling), printed under a price when the band has no note of its own. */
+    taxLine: "Prices exclude tax. Customers in India pay GST at checkout.",
     bandLine: "One line",
     nextLink: "Link to the next step (optional)",
     points: "Points (optional)",

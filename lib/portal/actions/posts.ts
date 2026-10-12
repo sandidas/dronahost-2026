@@ -34,7 +34,7 @@ export async function savePostAction(id: string | null, input: unknown): Promise
   });
 }
 
-/** "New post": saves an empty draft and returns its slug; the list then opens it at /dashboard/posts/<slug>. */
+/** "New post": saves an empty draft; the list then opens it at /dashboard/posts/<id>. */
 export async function createDraftAction(): Promise<Result<PostChange>> {
   return withActor((actor) => createDraft(actor));
 }

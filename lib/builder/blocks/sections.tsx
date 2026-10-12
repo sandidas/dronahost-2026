@@ -11,6 +11,8 @@ import ProcessTimeline from "@/components/sections/ProcessTimeline";
 import TwoColumn from "@/components/sections/TwoColumn";
 import { BUILDER_TEXT } from "@/content/portal-strings";
 import { ICON_NAMES } from "@/lib/content/schemas/common";
+import { showPrices } from "@/lib/flags";
+import { buildPlanCards } from "@/lib/pricing/plans";
 import type { ComponentProps, ComponentType } from "react";
 import { completeItems, hasContent, image, link, pick, strings, text, type Cta, type Field, type Img, type Props } from "../fields";
 import { defineBlock } from "./types";
@@ -346,21 +348,39 @@ export const Guide = defineBlock({
   headings: (p) => h2(p.title),
 });
 
+/** Plans with a published price (custom-priced plans have none to show). Names and prices come from data/pricing.json. */
+const PRICED_PLANS = buildPlanCards().filter((plan) => !plan.custom);
+const PLAN_IDS = ["", ...PRICED_PLANS.map((plan) => plan.id)] as const;
+
 const actionFields: Field[] = [
   { kind: "text", key: "label", label: F.bandLabel, max: 80 },
   { kind: "text", key: "line", label: F.bandLine, max: 200 },
+  { kind: "select", key: "plan", label: F.plan, help: F.planHelp, options: [{ value: "", label: F.noPlan }, ...PRICED_PLANS.map((plan) => ({ value: plan.id, label: plan.name }))] },
   { kind: "link", key: "cta", label: F.ctaPrimary },
   { kind: "text", key: "note", label: F.note, max: 200 },
 ];
 
-/** The plan on navy, the action on the orange block. No price: the builder never carries one. */
+/**
+ * A plan's price for the orange block: read from data/pricing.json through lib/pricing at render time, so the page
+ * stores only the plan id and a price change shows everywhere at once. Hidden while prices are (FEATURES.pricesConfirmed).
+ */
+function planPrice(planId: string) {
+  const plan = planId && showPrices() ? PRICED_PLANS.find((p) => p.id === planId) : undefined;
+  return plan?.annual ? { amount: plan.annual, period: F.pricePeriod, renewal: plan.renewal ?? undefined } : undefined;
+}
+
+/** The plan on navy; its price (picked from the price list, never typed) and the action on the orange block. */
 export const Action = defineBlock({
   type: "ActionBand",
   group: "banners",
   icon: "mouse-pointer-click",
   fields: actionFields,
-  prepare: (c) => shown(actionFields, c) && { label: text(c.label), line: text(c.line), cta: link(c.cta), note: text(c.note) },
-  render: (p, ctx) => <ActionBand {...p} variant="split" headingLevel="h2" className={ctx.band} />,
+  prepare: (c) => shown(actionFields, c) && { label: text(c.label), line: text(c.line), plan: pick(c.plan, PLAN_IDS, ""), cta: link(c.cta), note: text(c.note) },
+  render: ({ plan, note, ...p }, ctx) => {
+    const price = planPrice(plan);
+    // A price always has the tax line near it; the band's own note replaces it only when there is no price.
+    return <ActionBand {...p} price={price} note={price ? (note ? `${note} ${F.taxLine}` : F.taxLine) : note} variant="split" headingLevel="h2" className={ctx.band} />;
+  },
   headings: (p) => h2(p.label),
 });
 

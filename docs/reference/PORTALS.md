@@ -14,8 +14,8 @@ request to a server action gets the same refusal as the UI.
 | `/sign-in`, `/sign-in/continue` | anyone; continue sends admins and staff to /dashboard, guests to /no-access |
 | `/no-access` | signed-in guests |
 | `/dashboard`, `/dashboard/posts` (list of posts and pages) | staff and admins |
-| `/dashboard/posts/new` (`?kind=page` for a page), `/dashboard/posts/<slug>` | the editor: staff and admins (staff cannot publish, lock or delete, or edit a locked one) |
-| `/dashboard/posts/<slug>/preview` | the saved version rendered with the public layout, staff and admins |
+| `/dashboard/posts/<id>` (the database id; "New post" in the list saves a draft and opens it here; old slug links redirect) | the editor: staff and admins (staff cannot publish, lock or delete, or edit a locked one) |
+| `/dashboard/posts/<id>/preview` | the saved version rendered with the public layout, staff and admins |
 | `/dashboard/team`, `/dashboard/announcements` | admins (`team.manage`, `announcement.manage`) |
 | `/office/...` | redirects to the matching dashboard list (the old staff portal) |
 | `POST /api/portal/upload` | staff and admins, only when S3 storage is configured |

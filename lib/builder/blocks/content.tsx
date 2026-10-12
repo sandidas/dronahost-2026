@@ -73,13 +73,14 @@ export const TwoColumn = defineBlock({
     { kind: "richtext", key: "left", label: F.leftColumn },
     { kind: "richtext", key: "right", label: F.rightColumn },
     { kind: "select", key: "split", label: F.split, options: options(F.splits) },
-    ...frameFields(),
+    // Full width by default: the two columns run edge to edge, inside the page gutter.
+    ...frameFields("full"),
   ],
   defaults: () => ({ left: EMPTY_DOC, right: EMPTY_DOC }),
   prepare: (p) => {
     const left = richtext(p.left);
     const right = richtext(p.right);
-    return left || right ? { left, right, split: pick(p.split, SPLITS, "equal"), frame: frameOf(p) } : null;
+    return left || right ? { left, right, split: pick(p.split, SPLITS, "equal"), frame: frameOf(p, "full") } : null;
   },
   render: (p, ctx) => (
     <BlockShell frame={p.frame}>

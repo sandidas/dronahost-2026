@@ -242,6 +242,8 @@ describe("rendering", () => {
     assert.equal((html.match(/class="article min-w-0 max-w-none/g) ?? []).length, 2);
     assert.deepEqual(out.toc.map((t) => t.id), ["before"]);
     assert.ok(blocks.prepareBlock(block("TwoColumn", { right: para("Only the right.") })), "one column is enough to show");
+    assert.match(html, /<div class="px-\[var\(--gutter\)\]">/, "full width by default");
+    assert.doesNotMatch(html, /container-site/);
   });
 
   it("a code block keeps the code as written, escaped, with its title", () => {
@@ -268,6 +270,24 @@ describe("rendering", () => {
     assert.match(html, /band-ink/);
     assert.match(html, /bg-primary/);
     assert.match(html, /Choose Growth/);
+    assert.doesNotMatch(html, /\$/, "no plan picked, no price");
+  });
+
+  it("the action band shows a picked plan's price from the price list, with its renewal and the tax line", async () => {
+    const { buildPlanCards } = await import("@/lib/pricing/plans");
+    const growth = buildPlanCards().find((p) => p.id === "growth")!;
+    const doc = docOf(block("ActionBand", { label: "Growth plan", plan: "growth", cta: { label: "Choose Growth", href: "/pricing" } }));
+    assert.ok(validate.parseBuilderDoc(doc).ok, "only the plan id is stored");
+    const html = markup(render.renderBuilderDoc(doc, "page").body);
+    const { showPrices } = await import("@/lib/flags");
+    if (showPrices()) {
+      assert.ok(growth.annual && html.includes(growth.annual), "the price from data/pricing.json");
+      assert.ok(growth.renewal && html.includes(growth.renewal), "the renewal price");
+      assert.match(html, /Customers in India pay GST/);
+    } else {
+      assert.doesNotMatch(html, /\$/, "hidden while prices are not confirmed");
+    }
+    assert.equal(validate.parseBuilderDoc(docOf(block("ActionBand", { label: "x", plan: "29.99" }))).ok, false, "a typed price is refused");
   });
 
   it("a gallery shows every picture it has, with their captions", () => {

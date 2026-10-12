@@ -124,7 +124,7 @@ export async function getPortalPost(actor: Actor, rawId: unknown): Promise<Resul
   });
 }
 
-/** The editor opens posts and pages by slug (/dashboard/posts/<slug>). The slug is matched as a plain string. */
+/** Finds a post or page by slug, for old editor links by slug (the editor itself opens by id). Matched as a plain string. */
 export async function getPortalPostBySlug(actor: Actor, rawSlug: unknown): Promise<Result<PostDetail>> {
   return guarded("portal.posts.get", async () => {
     assertCan(actor.role, "post.view");
@@ -169,7 +169,7 @@ export async function checkSlug(actor: Actor, raw: unknown): Promise<Result<Slug
 
 /**
  * "New post" in the list: an empty blog post saved as a draft straight away, so the editor always opens an existing
- * record at /dashboard/posts/<slug>. It has no title yet and a placeholder slug ("draft-1a2b3c4d") that the editor
+ * record at /dashboard/posts/<id>. It has no title yet and a placeholder slug ("draft-1a2b3c4d") that the editor
  * replaces from the first title; the Page tab switches it to a page.
  */
 export async function createDraft(actor: Actor): Promise<Result<PostChange>> {
