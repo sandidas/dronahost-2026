@@ -1,5 +1,6 @@
 import createMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
+import { devBypassRole } from "@/lib/auth/dev-bypass";
 import { isLive } from "@/lib/i18n/config";
 import { routing } from "./i18n/routing";
 
@@ -31,7 +32,7 @@ export default function proxy(req: NextRequest) {
   const { pathname, search } = req.nextUrl;
   if (PORTAL.test(pathname)) {
     // Presence only: no database here. Pages, server actions and route handlers check the real role.
-    if (SESSION_COOKIES.some((name) => req.cookies.has(name))) return noIndex(NextResponse.next());
+    if (SESSION_COOKIES.some((name) => req.cookies.has(name)) || devBypassRole() !== null) return noIndex(NextResponse.next());
     const signIn = new URL("/sign-in", req.url);
     signIn.searchParams.set("next", `${pathname}${search}`);
     return noIndex(NextResponse.redirect(signIn));

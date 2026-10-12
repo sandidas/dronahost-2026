@@ -4,6 +4,8 @@
  */
 export const PORTAL_TEXT = {
   brand: "DronaHost",
+  /** Shown in the portal header while PORTAL_DEV_BYPASS is set (development only). */
+  devBypass: "Test mode: sign-in is off",
   dashboardName: "Admin",
   officeName: "Office",
   nav: {

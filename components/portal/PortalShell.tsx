@@ -3,6 +3,7 @@ import Badge from "@/components/ui/Badge";
 import Logo from "@/components/ui/Logo";
 import { PORTAL_TEXT } from "@/content/portal-strings";
 import { Link } from "@/i18n/link";
+import { devBypassRole } from "@/lib/auth/dev-bypass";
 import { can } from "@/lib/auth/permissions";
 import type { Actor } from "@/lib/portal/result";
 import { PortalNav, type NavItem } from "./PortalNav";
@@ -46,6 +47,7 @@ export function PortalHeader({ base, actor }: { base: PortalBase; actor: Actor }
             <Logo size="sm" />
           </Link>
           <Badge variant={base === "/dashboard" ? "primary" : "secondary"}>{base === "/dashboard" ? PORTAL_TEXT.dashboardName : PORTAL_TEXT.officeName}</Badge>
+          {devBypassRole() !== null && <Badge variant="warning">{PORTAL_TEXT.devBypass}</Badge>}
         </div>
         <div className="flex items-center gap-3 text-sm">
           <span className="hidden text-muted-foreground sm:inline">

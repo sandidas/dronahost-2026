@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { devBypassRole } from "./dev-bypass";
 import { assertCan, can, homeFor, PermissionError, type Action } from "./permissions";
 import { ROLES, toRole } from "./roles";
 
@@ -82,5 +83,33 @@ describe("portal access", () => {
   it("uploads are for staff and admins", () => {
     assert.equal(can(STAFF, "media.upload"), true);
     assert.equal(can(GUEST, "media.upload"), false);
+  });
+});
+
+describe("development sign-in bypass (PORTAL_DEV_BYPASS)", () => {
+  const env = process.env as Record<string, string | undefined>;
+  const run = (nodeEnv: string, value: string | undefined) => {
+    const saved = { NODE_ENV: env.NODE_ENV, PORTAL_DEV_BYPASS: env.PORTAL_DEV_BYPASS };
+    env.NODE_ENV = nodeEnv;
+    env.PORTAL_DEV_BYPASS = value;
+    try {
+      return devBypassRole();
+    } finally {
+      Object.assign(env, saved);
+    }
+  };
+
+  it("is off outside development, whatever the variable says", () => {
+    for (const nodeEnv of ["production", "test", ""]) assert.equal(run(nodeEnv, "admin"), null);
+  });
+
+  it("is off in development when the variable is empty or unknown", () => {
+    for (const value of [undefined, "", "root", "1001"]) assert.equal(run("development", value), null);
+  });
+
+  it("maps admin, staff and guest to their roles in development", () => {
+    assert.equal(run("development", "admin"), ADMIN);
+    assert.equal(run("development", " Staff "), STAFF);
+    assert.equal(run("development", "guest"), GUEST);
   });
 });
