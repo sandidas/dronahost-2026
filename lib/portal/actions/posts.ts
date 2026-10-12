@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { PORTAL_ERRORS } from "@/content/portal-strings";
 import { getActor } from "@/lib/auth/session";
-import { createPost, deletePost, setLocked, setPublished, updatePost, type PostChange } from "../posts";
+import { checkSlug, createPost, deletePost, setLocked, setPublished, updatePost, type PostChange, type SlugCheckResult } from "../posts";
 import { fail, type Actor, type Result } from "../result";
 
 /** Refreshes the cached public pages (the blog or the builder page, and the sitemap) after a change visitors can see. */
@@ -27,6 +27,11 @@ export async function savePostAction(id: string | null, input: unknown): Promise
     if (res.ok) refreshPublicBlog(res.data);
     return res;
   });
+}
+
+/** Whether a slug is free, and a free one when it is not (the SEO and Page tabs). Changes nothing. */
+export async function checkSlugAction(input: { slug: string; kind: string; postId: string | null; words: string[] }): Promise<Result<SlugCheckResult>> {
+  return withActor((actor) => checkSlug(actor, input));
 }
 
 export async function setPublishedAction(id: string, publish: boolean): Promise<Result<PostChange>> {

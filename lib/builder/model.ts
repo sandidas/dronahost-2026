@@ -1,62 +1,39 @@
-import type { TiptapDoc } from "@/lib/editor/schema";
-
-import { SECTION_TYPES, type SectionType } from "./sections";
-
 /**
- * The page builder's document: what a post or page stores in `content`. Shared by the editor (client) and the
- * server (validation and rendering), so this file imports nothing server-only.
+ * The page builder's document: what a post or page stores in `content`. Shared by the editor (client) and the server
+ * (validation and rendering), so this file imports nothing server-only.
  *
- * Shape: root blocks are Sections or sections from lib/builder/sections.ts (hero, banners, FAQ, ...). A Section holds
- * content blocks and Columns; each column holds content blocks. Every word comes from the builder.
+ * A page is a list of blocks. Every block is one of the components in the block registry (lib/builder/blocks), stored
+ * as its type and its props; the registry says what the props may hold, how they are edited and how they render. Page
+ * settings (content width, spacing) sit beside the blocks.
  */
 
 export type PostKind = "post" | "page";
 export const POST_KINDS: readonly PostKind[] = ["post", "page"];
 
-export const SITE_SECTION_TYPES = SECTION_TYPES;
-export type SiteSectionType = SectionType;
+/** One component on the page. `props` is checked against the block's fields (lib/builder/fields.ts). */
+export type Block = { id: string; type: string; props: Record<string, unknown> };
 
-/** Blog posts already have an H1 (the post title), so the hero is for pages only. */
-export const SITE_SECTIONS_FOR: Record<PostKind, readonly SiteSectionType[]> = {
-  post: SECTION_TYPES.filter((t) => t !== "Hero"),
-  page: SECTION_TYPES,
-};
+/** Content width, by its Tailwind size. "default" is the site's own width (--container-max). */
+export const PAGE_WIDTHS = ["default", "3xl", "4xl", "5xl", "6xl", "7xl", "full"] as const;
+export type PageWidth = (typeof PAGE_WIDTHS)[number];
 
-export type HeadingLevel = 2 | 3 | 4;
-export type HeadingBlock = { id: string; type: "heading"; props: { text: string; level: HeadingLevel } };
-/** Tiptap JSON. Posts written before the builder hold an HTML string, which renders sanitised until it is edited. */
-export type RichTextBlock = { id: string; type: "richtext"; props: { content: TiptapDoc | string } };
-export type ImageBlock = { id: string; type: "image"; props: { src: string; alt: string; caption: string } };
-export type VideoBlock = { id: string; type: "video"; props: { url: string; title: string } };
-export type LeafBlock = HeadingBlock | RichTextBlock | ImageBlock | VideoBlock;
-export type LeafType = LeafBlock["type"];
-export const LEAF_TYPES: readonly LeafType[] = ["heading", "richtext", "image", "video"];
+/** The space above and below each section. */
+export const PAGE_SPACINGS = ["compact", "normal", "roomy"] as const;
+export type PageSpacing = (typeof PAGE_SPACINGS)[number];
 
-export type ColumnsLayout = "1-1" | "2-1" | "1-2" | "1-1-1";
-export const COLUMNS_LAYOUTS: readonly ColumnsLayout[] = ["1-1", "2-1", "1-2", "1-1-1"];
-export type Column = { id: string; children: LeafBlock[] };
-export type ColumnsBlock = { id: string; type: "columns"; props: { layout: ColumnsLayout }; columns: Column[] };
+export type PageSettings = { width: PageWidth; spacing: PageSpacing };
+export const DEFAULT_SETTINGS: PageSettings = { width: "default", spacing: "normal" };
 
-export type SectionWidth = "text" | "wide";
-export type SectionBlock = { id: string; type: "section"; props: { width: SectionWidth }; children: (LeafBlock | ColumnsBlock)[] };
+export type BuilderDoc = { version: 2; settings: PageSettings; blocks: Block[] };
 
-/** A section and what was written in it. `content` is checked by SECTION_SCHEMAS (lib/builder/sections.ts). */
-export type SiteSection = { type: SiteSectionType; content: Record<string, unknown> };
-export type SiteBlock = { id: string; type: "site"; section: SiteSection };
+export const EMPTY_BUILDER_DOC: BuilderDoc = { version: 2, settings: DEFAULT_SETTINGS, blocks: [] };
 
-export type RootBlock = SectionBlock | SiteBlock;
-export type AnyBlock = RootBlock | ColumnsBlock | LeafBlock;
-export type BlockType = AnyBlock["type"];
-
-export type BuilderDoc = { version: 1; blocks: RootBlock[] };
-
-export const EMPTY_BUILDER_DOC: BuilderDoc = { version: 1, blocks: [] };
-
-export function isBuilderDoc(value: unknown): value is BuilderDoc {
-  return typeof value === "object" && value !== null && (value as { version?: unknown }).version === 1 && Array.isArray((value as { blocks?: unknown }).blocks);
+/** Stored content written by the builder, in any version (lib/builder/legacy.ts reads older ones). */
+export function isBuilderDoc(value: unknown): value is { version: number; blocks: unknown[] } {
+  if (typeof value !== "object" || value === null) return false;
+  const v = value as { version?: unknown; blocks?: unknown };
+  return (v.version === 1 || v.version === 2) && Array.isArray(v.blocks);
 }
-
-export const columnCount = (layout: ColumnsLayout): number => (layout === "1-1-1" ? 3 : 2);
 
 /** Block ids double as section anchors, so they are lowercase letters and digits (valid page-spec slugs). */
 export const BLOCK_ID = /^[a-z0-9]{6,32}$/;

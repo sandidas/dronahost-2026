@@ -1,47 +1,39 @@
 import type { ReactNode } from "react";
 import { EDITOR_TEXT } from "@/content/portal-strings";
-import type { BuilderDoc, ColumnsBlock, PostKind, SectionWidth } from "@/lib/builder/model";
+import type { RenderCtx } from "@/lib/builder/blocks/types";
 import { youtubeEmbedSrc } from "@/lib/builder/model";
-import { prepareSection } from "@/lib/builder/sections";
 import { cn } from "@/utils/cn";
-import { BAND_CLASS, BANDED } from "./SectionView";
 
 /**
- * The page structure shared by the editor canvas and the public page: section shells, column grids, figures, video
- * frames and the alternating bands. Both sides build from these, so spacing, widths and backgrounds match exactly.
+ * Page structure shared by the editor canvas and the public page. Blocks build from these, so spacing, widths and
+ * backgrounds match exactly on both.
  */
 
-const GRID: Record<ColumnsBlock["props"]["layout"], string> = {
-  "1-1": "md:grid-cols-2",
-  "2-1": "md:grid-cols-[2fr_1fr]",
-  "1-2": "md:grid-cols-[1fr_2fr]",
-  "1-1-1": "md:grid-cols-3",
-};
-
-/** A Section block. Pages: a full-width band with the site container. Posts: a run of article text in the post column. */
-export function SectionShell({ kind, width, band, first, children }: { kind: PostKind; width: SectionWidth; band?: string; first?: boolean; children: ReactNode }) {
-  if (kind === "post") return <div className={cn("article max-w-none [&>:first-child]:mt-0", !first && "mt-4")}>{children}</div>;
+/** Text and media blocks: a band of the page (pages), or a run of the post's text column (posts). */
+export function BlockShell({ ctx, width = "wide", article = false, children }: { ctx: RenderCtx; width?: "text" | "wide"; article?: boolean; children: ReactNode }) {
+  if (ctx.kind === "post") return <div className={cn(article ? "article max-w-none [&>:first-child]:mt-0" : "my-8")}>{children}</div>;
   return (
-    <section className={cn("section-y", band)}>
+    <section className={cn("section-y", ctx.band)}>
       <div className="container-site">
-        <div className={cn("article [&>:first-child]:mt-0", width === "text" ? "mx-auto" : "max-w-none")}>{children}</div>
+        <div className={cn(article && "article [&>:first-child]:mt-0", width === "text" ? "mx-auto max-w-3xl" : "max-w-none")}>{children}</div>
       </div>
     </section>
   );
 }
 
-/** A full section (banner, FAQ, ...) inside a post's text column: spacing and padding fitted to the column. */
-export const POST_SECTION_GAP = "builder-in-post my-10";
-
-export function ColumnsGrid({ layout, children }: { layout: ColumnsBlock["props"]["layout"]; children: ReactNode }) {
-  return <div className={cn("mt-8 grid gap-8", GRID[layout])}>{children}</div>;
+/** A full section (hero, banner, FAQ, ...) inside a post's text column: spacing and padding fitted to the column. */
+export function SectionFrame({ ctx, children }: { ctx: RenderCtx; children: ReactNode }) {
+  return ctx.kind === "post" ? <div className="builder-in-post my-10">{children}</div> : <>{children}</>;
 }
 
-export const COLUMN_CELL = "min-w-0 [&>:first-child]:mt-0";
+/** Sanitised rich text. `contents` keeps the article's spacing rules (`.article p`, `.article h2`) on the inner elements. */
+export function Html({ html }: { html: string }) {
+  return <div className="contents" dangerouslySetInnerHTML={{ __html: html }} />;
+}
 
 export function Figure({ src, alt, caption }: { src: string; alt: string; caption?: string }) {
   return (
-    <figure className="mt-8">
+    <figure>
       {/* Staff images come from any https address or the site, so next/image (which needs known hosts) is not used. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={src} alt={alt} loading="lazy" decoding="async" className="h-auto w-full rounded-xl border border-border" />
@@ -64,22 +56,4 @@ export function VideoFrame({ id, title, inert }: { id: string; title: string; in
       />
     </div>
   );
-}
-
-/**
- * Which root blocks get the muted band on a page: every second block that sits on the page background, counting only
- * blocks that show something. Banners and the hero keep their own backgrounds. Posts have no bands.
- */
-export function pageBands(doc: BuilderDoc, kind: PostKind): Map<string, string> {
-  const bands = new Map<string, string>();
-  if (kind !== "page") return bands;
-  let n = 0;
-  for (const block of doc.blocks) {
-    const type = block.type === "site" ? block.section.type : block.type;
-    if (!BANDED.has(type)) continue;
-    if (block.type === "site" && !prepareSection(block.section.type, block.section.content)) continue;
-    if (n % 2 === 1) bands.set(block.id, BAND_CLASS);
-    n += 1;
-  }
-  return bands;
 }

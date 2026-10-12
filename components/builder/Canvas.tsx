@@ -1,33 +1,31 @@
 "use client";
 
 import { DragOverlay, useDraggable, useDroppable } from "@dnd-kit/core";
-import type { JSONContent } from "@tiptap/react";
-import { ArrowDown, ArrowUp, Copy, GripVertical, ImageIcon, Plus, Trash2, Video } from "lucide-react";
-import { createContext, useContext, useId, useMemo, useState, type ReactNode } from "react";
+import { ArrowDown, ArrowUp, Copy, GripVertical, Plus, Trash2 } from "lucide-react";
+import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
 import { BUILDER_TEXT } from "@/content/portal-strings";
-import { RichTextEditor } from "@/components/portal/editor/RichTextEditor";
-import { entryFor } from "@/lib/builder/catalog";
 import ArticleLayout from "@/components/blog/ArticleLayout";
 import CenteredHero from "@/components/sections/CenteredHero";
-import { youtubeId, type AnyBlock, type ColumnsBlock, type LeafBlock, type SectionBlock } from "@/lib/builder/model";
-import { prepareSection } from "@/lib/builder/sections";
+import { blockDef, blockName } from "@/lib/builder/blocks";
+import { leadBlock, pageBands, pageFrame } from "@/lib/builder/doc";
+import { fieldProblems } from "@/lib/builder/fields";
+import type { Block } from "@/lib/builder/model";
 import { docToc, readingMinutes } from "@/lib/builder/text";
 import { isSafeImageSrc } from "@/lib/editor/urls";
 import { templatesFor } from "@/lib/builder/templates";
-import { accepts, ROOT, slotKey, type Slot } from "@/lib/builder/tree";
 import { cn } from "@/utils/cn";
-import { ColumnsGrid, COLUMN_CELL, Figure, pageBands, POST_SECTION_GAP, SectionShell, VideoFrame } from "./layout";
 import { CanvasFrame } from "./CanvasFrame";
-import { SiteBlockView } from "./SiteBlockView";
+import { BLOCK_ICONS } from "./icons";
+import { INLINE } from "./inline";
 import { useBuilder, useProblems, type Device } from "./store";
 
 const T = BUILDER_TEXT.ui;
 
-/** Page-wide facts every block needs: post or page, and which root blocks get the muted band. */
-const CanvasContext = createContext<{ bands: Map<string, string>; firstId: string | undefined }>({ bands: new Map(), firstId: undefined });
+/** Which blocks get the muted band, worked out once for the whole page. */
+const BandsContext = createContext<Map<string, string>>(new Map());
 
-/** Drop target id. `onDragEnd` in BuilderApp reads the slot and index from the droppable's data. */
-export const dropId = (slot: Slot, index: number) => `drop:${slotKey(slot)}:${index}`;
+/** Drop target id. `onDragEnd` in BuilderApp reads the index from the droppable's data. */
+export const dropId = (index: number) => `drop:${index}`;
 /** Drag source id for a block already on the page. */
 export const moveId = (id: string) => `move:${id}`;
 
@@ -38,14 +36,14 @@ export const PALETTE_MIME = "application/x-dronahost-block";
  * A thin line between blocks that becomes a drop target while a block that fits here is dragged: blocks moved on the
  * canvas (dnd-kit) and new blocks dragged from the Add panel (native drag and drop).
  */
-function DropZone({ slot, index, empty }: { slot: Slot; index: number; empty?: string }) {
+function DropZone({ index, empty }: { index: number; empty?: string }) {
   const dragType = useBuilder((s) => s.dragType);
   const canEdit = useBuilder((s) => s.canEdit);
   const addBlock = useBuilder((s) => s.addBlock);
   const set = useBuilder((s) => s.set);
   const [nativeOver, setNativeOver] = useState(false);
-  const active = dragType !== null && accepts(slot, dragType as AnyBlock["type"]);
-  const { setNodeRef, isOver: dndOver } = useDroppable({ id: dropId(slot, index), data: { slot, index }, disabled: !active });
+  const active = dragType !== null;
+  const { setNodeRef, isOver: dndOver } = useDroppable({ id: dropId(index), data: { index }, disabled: !active });
   const isOver = dndOver || nativeOver;
   const native = {
     onDragOver: (e: React.DragEvent) => {
@@ -61,7 +59,7 @@ function DropZone({ slot, index, empty }: { slot: Slot; index: number; empty?: s
       if (!active || !type) return;
       e.preventDefault();
       set({ dragType: null });
-      addBlock(type, { slot, index });
+      addBlock(type, index);
     },
   };
   if (empty && canEdit) {
@@ -86,15 +84,15 @@ function DropZone({ slot, index, empty }: { slot: Slot; index: number; empty?: s
   );
 }
 
-function SlotList({ slot, blocks, empty }: { slot: Slot; blocks: readonly AnyBlock[]; empty: string }) {
-  if (blocks.length === 0) return <DropZone slot={slot} index={0} empty={empty} />;
+function BlockList({ blocks, empty }: { blocks: readonly Block[]; empty: string }) {
+  if (blocks.length === 0) return <DropZone index={0} empty={empty} />;
   return (
     <>
-      <DropZone slot={slot} index={0} />
+      <DropZone index={0} />
       {blocks.map((block, i) => (
         <div key={block.id}>
           <BlockFrame block={block} />
-          <DropZone slot={slot} index={i + 1} />
+          <DropZone index={i + 1} />
         </div>
       ))}
     </>
@@ -119,7 +117,7 @@ function ToolButton({ label, onClick, children, danger }: { label: string; onCli
 }
 
 /** Selection outline, the label chip with the block toolbar, and publish problems under the block. */
-function BlockFrame({ block }: { block: AnyBlock }) {
+function BlockFrame({ block }: { block: Block }) {
   const selected = useBuilder((s) => s.selectedId === block.id);
   const hovered = useBuilder((s) => s.hoverId === block.id);
   const problems = useProblems()[block.id];
@@ -130,8 +128,9 @@ function BlockFrame({ block }: { block: AnyBlock }) {
   const nudge = useBuilder((s) => s.nudge);
   const duplicate = useBuilder((s) => s.duplicate);
   const remove = useBuilder((s) => s.remove);
-  const entry = entryFor(block);
-  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id: moveId(block.id), data: { source: "canvas", id: block.id, blockType: block.type, label: entry?.label }, disabled: !canEdit });
+  const entry = blockName(block.type);
+  const inline = Boolean(INLINE[block.type]);
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id: moveId(block.id), data: { source: "canvas", id: block.id, blockType: block.type, label: entry.label }, disabled: !canEdit });
   const showChip = selected || hovered;
 
   return (
@@ -154,14 +153,14 @@ function BlockFrame({ block }: { block: AnyBlock }) {
       )}
     >
       {showChip && (
-        <div className={cn("builder-ui absolute -top-3.5 start-2 z-20 flex items-center gap-0.5 rounded-md bg-accent px-1 text-xs font-semibold text-accent-foreground shadow-md", block.type === "site" && "top-2")}>
+        <div className={cn("builder-ui absolute start-2 z-20 flex items-center gap-0.5 rounded-md bg-accent px-1 text-xs font-semibold text-accent-foreground shadow-md", inline ? "-top-3.5" : "top-2")}>
           {canEdit && (
             <button type="button" ref={setNodeRef} {...attributes} {...listeners} className="inline-flex size-7 cursor-grab items-center justify-center rounded-md hover:bg-accent-hover active:cursor-grabbing" title={T.toolbar.drag}>
               <GripVertical className="size-4" aria-hidden="true" />
-              <span className="sr-only">{`${T.toolbar.drag}: ${entry?.label}`}</span>
+              <span className="sr-only">{`${T.toolbar.drag}: ${entry.label}`}</span>
             </button>
           )}
-          <span className="px-1.5 py-1">{entry?.label}</span>
+          <span className="px-1.5 py-1">{entry.label}</span>
           {canEdit && selected && (
             <>
               <ToolButton label={T.toolbar.up} onClick={() => nudge(block.id, -1)}>
@@ -192,115 +191,45 @@ function BlockFrame({ block }: { block: AnyBlock }) {
   );
 }
 
-function SectionView({ block }: { block: SectionBlock }) {
+/**
+ * A block drawn by its own definition, exactly as on the public page. Its links and buttons do nothing while editing
+ * (`inert`); a click selects the block. While it has nothing to show, the canvas says what to fill in (the public
+ * page shows nothing there).
+ */
+function BlockView({ block }: { block: Block }) {
   const kind = useBuilder((s) => s.kind);
-  const { bands, firstId } = useContext(CanvasContext);
+  const band = useContext(BandsContext).get(block.id);
+  const def = blockDef(block.type);
+  const prepared = def?.prepare(block.props);
+  if (def && prepared !== null && prepared !== undefined) {
+    return (
+      <div inert className="select-none">
+        {def.render(prepared, { kind, band, editing: true })}
+      </div>
+    );
+  }
+  const Icon = def ? BLOCK_ICONS[def.icon] : undefined;
+  const missing = def ? fieldProblems(def.fields, block.props) : [];
   return (
-    <SectionShell kind={kind} width={block.props.width} band={bands.get(block.id)} first={firstId === block.id}>
-      <SlotList slot={{ kind: "section", id: block.id }} blocks={block.children} empty={T.canvas.emptySection} />
-    </SectionShell>
-  );
-}
-
-function ColumnsView({ block }: { block: ColumnsBlock }) {
-  return (
-    <ColumnsGrid layout={block.props.layout}>
-      {block.columns.map((col, i) => (
-        <div key={col.id} className={COLUMN_CELL}>
-          <SlotList slot={{ kind: "column", id: block.id, index: i }} blocks={col.children} empty={T.canvas.emptyColumn} />
-        </div>
-      ))}
-    </ColumnsGrid>
-  );
-}
-
-function HeadingView({ block }: { block: Extract<LeafBlock, { type: "heading" }> }) {
-  const canEdit = useBuilder((s) => s.canEdit);
-  const update = useBuilder((s) => s.update);
-  const Tag = `h${block.props.level}` as "h2" | "h3" | "h4";
-  return (
-    <Tag>
-      {canEdit ? (
-        <input
-          value={block.props.text}
-          onChange={(e) => update(block.id, (b) => ({ ...b, props: { ...(b as typeof block).props, text: e.target.value } }) as AnyBlock)}
-          placeholder={T.canvas.headingPlaceholder}
-          aria-label={`${entryFor(block)?.label} ${block.props.level}`}
-          maxLength={200}
-          className="w-full bg-transparent text-inherit outline-none [font:inherit] [letter-spacing:inherit] placeholder:text-subtle-foreground"
-        />
-      ) : (
-        block.props.text
+    <div className="builder-ui m-4 flex flex-col items-center gap-2 rounded-xl border-2 border-dashed border-border-strong p-8 text-center text-sm text-muted-foreground">
+      {Icon && <Icon className="size-6 text-link" aria-hidden="true" />}
+      <p className="font-semibold text-foreground">{blockName(block.type).label}</p>
+      <p>{T.block.fillIn}</p>
+      {missing.length > 0 && (
+        <ul className="mt-1 space-y-0.5">
+          {missing.map((m) => (
+            <li key={m}>{m}</li>
+          ))}
+        </ul>
       )}
-    </Tag>
-  );
-}
-
-function RichTextView({ block, selected }: { block: Extract<LeafBlock, { type: "richtext" }>; selected: boolean }) {
-  const canEdit = useBuilder((s) => s.canEdit);
-  const uploadEnabled = useBuilder((s) => s.uploadEnabled);
-  const update = useBuilder((s) => s.update);
-  const rev = useBuilder((s) => s.historyRev);
-  const labelId = useId();
-  return (
-    <>
-      <span id={labelId} className="sr-only">
-        {entryFor(block)?.label}
-      </span>
-      <RichTextEditor
-        key={rev}
-        variant="inline"
-        toolbar={selected}
-        reportInitial={false}
-        initialContent={block.props.content as JSONContent | string}
-        editable={canEdit}
-        uploadEnabled={uploadEnabled}
-        labelledBy={labelId}
-        onChange={(json) => update(block.id, (b) => ({ ...b, props: { content: json } }) as AnyBlock)}
-      />
-    </>
-  );
-}
-
-/** Only on the canvas: where an image or video will go once its address is set. The public page shows nothing here. */
-function Placeholder({ icon, text }: { icon: ReactNode; text: string }) {
-  return (
-    <div className="builder-ui mt-6 flex min-h-32 flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border-strong p-4 text-center text-sm text-muted-foreground">
-      {icon}
-      {text}
     </div>
   );
 }
 
-function LeafView({ block, selected }: { block: LeafBlock; selected: boolean }) {
-  switch (block.type) {
-    case "heading":
-      return <HeadingView block={block} />;
-    case "richtext":
-      return <RichTextView block={block} selected={selected} />;
-    case "image":
-      return isSafeImageSrc(block.props.src) ? (
-        <Figure src={block.props.src} alt={block.props.alt} caption={block.props.caption} />
-      ) : (
-        <Placeholder icon={<ImageIcon className="size-6" aria-hidden="true" />} text={T.canvas.imageEmpty} />
-      );
-    case "video": {
-      const id = youtubeId(block.props.url);
-      return id ? <VideoFrame id={id} title={block.props.title} inert /> : <Placeholder icon={<Video className="size-6" aria-hidden="true" />} text={T.canvas.videoEmpty} />;
-    }
-  }
-}
-
-function BlockBody({ block, selected }: { block: AnyBlock; selected: boolean }) {
-  const kind = useBuilder((s) => s.kind);
-  const { bands } = useContext(CanvasContext);
-  if (block.type === "section") return <SectionView block={block} />;
-  if (block.type === "columns") return <ColumnsView block={block} />;
-  if (block.type === "site") {
-    const view = <SiteBlockView block={block} className={bands.get(block.id)} inPost={kind === "post"} />;
-    return kind === "post" ? <div className={POST_SECTION_GAP}>{view}</div> : view;
-  }
-  return <LeafView block={block} selected={selected} />;
+function BlockBody({ block, selected }: { block: Block; selected: boolean }) {
+  const band = useContext(BandsContext).get(block.id);
+  const Inline = INLINE[block.type];
+  return Inline ? <Inline block={block} selected={selected} band={band} /> : <BlockView block={block} />;
 }
 
 /** On an empty page: pick a starting layout, or start blank. */
@@ -378,7 +307,7 @@ function RootBlocks() {
   if (blocks.length === 0 && canEdit && !blank) return <TemplatePicker onBlank={() => setBlank(true)} />;
   return (
     <>
-      <SlotList slot={ROOT} blocks={blocks} empty={T.canvas.empty} />
+      <BlockList blocks={blocks} empty={T.canvas.empty} />
       {canEdit && (
         <div className="builder-ui my-6 flex justify-center">
           <button
@@ -386,12 +315,12 @@ function RootBlocks() {
             onClick={(e) => {
               e.stopPropagation();
               select(null);
-              addBlock("section", { slot: ROOT, index: blocks.length });
+              addBlock("Text", blocks.length);
             }}
             className="inline-flex min-h-10 items-center gap-1.5 rounded-full bg-accent px-4 text-sm font-semibold text-accent-foreground shadow-sm hover:bg-accent-hover"
           >
             <Plus className="size-4" aria-hidden="true" />
-            {T.canvas.addSection}
+            {T.canvas.addBlock}
           </button>
         </div>
       )}
@@ -415,8 +344,7 @@ export function Canvas({ onKeyDown }: { onKeyDown?: (e: KeyboardEvent) => void }
   const set = useBuilder((s) => s.set);
   const actorName = useBuilder((s) => s.actorName);
   const bands = useMemo(() => pageBands(doc, kind), [doc, kind]);
-  const first = doc.blocks[0];
-  const heroShows = kind === "page" && first?.type === "site" && first.section.type === "Hero" && prepareSection("Hero", first.section.content) !== null;
+  const heroShows = leadBlock(doc, kind) !== null;
   const dates = useBuilder((s) => s.dates);
   const device = useBuilder((s) => s.device);
   const dragLabel = useBuilder((s) => s.dragLabel);
@@ -425,7 +353,7 @@ export function Canvas({ onKeyDown }: { onKeyDown?: (e: KeyboardEvent) => void }
       {/* look-luxe: the same page look as the public layout (app/[locale]/(marketing)/layout.tsx), so sections match. */}
       <div role="region" aria-label={T.canvas.label} className="look-luxe min-h-screen bg-background text-foreground" onClick={() => select(null)} onMouseLeave={() => set({ hoverId: null })}>
         {!canEdit && <p className="border-b border-warning/40 bg-warning-surface px-4 py-2 text-sm text-foreground">{T.readOnly}</p>}
-        <CanvasContext.Provider value={{ bands, firstId: first?.id }}>
+        <BandsContext.Provider value={bands}>
           {kind === "post" ? (
             <ArticleLayout
               inertChrome
@@ -448,10 +376,13 @@ export function Canvas({ onKeyDown }: { onKeyDown?: (e: KeyboardEvent) => void }
           ) : (
             <>
               {!heroShows && <CenteredHero title={meta.title || T.newTitle.page} description={meta.excerpt} />}
-              <RootBlocks />
+              {/* The same wrapper as the public page: content width and spacing from the Page tab. */}
+              <div {...pageFrame(doc.settings)}>
+                <RootBlocks />
+              </div>
             </>
           )}
-        </CanvasContext.Provider>
+        </BandsContext.Provider>
         {/* Inside the frame, so the dragged chip follows the pointer in the frame's own coordinates. */}
         <DragOverlay dropAnimation={null}>{dragLabel ? <div className="inline-flex rounded-md bg-accent px-3 py-1.5 text-sm font-semibold text-accent-foreground shadow-lg">{dragLabel}</div> : null}</DragOverlay>
       </div>

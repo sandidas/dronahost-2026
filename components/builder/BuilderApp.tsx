@@ -4,7 +4,7 @@ import { closestCenter, DndContext, PointerSensor, pointerWithin, useSensor, use
 import { PanelLeft, PanelRight, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { BUILDER_TEXT } from "@/content/portal-strings";
-import { findBlock, slotKey, type Slot } from "@/lib/builder/tree";
+import { indexOf } from "@/lib/builder/doc";
 import { cn } from "@/utils/cn";
 import { Canvas } from "./Canvas";
 import { Inspector } from "./Inspector";
@@ -13,6 +13,7 @@ import { PreviewFrame } from "./PreviewFrame";
 import { BuilderContext, createBuilderStore, groupProblems, ProblemsContext, useBuilder, useBuilderApi, useHistory, type BuilderInit } from "./store";
 import { iconButton, TopBar } from "./TopBar";
 import { usePublishing } from "./use-publishing";
+import { useSlugCheck } from "./use-slug-check";
 // Article typography for text blocks and the builder bands, as on the public page.
 import "@/app/styles/rich-content.css";
 
@@ -39,6 +40,7 @@ const typing = (target: EventTarget | null) => {
 function Shell({ actorName, embedded }: { actorName: string; embedded: boolean }) {
   const api = useBuilderApi();
   const publishing = usePublishing(actorName);
+  useSlugCheck();
   const { undo, redo } = useHistory();
   const preview = useBuilder((s) => s.preview);
   const message = useBuilder((s) => s.message);
@@ -118,17 +120,16 @@ function Shell({ actorName, embedded }: { actorName: string; embedded: boolean }
   const onDragEnd = (e: DragEndEvent) => {
     set({ dragType: null, dragLabel: null });
     const data = e.active.data.current as DragData | undefined;
-    const target = e.over?.data.current as { slot: Slot; index: number } | undefined;
+    const target = e.over?.data.current as { index: number } | undefined;
     if (!data || !target) return;
     const s = api.getState();
     if (data.source === "palette") {
-      s.addBlock(data.type, target);
+      s.addBlock(data.type, target.index);
       return;
     }
-    // The index is read after the block leaves its slot, so a move down the same slot lands one place earlier.
-    const from = findBlock(s.doc, data.id);
-    const sameSlot = from && slotKey(from.slot) === slotKey(target.slot);
-    s.move(data.id, target.slot, sameSlot && from.index < target.index ? target.index - 1 : target.index);
+    // The index is read after the block leaves the list, so a move further down lands one place earlier.
+    const from = indexOf(s.doc, data.id);
+    s.move(data.id, from >= 0 && from < target.index ? target.index - 1 : target.index);
     s.select(data.id);
   };
 

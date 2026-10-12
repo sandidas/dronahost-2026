@@ -5,7 +5,7 @@ import { useId, useState } from "react";
 import { errorClass, helpClass, inputClass, labelClass } from "@/components/portal/field-styles";
 import { uploadImage } from "@/components/portal/editor/upload-image";
 import { BUILDER_TEXT } from "@/content/portal-strings";
-import { getAt, setAt, type Field } from "@/lib/builder/catalog";
+import type { Field, Props } from "@/lib/builder/fields";
 import { cn } from "@/utils/cn";
 import { isSafeImageSrc } from "@/lib/editor/urls";
 import { MediaLibrary } from "./MediaLibrary";
@@ -13,26 +13,19 @@ import { iconButton } from "./TopBar";
 
 const F = BUILDER_TEXT.fields;
 
-type Props = {
+type ControlProps = {
   field: Field;
-  /** The object the field's path is read from (block props, or a site section). */
-  data: unknown;
-  onChange: (next: unknown) => void;
+  /** The object the field's key is read from: a block's props, or one item of a list. */
+  data: Props;
+  onChange: (next: Props) => void;
   readOnly: boolean;
   uploadEnabled: boolean;
 };
 
 const fieldInput = cn(inputClass, "min-h-10 px-3 text-sm");
-const wordCount = (t: string) => t.trim().split(/\s+/).filter(Boolean).length;
 
-function Counter({ value, max, min, words }: { value: string; max: number; min?: number; words?: number }) {
-  const tooLong = words ? wordCount(value) > words : value.length > max;
-  const tooShort = min !== undefined && value.length > 0 && value.length < min;
-  return (
-    <span className={cn("text-xs tabular-nums", tooLong || tooShort ? "text-danger" : "text-subtle-foreground")}>
-      {words ? `${wordCount(value)}/${words} ${F.words}` : `${value.length}/${max}`}
-    </span>
-  );
+function Counter({ value, max }: { value: string; max: number }) {
+  return <span className={cn("text-xs tabular-nums", value.length > max ? "text-danger" : "text-subtle-foreground")}>{`${value.length}/${max}`}</span>;
 }
 
 function TextField({ field, value, set, readOnly }: { field: Extract<Field, { kind: "text" | "textarea" }>; value: string; set: (v: string) => void; readOnly: boolean }) {
@@ -42,7 +35,7 @@ function TextField({ field, value, set, readOnly }: { field: Extract<Field, { ki
     id,
     value,
     readOnly,
-    maxLength: field.kind === "textarea" && field.words ? undefined : field.max,
+    maxLength: field.max,
     "aria-describedby": field.help ? helpId : undefined,
     onChange: (e: { target: { value: string } }) => set(e.target.value),
   };
@@ -52,9 +45,9 @@ function TextField({ field, value, set, readOnly }: { field: Extract<Field, { ki
         <label htmlFor={id} className={labelClass}>
           {field.label}
         </label>
-        <Counter value={value} max={field.max} min={field.min} words={field.kind === "textarea" ? field.words : undefined} />
+        <Counter value={value} max={field.max} />
       </div>
-      {field.kind === "textarea" ? <textarea {...common} rows={field.words ? 5 : 3} className={cn(inputClass, "min-h-20 px-3 py-2 text-sm")} /> : <input {...common} type="text" className={fieldInput} />}
+      {field.kind === "textarea" ? <textarea {...common} rows={3} className={cn(inputClass, "min-h-20 px-3 py-2 text-sm")} /> : <input {...common} type="text" className={fieldInput} />}
       {field.help && (
         <p id={helpId} className={helpClass}>
           {field.help}
@@ -137,13 +130,13 @@ export function ImagePicker({ label, help, value, onChange, readOnly, uploadEnab
   );
 }
 
-function CtaField({ field, value, set, readOnly }: { field: Extract<Field, { kind: "cta" }>; value: { label?: string; href?: string } | undefined; set: (v: unknown) => void; readOnly: boolean }) {
+function LinkField({ field, value, set, readOnly }: { field: Extract<Field, { kind: "link" }>; value: { label?: string; href?: string } | undefined; set: (v: unknown) => void; readOnly: boolean }) {
   const id = useId();
   const current = { label: value?.label ?? "", href: value?.href ?? "" };
   const change = (patch: Partial<typeof current>) => {
     const next = { ...current, ...patch };
-    // An optional action left empty is removed, so it does not fail the section's checks.
-    set(field.optional && !next.label && !next.href ? undefined : next);
+    // A link left empty is removed, so an optional one does not fail the block's checks.
+    set(!next.label && !next.href ? undefined : next);
   };
   return (
     <fieldset className="rounded-xl border border-border p-3">
@@ -158,6 +151,31 @@ function CtaField({ field, value, set, readOnly }: { field: Extract<Field, { kin
       <input id={`${id}-href`} value={current.href} readOnly={readOnly} placeholder="/pricing" onChange={(e) => change({ href: e.target.value.trim() })} className={cn(fieldInput, "mt-1")} />
       <p className={helpClass}>{F.ctaHrefHelp}</p>
     </fieldset>
+  );
+}
+
+/** An image and its description for screen readers, stored together as { src, alt }. */
+function ImageField({ field, value, set, readOnly, uploadEnabled }: { field: Extract<Field, { kind: "image" }>; value: { src?: string; alt?: string } | undefined; set: (v: unknown) => void; readOnly: boolean; uploadEnabled: boolean }) {
+  const id = useId();
+  const current = { src: value?.src ?? "", alt: value?.alt ?? "" };
+  const change = (patch: Partial<typeof current>) => {
+    const next = { ...current, ...patch };
+    set(!next.src && !next.alt ? undefined : next);
+  };
+  return (
+    <div className="space-y-3">
+      <ImagePicker label={field.label} help={field.help} value={current.src} onChange={(src) => change({ src })} readOnly={readOnly} uploadEnabled={uploadEnabled} />
+      <div>
+        <div className="flex items-baseline justify-between gap-2">
+          <label htmlFor={`${id}-alt`} className="text-xs font-semibold text-muted-foreground">
+            {F.alt}
+          </label>
+          <Counter value={current.alt} max={200} />
+        </div>
+        <input id={`${id}-alt`} value={current.alt} readOnly={readOnly} maxLength={200} onChange={(e) => change({ alt: e.target.value })} className={cn(fieldInput, "mt-1")} />
+        <p className={helpClass}>{F.altHelp}</p>
+      </div>
+    </div>
   );
 }
 
@@ -191,7 +209,7 @@ function StringsField({ field, value, set, readOnly }: { field: Extract<Field, {
   );
 }
 
-function ListField({ field, value, set, readOnly, uploadEnabled }: { field: Extract<Field, { kind: "list" }>; value: Record<string, unknown>[]; set: (v: unknown) => void; readOnly: boolean; uploadEnabled: boolean }) {
+function ListField({ field, value, set, readOnly, uploadEnabled }: { field: Extract<Field, { kind: "list" }>; value: Props[]; set: (v: unknown) => void; readOnly: boolean; uploadEnabled: boolean }) {
   const id = useId();
   // Which items are open is the person's choice: typing never collapses an item. The first item starts open.
   const [open, setOpen] = useState<Set<number>>(() => new Set([0]));
@@ -209,7 +227,7 @@ function ListField({ field, value, set, readOnly, uploadEnabled }: { field: Extr
     set(value.filter((_, j) => j !== i));
     setOpen((prev) => new Set([...prev].filter((x) => x !== i).map((x) => (x > i ? x - 1 : x))));
   };
-  const firstPath = field.item.find((f) => f.kind === "text" || f.kind === "textarea")?.path ?? "";
+  const firstKey = field.item.find((f) => f.kind === "text" || f.kind === "textarea")?.key ?? "";
   return (
     <fieldset>
       <legend className={labelClass}>
@@ -218,7 +236,7 @@ function ListField({ field, value, set, readOnly, uploadEnabled }: { field: Extr
       <ol className="mt-2 space-y-2">
         {value.map((item, i) => {
           const isOpen = open.has(i);
-          const summary = typeof item[firstPath] === "string" ? (item[firstPath] as string) : "";
+          const summary = typeof item[firstKey] === "string" ? (item[firstKey] as string) : "";
           return (
             <li key={i} className="rounded-xl border border-border">
               <div className="flex min-h-10 items-center gap-1 ps-1 pe-1">
@@ -239,7 +257,7 @@ function ListField({ field, value, set, readOnly, uploadEnabled }: { field: Extr
                       <ArrowDown className="size-3.5" aria-hidden="true" />
                       <span className="sr-only">{`${F.moveDown}: ${field.itemTitle} ${i + 1}`}</span>
                     </button>
-                    <button type="button" className={cn(iconButton, "size-8")} disabled={value.length <= field.min} onClick={() => remove(i)} title={F.removeItem}>
+                    <button type="button" className={cn(iconButton, "size-8")} onClick={() => remove(i)} title={F.removeItem}>
                       <Trash2 className="size-3.5" aria-hidden="true" />
                       <span className="sr-only">{`${F.removeItem}: ${field.itemTitle} ${i + 1}`}</span>
                     </button>
@@ -249,7 +267,7 @@ function ListField({ field, value, set, readOnly, uploadEnabled }: { field: Extr
               {isOpen && (
                 <div id={`${id}-${i}`} className="space-y-4 border-t border-border p-3">
                   {field.item.map((sub) => (
-                    <FieldControl key={sub.path} field={sub} data={item} onChange={(nextItem) => set(value.map((v, j) => (j === i ? (nextItem as Record<string, unknown>) : v)))} readOnly={readOnly} uploadEnabled={uploadEnabled} />
+                    <FieldControl key={sub.key} field={sub} data={item} onChange={(nextItem) => set(value.map((v, j) => (j === i ? nextItem : v)))} readOnly={readOnly} uploadEnabled={uploadEnabled} />
                   ))}
                 </div>
               )}
@@ -270,7 +288,58 @@ function ListField({ field, value, set, readOnly, uploadEnabled }: { field: Extr
           {`${F.addItem}: ${field.itemTitle}`}
         </button>
       )}
+      {!readOnly && field.item[0]?.kind === "image" && <BulkImages listKey={field.item[0].key} value={value} set={set} max={field.max} uploadEnabled={uploadEnabled} />}
     </fieldset>
+  );
+}
+
+/**
+ * For lists of pictures (the gallery): upload several files at once. Each becomes a new item; empty items left from
+ * the start are replaced first. Descriptions are written afterwards, item by item.
+ */
+function BulkImages({ listKey, value, set, max, uploadEnabled }: { listKey: string; value: Props[]; set: (v: unknown) => void; max: number; uploadEnabled: boolean }) {
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
+  const [errors, setErrors] = useState<string[]>([]);
+  return (
+    <div className="mt-3 rounded-xl border border-dashed border-border-strong p-3">
+      <label className={cn("inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-lg border border-border px-3 text-sm font-semibold text-foreground hover:bg-muted", (!uploadEnabled || progress) && "pointer-events-none opacity-50")} aria-disabled={!uploadEnabled || Boolean(progress)}>
+        {progress ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Upload className="size-4" aria-hidden="true" />}
+        {progress ? F.bulkUploading(progress.done, progress.total) : F.bulkUpload}
+        <input
+          type="file"
+          multiple
+          accept="image/jpeg,image/png,image/webp,image/gif"
+          className="sr-only"
+          disabled={!uploadEnabled || Boolean(progress)}
+          onChange={async (e) => {
+            const kept = value.filter((item) => Object.keys(item).length > 0);
+            const files = Array.from(e.target.files ?? []).slice(0, Math.max(0, max - kept.length));
+            e.target.value = "";
+            if (!files.length) return;
+            setErrors([]);
+            const added: Props[] = [];
+            const failed: string[] = [];
+            for (const [i, file] of files.entries()) {
+              setProgress({ done: i + 1, total: files.length });
+              const res = await uploadImage(file);
+              if ("url" in res) added.push({ [listKey]: { src: res.url, alt: "" } });
+              else failed.push(`${file.name}: ${res.error}`);
+            }
+            setProgress(null);
+            setErrors(failed);
+            if (added.length) set([...kept, ...added]);
+          }}
+        />
+      </label>
+      <p className={helpClass}>{uploadEnabled ? F.bulkHelp : BUILDER_TEXT.media.notConfigured}</p>
+      {errors.length > 0 && (
+        <ul className={cn(errorClass, "list-disc ps-5")} role="alert">
+          {errors.map((err) => (
+            <li key={err}>{err}</li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
 
@@ -287,8 +356,8 @@ function SelectField({ field, value, set, readOnly }: { field: Extract<Field, { 
         disabled={readOnly}
         onChange={(e) => {
           const option = field.options.find((o) => String(o.value) === e.target.value);
-          // An optional choice left empty (for example "No icon") is removed from the data.
-          if (option) set(field.optional && option.value === "" ? undefined : option.value);
+          // An empty choice (for example "No icon") is removed from the data.
+          if (option) set(option.value === "" ? undefined : option.value);
         }}
         className={fieldInput}
       >
@@ -302,14 +371,20 @@ function SelectField({ field, value, set, readOnly }: { field: Extract<Field, { 
   );
 }
 
-/** One field of the Block panel. Reads `field.path` from `data` and reports the whole updated object. */
-export function FieldControl({ field, data, onChange, readOnly, uploadEnabled }: Props) {
-  const raw = getAt(data, field.path);
-  const write = (v: unknown) => onChange(setAt(data, field.path, v));
+/** One field of the Block panel. Reads `field.key` from `data` and reports the whole updated object. */
+export function FieldControl({ field, data, onChange, readOnly, uploadEnabled }: ControlProps) {
+  const raw = data[field.key];
+  const write = (v: unknown) => {
+    const next = { ...data };
+    // Empty values are removed rather than stored, so the stored props stay small and optional fields stay unset.
+    if (v === undefined || v === "") delete next[field.key];
+    else next[field.key] = v;
+    onChange(next);
+  };
   switch (field.kind) {
     case "text":
     case "textarea":
-      return <TextField field={field} value={typeof raw === "string" ? raw : ""} readOnly={readOnly} set={(v) => write(field.optional && v === "" ? undefined : v)} />;
+      return <TextField field={field} value={typeof raw === "string" ? raw : ""} readOnly={readOnly} set={write} />;
     case "select":
       return <SelectField field={field} value={raw} set={write} readOnly={readOnly} />;
     case "toggle":
@@ -320,12 +395,15 @@ export function FieldControl({ field, data, onChange, readOnly, uploadEnabled }:
         </label>
       );
     case "image":
-      return <ImagePicker label={field.label} help={field.help} value={typeof raw === "string" ? raw : ""} onChange={write} readOnly={readOnly} uploadEnabled={uploadEnabled} />;
-    case "cta":
-      return <CtaField field={field} value={raw as { label?: string; href?: string } | undefined} set={write} readOnly={readOnly} />;
+      return <ImageField field={field} value={raw as { src?: string; alt?: string } | undefined} set={write} readOnly={readOnly} uploadEnabled={uploadEnabled} />;
+    case "link":
+      return <LinkField field={field} value={raw as { label?: string; href?: string } | undefined} set={write} readOnly={readOnly} />;
     case "strings":
       return <StringsField field={field} value={Array.isArray(raw) ? (raw as string[]) : []} set={write} readOnly={readOnly} />;
     case "list":
-      return <ListField field={field} value={Array.isArray(raw) ? (raw as Record<string, unknown>[]) : []} set={write} readOnly={readOnly} uploadEnabled={uploadEnabled} />;
+      return <ListField field={field} value={Array.isArray(raw) ? (raw as Props[]) : []} set={write} readOnly={readOnly} uploadEnabled={uploadEnabled} />;
+    case "richtext":
+      // Written on the canvas, with its own toolbar.
+      return <p className="text-sm text-muted-foreground">{BUILDER_TEXT.ui.block.richtextHint}</p>;
   }
 }

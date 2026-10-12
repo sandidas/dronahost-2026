@@ -10,7 +10,8 @@ import { publishProblems, type Problem } from "@/lib/builder/validate";
 import { Post, type IPost } from "@/lib/models/post";
 import { portalDb } from "./db";
 import { parsePostInput } from "./post-input";
-import { SLUG_PATTERN } from "./slug";
+import { isReservedPageSlug } from "@/lib/builder/reserved";
+import { SLUG_MAX, SLUG_PATTERN } from "./slug";
 import { fail, guarded, isDuplicateKey, ok, toObjectId, type Actor, type Result } from "./result";
 
 export type PostStatus = IPost["status"];
@@ -127,6 +128,38 @@ export async function getPortalPostBySlug(actor: Actor, rawSlug: unknown): Promi
   });
 }
 
+export type SlugCheckResult = { state: "free" | "taken" | "reserved"; suggestion: string };
+
+/** Words put in front of a taken slug when the page itself offers none. */
+const FALLBACK_WORDS: Record<PostKind, readonly string[]> = { post: ["blog", "read"], page: ["page", "about"] };
+
+/**
+ * Whether a slug is free for this post or page, and a free one when it is not: the slug with a word in front (the
+ * page's own words first, then a plain word for its kind), or as a last resort with a number at the end. Another
+ * post, another page and the site's own routes all count as taken. Read-only.
+ */
+export async function checkSlug(actor: Actor, raw: unknown): Promise<Result<SlugCheckResult>> {
+  return guarded("portal.posts.slug", async () => {
+    assertCan(actor.role, "post.view");
+    const r = (raw && typeof raw === "object" ? raw : {}) as { slug?: unknown; kind?: unknown; postId?: unknown; words?: unknown };
+    const kind: PostKind = r.kind === "page" ? "page" : "post";
+    const slug = typeof r.slug === "string" ? r.slug.trim().toLowerCase() : "";
+    if (!SLUG_PATTERN.test(slug) || slug.length > SLUG_MAX) return fail(PORTAL_ERRORS.slug, { slug: PORTAL_ERRORS.slug });
+    const own = toObjectId(r.postId);
+    const words = (Array.isArray(r.words) ? r.words : []).filter((w): w is string => typeof w === "string" && /^[a-z0-9]{2,30}$/.test(w)).slice(0, 8);
+    const reserved = (s: string) => s === "new" || (kind === "page" && isReservedPageSlug(s));
+    const candidates = [...new Set([slug, ...[...words, ...FALLBACK_WORDS[kind]].map((w) => `${w}-${slug}`), ...Array.from({ length: 8 }, (_, i) => `${slug}-${i + 2}`)])].filter(
+      (c) => c.length <= SLUG_MAX && !reserved(c),
+    );
+    await portalDb();
+    // Every record counts, deleted ones included: they keep a renamed slug, and the unique index covers them all.
+    const taken = new Set(((await Post.find({ slug: { $in: candidates }, ...(own && { _id: { $ne: own } }) }, { slug: 1 }).lean()) as IPost[]).map((p) => p.slug));
+    const state = reserved(slug) ? "reserved" : taken.has(slug) ? "taken" : "free";
+    const suggestion = state === "free" ? slug : (candidates.find((c) => c !== slug && !taken.has(c)) ?? `${slug}-${Date.now().toString(36)}`);
+    return ok({ state, suggestion });
+  });
+}
+
 /**
  * New posts and pages are always drafts and unlocked, whoever creates them; the author is the signed-in person. The
  * kind (post or page) is set here and never changes afterwards.
@@ -138,6 +171,13 @@ export async function createPost(actor: Actor, raw: unknown): Promise<Result<Pos
     const input = parsePostInput(raw, kind);
     if (!input.ok) return input;
     await portalDb();
+    // A slug the editor filled in from the title (never typed by the person) moves aside for an existing one, with a
+    // word from the page in front, instead of refusing the first save.
+    const auto = (raw as { autoSlug?: unknown; slugWords?: unknown }).autoSlug === true;
+    if (auto) {
+      const free = await checkSlug(actor, { slug: input.data.slug, kind, words: (raw as { slugWords?: unknown }).slugWords });
+      if (free.ok) input.data.slug = free.data.suggestion;
+    }
     try {
       const doc = await Post.create({
         ...input.data,

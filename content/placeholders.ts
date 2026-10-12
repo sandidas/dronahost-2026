@@ -284,28 +284,13 @@ export const SAMPLE_PORTAL_ANNOUNCEMENTS: PortalAnnouncement[] = [
   { id: sampleId(32), message: "Sample notice: switched off.", linkUrl: null, startsAt: null, endsAt: null, active: false, updatedAt: "2026-01-02T09:00:00.000Z" },
 ];
 
-/** A sample page for the page builder on /v2: a section with text and columns, then a call to action. */
+/** A sample page for the page builder on /v2: text, a photo gallery with no pictures yet, then a call to action. */
 export const SAMPLE_PORTAL_BUILDER_DOC: import("@/lib/builder/model").BuilderDoc = {
-  version: 1,
+  version: 2,
+  settings: { width: "default", spacing: "normal" },
   blocks: [
-    {
-      id: "bsamplesec1",
-      type: "section",
-      props: { width: "text" },
-      children: [
-        { id: "bsamplehd01", type: "heading", props: { text: "Sample heading", level: 2 } },
-        { id: "bsampletxt1", type: "richtext", props: { content: SAMPLE_PORTAL_DOC } },
-        {
-          id: "bsamplecol1",
-          type: "columns",
-          props: { layout: "1-1" },
-          columns: [
-            { id: "bsamplecl01", children: [{ id: "bsamplehd02", type: "heading", props: { text: "Sample column one", level: 3 } }] },
-            { id: "bsamplecl02", children: [{ id: "bsampleimg1", type: "image", props: { src: "", alt: "", caption: "" } }] },
-          ],
-        },
-      ],
-    },
-    { id: "bsamplecta1", type: "site", section: { type: "CtaBand", content: { title: "Sample call to action", primaryCta: { label: "See the plans", href: "/pricing" } } } },
+    { id: "bsampletxt1", type: "Text", props: { content: SAMPLE_PORTAL_DOC, width: "text" } },
+    { id: "bsamplegal1", type: "Gallery", props: { title: "Sample gallery", images: [{}, {}, {}], layout: "grid", columns: 3, aspect: "square", gap: "medium", lightbox: true } },
+    { id: "bsamplecta1", type: "CtaBand", props: { title: "Sample call to action", primaryCta: { label: "See the plans", href: "/pricing" } } },
   ],
 };

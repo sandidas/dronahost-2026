@@ -3,9 +3,9 @@
 import { createContext, useContext } from "react";
 import { temporal } from "zundo";
 import { createStore, useStore, type StoreApi } from "zustand";
-import { entryByType } from "@/lib/builder/catalog";
-import { isRootType, accepts, duplicateBlock, findBlock, insertBlock, moveBlock, nudgeBlock, removeBlock, slotBlocks, updateBlock, ROOT, type Slot } from "@/lib/builder/tree";
-import type { AnyBlock, BuilderDoc, PostKind, RootBlock } from "@/lib/builder/model";
+import { allowedIn, blockDef, createBlock } from "@/lib/builder/blocks";
+import { duplicateBlock, indexOf, insertBlock, moveBlock, nudgeBlock, removeBlock, setSettings, updateProps } from "@/lib/builder/doc";
+import type { Block, BuilderDoc, PageSettings, PostKind } from "@/lib/builder/model";
 import type { PostSeo } from "@/lib/builder/seo";
 import { publishProblems } from "@/lib/builder/validate";
 import { slugify } from "@/lib/portal/slug";
@@ -14,6 +14,8 @@ export type Meta = { title: string; slug: string; excerpt: string; coverImage: s
 export type SaveState = "new" | "saved" | "dirty" | "saving" | "error";
 export type Device = "desktop" | "tablet" | "phone";
 export type Message = { kind: "ok" | "error"; text: string } | null;
+/** The last check of the slug against the database (SEO tab and Page tab). */
+export type SlugCheck = { slug: string; state: "checking" | "free" | "taken" | "reserved"; suggestion?: string } | null;
 
 export type BuilderInit = {
   postId: string | null;
@@ -63,18 +65,21 @@ export type BuilderState = BuilderInit & {
   hoverId: string | null;
   /** Bumped by undo and redo: rich text editors keep their own state, so they reload from the page when it changes. */
   historyRev: number;
+  slugCheck: SlugCheck;
 
   setMeta: (patch: Partial<Meta>) => void;
-  addBlock: (type: string, target?: { slot: Slot; index: number }) => void;
+  /** Adds a block at `index`, or after the selected block, or at the end. */
+  addBlock: (type: string, index?: number) => void;
   /** Replaces an empty page with a template's blocks. */
-  applyTemplate: (blocks: RootBlock[]) => void;
-  move: (id: string, slot: Slot, index: number) => void;
+  applyTemplate: (blocks: Block[]) => void;
+  move: (id: string, index: number) => void;
   nudge: (id: string, delta: -1 | 1) => void;
   duplicate: (id: string) => void;
   remove: (id: string) => void;
-  update: (id: string, fn: (block: AnyBlock) => AnyBlock) => void;
+  update: (id: string, fn: (props: Block["props"]) => Block["props"]) => void;
+  setSettings: (patch: Partial<PageSettings>) => void;
   select: (id: string | null) => void;
-  set: (patch: Partial<Pick<BuilderState, "leftTab" | "rightTab" | "preview" | "device" | "dragType" | "dragLabel" | "hoverId" | "message" | "showProblems" | "mobilePanel">>) => void;
+  set: (patch: Partial<Pick<BuilderState, "leftTab" | "rightTab" | "preview" | "device" | "dragType" | "dragLabel" | "hoverId" | "message" | "showProblems" | "mobilePanel" | "slugCheck">>) => void;
   saving: () => void;
   saved: (result: { postId: string; slug: string }) => void;
   failed: (text: string, fieldErrors?: Record<string, string>) => void;
@@ -95,30 +100,6 @@ function grouped<A extends unknown[]>(fn: (...args: A) => void, group: { key: st
     lastKey = group.key;
     lastAt = now;
   };
-}
-
-/** Where a new block goes when it is clicked in the Add panel rather than dragged. */
-function defaultTarget(doc: BuilderDoc, selectedId: string | null, type: string): { slot: Slot; index: number } | null {
-  const found = selectedId ? findBlock(doc, selectedId) : null;
-  if (isRootType(type as AnyBlock["type"])) {
-    // After the selected root block (or the root block that contains the selection), otherwise at the end.
-    let rootIndex = doc.blocks.length;
-    if (found) {
-      const rootId = found.slot.kind === "root" ? found.block.id : found.slot.kind === "section" ? found.slot.id : doc.blocks.find((b) => b.type === "section" && b.children.some((c) => c.id === (found.slot as { id: string }).id))?.id;
-      const i = doc.blocks.findIndex((b) => b.id === rootId);
-      if (i >= 0) rootIndex = i + 1;
-    }
-    return { slot: ROOT, index: rootIndex };
-  }
-  if (found?.block.type === "section") return { slot: { kind: "section", id: found.block.id }, index: found.block.children.length };
-  if (found && found.slot.kind !== "root" && accepts(found.slot, type as AnyBlock["type"])) return { slot: found.slot, index: found.index + 1 };
-  if (found?.slot.kind === "column") {
-    // A Columns block inside a column is not allowed: put it after the Columns block instead.
-    const columns = findBlock(doc, found.slot.id);
-    if (columns) return { slot: columns.slot, index: columns.index + 1 };
-  }
-  const lastSection = [...doc.blocks].reverse().find((b) => b.type === "section");
-  return lastSection ? { slot: { kind: "section", id: lastSection.id }, index: lastSection.children.length } : null;
 }
 
 export function createBuilderStore(init: BuilderInit & { actorName: string }) {
@@ -151,36 +132,31 @@ export function createBuilderStore(init: BuilderInit & { actorName: string }) {
           dragLabel: null,
           hoverId: null,
           historyRev: 0,
+          slugCheck: null,
 
           setMeta: (patch) => {
             const { meta, slugTouched } = get();
             const next = { ...meta, ...patch };
             const touched = slugTouched || patch.slug !== undefined;
             if (!touched && patch.title !== undefined) next.slug = slugify(patch.title);
-            edit({ meta: next, slugTouched: touched }, "meta");
+            edit({ meta: next, slugTouched: touched, ...(next.slug !== meta.slug && { slugCheck: null }) }, "meta");
           },
-          addBlock: (type, target) => {
-            const entry = entryByType(type);
-            if (!entry) return;
-            let { doc } = get();
-            let place = target ?? defaultTarget(doc, get().selectedId, entry.create().type);
-            const block = entry.create();
-            if (!place) {
-              // Content needs a section: start one.
-              const section = entryByType("section")!.create();
-              doc = insertBlock(doc, ROOT, doc.blocks.length, section);
-              place = { slot: { kind: "section", id: section.id }, index: 0 };
-            }
-            const next = insertBlock(doc, place.slot, place.index, block);
-            if (next === doc) return;
-            edit({ doc: next, selectedId: block.id, rightTab: "block" });
+          addBlock: (type, index) => {
+            const { doc, selectedId, kind } = get();
+            const def = blockDef(type);
+            const block = createBlock(type);
+            if (!def || !block || !allowedIn(def, kind)) return;
+            // Clicked in the Add panel: after the selected block, otherwise at the end. The hero always goes first.
+            const after = selectedId ? indexOf(doc, selectedId) : -1;
+            const at = def.first ? 0 : (index ?? (after >= 0 ? after + 1 : doc.blocks.length));
+            edit({ doc: insertBlock(doc, at, block), selectedId: block.id, rightTab: "block" });
           },
           applyTemplate: (blocks) => {
             if (get().doc.blocks.length > 0) return;
-            edit({ doc: { version: 1, blocks }, selectedId: blocks[0]?.id ?? null, rightTab: "block" });
+            edit({ doc: { ...get().doc, blocks }, selectedId: blocks[0]?.id ?? null, rightTab: "block" });
           },
-          move: (id, slot, index) => {
-            const next = moveBlock(get().doc, id, slot, index);
+          move: (id, index) => {
+            const next = moveBlock(get().doc, id, index);
             if (next !== get().doc) edit({ doc: next });
           },
           nudge: (id, delta) => {
@@ -193,16 +169,16 @@ export function createBuilderStore(init: BuilderInit & { actorName: string }) {
           },
           remove: (id) => {
             const { doc, selectedId } = get();
-            const found = findBlock(doc, id);
-            if (!found) return;
-            const siblings = slotBlocks(doc, found.slot) ?? [];
-            const neighbour = siblings[found.index + 1] ?? siblings[found.index - 1];
-            edit({ doc: removeBlock(doc, id), selectedId: selectedId === id ? (neighbour?.id ?? (found.slot.kind === "root" ? null : found.slot.id)) : selectedId });
+            const i = indexOf(doc, id);
+            if (i < 0) return;
+            const neighbour = doc.blocks[i + 1] ?? doc.blocks[i - 1];
+            edit({ doc: removeBlock(doc, id), selectedId: selectedId === id ? (neighbour?.id ?? null) : selectedId });
           },
           update: (id, fn) => {
-            const next = updateBlock(get().doc, id, fn);
+            const next = updateProps(get().doc, id, fn);
             if (next !== get().doc) edit({ doc: next }, `block:${id}`);
           },
+          setSettings: (patch) => edit({ doc: setSettings(get().doc, patch) }),
           select: (id) => set({ selectedId: id, ...(id && { rightTab: "block" as const }) }),
           set: (patch) => set(patch),
           saving: () => set({ saveState: "saving" }),

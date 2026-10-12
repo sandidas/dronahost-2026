@@ -5,8 +5,10 @@ import { useCallback } from "react";
 import { BUILDER_TEXT, POST_FORM_TEXT } from "@/content/portal-strings";
 import { deletePostAction, savePostAction, setLockedAction, setPublishedAction } from "@/lib/portal/actions/posts";
 import { BLOCK_ID } from "@/lib/builder/model";
+import { slugPrefixWords } from "@/lib/builder/seo-generate";
 import { formatDateTime } from "@/lib/portal/format";
 import { useBuilderApi } from "./store";
+import { seoSource } from "./use-slug-check";
 
 const editorPath = (slug: string) => `/dashboard/posts/${slug}`;
 
@@ -30,7 +32,9 @@ export function usePublishing(actorName: string) {
     if (!s.canEdit) return false;
     if (s.saveState === "saving") return false;
     s.saving();
-    const res = await savePostAction(s.postId, { kind: s.kind, ...s.meta, content: JSON.stringify(s.doc) });
+    // A slug filled in from the title may move aside for an existing one on the first save (lib/portal/posts.ts createPost).
+    const autoSlug = !s.slugTouched ? { autoSlug: true, slugWords: slugPrefixWords(seoSource(s), s.meta.slug) } : {};
+    const res = await savePostAction(s.postId, { kind: s.kind, ...s.meta, content: JSON.stringify(s.doc), ...autoSlug });
     if (!res.ok) {
       api.getState().failed(res.error, res.fieldErrors);
       // A live page refused for unfinished blocks: mark them on the canvas, like a refused publish.

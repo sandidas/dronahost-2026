@@ -1,19 +1,20 @@
 "use client";
 
-import { Lock, LockOpen, Trash2, TriangleAlert } from "lucide-react";
+import { CircleCheck, Loader2, Lock, LockOpen, Sparkles, Trash2, TriangleAlert } from "lucide-react";
 import { useId, useState, type ReactNode } from "react";
 import Dialog from "@/components/ui/Dialog";
 import { errorClass, helpClass, inputClass, labelClass } from "@/components/portal/field-styles";
 import { BUILDER_TEXT } from "@/content/portal-strings";
-import { entryFor } from "@/lib/builder/catalog";
-import { columnCount, type AnyBlock, type BuilderDoc } from "@/lib/builder/model";
+import { blockDef, blockName } from "@/lib/builder/blocks";
+import { docHeadings, findBlock } from "@/lib/builder/doc";
+import { PAGE_SPACINGS, PAGE_WIDTHS, type PageSettings } from "@/lib/builder/model";
 import { faqEntries, seoChecks } from "@/lib/builder/seo";
-import { findBlock, flatten, resizeColumns } from "@/lib/builder/tree";
+import { suggestDescription, suggestKeyword, suggestSlug, suggestTitle } from "@/lib/builder/seo-generate";
 import { isSafeImageSrc } from "@/lib/editor/urls";
-import type { TiptapNode } from "@/lib/editor/schema";
 import { cn } from "@/utils/cn";
 import { FieldControl, ImagePicker } from "./FieldControl";
-import { useBuilder, useProblems } from "./store";
+import { useBuilder, useBuilderApi, useProblems } from "./store";
+import { seoSource } from "./use-slug-check";
 
 const T = BUILDER_TEXT.ui;
 const fieldInput = cn(inputClass, "min-h-10 px-3 text-sm");
@@ -27,16 +28,6 @@ function Section({ title, children }: { title?: string; children: ReactNode }) {
   );
 }
 
-/** Applies a Block panel change: site sections keep their data in `section`, other blocks in `props`. */
-function withData(block: AnyBlock, next: unknown): AnyBlock {
-  if (block.type === "site") return { ...block, section: next as typeof block.section };
-  if (block.type === "columns") {
-    const props = next as typeof block.props;
-    return { ...block, props, columns: resizeColumns(block, columnCount(props.layout)) };
-  }
-  return { ...block, props: next } as AnyBlock;
-}
-
 function BlockTab() {
   const selectedId = useBuilder((s) => s.selectedId);
   const doc = useBuilder((s) => s.doc);
@@ -45,16 +36,16 @@ function BlockTab() {
   const all = useProblems();
   const problems = selectedId ? all[selectedId] : undefined;
   const update = useBuilder((s) => s.update);
-  const block = selectedId ? findBlock(doc, selectedId)?.block : undefined;
+  const block = selectedId ? findBlock(doc, selectedId) : undefined;
   if (!block) return <p className="p-4 text-sm text-muted-foreground">{T.block.none}</p>;
-  const entry = entryFor(block);
-  const data = block.type === "site" ? block.section : block.props;
+  const def = blockDef(block.type);
+  const name = blockName(block.type);
   return (
     <>
       <Section>
         <div>
-          <p className="text-base font-semibold text-foreground">{entry?.label}</p>
-          <p className={helpClass}>{entry?.hint}</p>
+          <p className="text-base font-semibold text-foreground">{name.label}</p>
+          <p className={helpClass}>{name.hint}</p>
         </div>
         {problems && (
           <ul className="list-disc rounded-lg border border-danger/40 bg-danger-surface py-2 pe-3 ps-7 text-sm text-danger" role="alert">
@@ -65,24 +56,18 @@ function BlockTab() {
         )}
       </Section>
       <Section>
-        {block.type === "richtext" && <p className="text-sm text-muted-foreground">{T.block.richtextHint}</p>}
-        {entry?.fields.length === 0 && block.type !== "richtext" && <p className="text-sm text-muted-foreground">{T.block.noSettings}</p>}
-        {entry?.fields.map((field) => (
-          <FieldControl
-            key={`${block.id}-${field.path}`}
-            field={field}
-            data={data}
-            readOnly={!canEdit}
-            uploadEnabled={uploadEnabled}
-            onChange={(next) => update(block.id, (b) => withData(b, next))}
-          />
+        {def?.fields.length === 0 && <p className="text-sm text-muted-foreground">{T.block.noSettings}</p>}
+        {def?.fields.map((field) => (
+          <FieldControl key={`${block.id}-${field.key}`} field={field} data={block.props} readOnly={!canEdit} uploadEnabled={uploadEnabled} onChange={(next) => update(block.id, () => next)} />
         ))}
       </Section>
     </>
   );
 }
 
-function TextInput({ label, help, value, onChange, error, max, readOnly, prefix }: { label: string; help?: string; value: string; onChange: (v: string) => void; error?: string; max: number; readOnly: boolean; prefix?: string }) {
+type TextInputProps = { label: string; help?: string; value: string; onChange: (v: string) => void; error?: string; max: number; readOnly: boolean; prefix?: string; onGenerate?: () => void; children?: ReactNode };
+
+function TextInput({ label, help, value, onChange, error, max, readOnly, prefix, onGenerate, children }: TextInputProps) {
   const id = useId();
   return (
     <div>
@@ -90,6 +75,7 @@ function TextInput({ label, help, value, onChange, error, max, readOnly, prefix 
         <label htmlFor={id} className={labelClass}>
           {label}
         </label>
+        {onGenerate && !readOnly && <GenerateButton onClick={onGenerate} label={label} />}
         <span className={cn("text-xs tabular-nums", value.length > max ? "text-danger" : "text-subtle-foreground")}>{`${value.length}/${max}`}</span>
       </div>
       <div className="flex items-center">
@@ -97,12 +83,96 @@ function TextInput({ label, help, value, onChange, error, max, readOnly, prefix 
         <input id={id} value={value} readOnly={readOnly} maxLength={max} aria-invalid={error ? true : undefined} onChange={(e) => onChange(e.target.value)} className={fieldInput} />
       </div>
       {help && <p className={helpClass}>{help}</p>}
+      {children}
       {error && (
         <p className={errorClass} role="alert">
           {error}
         </p>
       )}
     </div>
+  );
+}
+
+/** Fills one field from the page's own words (lib/builder/seo-generate.ts). */
+function GenerateButton({ onClick, label }: { onClick: () => void; label: string }) {
+  return (
+    <button type="button" onClick={onClick} className="ms-auto inline-flex min-h-8 items-center gap-1 rounded-md px-2 text-xs font-semibold text-link hover:bg-muted" title={`${T.seo.generate}: ${label}`}>
+      <Sparkles className="size-3.5" aria-hidden="true" />
+      {T.seo.generate}
+      <span className="sr-only">{`: ${label}`}</span>
+    </button>
+  );
+}
+
+/** The slug field: the address prefix, a Generate button and whether the address is free (checked against the database). */
+function SlugInput({ readOnly, error }: { readOnly: boolean; error?: string }) {
+  const api = useBuilderApi();
+  const kind = useBuilder((s) => s.kind);
+  const slug = useBuilder((s) => s.meta.slug);
+  const check = useBuilder((s) => s.slugCheck);
+  const setMeta = useBuilder((s) => s.setMeta);
+  const S = T.seo;
+  const status = check && check.slug === slug ? check : null;
+  return (
+    <TextInput
+      label={T.page.slug}
+      help={T.page.slugHelp}
+      value={slug}
+      onChange={(v) => setMeta({ slug: v.toLowerCase() })}
+      error={error}
+      max={120}
+      readOnly={readOnly}
+      prefix={kind === "page" ? "/" : "/blog/"}
+      onGenerate={() => setMeta({ slug: suggestSlug(seoSource(api.getState())) })}
+    >
+      {status && (
+        <p className={cn("mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm", status.state === "free" ? "text-success" : status.state === "checking" ? "text-muted-foreground" : "text-danger")} role="status">
+          {status.state === "checking" && <Loader2 className="size-3.5 animate-spin" aria-hidden="true" />}
+          {status.state === "free" && <CircleCheck className="size-3.5" aria-hidden="true" />}
+          <span>{status.state === "checking" ? S.slugChecking : status.state === "free" ? S.slugFree : status.state === "taken" ? S.slugTaken(status.suggestion ?? "") : S.slugReserved(status.suggestion ?? "")}</span>
+          {(status.state === "taken" || status.state === "reserved") && status.suggestion && !readOnly && (
+            <button type="button" onClick={() => setMeta({ slug: status.suggestion })} className="font-semibold text-link underline underline-offset-2">
+              {S.useSuggestion}
+            </button>
+          )}
+        </p>
+      )}
+    </TextInput>
+  );
+}
+
+function Choice<V extends string>({ label, help, value, values, labels, onChange, readOnly }: { label: string; help?: string; value: V; values: readonly V[]; labels: Record<V, string>; onChange: (v: V) => void; readOnly: boolean }) {
+  const id = useId();
+  return (
+    <div>
+      <label htmlFor={id} className={labelClass}>
+        {label}
+      </label>
+      <select id={id} value={value} disabled={readOnly} onChange={(e) => onChange(e.target.value as V)} className={fieldInput}>
+        {values.map((v) => (
+          <option key={v} value={v}>
+            {labels[v]}
+          </option>
+        ))}
+      </select>
+      {help && <p className={helpClass}>{help}</p>}
+    </div>
+  );
+}
+
+/** Page settings that apply to every block: the content width (Tailwind sizes) and the space between sections. */
+function LayoutSettings() {
+  const kind = useBuilder((s) => s.kind);
+  const settings = useBuilder((s) => s.doc.settings);
+  const canEdit = useBuilder((s) => s.canEdit);
+  const setSettings = useBuilder((s) => s.setSettings);
+  const P = T.page;
+  if (kind !== "page") return <p className="text-sm text-muted-foreground">{P.postLayout}</p>;
+  return (
+    <>
+      <Choice<PageSettings["width"]> label={P.width} help={P.layoutHelp} value={settings.width} values={PAGE_WIDTHS} labels={P.widths} onChange={(width) => setSettings({ width })} readOnly={!canEdit} />
+      <Choice<PageSettings["spacing"]> label={P.spacing} value={settings.spacing} values={PAGE_SPACINGS} labels={P.spacings} onChange={(spacing) => setSettings({ spacing })} readOnly={!canEdit} />
+    </>
   );
 }
 
@@ -121,12 +191,12 @@ function ProblemList() {
         </p>
         <ul className="mt-2 space-y-1 text-sm">
           {entries.map(([blockId, messages]) => {
-            const block = findBlock(doc, blockId)?.block;
+            const block = findBlock(doc, blockId);
             return (
               <li key={blockId}>
                 {block ? (
                   <button type="button" onClick={() => select(blockId)} className="text-start font-semibold text-link underline underline-offset-2">
-                    {entryFor(block)?.label}
+                    {blockName(block.type).label}
                   </button>
                 ) : (
                   <span className="font-semibold text-foreground">{T.problems.page}</span>
@@ -156,7 +226,6 @@ function PageTab({ publishing }: { publishing: Publishing }) {
   const uploadEnabled = useBuilder((s) => s.uploadEnabled);
   const setMeta = useBuilder((s) => s.setMeta);
   const [confirm, setConfirm] = useState(false);
-  const base = kind === "page" ? "/" : "/blog/";
   return (
     <>
       <ProblemList />
@@ -165,7 +234,7 @@ function PageTab({ publishing }: { publishing: Publishing }) {
           {T.page.kind}: <span className="font-semibold text-foreground">{BUILDER_TEXT.kinds[kind]}</span>
         </p>
         <TextInput label={T.page.title} help={T.page.titleHelp[kind]} value={meta.title} onChange={(title) => setMeta({ title })} error={errors.title} max={200} readOnly={!canEdit} />
-        <TextInput label={T.page.slug} help={T.page.slugHelp} value={meta.slug} onChange={(slug) => setMeta({ slug: slug.toLowerCase() })} error={errors.slug} max={120} readOnly={!canEdit} prefix={base} />
+        <SlugInput error={errors.slug} readOnly={!canEdit} />
         <div>
           <label htmlFor="builder-excerpt" className={labelClass}>
             {T.page.excerpt}
@@ -174,6 +243,9 @@ function PageTab({ publishing }: { publishing: Publishing }) {
           <p className={helpClass}>{`${T.page.excerptHelp} ${meta.excerpt.length}/300`}</p>
           {errors.excerpt && <p className={errorClass}>{errors.excerpt}</p>}
         </div>
+      </Section>
+      <Section title={T.page.layout}>
+        <LayoutSettings />
       </Section>
       <Section title={T.page.featured}>
         <ImagePicker
@@ -231,38 +303,8 @@ function PageTab({ publishing }: { publishing: Publishing }) {
   );
 }
 
-type Heading = { level: number; text: string };
-
-/** The visible heading of a site section, whatever its content calls it. */
-export function sectionHeading(content: unknown): string {
-  const c = (content ?? {}) as Record<string, unknown>;
-  const value = c.h2 ?? c.title ?? c.label ?? c.question;
-  return typeof value === "string" ? value : "";
-}
-
-function tiptapHeadings(node: TiptapNode, out: Heading[]): void {
-  if (node.type === "heading") out.push({ level: Number(node.attrs?.level ?? 2), text: (node.content ?? []).map((c) => c.text ?? "").join("") });
-  for (const child of node.content ?? []) tiptapHeadings(child, out);
-}
-
-/** The page's heading outline as visitors' screen readers will hear it, so skipped levels are easy to spot. */
-function outline(doc: BuilderDoc, title: string, kind: "post" | "page"): Heading[] {
-  const out: Heading[] = [];
-  const first = doc.blocks[0];
-  const hero = kind === "page" && first?.type === "site" && first.section.type === "Hero" ? first : null;
-  out.push({ level: 1, text: hero ? String(hero.section.content.title ?? "") : title });
-  for (const { block } of flatten(doc)) {
-    if (block.type === "heading") out.push({ level: block.props.level, text: block.props.text });
-    if (block.type === "richtext" && typeof block.props.content !== "string") tiptapHeadings(block.props.content, out);
-    if (block.type === "site" && block !== hero) {
-      const h2 = sectionHeading(block.section.content);
-      if (h2) out.push({ level: 2, text: h2 });
-    }
-  }
-  return out;
-}
-
 function SeoTab() {
+  const api = useBuilderApi();
   const meta = useBuilder((s) => s.meta);
   const kind = useBuilder((s) => s.kind);
   const doc = useBuilder((s) => s.doc);
@@ -273,7 +315,19 @@ function SeoTab() {
   const S = T.seo;
   const seo = meta.seo;
   const setSeo = (patch: Partial<typeof seo>) => setMeta({ seo: { ...seo, ...patch } });
-  const headings = outline(doc, meta.title, kind);
+  const headings = docHeadings(doc, meta.title, kind);
+  const [note, setNote] = useState<string | null>(null);
+  /** Fills the keyword (when empty), search title, description and slug from the page. One undo step brings them all back. */
+  const generateAll = () => {
+    const source = seoSource(api.getState());
+    const keyword = source.keyword.trim() || suggestKeyword(source);
+    const withKeyword = { ...source, keyword };
+    const title = suggestTitle(withKeyword);
+    if (!title && !keyword) return setNote(S.generateEmpty);
+    // An empty page title takes the headline too: a page cannot be saved without one.
+    setMeta({ ...(!meta.title.trim() && { title: suggestTitle({ ...source, keyword: "" }) }), slug: suggestSlug(withKeyword), seo: { ...seo, focusKeyword: keyword, title, description: suggestDescription(withKeyword) } });
+    setNote(S.generated);
+  };
   const path = kind === "page" ? `/${meta.slug}` : `/blog/${meta.slug}`;
   const searchTitle = seo.title || meta.title;
   const description = seo.description || meta.excerpt;
@@ -283,25 +337,39 @@ function SeoTab() {
   const shareImage = seo.ogImage || meta.coverImage;
   return (
     <>
+      <Section>
+        <button type="button" onClick={generateAll} disabled={!canEdit} className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg bg-accent px-3 text-sm font-semibold text-accent-foreground hover:bg-accent-hover disabled:opacity-50">
+          <Sparkles className="size-4" aria-hidden="true" />
+          {S.generateAll}
+        </button>
+        <p className={helpClass}>{S.generateHelp}</p>
+        {note && (
+          <p className="text-sm text-foreground" role="status">
+            {note}
+          </p>
+        )}
+      </Section>
       <Section title={S.search}>
         <div className="rounded-xl border border-border bg-background p-3" aria-label={S.snippet}>
           <p className="truncate text-xs text-muted-foreground">{`dronahost.com${path}`}</p>
           <p className="mt-1 line-clamp-2 text-base font-semibold text-link">{searchTitle || T.untitled}</p>
           <p className="mt-1 line-clamp-3 text-sm text-muted-foreground">{description}</p>
         </div>
-        <TextInput label={S.focusKeyword} help={S.focusKeywordHelp} value={seo.focusKeyword} onChange={(v) => setSeo({ focusKeyword: v })} error={errors["seo.focusKeyword"]} max={60} readOnly={!canEdit} />
-        <TextInput label={S.searchTitle} help={S.searchTitleHelp} value={seo.title} onChange={(v) => setSeo({ title: v })} error={errors["seo.title"]} max={70} readOnly={!canEdit} />
+        <TextInput label={S.focusKeyword} help={S.focusKeywordHelp} value={seo.focusKeyword} onChange={(v) => setSeo({ focusKeyword: v })} error={errors["seo.focusKeyword"]} max={60} readOnly={!canEdit} onGenerate={() => setSeo({ focusKeyword: suggestKeyword(seoSource(api.getState())) })} />
+        <TextInput label={S.searchTitle} help={S.searchTitleHelp} value={seo.title} onChange={(v) => setSeo({ title: v })} error={errors["seo.title"]} max={70} readOnly={!canEdit} onGenerate={() => setSeo({ title: suggestTitle(seoSource(api.getState())) })} />
         <div>
           <div className="flex items-baseline justify-between gap-2">
             <label htmlFor="builder-seo-description" className={labelClass}>
               {S.description}
             </label>
+            {canEdit && <GenerateButton label={S.description} onClick={() => setSeo({ description: suggestDescription(seoSource(api.getState())) })} />}
             <span className={cn("text-xs tabular-nums", seo.description.length > 160 ? "text-danger" : "text-subtle-foreground")}>{`${seo.description.length}/160`}</span>
           </div>
           <textarea id="builder-seo-description" value={seo.description} readOnly={!canEdit} maxLength={170} rows={3} onChange={(e) => setSeo({ description: e.target.value })} className={cn(inputClass, "min-h-20 px-3 py-2 text-sm")} />
           <p className={helpClass}>{S.descriptionHelp}</p>
           {errors["seo.description"] && <p className={errorClass}>{errors["seo.description"]}</p>}
         </div>
+        <SlugInput error={errors.slug} readOnly={!canEdit} />
       </Section>
 
       <Section title={S.checklist}>
@@ -354,13 +422,7 @@ function SeoTab() {
         </div>
         <TextInput label={S.ogTitle} value={seo.ogTitle} onChange={(v) => setSeo({ ogTitle: v })} error={errors["seo.ogTitle"]} max={90} readOnly={!canEdit} />
         <TextInput label={S.ogDescription} value={seo.ogDescription} onChange={(v) => setSeo({ ogDescription: v })} error={errors["seo.ogDescription"]} max={200} readOnly={!canEdit} />
-        <FieldControl
-          field={{ kind: "image", path: "ogImage", label: S.ogImage, help: S.ogImageHelp }}
-          data={seo}
-          onChange={(next) => setSeo({ ogImage: (next as typeof seo).ogImage ?? "" })}
-          readOnly={!canEdit}
-          uploadEnabled={uploadEnabled}
-        />
+        <ImagePicker label={S.ogImage} help={S.ogImageHelp} value={seo.ogImage} onChange={(ogImage) => setSeo({ ogImage })} readOnly={!canEdit} uploadEnabled={uploadEnabled} />
       </Section>
 
       <Section title={S.outline}>

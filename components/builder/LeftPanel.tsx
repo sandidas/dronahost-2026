@@ -1,43 +1,41 @@
 "use client";
 
 import { ArrowDown, ArrowUp, Search } from "lucide-react";
-import { useId, useMemo, useState } from "react";
+import { useId, useState } from "react";
 import { BUILDER_TEXT } from "@/content/portal-strings";
-import { catalogFor, entryFor, type CatalogEntry, type CatalogGroup } from "@/lib/builder/catalog";
-import type { AnyBlock } from "@/lib/builder/model";
-import { flatten } from "@/lib/builder/tree";
+import { blockDef, blockName, blocksFor, GROUPS, prepareBlock } from "@/lib/builder/blocks";
+import type { BlockDef } from "@/lib/builder/blocks/types";
+import type { Block } from "@/lib/builder/model";
 import { cn } from "@/utils/cn";
 import { BLOCK_ICONS } from "./icons";
 import { useBuilder, useProblems } from "./store";
-import { sectionHeading } from "./Inspector";
 import { PALETTE_MIME } from "./Canvas";
 import { iconButton } from "./TopBar";
 
 const T = BUILDER_TEXT.ui;
-const GROUPS: CatalogGroup[] = ["layout", "content", "sections", "banners"];
 
-function PaletteTile({ entry }: { entry: CatalogEntry }) {
+function PaletteTile({ def }: { def: BlockDef }) {
   const addBlock = useBuilder((s) => s.addBlock);
   const set = useBuilder((s) => s.set);
-  const blockType = useMemo(() => entry.create().type, [entry]);
   const [dragging, setDragging] = useState(false);
-  const Icon = BLOCK_ICONS[entry.icon];
+  const Icon = BLOCK_ICONS[def.icon];
+  const entry = blockName(def.type);
   return (
     <button
       type="button"
       draggable
       // Native drag and drop: it carries the block into the canvas frame, where dnd-kit's pointer events cannot follow.
       onDragStart={(e) => {
-        e.dataTransfer.setData(PALETTE_MIME, entry.type);
+        e.dataTransfer.setData(PALETTE_MIME, def.type);
         e.dataTransfer.effectAllowed = "copy";
         setDragging(true);
-        set({ dragType: blockType, hoverId: null });
+        set({ dragType: def.type, hoverId: null });
       }}
       onDragEnd={() => {
         setDragging(false);
         set({ dragType: null });
       }}
-      onClick={() => addBlock(entry.type)}
+      onClick={() => addBlock(def.type)}
       title={entry.hint}
       className={cn(
         "flex min-h-20 cursor-grab flex-col items-center justify-center gap-1.5 rounded-xl border border-border bg-background p-2 text-center text-xs font-semibold text-foreground transition-colors hover:border-accent hover:bg-muted active:cursor-grabbing",
@@ -55,7 +53,7 @@ function AddTab() {
   const [query, setQuery] = useState("");
   const searchId = useId();
   const q = query.trim().toLowerCase();
-  const entries = catalogFor(kind).filter((e) => !q || `${e.label} ${e.hint}`.toLowerCase().includes(q));
+  const entries = blocksFor(kind).filter((d) => !q || `${blockName(d.type).label} ${blockName(d.type).hint}`.toLowerCase().includes(q));
   return (
     <div className="p-3">
       <label htmlFor={searchId} className="sr-only">
@@ -76,8 +74,8 @@ function AddTab() {
               {BUILDER_TEXT.groups[group]} ({items.length})
             </h2>
             <div className="grid grid-cols-2 gap-2">
-              {items.map((entry) => (
-                <PaletteTile key={entry.type} entry={entry} />
+              {items.map((def) => (
+                <PaletteTile key={def.type} def={def} />
               ))}
             </div>
           </section>
@@ -87,16 +85,10 @@ function AddTab() {
   );
 }
 
-/** A short description of a block for the Layers list: its own text where it has some. */
-export function blockSummary(block: AnyBlock): string {
-  if (block.type === "heading") return block.props.text;
-  if (block.type === "image") return block.props.alt;
-  if (block.type === "video") return block.props.title;
-  if (block.type === "site") {
-    const content = block.section.content as Record<string, unknown> | undefined;
-    return typeof content?.h1 === "string" ? content.h1 : sectionHeading(content);
-  }
-  return "";
+/** A short description of a block for the Layers list: its first heading, where it shows one. */
+export function blockSummary(block: Block): string {
+  const p = prepareBlock(block);
+  return (p !== null && blockDef(block.type)?.headings?.(p)[0]?.text) || "";
 }
 
 function LayersTab() {
@@ -106,20 +98,21 @@ function LayersTab() {
   const select = useBuilder((s) => s.select);
   const nudge = useBuilder((s) => s.nudge);
   const canEdit = useBuilder((s) => s.canEdit);
-  const rows = flatten(doc);
+  const rows = doc.blocks;
   if (rows.length === 0) return <p className="p-4 text-sm text-muted-foreground">{T.layersEmpty}</p>;
   return (
     <ul className="p-2">
-      {rows.map(({ block, depth }) => {
-        const entry = entryFor(block);
-        const Icon = entry ? BLOCK_ICONS[entry.icon] : undefined;
+      {rows.map((block) => {
+        const def = blockDef(block.type);
+        const entry = blockName(block.type);
+        const Icon = def ? BLOCK_ICONS[def.icon] : undefined;
         const summary = blockSummary(block).trim();
         const selected = block.id === selectedId;
         return (
-          <li key={block.id} className={cn("group flex items-center gap-1 rounded-lg", selected && "bg-accent/12")} style={{ paddingInlineStart: `${depth * 0.875}rem` }}>
+          <li key={block.id} className={cn("group flex items-center gap-1 rounded-lg", selected && "bg-accent/12")}>
             <button type="button" onClick={() => select(block.id)} aria-current={selected ? "true" : undefined} className="flex min-h-10 min-w-0 flex-1 items-center gap-2 rounded-lg px-2 text-start text-sm text-foreground hover:bg-muted">
               {Icon && <Icon className="size-4 shrink-0 text-link" aria-hidden="true" />}
-              <span className="shrink-0 font-semibold">{entry?.label}</span>
+              <span className="shrink-0 font-semibold">{entry.label}</span>
               {summary && <span className="truncate text-muted-foreground">{summary}</span>}
               {problems[block.id] && <span className="ms-auto size-2 shrink-0 rounded-full bg-danger" aria-label={T.problems.title} />}
             </button>
@@ -127,11 +120,11 @@ function LayersTab() {
               <span className="flex opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">
                 <button type="button" className={cn(iconButton, "size-8")} onClick={() => nudge(block.id, -1)} title={T.toolbar.up}>
                   <ArrowUp className="size-3.5" aria-hidden="true" />
-                  <span className="sr-only">{`${T.toolbar.up}: ${entry?.label}`}</span>
+                  <span className="sr-only">{`${T.toolbar.up}: ${entry.label}`}</span>
                 </button>
                 <button type="button" className={cn(iconButton, "size-8")} onClick={() => nudge(block.id, 1)} title={T.toolbar.down}>
                   <ArrowDown className="size-3.5" aria-hidden="true" />
-                  <span className="sr-only">{`${T.toolbar.down}: ${entry?.label}`}</span>
+                  <span className="sr-only">{`${T.toolbar.down}: ${entry.label}`}</span>
                 </button>
               </span>
             )}

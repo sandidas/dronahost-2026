@@ -88,7 +88,7 @@ export default function PortalShowcase() {
         </div>
       </ShowcaseSection>
 
-      <ShowcaseSection id="portal-builder" title="Page builder (BuilderApp)" status="built" notes="The editor at /dashboard/posts/new and /dashboard/posts/<slug>, here in a box with a sample page. Left: Add (search, Layout, Content, Site sections) and Layers. Middle: the page, with drag and drop, a toolbar on the selected block and drop lines that show only where the dragged block fits. Right: Block, Page and SEO settings. Site sections render on the server with the real component; signed out, they show a sign-in message instead. Saving needs a session.">
+      <ShowcaseSection id="portal-builder" title="Page builder (BuilderApp)" status="built" notes="The editor at /dashboard/posts/new and /dashboard/posts/<slug>, here in a box with a sample page. Left: Add (search, Text, Media, Page sections, Banners) and Layers. Middle: the page at a real device width, with drag and drop and a toolbar on the selected block. Right: Block, Page (with Layout: content width and spacing) and SEO (with Generate and the slug check). Every block comes from the registry in lib/builder/blocks. Blocks render with the site's own components, the same code as the public page. Saving needs a session.">
         <BuilderApp
           embedded
           actorName={SAMPLE_PORTAL_ADMIN.name}
