@@ -1,0 +1,43 @@
+{
+  "id": "support",
+  "type": "SupportTeam",
+  "requires": "claim:support-24-7",
+  "content": {
+    "eyebrow": "Support",
+    "h2": "Real support from real people, 24/7",
+    "accent": "real people, 24/7",
+    "description": "Every ticket and every email is read and answered by a person, at any hour of any day.",
+    "points": [
+      {
+        "title": "Any hour, any day",
+        "text": "Open a ticket or email support@dronahost.com whenever you need help. The support policy explains how it works.",
+        "requiresClaim": "claim:support-24-7"
+      },
+      {
+        "title": "One desk for everything",
+        "text": "Hosting, domain and email questions reach the same people, so you never explain your setup twice."
+      },
+      {
+        "title": "Answers in writing",
+        "text": "Every reply arrives in writing, so you keep a record of what was checked and what was changed."
+      }
+    ],
+    "links": [
+      {
+        "label": "Open a ticket",
+        "href": "/contact"
+      },
+      {
+        "label": "Read the support policy",
+        "href": "/support-policy"
+      }
+    ],
+    "visual": {
+      "badge": "24/7",
+      "question": "My contact form stopped sending emails after the move. Can you help?",
+      "answer": "Yes. Your form needs a sending service. We checked your site and listed the three settings to add.",
+      "signature": "Ticket reply",
+      "caption": "Illustration of a support ticket answered in writing"
+    }
+  }
+}

@@ -1,0 +1,458 @@
+{
+  "id": "wordpress-hosting",
+  "path": "/wordpress-hosting",
+  "blueprint": "C2",
+  "archetype": "product",
+  "intent": "transactional",
+  "searchIntent": "Buy",
+  "secondaryIntent": "Learn",
+  "audience": "Businesses, organizations and creators in every industry who run WordPress and want a host that looks after it (spam and adult websites are not allowed)",
+  "primaryKeyword": "wordpress hosting with free migration",
+  "secondaryKeywords": [
+    "managed wordpress hosting",
+    "managed vs shared wordpress hosting",
+    "managed wordpress hosting for small business",
+    "hosting for small business"
+  ],
+  "layoutSignature": [
+    "ProductHero:panel",
+    "AssuranceStrip",
+    "AnswerBlock",
+    "ProcessTimeline",
+    "PathRouter"
+  ],
+  "seo": {
+    "title": "WordPress Hosting with Free Migration",
+    "description": "WordPress hosting with free migration: we move your site, your old site stays live until your DNS points to us, and your price stays the same at renewal.",
+    "ogImage": "/og/wordpress-hosting.jpg",
+    "schema": [
+      "BreadcrumbList",
+      "Service",
+      "FAQPage"
+    ]
+  },
+  "rules": {
+    "primaryCta": {
+      "label": "See WordPress plans",
+      "href": "/wordpress-hosting#plans"
+    },
+    "requiredSections": [
+      "hero",
+      "answer",
+      "features",
+      "plans",
+      "faq",
+      "provenance",
+      "cta"
+    ],
+    "mustLinkTo": [
+      "/pricing",
+      "/migration-terms",
+      "/sla",
+      "/contact"
+    ],
+    "forbiddenClaims": [
+      "LiteSpeed",
+      "unlimited",
+      "Redis"
+    ],
+    "reviewedOn": "2026-10-11"
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "type": "ProductHero",
+      "variant": "panel",
+      "content": {
+        "eyebrow": "Managed WordPress hosting",
+        "h1": "WordPress hosting with free migration and the same price at renewal",
+        "h1Requires": [
+          "claim:free-migration",
+          "claim:renewal-price-same"
+        ],
+        "accent": "the same price at renewal",
+        "h1Fallback": "Managed WordPress hosting for business sites, looked after for you",
+        "accentFallback": "looked after for you",
+        "lead": "We move your WordPress site for free, and your old site stays live until your DNS points to us. Then we apply updates, take daily backups and fix WordPress problems in tickets.",
+        "leadRequiresClaims": [
+          "claim:free-migration",
+          "claim:managed-hosting-tasks"
+        ],
+        "leadFallback": "Managed WordPress hosting from DronaHost for business sites, online stores, blogs and agency client sites. Reach us by support ticket or email.",
+        "ctaPrimary": {
+          "label": "See WordPress plans",
+          "href": "/wordpress-hosting#plans"
+        },
+        "panel": {
+          "domain": "yourbusiness.com",
+          "caption": "Illustration of the control panel you use to manage your site"
+        },
+        "visual": {
+          "alt": "Illustration of the control panel that comes with WordPress hosting with free migration at DronaHost"
+        },
+        "highlights": [
+          "claim:nvme",
+          "claim:staging-plans",
+          "claim:backup-layers"
+        ]
+      }
+    },
+    {
+      "id": "assurances",
+      "type": "AssuranceStrip",
+      "content": {
+        "claims": [
+          "claim:support-24-7",
+          "claim:free-migration",
+          "claim:money-back",
+          "claim:uptime-sla"
+        ]
+      }
+    },
+    {
+      "id": "answer",
+      "type": "AnswerBlock",
+      "content": {
+        "h2": "What WordPress hosting with free migration means at DronaHost",
+        "answer": "DronaHost is a managed WordPress hosting and web services company for businesses worldwide. Every plan includes the free migration of one website: we transfer it, ask your permission, then point your DNS. After that, we apply WordPress updates, run NGINX caching, take daily backups and fix WordPress problems in support tickets. You keep full control of your site.",
+        "link": {
+          "label": "Compare plans and prices",
+          "href": "/pricing"
+        },
+        "visual": "care"
+      }
+    },
+    {
+      "id": "process",
+      "type": "ProcessTimeline",
+      "requiresClaim": "claim:free-migration",
+      "content": {
+        "eyebrow": "Free migration",
+        "h2": "How the free move to DronaHost works",
+        "description": "Every WordPress plan includes the free move of one website. Your old site keeps serving visitors until your DNS points to DronaHost.",
+        "steps": [
+          {
+            "title": "Share your hosting access",
+            "text": "You give us access to your current hosting so we can copy your site."
+          },
+          {
+            "title": "We transfer your site",
+            "text": "We move your site to DronaHost. Your old site keeps running."
+          },
+          {
+            "title": "We ask your permission",
+            "text": "When the transfer is done, we ask you before we switch anything."
+          },
+          {
+            "title": "Point your DNS",
+            "text": "Your domain points to DronaHost and the move is complete. Your old site stays live until then."
+          }
+        ],
+        "graphic": {
+          "from": "Your current host",
+          "middle": "We transfer your site",
+          "to": "DronaHost",
+          "caption": "Illustration of a move to DronaHost"
+        }
+      }
+    },
+    {
+      "id": "audience",
+      "type": "PathRouter",
+      "content": {
+        "eyebrow": "Who it is for",
+        "h2": "WordPress hosting for every industry",
+        "description": "We host WordPress sites from every industry, except spam and adult websites. Most customers move to us after downtime, slow pages, a price rise at renewal or poor support.",
+        "compact": true,
+        "paths": [
+          {
+            "title": "You run an online store",
+            "line": "WooCommerce stores run on every plan. Pro and Scale are made for busier stores.",
+            "href": "/wordpress-hosting#plans",
+            "cta": "Compare the plans",
+            "icon": "trending-up"
+          },
+          {
+            "title": "You run a business or organization website",
+            "line": "Company sites, professional services, restaurants, schools and nonprofits. We move your site free while the old one stays live.",
+            "href": "/migration",
+            "cta": "How the free move works",
+            "icon": "server",
+            "requiresClaim": "claim:free-migration"
+          },
+          {
+            "title": "You build sites for clients",
+            "line": "Pro holds up to 25 sites, and Divi, Elementor Pro and Astra come with every plan.",
+            "href": "/pricing",
+            "cta": "See Pro on the pricing page",
+            "icon": "users",
+            "requiresClaim": "claim:premium-themes"
+          },
+          {
+            "title": "You publish blogs, portfolios or news",
+            "line": "Starter fits up to two sites. Growth suits a few sites. Our cloud hosting plan guide compares every plan.",
+            "href": "/cloud-web-hosting",
+            "cta": "See the cloud hosting plan guide",
+            "icon": "file-text"
+          }
+        ]
+      }
+    },
+    {
+      "id": "compare",
+      "type": "Meaning",
+      "content": {
+        "eyebrow": "Managed or shared hosting?",
+        "h2": "Managed vs shared WordPress hosting",
+        "answer": "On shared or regular hosting, you look after WordPress yourself: updates, caching, backups and fixes. On managed WordPress hosting, DronaHost does that work for you, and support fixes WordPress problems in tickets. Would you rather run the site yourself, or is your site not built on WordPress? Then Business hosting gives you a control panel account for any kind of site, and you manage it.",
+        "answerRequires": "claim:managed-hosting-tasks",
+        "h2Fallback": "Managed WordPress hosting or Business hosting",
+        "lookAfterLabel": "Managed WordPress hosting",
+        "keepLabel": "Business hosting",
+        "weLookAfter": [
+          "A control panel with WordPress tools built in",
+          {
+            "text": "WordPress updates applied for you",
+            "requiresClaim": "claim:managed-hosting-tasks"
+          },
+          {
+            "text": "NGINX caching set up for WordPress",
+            "requiresClaim": "claim:nginx-caching"
+          },
+          {
+            "text": "Staging with clone and sync",
+            "requiresClaim": "claim:staging-plans"
+          },
+          {
+            "text": "WordPress fixes in support tickets",
+            "requiresClaim": "claim:managed-hosting-tasks"
+          }
+        ],
+        "youKeep": [
+          "A control panel account for any kind of website",
+          "You install, update and fix your own software",
+          {
+            "text": "A firewall and malware scanning on every plan",
+            "requiresClaim": "claim:malware-scanning"
+          },
+          "The right choice when your site is not built on WordPress"
+        ],
+        "note": "Not sure which one fits? Contact the team before you buy.",
+        "visual": "managed-vs-shared"
+      }
+    },
+    {
+      "id": "split",
+      "type": "ResponsibilitySplit",
+      "content": {
+        "h2": "What DronaHost looks after, and what you keep",
+        "description": "The line between our work and yours, in plain terms.",
+        "weLookAfter": [
+          {
+            "text": "Automatic WordPress updates and NGINX caching",
+            "requiresClaim": "claim:managed-hosting-tasks"
+          },
+          {
+            "text": "NVMe SSD storage for your site files",
+            "requiresClaim": "claim:nvme"
+          },
+          {
+            "text": "Two daily backups, one local and one offsite",
+            "requiresClaim": "claim:backup-layers"
+          },
+          {
+            "text": "Free SSL, a firewall, brute-force protection and malware scanning",
+            "requiresClaim": "claim:malware-scanning"
+          },
+          {
+            "text": "WordPress fixes in support tickets, such as errors and plugin conflicts",
+            "requiresClaim": "claim:managed-hosting-tasks"
+          }
+        ],
+        "youKeep": [
+          "Your site, your content and your data",
+          "Your choice of theme and plugins",
+          "Full access to your files and database",
+          {
+            "text": "One control panel to manage files, databases, plugins, themes and backups",
+            "requiresClaim": "claim:wp-control-panel"
+          }
+        ]
+      }
+    },
+    {
+      "id": "features",
+      "type": "BentoGrid",
+      "content": {
+        "eyebrow": "On every plan",
+        "h2": "Tools that come with every WordPress plan",
+        "description": "Staging, caching, security, backups and one control panel, the same on every plan.",
+        "tiles": [
+          "feature:staging",
+          "feature:performance",
+          "feature:security",
+          "feature:backups",
+          "feature:control-panel"
+        ]
+      }
+    },
+    {
+      "id": "builders",
+      "type": "FeatureSpotlight",
+      "requiresClaim": "claim:premium-themes",
+      "content": {
+        "eyebrow": "Included WordPress page builders",
+        "h2": "Elementor Pro, Divi and Astra on every plan",
+        "description": "Build and edit pages visually, without a developer. We install the builder you choose and keep it up to date on every plan.",
+        "points": [
+          {
+            "title": "Elementor Pro",
+            "text": "The drag-and-drop page builder, installed on your site and kept up to date by us.",
+            "requiresClaim": "claim:premium-themes"
+          },
+          {
+            "title": "Divi",
+            "text": "A visual theme and builder in one, for designing a whole site without code.",
+            "requiresClaim": "claim:premium-themes"
+          },
+          {
+            "title": "Astra",
+            "text": "A lightweight theme that works well with page builders.",
+            "requiresClaim": "claim:premium-themes"
+          }
+        ],
+        "visual": "builder",
+        "note": "Elementor Pro, Divi and Astra are trademarks of their owners. DronaHost is not affiliated with them. We supply the GPL-licensed software, without a vendor license key.",
+        "source": {
+          "label": "WordPress.org: themes and plugins inherit the GPL",
+          "href": "https://wordpress.org/about/license/"
+        }
+      }
+    },
+    {
+      "id": "plans",
+      "type": "PricingPlans",
+      "content": {
+        "h2": "Which plan fits your sites",
+        "description": "Every plan includes the free move of one website, plus the same support and tools. Plans differ in sites, storage, memory and CPU; Pro and Scale add semi-dedicated and dedicated resources.",
+        "source": "pricing.json",
+        "show": [
+          "starter",
+          "growth",
+          "pro",
+          "scale"
+        ],
+        "highlight": "growth",
+        "showRenewalPrice": true,
+        "link": {
+          "label": "Compare every plan and add-on",
+          "href": "/pricing"
+        }
+      }
+    },
+    {
+      "id": "proof",
+      "type": "ReviewsShowcase",
+      "content": {
+        "eyebrow": "After the move",
+        "h2": "What changed for a store that moved to DronaHost",
+        "source": "reviews.json"
+      }
+    },
+    {
+      "id": "faq",
+      "type": "FAQSection",
+      "content": {
+        "h2": "Questions about moving your WordPress site",
+        "items": [
+          {
+            "q": "What does the free migration include?",
+            "a": "Every hosting plan includes the free move of one website. You share access to your current hosting, we transfer your files and database, and we ask your permission before your DNS changes. Your old site keeps running until then. The migration terms list what the move covers and what it does not.",
+            "requiresClaim": "claim:free-migration"
+          },
+          {
+            "q": "Will my site go offline during the move?",
+            "a": "No. We copy your site to DronaHost while your old site keeps serving visitors. Nothing changes for them until your DNS points to us. When the transfer is done, we ask your permission, and we only make the switch after you say yes. Your visitors keep using the old site the whole time.",
+            "requiresClaim": "claim:free-migration"
+          },
+          {
+            "q": "Can I lose data when I move my site?",
+            "a": "No data leaves your old host. We copy your files and database to DronaHost and leave the originals where they are, so a complete copy stays with your current host until the switch. You decide when the switch happens, because we ask your permission before your DNS changes.",
+            "requiresClaim": "claim:free-migration"
+          },
+          {
+            "q": "Will my theme and plugins work after the move?",
+            "a": "Yes, they move with your site, because we transfer the whole site to DronaHost: files, database, theme and plugins. If an error or a plugin conflict appears after the move, open a support ticket and we fix it. WordPress fixes are part of support on every plan.",
+            "requires": "claim:managed-hosting-tasks"
+          },
+          {
+            "q": "Does the price go up when I renew?",
+            "a": "No. You renew at the same price you started on, and that price has no end date. The pricing page shows each plan's signup price and renewal price together, so you can see both before you buy. Prices exclude tax. Customers in India pay GST at checkout.",
+            "requiresClaim": "claim:renewal-price-same"
+          },
+          {
+            "q": "How much does WordPress hosting cost?",
+            "a": "Each plan shows its price on the plan cards on this page, billed monthly or yearly. Paying yearly costs less per month. The price you start on stays the same when you renew, with no end date, so there is no low first-year price that rises later. Prices exclude tax. Customers in India pay GST at checkout.",
+            "requiresClaim": "claim:renewal-price-same"
+          },
+          {
+            "q": "How often do you back up my site?",
+            "a": "Every day. DronaHost takes two daily backups of your site: one local copy and one offsite copy. Each new backup replaces the one before it, so each one keeps only the latest copy. If you need older versions, keep your own copies as well. The backup policy explains how backups work.",
+            "requiresClaim": "claim:backup-layers"
+          },
+          {
+            "q": "What uptime do you promise?",
+            "a": "We promise 99.99% uptime on every hosting plan, backed by service credits. If we miss that figure in a month, you can claim a credit on your bill. The SLA page defines how uptime is measured, what counts as downtime and how to claim a credit.",
+            "requiresClaim": "claim:uptime-sla"
+          },
+          {
+            "q": "What is not included?",
+            "a": "Email is not included with any hosting plan; business email with Google Workspace is a separate service. Support is by ticket and email only, with no live chat or phone. WordPress hosting does not include root access, SSH or WP-CLI; you manage your site from the control panel. Spam and adult websites are not allowed on DronaHost."
+          },
+          {
+            "q": "Can I run a WooCommerce store?",
+            "a": "Yes. WooCommerce stores run on every plan. Pro is made for busy sites and small stores, and Scale for WooCommerce stores with heavy traffic, on dedicated resources. Each plan lists its sites, storage, memory and CPU, so you can match a plan to the size of your store. Compare the plans on the pricing page."
+          }
+        ],
+        "link": {
+          "label": "Read the migration terms",
+          "href": "/migration-terms"
+        }
+      }
+    },
+    {
+      "id": "provenance",
+      "type": "PageProvenance",
+      "content": {
+        "reviewer": "DronaHost editorial team",
+        "role": "editorial review",
+        "reviewedOn": "2026-10-11",
+        "howLine": "Every plan detail here comes from our pricing file and published policies, checked on 11 October 2026. Drafted with AI help, then edited and approved by our editorial team.",
+        "report": {
+          "label": "Report an error on this page",
+          "href": "/contact"
+        },
+        "policyHref": "/editorial-policy",
+        "variant": "byline"
+      }
+    },
+    {
+      "id": "cta",
+      "type": "CTABand",
+      "content": {
+        "h2": "Move your WordPress site to DronaHost",
+        "description": "Pick the plan that fits your sites. We move your site for free, look after the WordPress side, and you keep full control.",
+        "ctaPrimary": {
+          "label": "See WordPress plans",
+          "href": "/wordpress-hosting#plans"
+        },
+        "ctaSecondary": {
+          "label": "Read the refund policy",
+          "href": "/refund-policy"
+        },
+        "ctaSecondaryRequires": "claim:money-back",
+        "note": "30-day money-back guarantee on every plan."
+      }
+    }
+  ]
+}

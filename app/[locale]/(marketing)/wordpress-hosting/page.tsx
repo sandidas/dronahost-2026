@@ -1,95 +1,46 @@
-import CTABand from "@/components/sections/CTABand";
-import FAQSection from "@/components/sections/FAQSection";
-import ProcessTimeline from "@/components/sections/ProcessTimeline";
-import FeatureGrid from "@/components/sections/FeatureGrid";
+import page from "@/content/pages/wordpress-hosting.json";
 import JsonLd from "@/components/sections/JsonLd";
-import PricingExtras from "@/components/sections/PricingExtras";
-import PricingPlans from "@/components/sections/PricingPlans";
-import SplitHero from "@/components/sections/SplitHero";
-import TwoColumn from "@/components/sections/TwoColumn";
-import { MigrationVisual, WordPressSettingsVisual } from "@/components/sections/visuals/split";
-import { isVerified } from "@/content/claims";
-import { WORDPRESS_HERO } from "@/content/heroes";
-import { MIGRATION_STEPS, WORDPRESS_FAQ } from "@/content/faqs";
-import { HOME_CTA, HOME_SPLITS } from "@/content/home";
-import { WORDPRESS_FEATURES, WORDPRESS_MEANING, WORDPRESS_PRICING } from "@/content/wordpress";
-import MeaningSection from "@/components/sections/bespoke/MeaningSection";
-import { showPrices } from "@/lib/flags";
-import { startingPriceLabel } from "@/lib/pricing";
-import { buildFamilyCards, VAT_DISPLAY } from "@/lib/pricing/plans";
+import { parsePage } from "@/lib/content/page";
+import { passes } from "@/lib/content/refs";
+import { renderPage } from "@/lib/content/render";
+import type { SectionSpec } from "@/lib/content/schemas/sections";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 import { breadcrumbSchema, faqPageSchema, serviceSchema } from "@/lib/seo/jsonld";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { moneyBackGuarantee } from "@/lib/pricing/guarantee";
 
-/** Built from the hero copy, so it names LiteSpeed or staging only while those claims render. */
-const WP_SUMMARY = `Managed WordPress hosting with ${WORDPRESS_HERO.description.charAt(0).toLowerCase()}${WORDPRESS_HERO.description.slice(1)}`;
+// Validated at build time: an invalid spec fails the build instead of shipping a broken page.
+const spec = parsePage(page);
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  return buildMetadata({ locale,
-    title: "Managed WordPress Hosting",
-    description: `${WP_SUMMARY.replace(/\.$/, "")}${startingPriceLabel() ? `. Plans from ${startingPriceLabel()}` : ""}.`,
-    path: "/wordpress-hosting",
-  });
+  // No `ogImage`: /og/wordpress-hosting.jpg does not exist yet, so the default share image is used until it does.
+  // No price in the title or description: prices appear only on /pricing (decision 58).
+  return buildMetadata({ locale, title: spec.seo.title, description: spec.seo.description, path: spec.path });
 }
 
-const [wpSplit, migrationSplit] = HOME_SPLITS;
+/** The FAQ items that render on the page, so the FAQPage schema matches the visible FAQ exactly. */
+function visibleFaq(): Array<{ question: string; answer: string }> {
+  const faq = (spec.sections as SectionSpec[]).find((s) => s.type === "FAQSection");
+  if (!faq || faq.type !== "FAQSection" || !passes(faq)) return [];
+  return faq.content.items.filter((i) => passes(i)).map((i) => ({ question: i.q, answer: i.a }));
+}
 
+/**
+ * Managed WordPress hosting, rendered from content/pages/wordpress-hosting.json through the section registry
+ * (docs/content-system.md). Sections and items whose claims do not render are left out with no empty gap. Server-rendered.
+ */
 export default function WordPressHostingPage() {
-  const prices = showPrices();
+  const faq = visibleFaq();
   return (
     <>
       <JsonLd
         schema={[
-          breadcrumbSchema(buildBreadcrumbs("/wordpress-hosting")),
-          faqPageSchema(WORDPRESS_FAQ),
-          serviceSchema({
-            name: "Managed WordPress hosting",
-            description: WP_SUMMARY,
-            url: "https://dronahost.com/wordpress-hosting",
-          }),
+          breadcrumbSchema(buildBreadcrumbs(spec.path)),
+          serviceSchema({ name: "Managed WordPress hosting", description: spec.seo.description, url: `https://dronahost.com${spec.path}` }),
+          ...(faq.length >= 3 ? [faqPageSchema(faq)] : []),
         ]}
       />
-      <SplitHero {...WORDPRESS_HERO} />
-      <MeaningSection
-        title={WORDPRESS_MEANING.title}
-        answer={WORDPRESS_MEANING.answerClaims.every((id) => isVerified(id)) ? WORDPRESS_MEANING.answer : undefined}
-        weLookAfter={WORDPRESS_MEANING.weLookAfter.map((i) => ({ ...i }))}
-        youKeep={WORDPRESS_MEANING.youKeep.map((i) => ({ ...i }))}
-      />
-      <FeatureGrid {...WORDPRESS_FEATURES} columns={3} />
-      <TwoColumn
-        eyebrow={wpSplit.eyebrow}
-        title={wpSplit.title}
-        description={wpSplit.description}
-        features={wpSplit.features}
-        cta={wpSplit.cta}
-        visual={<WordPressSettingsVisual />}
-      />
-      <TwoColumn
-        eyebrow={migrationSplit.eyebrow}
-        title={migrationSplit.title}
-        description={migrationSplit.description}
-        features={migrationSplit.features}
-        cta={migrationSplit.cta}
-        visual={<MigrationVisual />}
-        visualPosition="left"
-      />
-      {/* The step-by-step process is a claim of its own (migration-process); it shows only once verified. */}
-      {isVerified("migration-process") && <ProcessTimeline eyebrow="Migration" title="How moving your site works" steps={MIGRATION_STEPS} />}
-      <PricingPlans
-        {...WORDPRESS_PRICING}
-        plans={buildFamilyCards("wordpress")}
-        showPrices={prices}
-        vatDisplay={VAT_DISPLAY}
-        {...moneyBackGuarantee()}
-        renewalPromise={isVerified("renewal-price-same")}
-      >
-        <PricingExtras showPrices={prices} />
-      </PricingPlans>
-      <FAQSection eyebrow="WordPress hosting" title="Questions about WordPress hosting" items={WORDPRESS_FAQ} />
-      <CTABand {...HOME_CTA} />
+      {renderPage(spec)}
     </>
   );
 }

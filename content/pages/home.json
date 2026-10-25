@@ -6,21 +6,19 @@
   "intent": "navigational-commercial",
   "searchIntent": "Find",
   "secondaryIntent": "Buy",
-  "audience": "Small business owners who run or need a WordPress site and want fewer technical worries",
+  "audience": "Businesses worldwide that run or need a WordPress website and want hosting they never have to think about",
   "primaryKeyword": "dronahost",
-  "secondaryKeywords": [
-    "hosting for small business"
-  ],
+  "secondaryKeywords": [],
   "layoutSignature": [
-    "ProductHero:dashboard",
-    "ProofBar",
-    "PathRouter",
-    "PricingPlans",
-    "WhyChoose"
+    "ProductHero:console",
+    "ProductCards",
+    "RatingBand",
+    "AdvantageGrid",
+    "SolutionsGrid"
   ],
   "seo": {
-    "title": "Hosting With the Same Price at Renewal",
-    "description": "DronaHost is a focused team offering managed WordPress hosting for small businesses, freelancers and agencies worldwide. See the plans and policies.",
+    "title": "Managed WordPress Hosting and Web Services",
+    "description": "DronaHost is a managed WordPress hosting and web services company for businesses worldwide, with a 99.99% uptime SLA and migration included.",
     "ogImage": "/og/home.jpg",
     "schema": [
       "Organization",
@@ -29,14 +27,14 @@
   },
   "rules": {
     "primaryCta": {
-      "label": "See WordPress hosting plans",
-      "href": "/wordpress-hosting"
+      "label": "Plan my migration",
+      "href": "/#plan"
     },
     "requiredSections": [
       "hero",
-      "router",
-      "why",
-      "help",
+      "advantages",
+      "solutions",
+      "ecosystem",
       "faq",
       "provenance",
       "cta"
@@ -56,281 +54,350 @@
     "rules": [
       "S3"
     ],
-    "reason": "Conversion review 2026-10-09: the long answer about managed hosting moved to /wordpress-hosting, and the home page keeps a two-line version under the router heading.",
-    "approvedBy": "Sandipan Das (owner)"
+    "reason": "Brand home page (decision 58): no answer block under the H1; the FAQ answers the brand questions.",
+    "approvedBy": "Owner (decision 58)"
   },
   "sections": [
     {
       "id": "hero",
       "type": "ProductHero",
-      "variant": "dashboard",
+      "variant": "console",
       "content": {
-        "eyebrow": "Managed WordPress hosting",
-        "h1": "Managed WordPress hosting without the technical worry",
-        "lead": "DronaHost is a focused team that offers managed WordPress hosting for small businesses, freelancers and agencies worldwide. We move your site for free, and you can reach us by ticket or email.",
+        "eyebrow": "Managed WordPress hosting, worldwide",
+        "h1": "Hosting engineered for businesses that cannot afford to stop",
+        "accent": "cannot afford to stop",
+        "lead": "DronaHost is a managed WordPress hosting and web services company for businesses worldwide. We run your hosting, move your site for you, and answer support at any hour.",
+        "leadRequiresClaims": [
+          "claim:free-migration",
+          "claim:support-24-7"
+        ],
+        "leadFallback": "DronaHost is a managed WordPress hosting and web services company for businesses worldwide. Reach us by support ticket or email.",
         "ctaPrimary": {
-          "label": "See WordPress hosting plans",
-          "href": "/wordpress-hosting"
+          "label": "Plan my migration",
+          "href": "/#plan"
         },
         "ctaSecondary": {
-          "label": "Move my site free",
-          "href": "/#move-my-site"
+          "label": "View plans and pricing",
+          "href": "/pricing"
         },
-        "accent": "without the technical worry",
-        "leadFallback": "DronaHost is a focused team that offers managed WordPress hosting for small businesses, freelancers and agencies worldwide. You can reach the team by support ticket or email.",
-        "leadRequiresClaims": [
-          "claim:free-migration"
-        ],
-        "ctaSecondaryRequires": "claim:free-migration && leadFormReady",
-        "screenshot": {
-          "src": "/screenshots/home-dashboard.png",
-          "alt": "Screenshot of the DronaHost customer dashboard",
-          "width": 1600,
-          "height": 1000
-        }
-      }
-    },
-    {
-      "id": "proofbar",
-      "type": "ProofBar",
-      "content": {
-        "claims": [
+        "console": {
+          "title": "Migration · yourbusiness.com",
+          "status": "In progress",
+          "caption": "Example of a migration in progress",
+          "tiles": [
+            "claim:uptime-sla",
+            "Old site: live",
+            "claim:support-24-7"
+          ],
+          "steps": [
+            {
+              "title": "Hosting access shared",
+              "note": "yourbusiness.com",
+              "state": "done"
+            },
+            {
+              "title": "Website transferred",
+              "note": "Files and database copied to DronaHost",
+              "state": "done"
+            },
+            {
+              "title": "Your permission to switch",
+              "note": "We ask before anything changes",
+              "state": "current"
+            },
+            {
+              "title": "DNS pointed to DronaHost",
+              "note": "Your current site stays live until then",
+              "state": "next"
+            }
+          ]
+        },
+        "assurances": [
           "claim:uptime-sla",
-          "claim:ttfb",
-          "claim:first-reply",
-          "claim:founded"
+          "claim:free-migration",
+          "claim:renewal-price-same",
+          "claim:money-back"
         ]
       }
     },
     {
-      "id": "router",
-      "type": "PathRouter",
+      "id": "products",
+      "type": "ProductCards",
       "content": {
-        "eyebrow": "Start here",
-        "h2": "Where are you starting from?",
-        "paths": [
-          {
-            "title": "I already have a WordPress site",
-            "line": "We move it to DronaHost, and the move is free.",
-            "href": "/migration",
-            "cta": "See free migration",
-            "icon": "layers"
-          },
-          {
-            "title": "I need a new WordPress site",
-            "line": "Choose managed WordPress hosting.",
-            "href": "/wordpress-hosting",
-            "cta": "See WordPress hosting",
-            "icon": "layers"
-          },
-          {
-            "title": "I need simple hosting for a business site",
-            "line": "Web hosting with a cPanel dashboard, for any kind of site. Email is not included.",
-            "href": "/business-hosting",
-            "cta": "See business hosting",
-            "icon": "globe",
-            "requiresClaim": "claim:business-hosting-scope"
-          },
-          {
-            "title": "I want full control of my server",
-            "line": "Managed VPS with root access.",
-            "href": "/vps-hosting",
-            "cta": "See managed VPS",
-            "icon": "server",
-            "requiresClaim": "claim:managed-vps-scope"
-          }
-        ],
-        "compact": true,
-        "description": "Managed hosting means the server work sits with us, as set out in our policies. You keep control of your content, plugins and domain."
-      }
-    },
-    {
-      "id": "plans",
-      "type": "PricingPlans",
-      "requires": "FEATURES.pricesConfirmed",
-      "content": {
-        "h2": "Plans and pricing",
-        "source": "pricing.json",
-        "show": [
-          "starter",
-          "growth",
-          "pro"
-        ],
-        "highlight": "growth",
-        "showRenewalPrice": true,
-        "link": {
-          "label": "Compare all plans",
-          "href": "/pricing"
-        }
-      }
-    },
-    {
-      "id": "why",
-      "type": "WhyChoose",
-      "content": {
-        "h2": "Three promises you can read in full",
+        "h2": "Hosting, domains and migration",
         "items": [
+          {
+            "icon": "layers",
+            "tag": "Managed",
+            "title": "WordPress Hosting",
+            "text": "We manage the server and the WordPress environment. You keep full control of your site.",
+            "href": "/wordpress-hosting",
+            "cta": "See WordPress plans"
+          },
+          {
+            "icon": "server",
+            "tag": "Control panel",
+            "title": "Business Hosting",
+            "text": "Web hosting with a control panel for any kind of business website.",
+            "href": "/business-hosting",
+            "cta": "See Business plans"
+          },
+          {
+            "icon": "globe",
+            "title": "Domain Registration",
+            "text": "Find and register the name your customers will remember.",
+            "href": "/domains",
+            "cta": "Search domains"
+          },
           {
             "icon": "refresh-cw",
-            "title": "30-day money-back guarantee",
-            "text": "If it is not right for you, ask for your money back. The terms are in writing.",
-            "source": {
-              "label": "Read the refund policy",
-              "href": "/refund-policy"
-            },
-            "requiresClaim": "claim:money-back"
-          },
-          {
-            "icon": "server",
-            "title": "We move your site for free",
-            "text": "Free migration is included on every hosting package.",
-            "source": {
-              "label": "Read the migration terms",
-              "href": "/migration-terms"
-            },
-            "requiresClaim": "claim:free-migration"
-          },
-          {
-            "icon": "shield-check",
-            "title": "The same price at renewal",
-            "text": "Your hosting price does not change when you renew.",
-            "source": {
-              "label": "Read how renewals work",
-              "href": "/pricing-policy"
-            },
-            "requiresClaim": "claim:renewal-price-same"
+            "title": "Website Migration",
+            "text": "Share access to your current hosting. We transfer your site, ask your permission, then point your DNS.",
+            "href": "/migration",
+            "cta": "Plan my migration"
           }
         ]
       }
     },
     {
-      "id": "limits",
-      "type": "HonestLimits",
-      "content": {
-        "eyebrow": "Honest limits",
-        "h2": "What DronaHost does not do",
-        "description": "Knowing this before you buy saves you a support ticket later.",
-        "items": [
-          {
-            "text": "Hosting plans do not include email.",
-            "reason": "Email is a separate service, so you add it only if you need it, or keep the email you use today."
-          },
-          {
-            "text": "Support is by ticket and email only.",
-            "reason": "The support policy explains how to reach the team and what to include in a request.",
-            "link": {
-              "label": "Read the support policy",
-              "href": "/support-policy"
-            }
-          },
-          {
-            "text": "We do not promise a reply time.",
-            "reason": "We reply by email to every ticket. We will publish a reply time only after we have measured it.",
-            "firstHand": true
-          },
-          {
-            "text": "VPS and cloud hosting have no published plans yet.",
-            "reason": "Ask the team by ticket or email before you buy, and we will say what we can offer today."
-          },
-          {
-            "text": "The free move covers one website per hosting package.",
-            "reason": "The migration terms say exactly what is covered.",
-            "link": {
-              "label": "Read the migration terms",
-              "href": "/migration-terms"
-            },
-            "requiresClaim": "claim:free-migration"
-          }
-        ]
-      }
-    },
-    {
-      "id": "move-my-site",
-      "type": "MigrationRequest",
-      "requires": "claim:free-migration && leadFormReady",
-      "content": {
-        "h2": "Move your site to us for free",
-        "description": "Tell us where your site lives now. We reply by email with the next steps.",
-        "fields": [
-          "siteUrl",
-          "currentHost",
-          "email",
-          "note"
-        ]
-      }
-    },
-    {
-      "id": "evidence",
-      "type": "Evidence",
-      "content": {
-        "source": "case-studies.json"
-      }
-    },
-    {
-      "id": "reviews",
-      "type": "Testimonials",
-      "hideIfEmpty": true,
-      "requires": "verifiedReviews",
+      "id": "ratings",
+      "type": "RatingBand",
       "content": {
         "source": "reviews.json"
       }
     },
     {
-      "id": "help",
-      "type": "HelpAndPolicies",
+      "id": "advantages",
+      "type": "AdvantageGrid",
       "content": {
-        "h2": "Help when you need it, and the terms behind our promises",
-        "supportLabel": "Reach the team",
-        "policiesLabel": "Our policies, in plain language",
-        "links": [
-          "/support-policy",
-          "/backup-policy",
-          "/refund-policy"
+        "eyebrow": "The DronaHost advantage",
+        "h2": "Engineered for growth. Run for you.",
+        "accent": "Run for you.",
+        "description": "Four commitments sit behind every plan. Each one is written into a published policy, so you can read the terms before you buy.",
+        "items": [
+          {
+            "value": "99.99%",
+            "title": "Engineered to stay online",
+            "text": "A monthly uptime commitment, with a service credit if we ever miss it.",
+            "link": {
+              "label": "Read the SLA",
+              "href": "/sla"
+            },
+            "requiresClaim": "claim:uptime-sla"
+          },
+          {
+            "value": "24/7",
+            "title": "Help at any hour",
+            "text": "Support by ticket and email, any hour of any day.",
+            "link": {
+              "label": "Read the support policy",
+              "href": "/support-policy"
+            },
+            "requiresClaim": "claim:support-24-7"
+          },
+          {
+            "value": "0",
+            "title": "Renewal price increases",
+            "text": "The price you start on is the price you renew on, with no end date.",
+            "link": {
+              "label": "Read how renewals work",
+              "href": "/pricing-policy"
+            },
+            "requiresClaim": "claim:renewal-price-same",
+            "firstHand": true
+          },
+          {
+            "value": "30",
+            "title": "Days to decide",
+            "text": "If DronaHost is not right for you, ask for your money back within 30 days.",
+            "link": {
+              "label": "Read the refund policy",
+              "href": "/refund-policy"
+            },
+            "requiresClaim": "claim:money-back"
+          }
+        ]
+      }
+    },
+    {
+      "id": "solutions",
+      "type": "SolutionsGrid",
+      "content": {
+        "eyebrow": "Our solutions",
+        "h2": "More than hosting, from the same provider",
+        "description": "Design, search and email services that work with your hosting.",
+        "featured": [
+          {
+            "tag": "Web design",
+            "title": "Website Design",
+            "text": "A WordPress website designed around how your customers buy.",
+            "href": "/wordpress-website-design",
+            "cta": "Explore website design"
+          }
         ],
-        "onlyPublished": true
+        "items": [
+          {
+            "icon": "mail",
+            "title": "Business Email",
+            "text": "Google Workspace email on your own domain.",
+            "href": "/contact"
+          },
+          {
+            "icon": "trending-up",
+            "title": "SEO Services",
+            "text": "Technical and content work that helps customers find your site.",
+            "href": "/seo-services"
+          },
+          {
+            "icon": "code",
+            "title": "Custom Development",
+            "text": "React and Next.js builds for products that outgrow templates.",
+            "href": "/consultation"
+          }
+        ],
+        "note": "Google Workspace is a trademark of Google LLC."
+      }
+    },
+    {
+      "id": "ecosystem",
+      "type": "Ecosystem",
+      "content": {
+        "eyebrow": "The ecosystem",
+        "h2": "One ecosystem for every part of your online business",
+        "accent": "every part of your online business",
+        "description": "Hosting, domains, business email, design, search and development work together, with one support desk that sees the whole picture.",
+        "center": "dronahost",
+        "nodes": [
+          "Managed hosting",
+          "Domains",
+          "Business email",
+          "Migration",
+          "Website design",
+          "SEO",
+          "Development",
+          "24/7 support"
+        ],
+        "points": [
+          {
+            "title": "One provider",
+            "text": "Hosting, domains and email from one company."
+          },
+          {
+            "title": "One support desk",
+            "text": "One ticket reaches the people who can see your whole setup."
+          },
+          {
+            "title": "One renewal price",
+            "text": "What you start on is what you renew on.",
+            "requiresClaim": "claim:renewal-price-same"
+          },
+          {
+            "title": "Room to grow",
+            "text": "Design, SEO and development when you need them."
+          }
+        ]
+      }
+    },
+    {
+      "id": "reviews",
+      "type": "ReviewsShowcase",
+      "content": {
+        "eyebrow": "Customer reviews",
+        "h2": "What businesses say after the move",
+        "source": "reviews.json"
+      }
+    },
+    {
+      "id": "process",
+      "type": "ProcessTimeline",
+      "requires": "claim:free-migration",
+      "content": {
+        "eyebrow": "Managed migration",
+        "h2": "We move your site. You approve the switch.",
+        "description": "Your current site keeps serving customers until you decide to switch.",
+        "steps": [
+          {
+            "title": "Share your hosting access",
+            "text": "Give us access to your current hosting so we can copy your website."
+          },
+          {
+            "title": "We transfer your site",
+            "text": "We move your files and database to DronaHost. Your current site keeps running."
+          },
+          {
+            "title": "We ask your permission",
+            "text": "When the transfer is done, we ask you before we switch anything."
+          },
+          {
+            "title": "Point your DNS",
+            "text": "Your domain points to DronaHost and the move is done. Your current site stays live until then."
+          }
+        ]
+      }
+    },
+    {
+      "id": "plan",
+      "type": "MigrationPromo",
+      "requires": "claim:free-migration",
+      "content": {
+        "eyebrow": "Managed migration",
+        "h2": "Move your website to DronaHost",
+        "description": "Start in the client area. Share access to your current hosting, we transfer your website, and we switch only after you give permission.",
+        "points": [
+          "Migration included with every hosting plan",
+          "Your current site stays live until you switch",
+          "Nothing switches until you give permission"
+        ],
+        "cta": {
+          "label": "Plan my migration",
+          "action": "client-area"
+        },
+        "note": "Opens the DronaHost client area.",
+        "graphic": {
+          "from": "Your current host",
+          "middle": "We transfer your site",
+          "to": "DronaHost",
+          "caption": "How a move works: your current host, the transfer, then DronaHost"
+        }
       }
     },
     {
       "id": "faq",
       "type": "FAQSection",
       "content": {
-        "h2": "Questions before you choose",
+        "h2": "Questions before you move",
         "items": [
           {
-            "q": "What is managed WordPress hosting?",
-            "a": "Managed WordPress hosting means the host looks after the server your site runs on, so you can focus on your content and your customers. DronaHost offers it on its WordPress hosting plans. If you want to know what is included before you buy, ask the team by support ticket or email."
+            "q": "What does DronaHost offer?",
+            "a": "DronaHost offers managed WordPress hosting, business hosting, domain registration and business email with Google Workspace. We also design websites, run SEO work and build custom sites with React and Next.js. Hosting, domains and email come from one provider, so one support desk can see your whole setup. Ask us which service fits your business."
           },
           {
-            "q": "Do I need technical skills to use DronaHost?",
-            "a": "No. You manage your site in WordPress as usual. If you get stuck, open a support ticket and the team will help with the next step. You do not need to know how servers work to run your site here. The support policy explains what to include in a ticket."
-          },
-          {
-            "q": "Is email included with DronaHost hosting?",
-            "a": "No. Email is not included with any DronaHost hosting plan, and Business Hosting does not include it either. Email is a separate service, so you add it only if you need it, or keep the email you use today. If you are unsure which option fits, write to the team before you buy."
-          },
-          {
-            "q": "Can I move my existing WordPress site to DronaHost?",
-            "a": "Yes, you can move your existing WordPress site to DronaHost. Moving is free on every hosting package, and each package includes the move of one website. The migration terms page explains what is covered. To start, open the free migration page and send your current host details.",
+            "q": "Will my website go offline during the migration?",
+            "a": "No. Your current site keeps running while we transfer it to DronaHost. We ask your permission before we point your DNS, so nothing switches until you agree. Each hosting plan includes the move of one website, and the migration terms list what is covered and what is not covered.",
             "requiresClaim": "claim:free-migration"
           },
           {
-            "q": "How much does WordPress hosting cost at DronaHost?",
-            "a": "{{pricing.summary}}",
-            "requires": "FEATURES.pricesConfirmed"
-          },
-          {
-            "q": "Will the price go up when my plan renews?",
-            "a": "No. The hosting price does not change on renewal, because the renewal price equals the signup price. Each plan shows its renewal price next to its signup price. The pricing policy has the full terms. Prices exclude tax. Customers in India pay GST at checkout.",
+            "q": "Will my price increase at renewal?",
+            "a": "No. You renew at the same price you started on, with no end date. The pricing policy explains how renewals work. Prices appear on the pricing page, where each plan lists its signup price and its renewal price together. Prices exclude tax. Customers in India pay GST at checkout.",
             "requiresClaim": "claim:renewal-price-same"
           },
           {
-            "q": "What if I am not happy with my plan?",
-            "a": "DronaHost offers a 30-day money-back guarantee. The refund policy sets out the exact terms, so please read it before you buy. If you have a question about the guarantee, contact the team by support ticket or email, and the team will explain how it applies to your plan.",
+            "q": "What if DronaHost is not right for me?",
+            "a": "Ask for your money back within 30 days of your order and we refund your hosting plan. The refund policy sets out the exact terms, including what it does not cover, such as domain registrations. Please read the policy before you buy, and ask us if anything is unclear.",
             "requiresClaim": "claim:money-back"
           },
           {
-            "q": "How do I reach support?",
-            "a": "You can reach the team by support ticket or email. Tickets and email are the only support channels we offer. The support policy explains how support works and what to include in your request, so read it before you write. Open a ticket from the contact page."
+            "q": "Is email included with hosting?",
+            "a": "A hosting plan does not include email. Business email is a separate service that runs on Google Workspace, so you add it only when you need it. You can also keep the email you use today, because your hosting and your email work independently of each other."
+          },
+          {
+            "q": "How do I log in to my DronaHost account?",
+            "a": "Open the client area at my.dronahost.com and sign in with the email address you used when you ordered. From the client area you can manage your services, pay invoices and open a support ticket. If you cannot sign in, email support@dronahost.com and we will help you get back in."
+          },
+          {
+            "q": "How do I contact DronaHost support?",
+            "a": "Open a support ticket from the client area or the contact page, or email support@dronahost.com. Support is open by ticket and email at any hour of any day. The support policy explains how support works and what to include in a request so we can help you faster.",
+            "requiresClaim": "claim:support-24-7"
           }
         ]
       }
@@ -339,10 +406,10 @@
       "id": "provenance",
       "type": "PageProvenance",
       "content": {
-        "reviewer": "Sandipan Das",
-        "role": "owner",
+        "reviewer": "DronaHost editorial team",
+        "role": "editorial review",
         "reviewedOn": "2026-10-08",
-        "howLine": "Every promise on this page links to the policy that states its terms, and every price comes from one published price list.",
+        "howLine": "Every promise on this page links to the policy that states its terms, and every number comes from a published commitment.",
         "report": {
           "label": "Report an error on this page",
           "href": "/contact"
@@ -354,16 +421,16 @@
       "id": "cta",
       "type": "CTABand",
       "content": {
-        "h2": "Ready to see which plan fits?",
+        "h2": "Your website deserves better hosting",
+        "description": "Send us your address. We plan the move, run it, and wait for your approval before anything changes.",
         "ctaPrimary": {
-          "label": "See WordPress hosting plans",
-          "href": "/wordpress-hosting"
+          "label": "Plan my migration",
+          "href": "/#plan"
         },
         "ctaSecondary": {
-          "label": "Move my site free",
-          "href": "/#move-my-site"
-        },
-        "ctaSecondaryRequires": "claim:free-migration && leadFormReady"
+          "label": "View plans and pricing",
+          "href": "/pricing"
+        }
       }
     }
   ]

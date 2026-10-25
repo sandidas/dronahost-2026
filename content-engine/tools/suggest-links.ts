@@ -34,7 +34,7 @@ export function inventory(ctx: Ctx): Map<string, { keyword: string; phrases: str
 
 export function suggest(doc: TextDoc, ctx: Ctx): Suggestion[] {
   const reg = readRegister(ctx.resolvePath(ctx.config.paths.register));
-  const excluded = new Set(reg.excluded.flatMap((e) => e.keywords));
+  const excluded = new Set(reg.excluded.flatMap((e) => [...e.keywords, ...e.exact]));
   const inv = inventory(ctx);
   const locale = doc.front.locale || ctx.config.locale;
   const self = slugOf(doc.front.slug ?? "");

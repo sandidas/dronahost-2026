@@ -11,7 +11,7 @@ export type Row = {
   line: number; plan: string; planNumber: string; keyword: string; locale: string; secondary: string[];
   intentCheck: string; url: string; owner: string; status: string; review: string; aiCited: string;
 };
-export type ParsedRegister = { rows: Row[]; excluded: { line: number; keywords: string[]; reason: string }[]; errors: { line: number; message: string }[]; headings: { line: number; text: string }[] };
+export type ParsedRegister = { rows: Row[]; excluded: { line: number; keywords: string[]; exact: string[]; reason: string }[]; errors: { line: number; message: string }[]; headings: { line: number; text: string }[] };
 
 const clean = (cell: string): string => cell.trim().replace(/^`|`$/g, "").trim();
 export const norm = (kw: string): string => kw.toLowerCase().replace(/\s+/g, " ").trim();
@@ -32,7 +32,10 @@ export function parseRegister(text: string): ParsedRegister {
     const cells = line.split("|").slice(1, -1).map(clean);
     if (inExcluded) {
       if (cells[0] === "Keyword" || /^-+$/.test((cells[0] ?? "").replace(/\s/g, ""))) return;
-      out.excluded.push({ line: n, keywords: (cells[0] ?? "").split(",").map((k) => norm(k.replace(/`/g, ""))).filter(Boolean), reason: cells[1] ?? "" });
+      // "web hosting (exact)" blocks only that exact search; a plain entry also blocks every keyword that contains it as a phrase.
+      const all = (cells[0] ?? "").split(",").map((k) => norm(k.replace(/`/g, ""))).filter(Boolean);
+      const isExact = (k: string) => / \(exact\)$/.test(k);
+      out.excluded.push({ line: n, keywords: all.filter((k) => !isExact(k)), exact: all.filter(isExact).map((k) => k.replace(/ \(exact\)$/, "")), reason: cells[1] ?? "" });
       return;
     }
     if (!plan) return;

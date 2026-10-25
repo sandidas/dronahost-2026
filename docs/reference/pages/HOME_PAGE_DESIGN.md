@@ -117,7 +117,7 @@ Items marked ⚠ must be confirmed by you before they go live (capabilities, not
 |---|---|---|
 | I already have a WordPress site | We move it to DronaHost and look after it. | WordPress hosting |
 | I need a website built | We design a new WordPress site, then host it. ⚠ design service | Website design |
-| I need simple hosting for a business site | Web hosting with a cPanel dashboard, for any kind of site. Email is not included (see /email). | Business hosting (Web hosting plans: Essential, Plus) |
+| I need simple hosting for a business site | Web hosting with a control panel, for any kind of site. Email is not included (see /email). | Business hosting (Web hosting plans: Essential, Plus) |
 | I want full control of my server | Managed VPS with root access. ⚠ confirm | Managed VPS hosting |
 
 ### What is managed WordPress hosting? (AnswerBlock)
@@ -228,7 +228,7 @@ H2: Ready to see which plan fits? Primary: See WordPress hosting plans. Secondar
       "paths": [
         { "title": "I already have a WordPress site", "line": "We move it to DronaHost and look after it.", "href": "/wordpress-hosting", "cta": "See WordPress hosting" },
         { "title": "I need a website built", "line": "We design a new WordPress site, then host it.", "href": "/web-design", "cta": "See website design" },
-        { "title": "I need simple hosting for a business site", "line": "Web hosting with a cPanel dashboard, for any kind of site. Email is not included.", "href": "/business-hosting", "cta": "See business hosting" },
+        { "title": "I need simple hosting for a business site", "line": "Web hosting with a control panel, for any kind of site. Email is not included.", "href": "/business-hosting", "cta": "See business hosting" },
         { "title": "I want full control of my server", "line": "Managed VPS with root access.", "href": "/vps-hosting", "cta": "See managed VPS" } ] } },
 
     { "id": "answer", "type": "AnswerBlock", "content": {

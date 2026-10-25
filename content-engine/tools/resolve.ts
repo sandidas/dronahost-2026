@@ -46,7 +46,7 @@ export function resolveInput(input: string, opts: { config: Config; rules: Rules
   const res: Resolution = { input, kind, keyword, decision: "accept", plan, intent, reasons: [] };
 
   if (register) {
-    const hit = register.excluded.find((e) => e.keywords.some((x) => x === keyword || new RegExp(`(^| )${x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}( |$)`).test(keyword)));
+    const hit = register.excluded.find((e) => e.exact.includes(keyword) || e.keywords.some((x) => x === keyword || new RegExp(`(^| )${x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}( |$)`).test(keyword)));
     if (hit) return { ...res, decision: "reject", reasons: [`excluded keyword (register line ${hit.line}): ${hit.reason}`] };
     const live = register.rows.filter((r) => r.status !== "dropped");
     const owner = live.find((r) => norm(r.keyword) === keyword);

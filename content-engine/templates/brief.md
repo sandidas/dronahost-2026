@@ -115,7 +115,7 @@ Google's own questions for a page, in our words ([rules/eeat-and-people-first.md
 
 ## 11. Outline
 
-H1, then H2 and H3 following the intent pattern in the workflow. Each H2 states its direct answer in one line. Recommended length: the blueprint's `words` range and the reason (a guide, not a rule; under the blueprint minimum is flagged thin, and under 300 words only when no blueprint applies).
+H1, then H2 and H3 following the intent pattern in the workflow. Each H2 states its direct answer in one line. Mark the H2 that carries the primary keyword (content pages, CP1). Recommended length: the blueprint's `words` range and the reason (a guide, not a rule; under the blueprint minimum is flagged thin, and under 300 words only when no blueprint applies).
 
 ## 12. Headline (money, service, regional and landing pages only)
 
@@ -125,10 +125,20 @@ Reason-led version and fallback.
 
 Rules sections 9 and 10, or "none".
 
-## 14. Internal links (3 or more)
+## 13b. Media and sources (content pages only)
 
-| Anchor text | Target page | Why it helps the reader |
-|---|---|---|
+- Image whose alt carries the keyword (CP2): what it shows, where it comes from (our screenshot, our diagram, licensed photo), and the alt text.
+- Video (CP3): our own recording or a credited authoritative video, its URL, and why it helps; or `[HUMAN REVIEW: video]` until one exists.
+- External link (CP4): the authoritative source the page relies on (official docs, a standard, a regulator), with its URL.
+
+## 14. Internal links (3 or more, 2 in body copy)
+
+Hub: the hub page this page belongs to.
+
+| Direction (up, across, down) | Anchor text | Target page | In body copy? | Why it helps the reader |
+|---|---|---|---|---|
+
+Back links to add when this page is published (from the hub and one sibling): page, sentence, anchor.
 
 ## 15. CTA
 

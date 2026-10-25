@@ -6,7 +6,7 @@ import { POLICY_TEXT } from "@/content/strings";
  * Every legal and policy page is still a draft awaiting review, so this is empty. Add a path here (or move this to a
  * per-page status field) when its page is reviewed; it is the same decision as flipping a claim's `termsPageStatus`.
  */
-export const PUBLISHED_PAGES: ReadonlySet<string> = new Set<string>(["/refund-policy", "/support-policy", "/pricing-policy", "/backup-policy", "/migration-terms"]);
+export const PUBLISHED_PAGES: ReadonlySet<string> = new Set<string>(["/refund-policy", "/support-policy", "/pricing-policy", "/backup-policy", "/migration-terms", "/sla"]);
 
 /** Icon and text for the policy pages a page may link to. The text is in content/strings.ts (POLICY_TEXT). */
 const ICONS: Record<string, FeatureIconName> = {

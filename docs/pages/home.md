@@ -122,8 +122,7 @@ No "you need to upgrade for backups."
 
 **Cloudflare DDoS Protection**
 > Your site stays online even if someone tries to take it down. Cloudflare's network absorbs attack traffic before it reaches your server.
-
-**cPanel Dashboard**
+**Control Panel**
 > Manage files, databases, email accounts, and DNS from a single dashboard. Industry-standard interface — no proprietary lock-in.
 
 **Staging Environment**

@@ -1,8 +1,10 @@
-import { ChevronDown } from "lucide-react";
 import { useId } from "react";
 import Button from "@/components/ui/Button";
+import { Link } from "@/i18n/link";
 import { cn } from "@/utils/cn";
+import LuxeHeader from "./luxe/LuxeHeader";
 import SectionHeader from "./SectionHeader";
+import { FaqCollage, type FaqPhoto } from "./visuals/FaqCollage";
 
 export type FaqItem = { question: string; answer: string };
 
@@ -12,32 +14,40 @@ type FAQSectionProps = {
   title?: string;
   description?: string;
   items: readonly FaqItem[];
-  /** Optional side panel (left on large screens), e.g. contact prompt. */
+  /** Optional panel under the picture, e.g. a contact prompt. */
   aside?: { title: string; body: string; cta?: { label: string; href: string } };
-  /** Opens the first question by default. */
+  /** One text link under the questions. */
+  link?: { label: string; href: string };
+  /** Real photos for the collage (team or customers who agreed). Without them the collage is a drawn support exchange. */
+  photos?: readonly FaqPhoto[];
+  /** Kept for older callers; every answer is always open now. */
   openFirst?: boolean;
+  /** "lines" uses the light Home headline; both show the same open cards. */
+  variant?: "cards" | "lines";
   headingLevel?: "h2" | "h3";
   className?: string;
 };
 
 /**
- * FAQ accordion built on native <details>/<summary>: every answer is in the initial HTML,
- * it works without JavaScript, is keyboard operable and announced correctly by screen
- * readers. Items share a `name`, so opening one closes the others in supporting browsers.
- * Only render FAQPage JSON-LD for the same visible items (see lib/seo/jsonld.ts).
+ * The site-wide FAQ: every question and answer is an open card, so the full text is visible on load, in the HTML and to
+ * readers who never click. The heading and a collage sit on the left (sticky on large screens), the cards on the right.
+ * Only render FAQPage JSON-LD for the same visible items (see lib/seo/jsonld.ts). Data changes per page, not the component.
  */
-export default function FAQSection({ eyebrow, title, description, items, aside, openFirst = false, headingLevel = "h2", className }: FAQSectionProps) {
+export default function FAQSection({ eyebrow, title, description, items, aside, link, photos, variant = "cards", headingLevel = "h2", className }: FAQSectionProps) {
   const headingId = useId();
-  const groupName = useId();
   const Question = headingLevel === "h2" ? "h3" : "h4";
   if (items.length === 0) return null;
+  const Header = variant === "lines" ? LuxeHeader : SectionHeader;
 
   return (
-    <section aria-labelledby={title ? headingId : undefined} className={cn("section-y", className)}>
+    <section aria-labelledby={title ? headingId : undefined} className={cn(variant === "lines" ? "section-luxe" : "section-y", className)}>
       <div className="container-site">
-        <div className={cn(aside && "grid gap-12 lg:grid-cols-[1fr_1.6fr] lg:gap-16")}>
-          <div>
-            {title && <SectionHeader id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} align={aside ? "start" : "center"} />}
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.3fr)] lg:gap-16">
+          <div className="lg:sticky lg:top-28 lg:self-start">
+            {title && <Header id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} align="start" />}
+            <div className="mt-10 hidden sm:block">
+              <FaqCollage question={items[0]?.question || title || ""} photos={photos} />
+            </div>
             {aside && (
               <div className="surface mt-8 p-6">
                 <p className="t-h4 text-foreground">{aside.title}</p>
@@ -52,18 +62,27 @@ export default function FAQSection({ eyebrow, title, description, items, aside, 
               </div>
             )}
           </div>
-          <div className={cn("space-y-3", !aside && "mx-auto mt-12 max-w-3xl sm:mt-14")}>
-            {items.map((item, i) => (
-              <details key={item.question} name={groupName} open={openFirst && i === 0} className="faq-item group surface overflow-hidden open:border-border-strong">
-                <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-start focus-visible:outline-offset-[-3px] [&::-webkit-details-marker]:hidden">
-                  <Question className="text-base font-semibold text-foreground">{item.question}</Question>
-                  <ChevronDown className="size-5 shrink-0 text-link transition-transform group-open:rotate-180 motion-reduce:transition-none" aria-hidden="true" />
-                </summary>
-                <div className="mx-5 border-t border-border pb-5 pt-4">
-                  <p className="t-body text-muted-foreground">{item.answer}</p>
-                </div>
-              </details>
-            ))}
+          <div>
+            <ul className="grid gap-4">
+              {items.map((item, i) => (
+                <li key={`${i}-${item.question}`}>
+                  <article className="surface h-full p-6 sm:p-7">
+                    <p aria-hidden="true" className="font-heading text-xs font-semibold tracking-[0.18em] text-link">
+                      {String(i + 1).padStart(2, "0")}
+                    </p>
+                    {item.question && <Question className="mt-2 font-heading text-lg font-medium leading-snug text-foreground">{item.question}</Question>}
+                    {item.answer && <p className="t-body mt-3 text-muted-foreground">{item.answer}</p>}
+                  </article>
+                </li>
+              ))}
+            </ul>
+            {link && (
+              <p className="mt-6">
+                <Link href={link.href} className="inline-flex min-h-11 items-center font-semibold text-link underline underline-offset-4">
+                  {link.label}
+                </Link>
+              </p>
+            )}
           </div>
         </div>
       </div>

@@ -8,30 +8,26 @@ Status of each page (Ready or Blocked, and why) is produced by `npm run content:
 
 "Visible sections" is the range of sections a visitor sees. **Required** sections are marked R. A page missing an R section is Blocked.
 
-### C1. Home (navigational and commercial) . 8 to 13 sections
+### C1. Home (navigational and commercial) . 7 to 12 sections
 
-Revised 2026-10-09 (conversion review): the order follows the visitor's questions (what is this, which path is mine, what does it cost, why you, what you do not do, can I move for free, proof, help, questions, who checked this, action). Revised again the same day (E-E-A-T review): HonestLimits and PageProvenance added, per `rules/trust-and-intent-design.md`.
+Revised 2026-10-10 (owner, decision 58): the brand home page of a global brand. No prices (they appear only on `/pricing`), no personal names (decision 59). Order follows a brand searcher: what is DronaHost, can I trust it, what do I get, what else do you do, how does it fit together, what do customers say, how does the move work, ask for a plan, questions, who checked this, act.
 
 | # | Section | Content for this page | Source | Gate |
 |---|---|---|---|---|
-| 1 R | ProductHero | H1 states the main service and outcome. Lead names who we are in one sentence. Primary: See WordPress hosting plans. Secondary: Move my site free (anchors to section 7). A real screenshot, or no visual | JSON | secondary needs the migration request |
-| 2 | ProofBar | 3 or 4 measured numbers or ratings, each linked to its method | Claims, reviews | each item; section needs 3 |
-| 3 R | PathRouter | Where are you starting from? 3 to 4 situations. A two-line version of what managed hosting means sits under the heading | JSON | per card |
-| 4 | PricingPlans | Three plans, link to compare | Pricing file | prices confirmed |
-| 5 R | WhyChoose | Three reasons to choose us, each with a source link: the refund, the free move, the renewal price | JSON, claims | per item; section needs 2 |
-| 6 | HonestLimits | What DronaHost does not do: no hosted email, ticket and email only, no promised reply time (a recorded decision, marked first-hand), no VPS or cloud plans yet, the free move covers one site per package | JSON, decisions, claims | per item; section needs 2 |
-| 7 | MigrationRequest | Optional on Home. Site URL, current host, email, optional note | JSON, strings | `free-migration` and a configured destination |
-| 8 | Evidence | One approved case study | Case-study file | approved case study |
-| 9 | Testimonials | Real reviews | Reviews file | at least 3 real |
-| 10 R | HelpAndPolicies | Ticket and email, then at most 3 policy links | Company, published pages | per item |
-| 11 R | FAQSection | 6 to 8 questions | JSON | per item |
-| 12 R | PageProvenance | Reviewed by the owner, with the date from `rules.reviewedOn`, how facts are checked, report an error, the editorial policy once published | JSON, published pages | none (the policy link hides until published) |
-| 13 R | CTABand | One closing action | JSON | none |
+| 1 R | ProductHero:console | H1 promise, entity lead ("DronaHost is a managed WordPress hosting and web services company..."), "Plan my migration" button to the migration section, console example visual, rail of four verified promises | JSON, claims | form needs `free-migration` and a lead destination |
+| 2 | RatingBand | Rating and review-platform links | Verified reviews | real reviews only |
+| 3 R | AdvantageGrid | Four commitments with large figures, each linked to its policy; one marked as our decision | JSON, claims | per item |
+| 4 R | SolutionsGrid | Two featured solutions and six services, no prices | JSON | per item |
+| 5 R | Ecosystem | Orbit of services and four "one provider" points | JSON | per point |
+| 5b | SupportTeam | "Real support from real people, 24/7": three points, a ticket link, and one premium atmosphere photo (content/team.ts, licensed, no names or roles, never presented as our staff) with the 24/7 badge and a ticket reply over it; until then an illustration of a ticket answered in writing | JSON, photo registry | `support-24-7` |
+| 6 | ReviewsShowcase | Featured case study and review cards | Case studies, reviews | real only |
+| 7 | ProcessTimeline | Four migration steps | JSON | `free-migration` |
+| 8 | MigrationPromo | No form (owner, 2026-10-10): three reassurances, a graphic of the move and one button to the client area (my.dronahost.com, from the company registry) | JSON, company | `free-migration` |
+| 9 R | FAQSection | 6 to 8 brand questions, including login and support | JSON | per item |
+| 10 R | PageProvenance | Reviewed by the DronaHost editorial team, date, how facts are checked, report an error | JSON | none |
+| 11 R | CTABand | One closing action, plus a link to `/pricing` | JSON | none |
 
-Publish minimum: sections 1, 3, 5, 10, 11, 12 and 13 visible (7 sections). Visible words: 500 to 1,000.
-The long explanation of what managed hosting means lives on the WordPress hosting page (C2), not here.
-
-**Every other blueprint** (C2 to C10, C15) ends with PageProvenance before the CTABand; it is required on C2, C3, C4, C6, C7, C8 and C10a. HonestLimits joins C2 and C6 (after the for-you / not-for-you column) and C8 (after "What applies here"). Articles (C12 to C14) carry a byline instead. The section counts in `blueprints.json` include PageProvenance (the maximum for C5, C9, C10c, C10d and C15 was raised by one on 2026-10-10 so it fits), and every heading below matches that data.
+Publish minimum: sections 1, 3, 4, 5, 9, 10 and 11 (7 sections). Visible words: 700 to 1,400 (raised 2026-10-10 when the support section was added).
 
 ### C2. Product page (hosting, VPS, cloud) . 10 to 15 sections. Decide stage
 
@@ -45,7 +41,7 @@ The long explanation of what managed hosting means lives on the WordPress hostin
 | 6 R | FeatureGrid | What is included | Pricing file | per tile |
 | 7 | ProcessTimeline | Moving or setup steps (only where relevant) | JSON, terms | claim |
 | 8 | ResponsibilitySplit | Managed products only | Claims | per line |
-| 9 R | PricingPlans (this product's family) | Price, renewal price, tax line | Pricing file | prices confirmed |
+| 9 R | PricingPlans (this product's family) | Plan cards without prices, each linking to `/pricing` (decision 58) | Pricing file | none |
 | 10 | HelpAndPolicies | Support and policy links | Company, pages | per item |
 | 11 | Testimonials | Real only | Reviews file | real |
 | 12 | CaseStudy | Real only | Case-study file | approved case study |
@@ -89,7 +85,7 @@ CenteredHero R (H1 names both options), AnswerBlock R (the verdict, one sentence
 
 ### C8. Regional page . 8 to 11 sections (Phase 2)
 
-SplitHero R, AnswerBlock R (answer for this region), PricingPlans in local currency (gated), "What applies here" R (reviewed by a qualified person, or the page is Blocked), HonestLimits, Support hours with timezone, "Where your site is hosted" (the honest standard answer), Testimonials (real from the region, optional), FAQSection (4 to 6), PageProvenance R, CTABand. Publish minimum: 4 sections. Words: 600 to 1,000.
+SplitHero R, AnswerBlock R (answer for this region), plan cards linking to `/pricing` (no prices, decision 58), "What applies here" R (reviewed by a qualified person, or the page is Blocked), HonestLimits, Support hours with timezone, "Where your site is hosted" (the honest standard answer), Testimonials (real from the region, optional), FAQSection (4 to 6), PageProvenance R, CTABand. Publish minimum: 4 sections. Words: 600 to 1,000.
 
 ### C9. Domain pages . 5 to 8 sections
 
@@ -132,7 +128,7 @@ Hero, featured guide, topic groups R (each with a one-line reason), most useful 
 |---|---|---|---|---|---|
 | `/` | C1 | ProductHero:dashboard | PathRouter, WhyChoose, HonestLimits | `dronahost` plus the small-business phrase | Claims, prices |
 | `/wordpress-hosting` | C2 | SplitHero:staging | ResponsibilitySplit, staging mockup | managed wordpress hosting | Prices, features |
-| `/business-hosting` | C2 | SplitHero:cpanel | "Not WordPress-specific" TwoColumn | (register) | Prices, features |
+| `/business-hosting` | C2 | SplitHero:control-panel | "Not WordPress-specific" TwoColumn | (register) | Prices, features |
 | `/vps-hosting`, `/cloud-hosting` | C2 | SplitHero:server | Size table | (register) | **Blocked until plans exist** |
 | `/pricing` | C3 | CenteredHero | Family tabs | pricing keyword | Prices confirmed |
 | `/migration` | C4 | SplitHero:steps | Request form | free wordpress migration | `free-migration`, terms |
@@ -154,13 +150,14 @@ Generated by `npm run content:page-map -- --write`. A page with a spec is judged
 
 | URL | Blueprint | Page spec | Status | Why |
 |---|---|---|---|---|
-| `/` | C1 | yes | **Ready** | every required section is visible (9 of 13 sections); hidden parts need claim:free-migration && leadFormReady, claim:business-hosting-scope, claim:managed-vps-scope, FEATURES.pricesConfirmed |
-| `/wordpress-hosting` | C2 | not yet | **Blocked** | needs FEATURES.pricesConfirmed; needs claim:litespeed; needs claim:ssh-wp-cli; needs claim:staging-plans; owner fact: Plan limits confirmed (pricing file 'confirmBeforeLaunch') |
-| `/business-hosting` | C2 | not yet | **Blocked** | needs FEATURES.pricesConfirmed; needs claim:business-hosting-scope; needs claim:cpanel |
-| `/vps-hosting` | C2 | not yet | **Blocked** | needs plans:vps; needs FEATURES.pricesConfirmed; needs claim:managed-vps-scope; owner fact: Whether VPS is sold |
-| `/cloud-hosting` | C2 | not yet | **Blocked** | needs plans:cloud; needs FEATURES.pricesConfirmed; owner fact: Whether cloud hosting is sold |
+| `/` | C1 | yes | **Ready** | every required section is visible (11 of 12 sections); hidden parts need nothing |
+| `/wordpress-hosting` | C2 | yes | **Blocked** | BentoGrid is hidden (needs feature:staging, feature:performance, feature:security, feature:backups, feature:control-panel) |
+| `/wordpress-hosting` | C2 | not yet | **Blocked** | needs claim:wp-control-panel |
+| `/business-hosting` | C2 | not yet | **Blocked** | needs claim:business-hosting-scope; needs claim:control-panel |
+| `/vps-hosting` | C2 | not yet | **Blocked** | needs plans:vps; needs claim:managed-vps-scope; owner fact: Whether VPS is sold |
+| `/cloud-hosting` | C2 | not yet | **Blocked** | needs plans:cloud; owner fact: Whether cloud hosting is sold |
 | `/pricing` | C3 | not yet | **Blocked** | needs FEATURES.pricesConfirmed; owner fact: Confirmation that prices are final |
-| `/migration` | C4 | not yet | **Blocked** | needs claim:migration-process; owner fact: 'What can go wrong and what we do' (three cards from the owner's interview) |
+| `/migration` | C4 | not yet | **Blocked** | owner fact: 'What can go wrong and what we do' (three cards from the owner's interview) |
 | `/email` | C5 | not yet | **Ready** | its gates are met |
 | `/web-design` | C6 | not yet | **Blocked** | needs claim:website-design-service; owner fact: Service sheet; owner fact: One real case study (or the section hides) |
 | `/seo-services` | C6 | not yet | **Blocked** | owner fact: Service sheet; owner fact: Whether SEO is sold as described |

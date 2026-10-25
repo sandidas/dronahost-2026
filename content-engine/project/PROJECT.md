@@ -37,7 +37,7 @@ Where a fact also lives in code, that file is what the website renders. If this 
 | Indian GST number | Registered. Number **MISSING**. Show publicly only if the owner wants | Confirmed (registered), number missing |
 | VAT registration outside India | None | Confirmed |
 | "TAD" | Unknown. Do not use | Closed |
-| Social profiles (LinkedIn, X, and others) | **MISSING.** Only real, owned profiles | Missing |
+| Social profiles | Google Business Profile, Facebook, Instagram, LinkedIn (owner supplied 2026-10-13; URLs in `content/company.ts`) | Confirmed |
 | Team: names, roles, photos, LinkedIn | **MISSING.** Real people only | Missing |
 | Customer counts, awards, review scores | **MISSING.** Only with evidence on file | Missing |
 
@@ -45,14 +45,14 @@ When a missing fact is given, add it to `content/company.ts` (rendering) and to 
 
 ## 3. What the business is
 
-- A focused team serving small-business owners, freelancers and agencies worldwide. Where the team is based is a fact for `/about` only (decision 34): no other page says it.
+- A managed WordPress hosting and web services company serving businesses, freelancers and agencies worldwide (voice: a global brand, decision 59). Where the team is based is a fact for `/about` only (decision 34): no other page says it.
 - **Owns no servers or data centers.** Buys servers from AWS, Google Cloud, DigitalOcean, Hetzner and similar providers, in various locations, and resells hosting on them. There is no fixed provider per city or plan.
 - Billing runs on WHMCS on a server in Europe (provider and country to be recorded).
 - Payments: Stripe (cards) and PayPal. Nothing else is shown as accepted until it is live.
 - Years of trading with existing customers in many countries and several currencies.
 
 **What the copy may and may not say about this**
-- Say: "a focused team" (never where it is based, except on `/about`), "runs on infrastructure from leading cloud providers", "for UK businesses".
+- Say: "DronaHost" or "we" (never "a focused team" or "small team", decision 59; never where it is based, except on `/about`), "runs on infrastructure from leading cloud providers", "for UK businesses".
 - Do not say: "our data center", "our servers", "UK servers", "powered by [provider]", "partner of [provider]".
 - Name the cloud providers only in the sub-processor list, the DPA and the privacy policy.
 - A city is named only if the infrastructure registry (to be built) confirms it for that plan.
@@ -63,7 +63,7 @@ When a missing fact is given, add it to `content/company.ts` (rendering) and to 
 | Service | Page | Data behind it today | May state |
 |---|---|---|---|
 | WordPress hosting | `/wordpress-hosting` | `data/pricing.json`: Starter, Growth, Pro | Plans and limits as confirmed. Prices hidden until confirmed |
-| Business hosting | `/business-hosting` | `data/pricing.json`, family "web": Essential, Plus (cPanel, unmanaged, any site type). **Confirmed by the owner, 2026-10-07** | Plans and limits as confirmed. Never call it managed or WordPress-specific. Email is not included. Prices hidden until confirmed |
+| Business hosting | `/business-hosting` | `data/pricing.json`, family "web": Essential, Plus (a control panel, unmanaged, any site type; DronaHost does not offer cPanel, owner 2026-10-11). **Confirmed by the owner, 2026-10-07** | Plans and limits as confirmed. Never call it managed or WordPress-specific. Email is not included. Prices hidden until confirmed |
 | VPS hosting | `/vps-hosting` | None yet. Owner will add plans to `pricing.json` | "Talk to the team" |
 | Cloud hosting | `/cloud-hosting` | None yet. Same | "Talk to the team" |
 | Migration service | `/migration` | Request form exists. Terms page planned (`/migration-terms`) | Process only until the terms page is published (Plan 14) |
@@ -141,7 +141,7 @@ A claim renders only when it is verified **and** its terms page is published. Th
 - [ ] Founding year
 - [ ] GST number: public or private
 - [ ] Team names, roles, photos and LinkedIn links
-- [ ] Social profiles
+- [x] Social profiles
 - [x] What Business Hosting is: the Web hosting plans (Essential, Plus), no email (owner, 2026-10-07)
 - [ ] A named human legal reviewer, or a legal-document service, for Tier B documents
 - [x] What "24/7 support" means with ticket and email only: `/support-policy` says support is by ticket or email, 24 hours a day, every day, with no promised reply time (decision 36; page approved by the owner 2026-10-08, updated 2026-10-09)

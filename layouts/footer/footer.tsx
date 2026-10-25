@@ -4,7 +4,8 @@ import CookieSettingsButton from "@/components/consent/CookieSettingsButton";
 import Logo from "@/components/ui/Logo";
 import { ACCEPTED_PAYMENT_METHODS } from "@/content/claims";
 import { COMPANY } from "@/content/company";
-import { FOOTER_COLUMNS } from "@/content/navigation";
+import { FOOTER_BOTTOM_LINKS, FOOTER_COLUMNS } from "@/content/navigation";
+import { UI } from "@/content/strings";
 
 const linkClass =
   "inline-flex min-h-9 items-center text-sm text-muted-foreground transition-colors hover:text-foreground";
@@ -39,12 +40,19 @@ export default function Footer() {
                 </a>
               </p>
             )}
+            {COMPANY.clientAreaUrl && (
+              <p className="t-small mt-2">
+                <a href={COMPANY.clientAreaUrl} rel="noopener" className="font-semibold text-link underline underline-offset-4">
+                  {UI.header.clientLogin}
+                </a>
+              </p>
+            )}
             {COMPANY.socials.length > 0 && (
-              <ul aria-label="Social profiles" className="mt-5 flex flex-wrap gap-2">
+              <ul aria-label={UI.footer.socialNav} className="mt-5 flex flex-wrap gap-2">
                 {COMPANY.socials.map((s) => (
                   <li key={s.platform}>
-                    <a href={s.href} rel="noopener noreferrer" target="_blank" className="btn btn-secondary btn-sm capitalize">
-                      {s.platform}
+                    <a href={s.href} rel="noopener noreferrer" target="_blank" className="btn btn-secondary btn-sm">
+                      {UI.footer.socials[s.platform]}
                     </a>
                   </li>
                 ))}
@@ -81,12 +89,25 @@ export default function Footer() {
             {legalLine && <p className="text-xs text-subtle-foreground">{legalLine}</p>}
             {COMPANY.address && <p className="text-xs text-subtle-foreground">{COMPANY.address}</p>}
           </div>
-          <LanguageSwitcher />
-          {payments.length > 0 && (
-            <p>
-              Accepted payment methods: {payments.map((p) => p.label).join(", ")}
-            </p>
-          )}
+          <div className="flex flex-col gap-3 md:items-end">
+            <nav aria-label={UI.footer.bottomNav}>
+              <ul className="flex flex-wrap gap-x-5">
+                {FOOTER_BOTTOM_LINKS.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className="inline-flex min-h-9 items-center text-sm underline underline-offset-4 hover:text-foreground">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            <LanguageSwitcher />
+            {payments.length > 0 && (
+              <p>
+                Accepted payment methods: {payments.map((p) => p.label).join(", ")}
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </footer>

@@ -1,7 +1,7 @@
 import ServicePage, { serviceMetadata } from "@/components/templates/ServicePage";
 import { SERVICES } from "@/content/services";
 
-const content = SERVICES["vps-hosting"];
+const content = SERVICES["managed-vps-hosting"];
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

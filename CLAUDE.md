@@ -17,10 +17,11 @@ This shapes: pricing currency, server locations, copywriting voice, compliance r
 
 ## Services Offered
 
-- WordPress hosting (managed, LiteSpeed-optimized)
-- VPS hosting
-- Cloud hosting
-- Business hosting (unmanaged cPanel web hosting for any site; email is not included, decision 16)
+- WordPress hosting (managed, NVMe storage, NGINX caching, managed from a control panel; LiteSpeed, SSH and WP-CLI are not offered, and public pages never name the panel product, decisions 61 and 66)
+- Managed VPS hosting (`/managed-vps-hosting`)
+- Cloud web hosting (`/cloud-web-hosting`)
+- Business hosting (unmanaged web hosting with a control panel for any site; cPanel is not offered; email is not included, decision 16)
+- Reseller hosting (offered from 2026-10-11, decision 70; plans to come)
 - Business email (a separate service with its own plans, never bundled with hosting; planned, decision 49)
 - Domain registration
 - Website design (WordPress, custom)
@@ -80,7 +81,7 @@ UI microcopy (labels, errors, empty states, success and helper text) lives in `c
 Guard bullets, non-negotiable even if you skip the folder:
 
 - Business facts come only from `content-engine/project/PROJECT.md` and the registries it names (identity in `project/settings.json`). A missing fact becomes `[HUMAN REVIEW: ...]`. Never invent an address, number, name, location, guarantee or review.
-- Prices come only from `data/pricing.json`; same plans and prices for every country; only the currency changes.
+- Prices come only from `data/pricing.json`; same plans and prices for every country; only the currency changes. Prices appear on `/pricing` and on product pages' plan cards (decision 63, which reopened decision 58 for product pages); Home, comparisons, titles, descriptions, schema and FAQ answers carry no price.
 - Tax: customers in India pay GST, everyone else pays none. Never "+ VAT" or "VAT included".
 - No location claims and no cloud provider names on marketing pages. Write "for UK businesses", never "UK servers".
 - Where we are based is said on `/about` only (decision 34). No title, description, headline or lead on any other page says "India" or "a team in India". The GST line is a tax rule and stays. `npm run check:content` enforces it (PO4).
@@ -102,7 +103,7 @@ Every page should reinforce trust. Required elements across the site:
 - Registered company name + registration number
 - Physical business address on `/about` only (decision 34): be honest, never a made-up US or UK address. The footer carries the registered name and number, not the address
 - VAT / tax registration numbers where applicable
-- Founder/team photos with real names and LinkedIn links
+- Team photos and names only where the owner chooses; marketing pages never name the owner and never say "small team" (decision 59)
 - Year founded, number of customers, years in business
 - Security badges (SSL, PCI-DSS if handling cards directly)
 
@@ -176,6 +177,8 @@ Every page should reinforce trust. Required elements across the site:
 
 **All pricing data lives in `data/pricing.json` and nowhere else.**
 
+**One price list for every product page (owner, 2026-10-11, decision 73).** `data/pricing.json` holds one lineup of hosting plans (Starter, Growth, Pro, Scale since version 4.0.0). There is no separate WordPress hosting, Business hosting or other per-product pricing. `/wordpress-hosting`, `/business-hosting` and every other commercial page may have its own copy and keyword, but each shows the same plans at the same prices through one component, `components/sections/HostingPricing.tsx` (preview at `/v2/pricing`). A page may change only the heading text and whether the extras show; it never picks plans, reorders them or adds a price.
+
 ### The rule
 
 - **Never hardcode a price** in a component, page, metadata, CTA label, or copy string.
@@ -200,10 +203,11 @@ const annualUsd = plan?.pricing.annual.USD; // whatever pricing.json holds today
 
 | Value | What to render |
 |---|---|
-| `trafficGB: null` with `trafficType: "fair-use"` | "Fair use", linked to the fair-use policy. Never "Unlimited" |
-| `null` on any other limit field | Hide the row (or "Not included" in a comparison table). Never "Unlimited" |
-| `trafficType: "semi-dedicated"` | "Semi-Dedicated" badge |
-| `trafficType: "dedicated"` | "Dedicated" badge |
+| A limit named in `limits.fairUse` (e.g. Scale: `["sites", "domains", "databases", "bandwidth"]`) | "Fair use" (`isFairUse()` in `lib/pricing`), linked to the fair-use policy once it exists. Never "Unlimited" |
+| `null` on a limit not named in `limits.fairUse` | Not set yet: render nothing (or "Not included" in a comparison table). Never "Unlimited" |
+| `limits.resourceType` | "Shared", "Semi-dedicated" or "Dedicated" |
+| `internal.*` (mailboxes, bandwidth, visits) | Never rendered. Bandwidth lives only in `internal.bandwidthGB` |
+| `headlineFeatures` | The plan card's feature list, as written; only limits and capabilities true in the same file |
 | `pricing.monthly.USD: null` | "Custom pricing. Talk to the team for a quote." |
 | `vatDisplay: null` | Show the price only, with its currency symbol and billing period |
 
@@ -506,7 +510,7 @@ See **[content-engine/rules/content-writing-rules.md](content-engine/rules/conte
 - **Tokens**: `app/styles/tokens.css` (colour, radius, shadow, type, motion; dark default) and `app/styles/buttons.css`. Layers declared directly in `globals.css` get flattened by this build, so layered CSS must live in imported files. Use token utilities (`bg-card`, `text-muted-foreground`, `text-link`, `bg-action`), never raw palette colours. `npm run check:contrast` gates every token pair and runs first in `npm run build`.
 - **Fonts are fixed**: Sora for headlines (`font-heading`), Manrope for every other text (`font-sans`). Never add or swap a font family in a component, section or page; vary only size (responsive), loaded weight, tracking and colour. No italic, no mono outside code. See `docs/rules/ui-ux-rules.md` §3.6.
 - **Components**: see `docs/components/README.md`. Every section takes `headingLevel`; heroes are `ProductHero`, `SplitHero`, `CenteredHero`. Showcase: `/v2` and `/v2/design-system` (development only; they return 404 in production).
-- **No invented facts**: public facts render only from verified registries (`content/claims.ts`, `content/trust.ts`, `content/company.ts`). Sample data lives only in `content/placeholders.ts`. Prices come only from `data/pricing.json` via `lib/pricing`, and are hidden in production until `FEATURES.pricesConfirmed` (`lib/flags.ts`). The full to-do list is `docs/reference/PLACEHOLDERS.md`.
+- **No invented facts**: public facts render only from verified registries (`content/claims.ts`, `content/trust.ts`, `content/company.ts`). Sample data lives only in `content/placeholders.ts`. No section prints a status label such as "unverified", "sample" or "draft" (`docs/rules/ui-ux-rules.md` §3.7); gates keep unready data out of production. Prices come only from `data/pricing.json` via `lib/pricing`, and are hidden in production until `FEATURES.pricesConfirmed` (`lib/flags.ts`). The full to-do list is `docs/reference/PLACEHOLDERS.md`.
 - **Copy**: draft copy lives in `content/*.ts`. Follow `content-engine/rules/content-writing-rules.md`; no unconfirmed numbers, guarantees or competitor claims.
 - **QA**: after `npm run build && npx next start -p 3200`, run `npm run qa` (contrast, axe, links, JSON-LD, raw entities). Lighthouse and screenshot helpers are in `scripts/`; results are in `docs/reference/QA_REPORT.md`.
 - **Gotchas**: do not run `next build` while `next dev` is running in the same folder (intermittent font import-map error; re-run). Do not wrap the root layout children in `Suspense` (it turns 404s into 200s).

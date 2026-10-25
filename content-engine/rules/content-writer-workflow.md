@@ -41,7 +41,7 @@ The only input is **a primary keyword or a page title**, plus optional notes. Ev
 Stop and report, naming the failed line, if any of these fail:
 
 - [ ] The keyword has a register row with a target URL (or `planned`), and no other page owns it. Look-alike phrases belong in the owning row's Secondary column.
-- [ ] The keyword is not in "Excluded keywords", and not a variant of a page that already answers it (cannibalization).
+- [ ] The keyword is not in "Excluded keywords" (an entry marked "(exact)" blocks only that exact search; a plain entry blocks every keyword that contains it), and not a variant of a page that already answers it (cannibalization).
 - [ ] The plan that owns it is clear (README table), and the locale and URL fit the register.
 - [ ] **The governor allows it** ([governor.md](governor.md)): in flight under the cap, new briefs this month under the cap, not paused.
 - [ ] The facts the page needs exist in project files, or are listed as missing.

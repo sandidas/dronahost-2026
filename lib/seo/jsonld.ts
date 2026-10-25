@@ -16,6 +16,7 @@ export function organizationSchema(): JsonLdScript {
       width: 112,
       height: 112,
     },
+    ...(COMPANY.supportEmail ? { email: COMPANY.supportEmail } : {}),
     // Only real, owned profiles from content/company.ts (the previous guessed URLs were removed).
     ...(COMPANY.socials.length > 0 ? { sameAs: COMPANY.socials.map((s) => s.href) } : {}),
     contactPoint: {
@@ -23,6 +24,7 @@ export function organizationSchema(): JsonLdScript {
       contactType: "customer support",
       availableLanguage: "English",
       url: `${SITE_URL}/contact`,
+      ...(COMPANY.supportEmail ? { email: COMPANY.supportEmail } : {}),
     },
   };
 }

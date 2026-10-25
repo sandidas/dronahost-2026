@@ -63,3 +63,25 @@ export function ChannelsVisual() {
     </div>
   );
 }
+
+/** A month of daily uptime bars, all up: the picture behind the uptime SLA tile. Decorative, no figures. */
+export function UptimeVisual() {
+  return (
+    <div className="flex h-16 w-full max-w-xs items-end gap-1" aria-hidden="true">
+      {Array.from({ length: 30 }, (_, i) => (
+        <span key={i} className={cn("flex-1 rounded-sm bg-success/70", i % 7 === 3 ? "h-full" : "h-[85%]")} />
+      ))}
+    </div>
+  );
+}
+
+/** A site moving from its current host to DronaHost, for the free migration tile. */
+export function MoveVisual() {
+  return (
+    <div className="flex w-full max-w-xs items-center gap-2.5">
+      <span className="inline-flex h-10 flex-1 items-center justify-center rounded-xl border border-border bg-card px-3 text-sm font-medium text-muted-foreground">Current host</span>
+      <span aria-hidden="true" className="h-px w-8 bg-accent" />
+      <span className="inline-flex h-10 flex-1 items-center justify-center rounded-xl border border-accent/50 bg-accent/20 px-3 text-sm font-semibold text-foreground">DronaHost</span>
+    </div>
+  );
+}

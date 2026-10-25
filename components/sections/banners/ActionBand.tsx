@@ -25,7 +25,7 @@ export type ActionBandProps = {
 /** The action on orange: a navy button, so the orange block is never orange on orange. */
 function InkButton({ href, children, className }: { href: string; children: string; className?: string }) {
   return (
-    <Link href={href} className={cn("group inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--on-action)] px-6 text-[0.9375rem] font-semibold text-[var(--brand-tint)] transition-transform hover:-translate-y-px", className)}>
+    <Link href={href} className={cn("group inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--ink)] px-6 text-[0.9375rem] font-semibold text-[var(--brand-tint)] transition-transform hover:-translate-y-px", className)}>
       {children}
       <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180" aria-hidden="true" />
     </Link>

@@ -1,21 +1,26 @@
 "use client";
 
 import { useId, useState } from "react";
+import type { Money } from "@/lib/pricing";
+import { pickMoney, useCurrency } from "@/components/ui/CurrencyAmount";
 
-type Tier = { id: string; size: string; monthly: string };
+type Tier = { id: string; size: string; monthly: string; monthlyAll?: Money | null };
 
 type BackupAddonCardProps = {
   name: string;
   description: string;
   tiers: readonly Tier[];
   showPrices: boolean;
+  /** Which plans include it or can add it, from pricing.json. */
+  availability?: string;
 };
 
 /** One add-on card for every offsite backup size. Native select, so it works with any assistive tech. */
-export default function BackupAddonCard({ name, description, tiers, showPrices }: BackupAddonCardProps) {
+export default function BackupAddonCard({ name, description, tiers, showPrices, availability }: BackupAddonCardProps) {
   const selectId = useId();
   const [tierId, setTierId] = useState(tiers[0]?.id ?? "");
   const tier = tiers.find((t) => t.id === tierId) ?? tiers[0];
+  const currency = useCurrency();
   if (!tier) return null;
 
   return (
@@ -23,6 +28,7 @@ export default function BackupAddonCard({ name, description, tiers, showPrices }
       <div>
         <p className="font-semibold text-foreground">{name}</p>
         <p className="t-small mt-1 text-muted-foreground">{description}</p>
+        {availability && <p className="mt-2 text-xs font-medium text-link">{availability}</p>}
       </div>
       <div className="mt-auto flex flex-wrap items-end justify-between gap-4">
         <div>
@@ -44,7 +50,7 @@ export default function BackupAddonCard({ name, description, tiers, showPrices }
         </div>
         {showPrices && (
           <p className="text-sm font-semibold text-foreground" aria-live="polite">
-            +{tier.monthly}/month
+            +{pickMoney(tier.monthlyAll, currency) ?? tier.monthly}/month
           </p>
         )}
       </div>

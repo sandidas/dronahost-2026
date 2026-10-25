@@ -404,6 +404,14 @@ The site uses two families and only two: **Sora** for headlines and **Manrope** 
 - No synthetic styles: do not use `italic` (no italic is loaded) and do not ask for a weight that is not loaded.
 - The mono family (`--font-mono`) is for code samples only, never for labels, prices or metadata.
 
+### 3.7 No status labels on the page (owner rule, 2026-10-11)
+
+No section prints a status label about its own data: never "unverified", "sample", "sample data", "draft", "unconfirmed", "hidden in production", "not configured" or any similar wording, in production or in development.
+
+- Data that is not ready stays out of production through its gate (`claims.ts`, `case-studies.ts`, `data/reviews.json`, `FEATURES`, `showSamples()`), not through a label. Sample data still lives only in `content/placeholders.ts` and still never reaches a production build.
+- Do not add a `UI.sample` group, a warning badge or a note for this to `content/strings.ts` or to a component.
+- Why a fact is held back belongs in the data file or a code comment (for example `heldClaims` in `data/reviews.json`), never on the page.
+
 ---
 
 ## 4. Spacing, Layout & Radius
@@ -495,7 +503,7 @@ The site uses two families and only two: **Sora** for headlines and **Manrope** 
 
 | Variant | Background | Border | Text | Hover |
 |---|---|---|---|---|
-| primary | Orange action fill (`--action-fill`, flat) | none | Navy label (`--on-action`; white on orange fails contrast) | translateY(-1px) + brightness + soft shadow |
+| primary | Orange action fill (`--action-fill`, flat) | none | White label (`--on-action`) on the deep fill `#d23e00` (4.74:1); hover and active go darker (owner, 2026-10-11) | translateY(-1px) + brightness + soft shadow |
 | secondary | Surface (navy family) | `1px` hairline (`--border-strong`) | `--foreground` | Teal border + faint teal fill |
 | ghost | transparent | none | `--foreground` | faint foreground fill |
 | link | transparent | none | `--link` (teal) | thicker underline |
@@ -1342,7 +1350,7 @@ Dark is the default theme (decision #3): the server renders `.dark` on `<html>`,
 |---|---|---|
 | Headings, key UI text | `var(--foreground)` | `text-foreground` |
 | Body copy, labels, descriptions | `var(--muted-foreground)` | `text-[var(--muted-foreground)]` |
-| Text on orange action buttons | navy label from `--on-action` (white on orange is 3.22:1 and fails; see §2.4) | `text-(--on-action)` |
+| Text on orange action buttons | white label from `--on-action` on the deep fill `--action-fill` `#d23e00` (4.74:1). The bright logo orange `#fe5504` stays out of button fills: white on it is 3.22:1 and fails (§2.4) | `text-(--on-action)` |
 
 ### 18.4 Brand Colour Usage in Both Modes
 

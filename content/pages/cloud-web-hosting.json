@@ -1,0 +1,409 @@
+{
+  "id": "cloud-web-hosting",
+  "path": "/cloud-web-hosting",
+  "blueprint": "C2",
+  "archetype": "product",
+  "intent": "transactional",
+  "searchIntent": "Buy",
+  "secondaryIntent": "Learn",
+  "audience": "Growing small businesses whose traffic is rising or uneven, who want room to grow without changing host, no server to run and a price that stays the same at renewal",
+  "primaryKeyword": "cloud hosting for small business",
+  "secondaryKeywords": [
+    "cloud web hosting for small business",
+    "managed cloud hosting for small business",
+    "cloud hosting services for small business",
+    "cloud web hosting"
+  ],
+  "layoutSignature": [
+    "ProductHero:dashboard",
+    "AssuranceStrip",
+    "AnswerBlock",
+    "ProcessTimeline",
+    "Meaning"
+  ],
+  "seo": {
+    "title": "Cloud Hosting for Small Business, Fixed Price",
+    "description": "Cloud hosting for small businesses on infrastructure from leading cloud providers. Four plans, the same price at renewal, free migration, uptime SLA.",
+    "schema": [
+      "BreadcrumbList",
+      "Service",
+      "FAQPage"
+    ],
+    "ogImage": "/og/cloud-web-hosting.jpg"
+  },
+  "rules": {
+    "primaryCta": {
+      "label": "See cloud hosting plans",
+      "href": "/cloud-web-hosting#plans"
+    },
+    "requiredSections": [
+      "hero",
+      "answer",
+      "features",
+      "plans",
+      "faq",
+      "provenance",
+      "cta"
+    ],
+    "mustLinkTo": [
+      "/pricing",
+      "/pricing-policy",
+      "/migration-terms",
+      "/sla",
+      "/contact"
+    ],
+    "forbiddenClaims": [
+      "unlimited",
+      "Redis",
+      "LiteSpeed",
+      "WooCommerce optimization",
+      "auto-scaling",
+      "AWS",
+      "Google Cloud",
+      "DigitalOcean",
+      "Hetzner"
+    ],
+    "reviewedOn": "2026-10-24"
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "type": "ProductHero",
+      "variant": "dashboard",
+      "content": {
+        "eyebrow": "Cloud hosting",
+        "h1": "Cloud hosting for small business, at a price you can plan",
+        "h1Requires": [
+          "claim:renewal-price-same"
+        ],
+        "accent": "at a price you can plan",
+        "h1Fallback": "Cloud hosting for growing small businesses",
+        "accentFallback": "growing small businesses",
+        "lead": "Four plans on infrastructure from leading cloud providers. DronaHost runs the hosting account, you run your business, and your price stays the same at renewal.",
+        "leadRequiresClaims": [
+          "claim:renewal-price-same"
+        ],
+        "leadFallback": "Four plans on infrastructure from leading cloud providers. DronaHost runs the hosting, and you manage your site in a control panel.",
+        "ctaPrimary": {
+          "label": "See cloud hosting plans",
+          "href": "/cloud-web-hosting#plans"
+        },
+        "ctaSecondary": {
+          "label": "Help me choose a plan",
+          "href": "/contact"
+        },
+        "highlights": [
+          "claim:backups",
+          "claim:uptime-sla",
+          "claim:free-migration"
+        ]
+      }
+    },
+    {
+      "id": "assurances",
+      "type": "AssuranceStrip",
+      "content": {
+        "claims": [
+          "claim:renewal-price-same",
+          "claim:uptime-sla",
+          "claim:free-migration"
+        ]
+      }
+    },
+    {
+      "id": "answer",
+      "type": "AnswerBlock",
+      "requiresClaim": "claim:renewal-price-same",
+      "content": {
+        "h2": "What cloud hosting for small business means at DronaHost",
+        "answer": "Cloud hosting for small business at DronaHost means four fixed plans that run on infrastructure from leading cloud providers. DronaHost runs the hosting account, and you manage your site in a control panel. Your price stays the same at renewal. Plans do not grow on their own, so when your business grows, you move up a plan.",
+        "link": {
+          "label": "Read how renewals work",
+          "href": "/pricing-policy"
+        }
+      }
+    },
+    {
+      "id": "process",
+      "type": "ProcessTimeline",
+      "requiresClaim": "claim:migration-process",
+      "requires": "claim:free-migration",
+      "content": {
+        "eyebrow": "Free migration",
+        "h2": "How we move your site to cloud hosting",
+        "description": "Every plan includes the free move of one website, and your old site stays online during the move.",
+        "steps": [
+          {
+            "title": "Give us access",
+            "text": "You share access to your current hosting, so we can copy your site."
+          },
+          {
+            "title": "We copy your site",
+            "text": "We transfer your site to DronaHost."
+          },
+          {
+            "title": "You approve the switch",
+            "text": "When the copy is ready, we ask your permission before we switch anything."
+          },
+          {
+            "title": "Point your domain",
+            "text": "Your DNS points to DronaHost, and your site now runs on your cloud plan."
+          }
+        ],
+        "graphic": {
+          "from": "Your current host",
+          "middle": "We move your site",
+          "to": "DronaHost cloud plan",
+          "caption": "Illustration of a site moving to cloud hosting for small business at DronaHost"
+        }
+      }
+    },
+    {
+      "id": "fit",
+      "type": "Meaning",
+      "content": {
+        "eyebrow": "Who it is for",
+        "h2": "Who cloud hosting is for",
+        "answer": "Cloud hosting suits growing small businesses whose traffic is rising or uneven. You can grow without changing host, and you never run a server. Cloud web hosting for small business at DronaHost lets you start on the plan your site needs today and move up when you need more.",
+        "lookAfterLabel": "A good fit",
+        "keepLabel": "Look elsewhere if",
+        "weLookAfter": [
+          "Your traffic is rising or changes from month to month",
+          "You want room to grow without changing host",
+          "You run one site now and plan to add more",
+          {
+            "text": "You want a price you can plan, the same at renewal",
+            "requiresClaim": "claim:renewal-price-same"
+          }
+        ],
+        "youKeep": [
+          "You want pay-as-you-go resources that scale by the minute",
+          "You want full server control: see Managed VPS hosting"
+        ],
+        "note": "Not sure? Send the team your site address, and we will help you choose a plan."
+      }
+    },
+    {
+      "id": "guide",
+      "type": "PlanGuide",
+      "content": {
+        "eyebrow": "Choose a plan",
+        "h2": "Which plan fits your business now",
+        "description": "Start with the plan that fits your site today. Every figure in the table comes from our published plan data.",
+        "source": "pricing.json",
+        "fit": [
+          {
+            "plan": "starter",
+            "text": "For a first business site, or a small business that is starting out online."
+          },
+          {
+            "plan": "growth",
+            "text": "Adds priority support, for a business site that is starting to grow."
+          },
+          {
+            "plan": "pro",
+            "text": "Adds semi-dedicated resources and performance tuning, for busier sites or several sites on one plan."
+          },
+          {
+            "plan": "scale",
+            "text": "Adds dedicated resources and senior experts, for larger or high-traffic business sites."
+          }
+        ],
+        "note": "When your site outgrows its plan, move up to the next one. Above Scale, the team scopes high-traffic plans with you.",
+        "link": {
+          "label": "Compare every plan and add-on",
+          "href": "/pricing"
+        }
+      }
+    },
+    {
+      "id": "limits",
+      "type": "HonestLimits",
+      "content": {
+        "h2": "What to know before you choose",
+        "items": [
+          {
+            "text": "Email is not included.",
+            "reason": "Business email is a separate service that we never bundle with a hosting plan.",
+            "firstHand": true
+          },
+          {
+            "text": "Plans do not scale automatically. When your site outgrows its plan, you move up to a larger one.",
+            "reason": "Each plan has fixed resources and a fixed price, so you know what you get before you buy.",
+            "firstHand": true
+          },
+          {
+            "text": "Support is by ticket and email only, with no live chat or phone.",
+            "reason": "Written answers give you a record you can keep and share with your team.",
+            "firstHand": true,
+            "link": {
+              "label": "Read the support policy",
+              "href": "/support-policy"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "features",
+      "type": "BentoGrid",
+      "hideIfEmpty": true,
+      "content": {
+        "eyebrow": "On every plan",
+        "h2": "What every cloud plan includes",
+        "description": "Every plan includes these, with server monitoring and a control panel for your site.",
+        "tiles": [
+          "feature:performance",
+          "feature:security",
+          "feature:backups",
+          "feature:control-panel",
+          "feature:uptime",
+          "feature:migration"
+        ]
+      }
+    },
+    {
+      "id": "split",
+      "type": "ResponsibilitySplit",
+      "content": {
+        "h2": "What we run, and what you control",
+        "description": "DronaHost runs the hosting account. You run your site.",
+        "weLookAfter": [
+          {
+            "text": "The hosting servers your account runs on",
+            "requiresClaim": "claim:managed-server-care"
+          },
+          "Server monitoring on every plan",
+          {
+            "text": "A daily backup of your site, keeping the latest copy",
+            "requiresClaim": "claim:backups"
+          },
+          {
+            "text": "A firewall, brute-force protection and malware scanning",
+            "requiresClaim": "claim:malware-scanning"
+          }
+        ],
+        "youKeep": [
+          "Your site, your content and your data",
+          "The apps you install and their updates",
+          "Your plan choice, from Starter to Scale"
+        ]
+      }
+    },
+    {
+      "id": "plans",
+      "type": "PricingPlans",
+      "content": {
+        "h2": "Cloud hosting plans",
+        "description": "Prices show in your currency, with the renewal price under each signup price.",
+        "source": "pricing.json",
+        "show": [
+          "starter",
+          "growth",
+          "pro",
+          "scale"
+        ],
+        "highlight": "growth",
+        "showRenewalPrice": true,
+        "link": {
+          "label": "Compare every plan and add-on",
+          "href": "/pricing"
+        }
+      }
+    },
+    {
+      "id": "proof",
+      "type": "ReviewsShowcase",
+      "content": {
+        "eyebrow": "After the move",
+        "h2": "What changed for a site that moved to DronaHost",
+        "source": "reviews.json"
+      }
+    },
+    {
+      "id": "faq",
+      "type": "FAQSection",
+      "content": {
+        "h2": "Questions about cloud hosting",
+        "items": [
+          {
+            "q": "What is cloud web hosting?",
+            "a": "Cloud web hosting at DronaHost means your site runs on infrastructure from leading cloud providers. DronaHost owns no servers or data centers, and no plan is tied to one provider or location. You choose one of four plans, each with set resources and a published price."
+          },
+          {
+            "q": "How is cloud hosting different from shared hosting?",
+            "a": "On shared hosting, many sites draw on one server's resources. At DronaHost, every plan runs on infrastructure from leading cloud providers, and your plan sets how much of it you share. Starter and Growth use shared resources. Pro uses semi-dedicated resources, and Scale uses dedicated resources that no other site draws on."
+          },
+          {
+            "q": "Do I need technical skills?",
+            "a": "No. You manage your site in a control panel, and DronaHost runs the hosting account, its monitoring and its daily backup. You never set up or run a server. That is what managed cloud hosting for small business means here: we run the hosting, you run the site."
+          },
+          {
+            "q": "How much does cloud hosting cost for a small business?",
+            "a": "The cost depends on the plan you choose. The plan cards on this page show each price in your currency, with the renewal price beside it, so you see the full cost before you buy. Paying yearly costs less per month than paying monthly. Prices exclude tax. Customers in India pay GST at checkout."
+          },
+          {
+            "q": "Will my bill change with traffic or at renewal?",
+            "a": "Your price does not rise at renewal. Every plan renews at your signup price for the same billing cycle, with no end date. Plans do not scale on their own, so a busy month does not move you to a larger plan.",
+            "requiresClaim": "claim:renewal-price-same"
+          },
+          {
+            "q": "What happens when my site outgrows its plan?",
+            "a": "You move up to a larger plan. Plans do not scale automatically, so your resources stay fixed until you change plan. The plan guide on this page shows what each larger plan adds. If your site needs more than Scale, the team scopes a high-traffic plan with you, with no published price."
+          },
+          {
+            "q": "Will my site stay up?",
+            "a": "Every plan has a 99.99% uptime SLA backed by service credits. If uptime falls below that in a month, you can claim a credit, and the SLA explains how we measure uptime and how to claim. Every plan also includes server monitoring.",
+            "requiresClaim": "claim:uptime-sla"
+          },
+          {
+            "q": "How does support work?",
+            "a": "Support runs 24/7 by ticket and email, so every reply is in writing. DronaHost does not offer live chat or phone support. Growth adds priority support, and Scale adds senior experts. The support policy sets out what support covers. Open a ticket from the contact page.",
+            "requiresClaim": "claim:support-24-7"
+          },
+          {
+            "q": "How is this different from your other hosting?",
+            "a": "Cloud hosting, WordPress hosting and Business hosting use the same four plans at the same prices. This page covers our cloud hosting services for small business, for owners who want room to grow. Choose by the size of your site, not the page name. For full server control, see Managed VPS hosting."
+          }
+        ],
+        "link": {
+          "label": "Read the migration terms",
+          "href": "/migration-terms"
+        }
+      }
+    },
+    {
+      "id": "provenance",
+      "type": "PageProvenance",
+      "content": {
+        "reviewer": "DronaHost editorial team",
+        "role": "editorial review",
+        "reviewedOn": "2026-10-24",
+        "howLine": "Plan details here come from our pricing file and published policies, checked on 24 October 2026. Drafted with AI assistance, then edited, fact-checked and approved by our editorial team.",
+        "report": {
+          "label": "Report an error on this page",
+          "href": "/contact"
+        },
+        "policyHref": "/editorial-policy",
+        "variant": "byline"
+      }
+    },
+    {
+      "id": "cta",
+      "type": "CTABand",
+      "content": {
+        "h2": "Choose a cloud plan that keeps its price",
+        "description": "Pick the plan that fits your business now. Each card shows what you pay today and at renewal.",
+        "ctaPrimary": {
+          "label": "See cloud hosting plans",
+          "href": "/cloud-web-hosting#plans"
+        },
+        "ctaSecondary": {
+          "label": "Help me choose a plan",
+          "href": "/contact"
+        },
+        "note": "30-day money-back guarantee on every plan."
+      }
+    }
+  ]
+}

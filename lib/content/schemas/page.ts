@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { CLAIMS } from "@/content/claims";
 import { computeLayoutSignature } from "../layout-signature";
 import { Cta, Href, Slug } from "./common";
 import { Section, type SectionSpec } from "./sections";
@@ -20,6 +21,12 @@ export function collectHrefs(value: unknown, found: Set<string> = new Set()): Se
         found.add(v);
       } else if (key === "links" && Array.isArray(v)) {
         for (const link of v) if (typeof link === "string") found.add(link);
+      } else if (key === "claims" && Array.isArray(v)) {
+        // An assurance claim renders with a link to its published terms page ("Read the SLA"), so that page counts as linked.
+        for (const ref of v) {
+          const claim = typeof ref === "string" ? CLAIMS.find((c) => `claim:${c.id}` === ref) : undefined;
+          if (claim?.verified && claim.termsPage && claim.termsLabel) found.add(claim.termsPage);
+        }
       } else {
         collectHrefs(v, found);
       }

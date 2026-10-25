@@ -74,16 +74,12 @@ export default function Testimonials({ eyebrow, title, description, items, showS
                   )}
                   <span className="min-w-0 text-sm">
                     <cite className="block font-semibold not-italic text-foreground">{t.name}</cite>
-                    <span className="block text-muted-foreground">
-                      {t.role}, {t.company}
-                    </span>
+                    {(t.role || t.company) && <span className="block text-muted-foreground">{[t.role, t.company].filter(Boolean).join(", ")}</span>}
                     {t.sourceUrl ? (
                       <Link href={t.sourceUrl} rel="noopener noreferrer" target="_blank" className="mt-0.5 inline-block text-xs font-semibold text-link underline underline-offset-4">
                         {UI.generic.verifyOn} {t.sourceUrl.includes("linkedin.com") ? UI.generic.linkedIn : UI.generic.theirSite}
                       </Link>
-                    ) : (
-                      <span className="mt-0.5 block text-xs font-semibold text-warning">{UI.sample.unverified}</span>
-                    )}
+                    ) : null}
                   </span>
                 </figcaption>
               </figure>

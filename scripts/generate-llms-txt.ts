@@ -50,7 +50,7 @@ const products = () =>
     "## Hosting products",
     "",
     `- **Managed WordPress hosting**: ${WORDPRESS_HERO.description}${planPrice()} ${url("/wordpress-hosting")}`,
-    ...["cloud-hosting", "vps-hosting", "business-hosting", "domains"].map((slug) => {
+    ...["cloud-web-hosting", "managed-vps-hosting", "business-hosting", "domains"].map((slug) => {
       const s = SERVICES[slug];
       return `- **${s.schemaName[0].toUpperCase()}${s.schemaName.slice(1)}**: ${s.metaDescription} ${url(`/${slug}`)}`;
     }),
@@ -63,7 +63,7 @@ const services = () =>
   [
     "## Services",
     "",
-    ...["web-design", "growth-services"].map((slug) => `- **${SERVICES[slug].schemaName}**: ${SERVICES[slug].metaDescription} ${url(`/${slug}`)}`),
+    ...["wordpress-website-design", "growth-services"].map((slug) => `- **${SERVICES[slug].schemaName}**: ${SERVICES[slug].metaDescription} ${url(`/${slug}`)}`),
     `- **SEO services**: Technical SEO, content strategy and link building on a monthly retainer. ${url("/seo-services")}`,
     "",
     "",

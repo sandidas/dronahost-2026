@@ -52,10 +52,10 @@ export const WORDPRESS_HERO: HeroCopy = {
 
 export const ABOUT_HERO: HeroCopy = {
   eyebrow: "About DronaHost",
-  title: "A focused team that runs",
+  title: "The company that runs",
   titleAccent: "your hosting",
   description:
-    "DronaHost is a hosting and web team based in India, working with businesses in the United States, the United Kingdom, the United Arab Emirates and Europe.",
+    "DronaHost is a managed WordPress hosting and web services company based in India, working with businesses in the United States, the United Kingdom, the United Arab Emirates and Europe.",
   primaryCta: { label: "Talk to our team", href: "/contact" },
   secondaryCta: { label: "See hosting plans", href: "/pricing" },
 };
@@ -67,7 +67,7 @@ export const SEO_HERO: HeroCopy = {
   description:
     "Technical fixes, content and link work on a monthly retainer, with reporting that explains what changed and why.",
   primaryCta: { label: "Talk to our team", href: "/contact" },
-  secondaryCta: { label: "See web design", href: "/web-design" },
+  secondaryCta: { label: "See web design", href: "/wordpress-website-design" },
 };
 
 export const PRICING_HERO: HeroCopy = {

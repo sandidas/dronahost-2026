@@ -39,7 +39,7 @@ export default function SeoServicesPage() {
       <FeatureGrid {...SEO_CAPABILITIES} columns={3} />
       <ProcessTimeline {...SEO_PROCESS} />
       <FAQSection eyebrow="SEO" title="Questions about SEO services" items={SEO_FAQ} />
-      <CTABand {...HOME_CTA} secondaryCta={{ label: "See web design", href: "/web-design" }} />
+      <CTABand {...HOME_CTA} secondaryCta={{ label: "See web design", href: "/wordpress-website-design" }} />
     </>
   );
 }

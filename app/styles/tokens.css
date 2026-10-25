@@ -50,12 +50,13 @@
   --action-hover: #a83000;
   --action-active: #8f2900;
   --action-foreground: #07131f;
-  /* Button fill: bright brand orange with navy text in both themes. --action stays the
-     darker text-safe orange for links and badges on light surfaces. */
-  --action-fill: #fe5504;
-  --action-fill-hover: #ff6b26;
-  --action-fill-active: #e84a00;
-  --on-action: #07131f;
+  /* Button fill: deep brand orange with white text in both themes (owner, 2026-10-11).
+     #d23e00 is the brightest orange that keeps white text at WCAG AA (4.7:1); hover and
+     active go darker, never lighter. --action stays the text-safe orange for links and badges. */
+  --action-fill: #d23e00;
+  --action-fill-hover: #b83600;
+  --action-fill-active: #a32f00;
+  --on-action: #ffffff;
   /* Secondary (teal): fill + text/link */
   --accent: #027280;
   --accent-hover: #015c68;
@@ -82,6 +83,11 @@
   --glow-orange: rgb(254 85 4 / 0.1);
   --glow-teal: rgb(5 162 198 / 0.12);
   --grid-line: rgb(9 47 73 / 0.06);
+
+  /* Ink bands (Home): the near-black brand surface. Same values in both themes, always used with the `.dark` scope. */
+  --ink: #05101a;
+  --ink-2: #071827;
+  --ink-raised: #0c1d2c;
 }
 
 /* ── Dark theme (default) ── */
@@ -104,10 +110,10 @@
   --action-hover: #ff6b26;
   --action-active: #e84a00;
   --action-foreground: #07131f;
-  --action-fill: #fe5504;
-  --action-fill-hover: #ff6b26;
-  --action-fill-active: #e84a00;
-  --on-action: #07131f;
+  --action-fill: #d23e00;
+  --action-fill-hover: #b83600;
+  --action-fill-active: #a32f00;
+  --on-action: #ffffff;
   --accent: #05a2c6;
   --accent-hover: #2bb8d9;
   --accent-foreground: #07131f;
@@ -130,6 +136,10 @@
   --glow-orange: rgb(254 85 4 / 0.12);
   --glow-teal: rgb(5 162 198 / 0.14);
   --grid-line: rgb(255 255 255 / 0.05);
+
+  --ink: #05101a;
+  --ink-2: #071827;
+  --ink-raised: #0c1d2c;
 }
 
 /* ── Legacy aliases (existing components use these names) ── */
@@ -201,6 +211,9 @@
   --color-inverse-surface: var(--inverse-surface);
   --color-inverse-foreground: var(--inverse-foreground);
   --color-inverse-muted: var(--inverse-muted);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-raised: var(--ink-raised);
 
   /* Radius scale: 12 / 16 / 24 (rounded-lg / xl / 2xl); 8 for small controls */
   --radius-md: 0.5rem;
@@ -268,7 +281,8 @@ body {
   }
 
   /* Alternate bands for page-spec pages: every second section sits on the muted surface, so neighbours never share a background. */
-  .page-tones > section:nth-of-type(even) {
+  /* A section that sets its own tone (`data-tone`, for example the ink bands on Home) keeps it. */
+  .page-tones > section:nth-of-type(even):not([data-tone]) {
     background-color: var(--muted);
     border-block: 1px solid var(--border);
   }

@@ -41,7 +41,7 @@ export const HOME_BENTO = {
       description: "Start on a managed plan and move to cloud or VPS hosting when your needs change, without changing provider.",
       visual: "growth",
       span: "third",
-      href: "/cloud-hosting",
+      href: "/cloud-web-hosting",
       linkLabel: "Compare hosting types",
     },
     {
@@ -85,13 +85,13 @@ export const HOME_OFFER: {
       icon: "server",
       title: "VPS and cloud hosting",
       description: "Dedicated resources for applications, stores and teams that need more control.",
-      cta: { label: "See VPS hosting", href: "/vps-hosting" },
+      cta: { label: "See VPS hosting", href: "/managed-vps-hosting" },
     },
     {
       icon: "palette",
       title: "Web design and development",
       description: "WordPress, React and Next.js builds scoped around what your business needs the site to do.",
-      cta: { label: "See web design", href: "/web-design" },
+      cta: { label: "See web design", href: "/wordpress-website-design" },
     },
     {
       icon: "search",
@@ -173,8 +173,8 @@ export const HOME_COMPARE = {
   caption: "Comparison of WordPress, cloud and VPS hosting",
   columns: [
     { key: "wp", label: "WordPress hosting", href: "/wordpress-hosting", highlight: true },
-    { key: "cloud", label: "Cloud hosting", href: "/cloud-hosting" },
-    { key: "vps", label: "VPS hosting", href: "/vps-hosting" },
+    { key: "cloud", label: "Cloud hosting", href: "/cloud-web-hosting" },
+    { key: "vps", label: "VPS hosting", href: "/managed-vps-hosting" },
   ],
   groups: [
     {
@@ -256,4 +256,11 @@ export const HOME_CTA = {
   description: "Compare the plans, or tell us about your site and we will recommend one.",
   primaryCta: { label: "See hosting plans", href: "/pricing" },
   secondaryCta: { label: "Talk to our team", href: "/contact" },
+} as const;
+
+/** The closing band on /pricing: the plans are already above it, so it points to the plan guide instead of back to /pricing. */
+export const PRICING_CTA = {
+  ...HOME_CTA,
+  description: "See which plan fits each stage of a growing business, or tell us about your site and we will recommend one.",
+  primaryCta: { label: "See the cloud hosting plan guide", href: "/cloud-web-hosting" },
 } as const;

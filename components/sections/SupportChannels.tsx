@@ -61,7 +61,6 @@ export default function SupportChannels({ eyebrow, title, description, showSampl
               </span>
               <Item className="t-h4 text-foreground">{c.title}</Item>
               <p className="t-small mt-1.5 flex-1 text-muted-foreground">{c.description}</p>
-              {!c.configured && <p className="mt-2 text-xs font-semibold text-warning">{UI.sample.notConfigured}</p>}
               <Button href={c.action.href} variant="secondary" external={c.action.external} className="mt-5 self-start">
                 {c.action.label}
               </Button>

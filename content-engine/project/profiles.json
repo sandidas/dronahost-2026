@@ -96,7 +96,7 @@
     },
     "experience": {
       "appliesTo": ["product", "landing", "trust", "article"],
-      "any": [{ "sectionType": "Evidence" }, { "sectionType": "Testimonials" }, { "sectionType": "ProofBar" }, { "sectionType": "CaseStudy" }, { "field": "firstHand" }, { "heading": "^what we (saw|did|tested|found)" }, { "text": "\\(Q\\d+\\)" }, { "text": "\\(decision \\d+" }]
+      "any": [{ "sectionType": "Evidence" }, { "sectionType": "Testimonials" }, { "sectionType": "ProofBar" }, { "sectionType": "CaseStudy" }, { "sectionType": "ReviewsShowcase" }, { "field": "firstHand" }, { "heading": "^what we (saw|did|tested|found)" }, { "text": "\\(Q\\d+\\)" }, { "text": "\\(decision \\d+" }]
     },
     "pressure": {
       "patterns": ["\\b(hurry|act now|last chance|limited[- ]time|ends (today|tonight|soon)|only \\d+ (left|spots?|seats?)|no questions asked|don.t miss (out|this)|selling fast|while stocks last|\\d+ people are (viewing|looking))\\b"]

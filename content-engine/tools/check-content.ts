@@ -1,13 +1,13 @@
 /**
  * check-content v2: pass or fail per rule, with the file, the line and the fix. No score.
  * Reads page specs (.json) and Markdown drafts and posts (.md, .mdx). Groups: Structure, Keyword, Voice, Facts, People,
- * Experience, Sources, Metadata, Schema, Policy, Overlap, Flags. Paths, limits and every word list come from
+ * Experience, Sources, Metadata, Schema, Policy, Overlap, Blueprint, Intent, Trust, Elements, Flags. Paths, limits and every word list come from
  * content-engine.config.json and project/rules.config.json. Rules marked "(project rule)" are ours, not Google's (rules/sources.md).
  *
  * Usage: npx tsx content-engine/tools/check-content.ts [file or folder ...] [--help]
  * Default: the drafts and pages folders in the config. Exits 1 if any rule fails.
  * In a Draft (front matter `state` starts with "Draft"), the readiness rules (S4, S5, E1, E3, SO1, IN2, IN3, IN5, TR2, TR4, TR6,
- * TR7) report warnings instead of failures, and open [HUMAN REVIEW] flags are allowed. They fail once the state is not Draft.
+ * TR7, CP1 to CP5) report warnings instead of failures, and open [HUMAN REVIEW] flags are allowed. They fail once the state is not Draft.
  */
 import { spawnSync } from "node:child_process";
 import { existsSync, readdirSync, statSync } from "node:fs";
@@ -19,6 +19,7 @@ import { type Doc, loadDoc as loadDocRaw } from "./content/parse";
 import { blueprintRules, loadBlueprints, runCopySource, runVisibility, signatureRules } from "./content/rules-blueprint";
 import { intentRules, trustRules } from "./content/rules-intent-trust";
 import { experienceRules, factRules, flagRules, peopleRules, policyRules, sourceRules } from "./content/rules-facts";
+import { elementRules, inboundRules, qualityRules } from "./content/rules-quality";
 import { keywordRules, metadataRules, schemaRules, structureRules, voiceRules } from "./content/rules-text";
 import { type Finding, GROUP_ORDER, type RuleResult, normSlug, rule } from "./content/types";
 import { CONFIG_FILE } from "./load-config";
@@ -29,7 +30,7 @@ export type { Doc } from "./content/parse";
 export type { RuleResult, Group } from "./content/types";
 
 /** Rules that gate "Ready for owner review". In a Draft they warn. */
-const READY_ONLY = new Set(["S4", "S5", "E1", "E3", "SO1", "IN2", "IN3", "IN5", "TR2", "TR4", "TR6", "TR7"]);
+const READY_ONLY = new Set(["S4", "S5", "E1", "E3", "SO1", "IN2", "IN3", "IN5", "TR2", "TR4", "TR6", "TR7", "CP1", "CP2", "CP3", "CP4", "CP5"]);
 /** Rules no owner waiver can turn off: forbidden claims, the location rule, pressure wording and unknown claim references. */
 export const NON_WAIVABLE = new Set(["PO2", "PO4", "TR8", "F3"]);
 
@@ -49,7 +50,7 @@ function overlapRules(ctx: Ctx, doc: Doc): RuleResult[] {
 
 export function checkDoc(ctx: Ctx, doc: Doc, opts: { overlap?: boolean } = {}): RuleResult[] {
   const results = [
-    ...structureRules(ctx, doc), ...keywordRules(ctx, doc), ...voiceRules(ctx, doc), ...factRules(ctx, doc), ...peopleRules(ctx, doc),
+    ...structureRules(ctx, doc), ...keywordRules(ctx, doc), ...voiceRules(ctx, doc), ...qualityRules(ctx, doc), ...elementRules(ctx, doc), ...factRules(ctx, doc), ...peopleRules(ctx, doc),
     ...experienceRules(ctx, doc), ...sourceRules(ctx, doc), ...metadataRules(ctx, doc), ...schemaRules(ctx, doc), ...policyRules(ctx, doc),
     ...(opts.overlap === false ? [] : overlapRules(ctx, doc)), ...blueprintRules(ctx, doc), ...intentRules(ctx, doc), ...trustRules(ctx, doc), ...flagRules(doc),
   ];
@@ -158,11 +159,12 @@ export function runChecks(ctx: Ctx, files: string[]): number {
   }
   const dupes = duplicateRules(docs);
   const sigs = signatureRules(docs, ctx.blueprints ?? null);
+  const inbound = inboundRules(ctx, docs);
   let failed = unreadable.length;
   for (const u of unreadable) console.log(`\n${u}\n    FAIL could not read`);
   if (visError) { failed++; console.log(`\nHost visibility adapter\n  FAIL BP0 ${CONFIG_FILE}:1 ${visError}. Fix: make adapters.pageVisibility.command exit 0 and print the visibility JSON, or remove it from the config`); }
   for (const d of docs) {
-    const all = [...checkDoc(ctx, d), ...(dupes.get(d.file) ?? []), ...(sigs.get(d.file) ?? [])].sort((a, b) => GROUP_ORDER.indexOf(a.group) - GROUP_ORDER.indexOf(b.group));
+    const all = [...checkDoc(ctx, d), ...(dupes.get(d.file) ?? []), ...(sigs.get(d.file) ?? []), ...(inbound.get(d.file) ?? [])].sort((a, b) => GROUP_ORDER.indexOf(a.group) - GROUP_ORDER.indexOf(b.group));
     if (!report(d.file, all)) failed++;
   }
   const host = hostPageSpecCheck(ctx, docs);

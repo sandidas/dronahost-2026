@@ -1,0 +1,428 @@
+{
+  "$comment": "Fact ledger for /cloud-web-hosting. F2 to F28 copied from facts/business-hosting.json (same plans, decision 73) and rechecked; F29 onward are new. The draft may use only verified facts, interview answers and claims that render.",
+  "slug": "/cloud-web-hosting",
+  "updated": "2026-10-24",
+  "facts": [
+    {
+      "id": "F2",
+      "fact": "Pro: 25 websites, 100 GB NVMe storage, 4 CPU cores, 6 GB memory, 50 databases, semi-dedicated resources, performance tuning",
+      "kind": "number",
+      "source": {
+        "type": "project-file",
+        "ref": "data/pricing.json 4.1.0 plans[pro]"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F3",
+      "fact": "Scale: websites, domains and databases under fair use, 150 GB NVMe storage, 8 CPU cores, 8 GB memory, dedicated resources, performance tuning, 24/7 support from senior experts",
+      "kind": "number",
+      "source": {
+        "type": "project-file",
+        "ref": "data/pricing.json 4.1.0 plans[scale]"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F4",
+      "fact": "Prices, renewal prices and billing periods come only from data/pricing.json (never typed into copy)",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "data/pricing.json 4.1.0 plans starter, growth, pro, scale"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F5",
+      "fact": "The renewal price equals the signup price for the same billing cycle, with no end date",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "content/claims.ts renewal-price-same (published /pricing-policy); decision 50"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F6",
+      "fact": "Every hosting package includes the free migration of one website (published /migration-terms)",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "content/claims.ts free-migration (published /migration-terms); pricing.json freeMigration true; claim migration-process"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F7",
+      "fact": "30-day money-back guarantee",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "content/claims.ts money-back (published /refund-policy)"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F8",
+      "fact": "Support is by ticket and email only; no live chat, WhatsApp or phone",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "content-engine/project/DECISIONS.md decision 22"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F9",
+      "fact": "Support tiers: Starter Standard, Growth Priority, Pro 24/7, Scale 24/7 with senior experts; hours for Starter and Growth are not set (open in confirmBeforeLaunch)",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "data/pricing.json 4.1.0 support; _meta.confirmBeforeLaunch"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "needs-check",
+      "usedIn": []
+    },
+    {
+      "id": "F10",
+      "fact": "Free SSL certificates from Let's Encrypt on every plan",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "pricing.json freeSSL true; claim free-ssl (owner 2026-10-11, decision 61)"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F11",
+      "fact": "Daily backup on every plan; only the latest copy is kept",
+      "kind": "number",
+      "source": {
+        "type": "project-file",
+        "ref": "DECISIONS.md 74; data/pricing.json limits.backupRetentionDays = 1"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F13",
+      "fact": "Malware scanning and advanced security on every plan",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "pricing.json malwareScanning, advancedSecurity true; decision 61"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F14",
+      "fact": "Free domain for the first year on annual plans",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "pricing.json freeDomainFirstYear true; owner 2026-10-11 'All plan for annual paid only'"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "needs-check",
+      "usedIn": []
+    },
+    {
+      "id": "F16",
+      "fact": "Customers manage their sites in a control panel; the panel product is never named and cPanel is not offered",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "content-engine/project/DECISIONS.md decision 65 and 66"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F17",
+      "fact": "Email is not included with any hosting plan; business email is a separate service",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "content-engine/project/DECISIONS.md decision 16 and 49"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F18",
+      "fact": "WooCommerce optimization is not included on any plan (false until the owner confirms)",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "data/pricing.json 4.1.0 capabilities.wooCommerceOptimization"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F19",
+      "fact": "DDoS protection through Cloudflare on every plan (claim cloudflare-cdn unverified; not usable)",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "pricing.json ddosProtection, cloudflare true; claim cloudflare-cdn unverified"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "needs-check",
+      "usedIn": []
+    },
+    {
+      "id": "F20",
+      "fact": "NVMe SSD storage on every plan",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "content/claims.ts nvme (verified by owner 2026-10-11); data/pricing.json headlineFeatures"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F22",
+      "fact": "Customers manage files, databases, plugins, themes, staging and backups in the control panel; SSH and WP-CLI are not offered (claim wp-control-panel does not render; not usable)",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "DECISIONS.md 66; content/claims.ts wp-control-panel"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "needs-check",
+      "usedIn": []
+    },
+    {
+      "id": "F24",
+      "fact": "Of 18 hosts whose renewal price HostingScale knows, 16 raise it at renewal (HostingScale, updated 30 July 2026)",
+      "kind": "number",
+      "source": {
+        "type": "url",
+        "ref": "https://hostingscale.com/statistics/hosting-renewal-prices/",
+        "title": "Hosting Renewal Price Report 2026",
+        "pageDate": "2026-07-30"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F25",
+      "fact": "Growth adds priority support; Pro adds semi-dedicated resources and performance tuning; Scale adds dedicated resources and senior experts",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "data/pricing.json 4.1.0 headlineFeatures"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F26",
+      "fact": "Extra Layer Security is included on Pro and Scale and a paid add-on on Starter and Growth",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "data/pricing.json 4.1.0 addons; DECISIONS.md 74"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "needs-check",
+      "usedIn": []
+    },
+    {
+      "id": "F27",
+      "fact": "Prices show in USD, GBP, EUR, AED and INR; the currency follows the visitor's choice or location; the same plans and prices apply in every country",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "data/pricing.json 4.1.0; DECISIONS.md 75"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F28",
+      "fact": "Above Scale: high-traffic and dedicated plans are scoped with the team, with no published price",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "data/pricing.json highTraffic"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F29",
+      "fact": "Cloud web hosting shows the same four plans as every hosting page (Starter, Growth, Pro, Scale) through HostingPricing; the page calls them cloud hosting because they run on infrastructure from leading cloud providers",
+      "kind": "business",
+      "source": {
+        "type": "interview",
+        "ref": "briefs/cloud-web-hosting-interview.md A0 (2026-10-24); DECISIONS.md 73; PROJECT.md 55"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F30",
+      "fact": "DronaHost owns no servers or data centers; plans run on infrastructure from leading cloud providers, with no fixed provider or location per plan; provider names appear only in the sub-processor list, DPA and privacy policy",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "PROJECT.md section on infrastructure (lines 49-57); DECISIONS.md 12"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F31",
+      "fact": "99.99% uptime SLA with service credits (claim uptime-sla); renders only when the claim renders",
+      "kind": "number",
+      "source": {
+        "type": "project-file",
+        "ref": "content/claims.ts uptime-sla"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F32",
+      "fact": "Server monitoring is included with every plan",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "data/pricing.json includedWithEveryPlan; headlineFeatures (Starter)"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F33",
+      "fact": "Plans do not scale automatically; when a site outgrows its plan, the customer moves up to a larger plan. How a plan change is done and billed (proration) is not confirmed",
+      "kind": "procedure",
+      "source": {
+        "type": "interview",
+        "ref": "briefs/cloud-web-hosting-interview.md Q3 follow-up (2026-10-24); pricing.json onClickScaling false"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "needs-check",
+      "usedIn": []
+    },
+    {
+      "id": "F34",
+      "fact": "Starter and Growth use shared resources, Pro semi-dedicated, Scale dedicated",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "data/pricing.json 4.1.0 limits.resourceType"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F35",
+      "fact": "Google Cloud definition of cloud hosting: exact sentence not captured (page body did not load for the fetch); a person must copy it word for word before use",
+      "kind": "definition",
+      "source": {
+        "type": "url",
+        "ref": "https://cloud.google.com/learn/what-is-cloud-hosting",
+        "title": "What is Cloud Hosting? Benefits and Risks | Google Cloud"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (fact-checker) 2026-10-24",
+      "status": "needs-check",
+      "usedIn": []
+    },
+    {
+      "id": "F36",
+      "fact": "Starter: 2 websites, 50 GB NVMe storage, 2 CPU cores, 3 GB memory, 4 databases, shared resources. Growth: 5 websites, 80 GB NVMe storage, 2 CPU cores, 4 GB memory, 10 databases, shared resources, priority support",
+      "kind": "number",
+      "source": {
+        "type": "project-file",
+        "ref": "data/pricing.json 4.1.0 plans[starter], plans[growth] limits and headlineFeatures"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (from pricing.json) 2026-10-24",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F37",
+      "fact": "Paying annually costs less per month than paying monthly (about 19% to 21% in USD; the saving is worked out per currency, so the page states no percentage)",
+      "kind": "claim",
+      "source": {
+        "type": "project-file",
+        "ref": "data/pricing.json 4.1.0 _meta.annualSavings and plans[].pricing"
+      },
+      "retrievedOn": "2026-10-24",
+      "checkedBy": "Claude (from pricing.json) 2026-10-24",
+      "status": "verified",
+      "usedIn": [
+        "faq: How much does cloud hosting cost for a small business?"
+      ]
+    }
+  ]
+}

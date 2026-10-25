@@ -76,7 +76,6 @@ export default function ResponsibilitySplit({
                   </span>
                   <span className="t-body text-foreground">
                     {item.text}
-                    {showSamples && item.claim && <span className="mt-1 block text-xs font-semibold text-warning">{UI.sample.hiddenUntil(item.claim)}</span>}
                   </span>
                 </li>
               ))}
@@ -92,7 +91,6 @@ export default function ResponsibilitySplit({
                   </span>
                   <span className="t-body text-foreground">
                     {item.text}
-                    {showSamples && item.claim && <span className="mt-1 block text-xs font-semibold text-warning">{UI.sample.hiddenUntil(item.claim)}</span>}
                   </span>
                 </li>
               ))}

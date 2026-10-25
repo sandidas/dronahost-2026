@@ -1,0 +1,408 @@
+{
+  "id": "business-hosting",
+  "path": "/business-hosting",
+  "blueprint": "C2",
+  "archetype": "product",
+  "intent": "transactional",
+  "searchIntent": "Buy",
+  "secondaryIntent": "Learn",
+  "audience": "Growing and larger business sites in every industry, of any kind, WordPress or not, that want a price that stays the same at renewal (spam and adult websites are not allowed)",
+  "primaryKeyword": "web hosting with no renewal price increase",
+  "secondaryKeywords": [
+    "web hosting with same renewal price",
+    "web hosting for multiple websites",
+    "small business web hosting",
+    "business web hosting"
+  ],
+  "layoutSignature": [
+    "ProductHero:tiers",
+    "AssuranceStrip",
+    "AnswerBlock",
+    "ProcessTimeline",
+    "PathRouter"
+  ],
+  "seo": {
+    "title": "Business Hosting That Renews at the Same Price",
+    "description": "Business hosting for growing sites: semi-dedicated and dedicated resources on Pro and Scale, free migration, and the same price when you renew.",
+    "schema": [
+      "BreadcrumbList",
+      "Service",
+      "FAQPage"
+    ],
+    "ogImage": "/og/business-hosting.jpg"
+  },
+  "rules": {
+    "primaryCta": {
+      "label": "Choose a business plan",
+      "href": "/business-hosting#plans"
+    },
+    "requiredSections": [
+      "hero",
+      "answer",
+      "features",
+      "plans",
+      "faq",
+      "provenance",
+      "cta"
+    ],
+    "mustLinkTo": [
+      "/pricing",
+      "/pricing-policy",
+      "/migration-terms",
+      "/contact"
+    ],
+    "forbiddenClaims": [
+      "unlimited",
+      "Redis",
+      "LiteSpeed",
+      "WooCommerce optimization"
+    ],
+    "reviewedOn": "2026-10-12"
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "type": "ProductHero",
+      "variant": "tiers",
+      "content": {
+        "eyebrow": "Business hosting",
+        "h1": "Business hosting that renews at the same price",
+        "h1Requires": [
+          "claim:renewal-price-same"
+        ],
+        "accent": "renews at the same price",
+        "h1Fallback": "Business hosting for growing websites",
+        "accentFallback": "growing websites",
+        "lead": "The step between WordPress hosting and a VPS. Pro gives you semi-dedicated resources and Scale gives you dedicated resources, with no server to run. We move one site for free, and your price stays the same at renewal.",
+        "leadRequiresClaims": [
+          "claim:free-migration",
+          "claim:renewal-price-same"
+        ],
+        "leadFallback": "Business hosting from DronaHost for growing and larger sites of any kind, WordPress or not. Manage your site in a control panel and reach us by ticket or email.",
+        "ctaPrimary": {
+          "label": "Choose a business plan",
+          "href": "/business-hosting#plans"
+        },
+        "highlights": [
+          "claim:nvme",
+          "claim:malware-scanning",
+          "claim:backups"
+        ],
+        "visual": {
+          "alt": "Illustration of web hosting plans by CPU and memory, each with no renewal price increase"
+        }
+      }
+    },
+    {
+      "id": "assurances",
+      "type": "AssuranceStrip",
+      "content": {
+        "claims": [
+          "claim:renewal-price-same",
+          "claim:money-back",
+          "claim:free-migration",
+          "claim:uptime-sla"
+        ]
+      }
+    },
+    {
+      "id": "answer",
+      "type": "AnswerBlock",
+      "requiresClaim": "claim:renewal-price-same",
+      "content": {
+        "h2": "What web hosting with no renewal price increase means for a business",
+        "answer": "Business hosting at DronaHost has no renewal price increase. Every plan renews at the price you signed up for, with no end date. For busier and larger sites of any kind, WordPress or not, Pro gives you semi-dedicated resources and Scale gives you dedicated resources. The plan cards on this page show every price, and the table below adds up what each plan costs over three years.",
+        "link": {
+          "label": "Read how renewals work",
+          "href": "/pricing-policy"
+        }
+      }
+    },
+    {
+      "id": "process",
+      "type": "ProcessTimeline",
+      "requiresClaim": "claim:migration-process",
+      "requires": "claim:free-migration",
+      "content": {
+        "eyebrow": "Free migration",
+        "h2": "How we move your business site",
+        "description": "Moving an existing site is what business customers ask us about most. Every plan includes the free move of one website, and your old site stays live until your DNS points to DronaHost.",
+        "steps": [
+          {
+            "title": "Share your hosting access",
+            "text": "You give us access to your current hosting so we can copy your business site."
+          },
+          {
+            "title": "We transfer your site",
+            "text": "We move your site to DronaHost while your old site keeps serving visitors."
+          },
+          {
+            "title": "We ask your permission",
+            "text": "When the transfer is done, we check with you before anything is switched."
+          },
+          {
+            "title": "Point your DNS",
+            "text": "Your domain points to DronaHost, and the move is complete."
+          }
+        ],
+        "graphic": {
+          "from": "Your current host",
+          "middle": "We move your site",
+          "to": "DronaHost",
+          "caption": "Illustration of a business site moving to DronaHost"
+        }
+      }
+    },
+    {
+      "id": "audience",
+      "type": "PathRouter",
+      "content": {
+        "eyebrow": "Who it is for",
+        "h2": "Business hosting for every industry",
+        "description": "We host sites from every industry, except spam and adult websites. Pick the path closest to yours.",
+        "compact": true,
+        "paths": [
+          {
+            "title": "You run a growing business site",
+            "line": "Growth adds priority support for a growing business site. The cloud hosting plan guide shows each next step.",
+            "href": "/cloud-web-hosting",
+            "cta": "See the cloud hosting plan guide",
+            "icon": "trending-up"
+          },
+          {
+            "title": "You run an online store or a busy site",
+            "line": "Pro adds semi-dedicated resources and performance tuning, with room for up to 25 websites.",
+            "href": "/business-hosting#plans",
+            "cta": "See the Pro plan",
+            "icon": "gauge"
+          },
+          {
+            "title": "You run a larger or high-traffic site",
+            "line": "Scale adds dedicated resources and senior experts. Above Scale, high-traffic plans are scoped with the team.",
+            "href": "/business-hosting#plans",
+            "cta": "See the Scale plan",
+            "icon": "server"
+          },
+          {
+            "title": "You build and host sites for clients",
+            "line": "Pro holds up to 25 websites and 50 databases, so you can host your client sites on one plan.",
+            "href": "/business-hosting#plans",
+            "cta": "Compare Pro with the others",
+            "icon": "users"
+          }
+        ]
+      }
+    },
+    {
+      "id": "compare",
+      "type": "Meaning",
+      "content": {
+        "eyebrow": "Where it fits",
+        "h2": "Between WordPress hosting and a VPS",
+        "answer": "WordPress hosting covers small business sites built on WordPress. A VPS suits you when you need root access and want to run your own server. Business hosting sits between the two. Pro gives you semi-dedicated resources and Scale gives you dedicated resources, for any kind of site, with no server to run. You manage files, databases, apps and backups in a control panel.",
+        "lookAfterLabel": "Business hosting",
+        "keepLabel": "WordPress hosting or a VPS",
+        "weLookAfter": [
+          "Semi-dedicated resources on Pro",
+          "Dedicated resources on Scale",
+          "Any kind of site, built on WordPress or not",
+          "No server to set up or run",
+          "Files, databases, apps and backups in one control panel"
+        ],
+        "youKeep": [
+          "WordPress hosting: small business sites built on WordPress",
+          "A VPS: root access, for when you want to run your own server"
+        ],
+        "note": "Running only WordPress? Compare WordPress hosting. Not sure which fits? Contact the team before you buy."
+      }
+    },
+    {
+      "id": "features",
+      "type": "BentoGrid",
+      "hideIfEmpty": true,
+      "content": {
+        "eyebrow": "On every plan",
+        "h2": "Built for business sites",
+        "description": "Every plan comes with caching on NVMe storage, security tools, two daily backups and a control panel.",
+        "tiles": [
+          "feature:performance",
+          "feature:security",
+          "feature:backups",
+          "feature:control-panel"
+        ]
+      }
+    },
+    {
+      "id": "renewal",
+      "type": "RenewalCost",
+      "requiresClaim": "claim:renewal-price-same",
+      "content": {
+        "eyebrow": "Renewal price",
+        "h2": "What you pay over three years",
+        "description": "The renewal price equals the signup price, so years two and three cost the same as year one. Each total uses the published prices with annual billing, in your currency.",
+        "source": "pricing.json",
+        "finding": {
+          "text": "Of 18 hosts whose renewal price HostingScale knows, 16 raise the price at renewal (report updated 30 July 2026).",
+          "source": {
+            "label": "HostingScale renewal price report",
+            "href": "https://hostingscale.com/statistics/hosting-renewal-prices/"
+          },
+          "checkedOn": "2026-10-11"
+        },
+        "link": {
+          "label": "Read how renewals work",
+          "href": "/pricing-policy"
+        }
+      }
+    },
+    {
+      "id": "split",
+      "type": "ResponsibilitySplit",
+      "content": {
+        "h2": "What we look after, and what you control",
+        "description": "Business hosting gives you a control panel account for any kind of site. Here is the line between our work and yours.",
+        "weLookAfter": [
+          {
+            "text": "The hosting servers your account runs on",
+            "requiresClaim": "claim:managed-server-care"
+          },
+          {
+            "text": "A daily backup of your site, keeping the latest copy",
+            "requiresClaim": "claim:backups"
+          },
+          {
+            "text": "A firewall, brute-force protection and malware scanning",
+            "requiresClaim": "claim:malware-scanning"
+          },
+          {
+            "text": "Free SSL certificates from Let's Encrypt",
+            "requiresClaim": "claim:free-ssl"
+          },
+          {
+            "text": "The free move of one website to DronaHost",
+            "requiresClaim": "claim:free-migration"
+          }
+        ],
+        "youKeep": [
+          "Your site, your content and your data",
+          "The apps you install, their updates and their settings",
+          "Files, databases, apps and backups, managed in the control panel",
+          "Your plan choice, from Starter to Scale"
+        ]
+      }
+    },
+    {
+      "id": "plans",
+      "type": "PricingPlans",
+      "content": {
+        "h2": "Plans for growing business sites",
+        "description": "Growth adds priority support. Pro adds semi-dedicated resources and performance tuning, and Scale adds dedicated resources and senior experts. For a busier business site, start with Pro or Scale.",
+        "source": "pricing.json",
+        "show": [
+          "starter",
+          "growth",
+          "pro",
+          "scale"
+        ],
+        "highlight": "growth",
+        "showRenewalPrice": true,
+        "link": {
+          "label": "Compare every plan and add-on",
+          "href": "/pricing"
+        }
+      }
+    },
+    {
+      "id": "proof",
+      "type": "ReviewsShowcase",
+      "content": {
+        "eyebrow": "After the move",
+        "h2": "What changed for a store that moved to DronaHost",
+        "source": "reviews.json"
+      }
+    },
+    {
+      "id": "faq",
+      "type": "FAQSection",
+      "content": {
+        "h2": "Questions about business hosting",
+        "items": [
+          {
+            "q": "Will my price go up at renewal?",
+            "a": "No. Every plan renews at the same price you signed up for, and that price has no end date. The plan cards on this page show the signup price and the renewal price side by side, so you see both before you buy. Prices exclude tax. Customers in India pay GST at checkout.",
+            "requiresClaim": "claim:renewal-price-same"
+          },
+          {
+            "q": "What happens when my site gets busier?",
+            "a": "Choose a plan with room to grow. Pro adds semi-dedicated resources and performance tuning. Scale adds dedicated resources and more CPU cores and memory than any other plan; the plan cards list each figure. If your site needs more than Scale, high-traffic and dedicated plans are scoped with the team and have no published price."
+          },
+          {
+            "q": "How many websites can I host?",
+            "a": "The number depends on the plan. Pro holds up to 25 websites and 50 databases. On Scale, websites, domains and databases are under fair use rather than a fixed number. Each plan card on this page shows the limits for websites, storage, CPU cores and memory, so you can compare them."
+          },
+          {
+            "q": "How do you move my site?",
+            "a": "We move one website for free on every plan. You share access to your current hosting, and we copy your site to DronaHost while your old site keeps serving visitors. We ask your permission before anything is switched. Then your DNS points to DronaHost, and the move is complete. The migration terms explain what the move covers.",
+            "requiresClaim": "claim:migration-process",
+            "requires": "claim:free-migration"
+          },
+          {
+            "q": "How does support work?",
+            "a": "Support runs 24/7 by ticket and email. Open a ticket or send an email, and you get a written reply, so you keep a record of every answer. Growth adds priority support, and Scale adds senior experts. The support policy sets out the full terms, including what support covers.",
+            "requiresClaim": "claim:support-24-7"
+          },
+          {
+            "q": "How is business hosting different from WordPress hosting?",
+            "a": "Business hosting and WordPress hosting use the same four plans. The WordPress hosting page is written for WordPress sites. This page is for any kind of site, WordPress or not, and points growing and larger sites to Pro and Scale. Choose by the size and needs of your site, not by the name of the page."
+          },
+          {
+            "q": "Which currency are prices shown in?",
+            "a": "Prices show in US dollars, British pounds, euros, UAE dirhams or Indian rupees. The currency follows your choice or your location, and you can change it with the currency selector. The same plans and prices apply in every country; only the currency changes. Prices exclude tax. Customers in India pay GST at checkout."
+          },
+          {
+            "q": "Can I change plans later?",
+            "a": "Yes. You can move to a larger plan as your sites and traffic grow. Contact the team, and we will move you across. All four plans are on this page, with the same prices in every country, so you can compare the next plan up first. Above Scale, the team scopes high-traffic and dedicated plans."
+          }
+        ],
+        "link": {
+          "label": "Read the migration terms",
+          "href": "/migration-terms"
+        }
+      }
+    },
+    {
+      "id": "provenance",
+      "type": "PageProvenance",
+      "content": {
+        "reviewer": "DronaHost editorial team",
+        "role": "editorial review",
+        "reviewedOn": "2026-10-12",
+        "howLine": "Plan details here come from our pricing file and published policies, checked on 12 October 2026. Drafted with AI assistance, then edited, fact-checked and approved by our editorial team.",
+        "report": {
+          "label": "Report an error on this page",
+          "href": "/contact"
+        },
+        "policyHref": "/editorial-policy",
+        "variant": "byline"
+      }
+    },
+    {
+      "id": "cta",
+      "type": "CTABand",
+      "content": {
+        "h2": "Choose a business plan that keeps its price",
+        "description": "Pick the plan that fits your site. Every card shows the signup price and the renewal price.",
+        "ctaPrimary": {
+          "label": "Choose a business plan",
+          "href": "/business-hosting#plans"
+        },
+        "ctaSecondary": {
+          "label": "Read how renewals work",
+          "href": "/pricing-policy"
+        },
+        "ctaSecondaryRequires": "claim:renewal-price-same",
+        "note": "30-day money-back guarantee on every plan."
+      }
+    }
+  ]
+}

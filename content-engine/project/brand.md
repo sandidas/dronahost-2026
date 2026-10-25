@@ -24,7 +24,7 @@ Two reminders that apply on every page: numbers and benchmarks come from verifie
 | Preferred term | Do not use |
 |---|---|
 | WordPress Hosting | Shared Hosting (when specifically selling WordPress plans) |
-| Managed WordPress Hosting | cPanel WordPress, PHP hosting |
+| Managed WordPress Hosting | cPanel WordPress (we do not offer cPanel), PHP hosting |
 | VPS Hosting | Virtual Private Server (spell out only on first mention if needed) |
 | Cloud Hosting | Cloud Server (unless specifically a cloud server product) |
 | Business Hosting | Business Email Hosting, Email + Hosting Bundle |

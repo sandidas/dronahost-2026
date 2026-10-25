@@ -1,13 +1,15 @@
 "use client";
 
-import { useId, useState, type FormEvent } from "react";
+import { useId, useState, useSyncExternalStore, type FormEvent } from "react";
 import Button from "@/components/ui/Button";
 import { UI } from "@/content/strings";
 import { Link } from "@/i18n/link";
 import { isLeadDestinationConfigured } from "@/lib/leads/config";
+import { readPrefill, subscribePrefill } from "@/lib/leads/prefill";
 import { type FieldErrors, type RequestField, validateMigrationRequest } from "@/lib/leads/migration-request";
 import { submitMigrationRequest } from "@/lib/leads/submit";
 import { cn } from "@/utils/cn";
+import LuxeHeader from "./luxe/LuxeHeader";
 import SectionHeader from "./SectionHeader";
 
 type MigrationRequestProps = {
@@ -20,6 +22,10 @@ type MigrationRequestProps = {
   anchorId: string;
   /** Where the privacy line links. Default "/privacy". */
   privacyHref?: string;
+  /** "ink": the Home look, an ink band with a glass form card and a pill button. Default: the page's own band. */
+  tone?: "default" | "ink";
+  /** Submit button text. Default `UI.migrationRequest.submit`. */
+  submitLabel?: string;
   headingLevel?: "h2" | "h3";
   className?: string;
 };
@@ -29,14 +35,21 @@ type Status = "idle" | "sending" | "mailto" | "sent" | "error";
 const inputClass =
   "mt-2 block w-full rounded-lg border border-border-strong bg-card px-4 text-base text-foreground placeholder:text-subtle-foreground transition-colors focus-visible:border-accent aria-[invalid=true]:border-danger";
 
+/** Fields on an ink band: a darker well with a rounder corner. */
+const inkInput = "rounded-[0.875rem] bg-card border-border-strong";
+
 const L = UI.migrationRequest;
+
+const subscribeSitePrefill = (onChange: () => void) => subscribePrefill((field) => field === "siteUrl" && onChange());
+const readSitePrefill = () => readPrefill("siteUrl");
+const emptyPrefill = () => "";
 
 /**
  * Free-migration lead form: site URL, current host, email and an optional note. Validated with Zod, with a honeypot, an error
  * state and a success state. It sends through `submitMigrationRequest` (lib/leads/submit.ts), so where requests go is set in
  * lib/leads/config.ts. No database.
  */
-export default function MigrationRequest({ eyebrow, title, description, fields, anchorId, privacyHref = "/privacy", headingLevel = "h2", className }: MigrationRequestProps) {
+export default function MigrationRequest({ eyebrow, title, description, fields, anchorId, privacyHref = "/privacy", tone = "default", submitLabel, headingLevel = "h2", className }: MigrationRequestProps) {
   const headingId = useId();
   const formId = useId();
   const [values, setValues] = useState<Record<string, string>>({});
@@ -44,11 +57,17 @@ export default function MigrationRequest({ eyebrow, title, description, fields, 
   const [status, setStatus] = useState<Status>("idle");
   const [formError, setFormError] = useState("");
   const set = (name: string, v: string) => setValues((prev) => ({ ...prev, [name]: v }));
+  const ink = tone === "ink";
+
+  // A site address typed in the hero's one-field form arrives here (lib/leads/prefill.ts). The server snapshot is empty, so the
+  // server HTML and the first client render match; what the visitor types here wins over the handed-over value.
+  const prefilled = useSyncExternalStore(subscribeSitePrefill, readSitePrefill, emptyPrefill);
+  const current = (f: string): string => values[f] ?? (f === "siteUrl" ? prefilled : "");
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (status === "sending") return;
-    const checked = validateMigrationRequest(values, fields);
+    const checked = validateMigrationRequest(fields.includes("siteUrl") ? { ...values, siteUrl: current("siteUrl") } : values, fields);
     if (!checked.ok) {
       setErrors(checked.errors);
       setStatus("error");
@@ -73,11 +92,19 @@ export default function MigrationRequest({ eyebrow, title, description, fields, 
   const labelOf = (f: RequestField) => L.labels[f];
 
   return (
-    <section id={anchorId} aria-labelledby={headingId} className={cn("section-y scroll-mt-20", className)}>
-      <div className="container-site grid items-start gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16">
-        <SectionHeader id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} align="start" />
+    <section
+      id={anchorId}
+      aria-labelledby={headingId}
+      className={cn(ink ? "luxe-band luxe-glow section-luxe" : "section-y", "scroll-mt-20", className)}
+    >
+      <div className={cn("container-site grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16", ink ? "items-center lg:gap-[4.5rem]" : "items-start")}>
+        {ink ? (
+          <LuxeHeader id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} />
+        ) : (
+          <SectionHeader id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} align="start" />
+        )}
 
-        <div className="surface p-6 sm:p-8">
+        <div className={ink ? "glass-form rounded-[1.875rem] p-6 sm:p-10" : "surface p-6 sm:p-8"}>
           {!isLeadDestinationConfigured() && process.env.NODE_ENV === "development" && (
             <p role="note" className="mb-5 rounded-xl border border-warning/40 bg-warning-surface px-4 py-2 text-sm font-medium text-warning">
               {L.preview}
@@ -108,7 +135,7 @@ export default function MigrationRequest({ eyebrow, title, description, fields, 
                 const common = {
                   id,
                   name: f,
-                  value: values[f] ?? "",
+                  value: current(f),
                   "aria-invalid": err ? true : undefined,
                   "aria-describedby": err ? `${id}-err` : undefined,
                   placeholder: L.placeholders[f] || undefined,
@@ -120,9 +147,9 @@ export default function MigrationRequest({ eyebrow, title, description, fields, 
                       {labelOf(f)}
                     </label>
                     {f === "note" ? (
-                      <textarea {...common} rows={4} className={cn(inputClass, "py-3")} />
+                      <textarea {...common} rows={4} className={cn(inputClass, ink && inkInput, "py-3")} />
                     ) : (
-                      <input {...common} type={f === "email" ? "email" : "text"} inputMode={f === "siteUrl" ? "url" : undefined} autoComplete={f === "email" ? "email" : f === "siteUrl" ? "url" : "off"} className={cn(inputClass, "h-12")} />
+                      <input {...common} type={f === "email" ? "email" : "text"} inputMode={f === "siteUrl" ? "url" : undefined} autoComplete={f === "email" ? "email" : f === "siteUrl" ? "url" : "off"} className={cn(inputClass, ink && inkInput, "h-12")} />
                     )}
                     {err && (
                       <p id={`${id}-err`} className="field-msg mt-1.5 text-sm font-medium text-danger">
@@ -141,8 +168,8 @@ export default function MigrationRequest({ eyebrow, title, description, fields, 
                 </label>
               </div>
 
-              <Button type="submit" size="lg" loading={status === "sending"} className="w-full sm:w-auto">
-                {status === "sending" ? L.submitting : L.submit}
+              <Button type="submit" size="lg" loading={status === "sending"} className={ink ? "btn-glow w-full rounded-full" : "w-full sm:w-auto"}>
+                {status === "sending" ? L.submitting : (submitLabel ?? L.submit)}
               </Button>
 
               <p className="t-small text-muted-foreground">

@@ -25,10 +25,11 @@ Valid plans are the section titles below (Plans 01 to 10 and Plan 14). Plan 15 (
 
 | Keyword | Locale | Secondary | Intent check | Volume / KD | Target URL | Owner | Status | Next review | AI cited |
 |---|---|---|---|---|---|---|---|---|---|
-| managed wordpress hosting | en-US | wordpress hosting litespeed; wordpress hosting nvme; managed wordpress hosting usa | | | `/wordpress-hosting` | | unvalidated | | |
-| managed vps hosting | en-US | vps hosting with root access | | | `/vps-hosting` | | unvalidated | | |
-| cloud hosting for small business | en-US | | | | `/cloud-hosting` | | unvalidated | | |
-| business web hosting | en-US | small business web hosting | | | `/business-hosting` | | unvalidated | | |
+| wordpress hosting with free migration | en-US | managed wordpress hosting; managed vs shared wordpress hosting; how much does wordpress hosting cost; managed wordpress hosting for small business; hosting for small business | product (2026-10-11) | | `/wordpress-hosting` | Sandipan Das | briefed | | |
+| managed vps hosting | en-US | vps hosting with root access | | | `/managed-vps-hosting` | | unvalidated | | |
+| cloud hosting for small business | en-US | cloud web hosting for small business; managed cloud hosting for small business; cloud hosting services for small business; cloud web hosting | listicle, mixed with product (2026-10-24) | | `/cloud-web-hosting` | Sandipan Das | validated | | |
+| web hosting with no renewal price increase | en-US | web hosting with same renewal price; web hosting for multiple websites; small business web hosting; business web hosting | buy, mixed with learn (2026-10-11) | | `/business-hosting` | Sandipan Das | validated | | |
+| reseller hosting | en-US | white label reseller hosting | | | `/reseller-hosting` | | unvalidated | | |
 | hosting plans and pricing | en-US | | | | `/pricing` | | unvalidated | | |
 | wordpress hosting for agencies | en-US | | | | planned | | unvalidated | | |
 | nextjs hosting | en-US | | | | planned | | unvalidated | | |
@@ -79,9 +80,9 @@ Valid plans are the section titles below (Plans 01 to 10 and Plan 14). Plan 15 (
 
 | Keyword | Locale | Secondary | Intent check | Volume / KD | Target URL | Owner | Status | Next review | AI cited |
 |---|---|---|---|---|---|---|---|---|---|
-| wordpress web design for small business | en-US | affordable website redesign services | | | `/web-design` | | unvalidated | | |
+| wordpress web design for small business | en-US | affordable website redesign services | | | `/wordpress-website-design` | | unvalidated | | |
 | seo services for small business | en-US | technical seo retainer | | | `/seo-services` | | unvalidated | | |
-| react nextjs development agency | en-US | custom web app development for small business | | | `/custom-development` | | unvalidated | | |
+| react nextjs development agency | en-US | custom web app development for small business | | | `/custom-website-development` | | unvalidated | | |
 | web design agency for small business uk | en-GB | | | | planned | | unvalidated | | |
 | website maintenance services | en-US | website maintenance plans; website maintenance company; wordpress maintenance services; wordpress maintenance plans; wordpress care plan; woocommerce maintenance services; woocommerce store maintenance; website management services; managed website services; website support services; website helpdesk |  | | `/website-maintenance` | | unvalidated | | |
 | conversion rate optimization services | en-US | website growth services; website integration services |  | | `/growth-services` | | unvalidated | | |
@@ -110,7 +111,7 @@ Valid plans are the section titles below (Plans 01 to 10 and Plan 14). Plan 15 (
 
 | Keyword | Locale | Secondary | Intent check | Volume / KD | Target URL | Owner | Status | Next review | AI cited |
 |---|---|---|---|---|---|---|---|---|---|
-| dronahost | en-US | hosting for small business | brand | | `/` | Sandipan Das | review | 2027-04-08 | |
+| dronahost | en-US | | brand | | `/` | Sandipan Das | review | 2027-04-08 | |
 | dronahost reviews | en-US | | | | `/reviews` | | unvalidated | | |
 | is dronahost legit | en-US | | | | `/about` | | unvalidated | | |
 
@@ -125,7 +126,7 @@ Valid plans are the section titles below (Plans 01 to 10 and Plan 14). Plan 15 (
 
 | Keyword | Reason |
 |---|---|
-| best web hosting, web hosting | Dominated by large brands and affiliate sites |
+| best web hosting, web hosting (exact) | Dominated by large brands and affiliate sites. "(exact)" blocks only that search; long tails that contain it are allowed (decision 71) |
 | cheap hosting, free web hosting | Price-only or wrong intent |
 | `[location]` near me | No physical presence |
 | hipaa or pci compliant hosting | No verified support, claim not allowed |

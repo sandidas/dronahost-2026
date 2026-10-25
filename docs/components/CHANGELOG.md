@@ -2,6 +2,72 @@
 
 Branch `polish/design-system`. Each batch is one commit.
 
+## Content-page elements: video, alt text, outside sources (2026-10-15, decision 77)
+- `VideoEmbed` (`components/sections/VideoEmbed.tsx`, player in `VideoFacade.tsx`): one real, captioned video, click-to-load from youtube-nocookie.com, so nothing reaches YouTube before play and there is no LCP cost. Server-rendered heading, credit, transcript link, privacy line and VideoObject JSON-LD. Page JSON section `VideoEmbed` (schema requires `captions: true`); add it only when the video exists. Allowed after the AnswerBlock on content blueprints. Showcase: `/v2#video-embed`.
+- `ProductHero` `content.visual.alt`: the panel and tiers drawings become images for screen readers with that text (check CP2); without it they stay decorative. The tiers drawing shows "Every plan renews at its signup price" while the renewal-price-same claim renders.
+- `FeatureSpotlight` `content.source`: an outside https source linked after the note (check CP4).
+- When a Content-Security-Policy is added, `frame-src` must allow `https://www.youtube-nocookie.com`.
+
+## Smart currency detection (2026-10-12)
+- The selector starts on the visitor's likely currency: their own pick first, then a regional page (`/en-gb`), the IP country from Cloudflare's `CF-IPCountry` header (`/api/geo`, no-store, no cookie, nothing logged), the browser time zone, then the browser languages; USD when nothing decides. Rules in `lib/pricing/detect.ts` (tested in `tests/e2e/currency-detect.spec.ts`). European countries outside the euro get EUR, everyone else outside the priced markets gets USD.
+- Detection is never stored; only an explicit pick is, and only with preference consent. Switching no longer reloads server data: every amount is already in the page.
+- Production needs Cloudflare's IP Geolocation on (the default) and Nginx passing request headers through (the default with `proxy_pass`).
+
+## Currency selector on (2026-10-12, decision 75)
+- `data/pricing.json` 4.1.0 stores every plan and add-on price in USD, GBP, EUR, AED and INR. `formatMoney()` (`lib/pricing`) formats a stored amount for every enabled currency; `CurrencyAmount` and `useCurrency()` (`components/ui/CurrencyAmount.tsx`) show the visitor's pick. The server renders USD, so the HTML stays crawlable and never mismatches.
+- `PricingPlans` shows `CurrencySelector` beside the billing toggle; plan cards, add-on cards, the backup size picker and the comparison's price, saving and add-on rows all switch together. The saving is worked out per currency from its own prices.
+- Without preference-cookie consent the choice lasts for the page view; with it, a cookie keeps it. `CurrencySelector` ids are unique, so the header and pricing copies can both render.
+
+## One pricing block, full comparison, add-ons with prices (2026-10-12, decision 73)
+- `HostingPricing` (`components/sections/HostingPricing.tsx`) is the only pricing block: `/pricing` and every product page's `PricingPlans` section render it, with the whole lineup from `data/pricing.json`. A page sets only the heading, `extras`, `compare` and `highTraffic`; the spec's `show` must list every plan (tested). Preview at `/v2/pricing`.
+- `/pricing` shows the comparison as its own section ("Compare every plan"): price, resources, backups and security, site tools, support and add-ons, built by `buildPlanComparison()` in `lib/pricing/compare.ts`. Column headers link to each plan card (`#starter` etc.); cards now carry their plan id.
+- Add-on cards show their monthly price and which plans include them or can add them (from `includedOn` and `availableOn`); the comparison has one row per add-on ("Included", "+$10/month", "From $3/month" or not available). Labels in `UI.pricing`.
+
+## Open FAQ cards with a collage, tiny byline (2026-10-11, decision 69)
+- `FAQSection` is now one site-wide layout: every question and answer is an open card (no accordion), the heading and `FaqCollage` sit on the left (sticky on large screens). Same component on every page; only the data changes. `variant` now only picks the headline style; `openFirst` is ignored.
+- `components/sections/visuals/FaqCollage.tsx`: three staggered rounded frames with a soft glow and hairlines. FAQ spec data may pass `photos` (up to three, under `/images/`, real team or customers who agreed, never stock); without them the frames draw a support exchange (the page's first question, the answer, the ticket closing). Labels in `UI.faqVisual`.
+- FAQ spec data may pass one `link` under the questions.
+- `PageProvenance` `variant: "byline"` is now one 11px line in an `<aside>` (no band), so it does not shift the section stripes.
+
+## WordPress hosting page design and global support band (2026-10-11, decision 64)
+- New section `FeatureSpotlight` (`components/sections/bespoke/FeatureSpotlight.tsx`, schema and renderer) with `BuilderEditorVisual`: "Elementor Pro, Divi and Astra on every plan" on `/wordpress-hosting`, with the trademark and no-affiliation line.
+- `AnswerBlock` and `MeaningSection` take an optional `visual` (`care`, `managed-vs-shared`): `CareVisual` ticks off the work we do; `ManagedVsSharedVisual` shows the same tasks done by us and left to you.
+- `components/layout/GlobalSupport.tsx` renders the "Real support from real people, 24/7" band before the footer on every marketing page, from `content/sections/support-band.json`; Home no longer carries its own copy.
+- `/wordpress-hosting`: the HonestLimits section is removed; its points move to the FAQ "What is not included?" (trust check TR4 still passes).
+
+## Animated graphics on product pages (2026-10-11)
+- `components/sections/visuals/motion-graphics.tsx` and `app/styles/graphics.css`: `MoveFlowGraphic` (current host, transfer, DronaHost, with the site travelling along the path and "DNS pointed" appearing; schema `ProcessTimeline.content.graphic`), and bento visuals `shield`, `backups`, `builder`, `terminal` (feature tiles: security, backups, premium themes, SSH and WP-CLI). The hero `PanelMockup` now fills in on load: update rows and checks tick in, the switches turn on.
+- Each animation plays once: on load above the fold, or when its block scrolls into view (`.reveal-armed.is-in`). The markup is the final state; reduced motion shows it still. Labels in `UI.graphics` (`content/strings.ts`).
+
+## Premium look on every page (2026-10-11)
+- `app/styles/look-luxe.css` (imported from `globals.css`) and `className="look-luxe"` on `<main>` in `app/[locale]/(marketing)/layout.tsx`: the Home look carried to every marketing page by restyling the shared blocks inside that scope: light Sora `t-display`, `t-h1` and `t-h2` with a heavier accent, tracked eyebrows with a teal hairline, the roomier section rhythm, soft teal and orange light plus a faint dot texture on every second section, rounder `.surface` cards that lift on hover, pill buttons with the orange glow. Theme tokens only; motion collapses under reduced motion.
+- `pageLook()` also returns "luxe" for the ProductHero `panel` variant, so spec pages with it get the Home variants of ProcessTimeline (cards), FAQSection (lines) and CTABand (ink).
+- Gotcha: after adding a new CSS import, the dev server kept serving the old CSS chunk until `.next/dev` was cleared and the server restarted.
+
+## Home: product cards, real case study, no status labels (2026-10-11)
+- New section `ProductCards` (`components/sections/bespoke/ProductCards.tsx`, schema and renderer) straight under the Home hero: WordPress Hosting, Business Hosting, Domain Registration and Website Migration, each with a button to its page (decision 60). "Our solutions" now covers website design, SEO, custom development and business email. Blueprint C1 allows 13 sections.
+- `content/case-studies.ts`: the approved Mary Jane's CBD Dispensary study (mjcbdd.com) with a real screenshot (`public/images/case-studies/mjcbdd-home.webp`, captured 2026-10-11). `ReviewsShowcase` shows the screenshot in a browser frame.
+- `data/reviews.json` and `loadVerifiedReviews` / `loadPreviewReviews` (`lib/content/reviews.ts`, Zod-validated): the v1 reviews, shown in development only until each has a role, company, source link, consent and no held claims.
+- Primary buttons: white label on a deeper orange fill (`--action-fill` `#d23e00`, hover `#b83600`, active `#a32f00`, `--on-action` white) in both themes; white on the logo orange failed WCAG AA. `ActionBand`'s navy button now uses `--ink`.
+- No section prints a status label ("unverified", "sample", "draft"): labels and `UI.sample` removed (`docs/rules/ui-ux-rules.md` §3.7).
+
+## Home: real support section (2026-10-10)
+- New section `SupportTeam` (`components/sections/bespoke/SupportTeam.tsx`, schema and renderer), placed after the ecosystem: "Real support from real people, 24/7", three points, a ticket button and the support policy link. The right side is one premium atmosphere photo from `content/team.ts` (`SUPPORT_PHOTO`: licensed, decorative, empty alt, no names or roles: owner, 2026-10-10) in a rounded frame with the 24/7 badge and a ticket reply floating over it. While it is null, every environment shows a theme-aware illustration of a ticket answered in writing.
+
+## Home: migration without a form (2026-10-10)
+- New section `MigrationPromo` (`components/sections/bespoke/MigrationPromo.tsx`, schema and renderer): three reassurances, a theme-aware graphic of the move and one button to the client area. The button's address comes from `COMPANY.clientAreaUrl` through `cta.action: "client-area"`, never from the page JSON. The graphic is an original line illustration drawn in code (`components/sections/visuals/MigrationIllustration.tsx`: a parcel arriving by parachute at a browser window), lines in `currentColor` and fills from the theme tokens, so it is light in light mode and dark in dark mode; the old site's stock illustrations were not reused (licence and source files unknown). Home uses it as section `plan` in place of `MigrationRequest`; the hero no longer shows its one-field form and its primary action goes to `/#plan`.
+
+## Home: light and dark themes (2026-10-10)
+- The Home sections no longer force a dark scope (`dark tone-ink`). They follow the theme: light in light mode, dark in dark mode, and neighbours alternate only through `.page-tones` (page background or the muted band), so the variation is minimal in both themes.
+- `app/styles/luxe.css`: new `.luxe-band` and `.luxe-glow` (soft lights from the theme's `--glow-teal` and `--glow-orange`); the dot texture uses `--grid-line`; glass pill, glass form, cards, the console and orbit nodes use `--card`, `--surface-raised`, `--border*` and `--shadow-rgb` instead of fixed white or black. The featured case study is a raised card in both themes.
+
+## Home: brand page in the luxe look (2026-10-10, decision 58)
+- `ProductHero` gets `variant="console"` (`hero/ConsoleHero.tsx`, `hero/HeroSiteForm.tsx`): ink band, light display headline, one-field migration form that scrolls to `#plan` and fills the site address (`lib/leads/prefill.ts`), example console, assurance rail from rendering claims. Schema: `form`, `formRequires`, `console`, `assurances`.
+- New sections with schemas and renderers: `RatingBand`, `AdvantageGrid`, `SolutionsGrid`, `Ecosystem`, `ReviewsShowcase` (`components/sections/bespoke`), and the shared `luxe/LuxeHeader`. Rating, reviews and case study render only from verified data; development shows labelled samples (`SAMPLE_RATING` added to `content/placeholders.ts`).
+- Page look: `pageLook()` in `lib/content/registry.tsx`; with the console hero, `ProcessTimeline` (`variant="cards"`), `MigrationRequest` (`tone="ink"`, `submitLabel`), `FAQSection` (`variant="lines"`) and `CTABand` (`tone="ink"`) switch to the Home look. Other pages are unchanged (the defaults are the old look).
+- `app/styles/luxe.css` (imported from `globals.css`) and ink tokens `--ink`, `--ink-2`, `--ink-raised` in `tokens.css`; the contrast check covers the dark text tokens on the ink surfaces. Sora weights 300 and 500 are loaded (`app/fonts.ts`). `.page-tones` skips sections with `data-tone`; `scripts/page-visibility.ts` reports that tone.
+- Header: the action is "Plan my migration" (`/#plan`), and a "Client login" link goes to `COMPANY.clientAreaUrl` (https://my.dronahost.com); the footer links it too. `organizationSchema` adds the support email. All shown in `/v2`.
+
 ## Font rule (2026-10-09)
 - Owner rule: the site keeps its two families, Sora for headlines and Manrope for all other text; components vary size, loaded weight, tracking and colour only. Written into `docs/rules/ui-ux-rules.md` §3.6, `CLAUDE.md` and this README.
 - Instrument Serif is removed (`app/fonts.ts`, `RootDocument`, `--font-serif`). The banners that used it now use Sora for display text and Manrope for text, without italic. `t-meta` labels and banner figures use Manrope with tabular numbers instead of the mono family, which stays for code only.

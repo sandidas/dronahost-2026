@@ -27,14 +27,19 @@
         "status": "offered"
       },
       {
-        "name": "VPS Hosting",
-        "url": "/vps-hosting",
-        "status": "planned"
+        "name": "Reseller Hosting",
+        "url": "/reseller-hosting",
+        "status": "offered"
       },
       {
-        "name": "Cloud Hosting",
-        "url": "/cloud-hosting",
-        "status": "planned"
+        "name": "Managed VPS Hosting",
+        "url": "/managed-vps-hosting",
+        "status": "offered"
+      },
+      {
+        "name": "Cloud Web Hosting",
+        "url": "/cloud-web-hosting",
+        "status": "offered"
       },
       {
         "name": "Domain Registration",
@@ -52,8 +57,8 @@
         "status": "offered"
       },
       {
-        "name": "Website Design",
-        "url": "/web-design",
+        "name": "WordPress Website Design",
+        "url": "/wordpress-website-design",
         "status": "offered"
       },
       {
@@ -62,8 +67,8 @@
         "status": "offered"
       },
       {
-        "name": "Custom Development",
-        "url": null,
+        "name": "Custom Website Development",
+        "url": "/custom-website-development",
         "status": "offered"
       },
       {

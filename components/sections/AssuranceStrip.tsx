@@ -43,7 +43,6 @@ export default function AssuranceStrip({ ids, label = UI.assurance.region, claim
                     {c.termsLabel ?? UI.generic.readTerms}
                   </Link>
                 )}
-                {!c.verified && <p className="mt-2 text-xs font-semibold text-warning">{UI.sample.hiddenInProduction}</p>}
               </div>
             </li>
           ))}

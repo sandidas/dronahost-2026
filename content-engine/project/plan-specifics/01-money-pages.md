@@ -19,7 +19,7 @@ The owner offers five products. Only some have data behind them. A page may stat
 | Product | Page | What `pricing.json` holds | What the page may say today |
 |---|---|---|---|
 | WordPress hosting | `/wordpress-hosting` | Family "wordpress": Starter, Growth, Pro (managed WordPress, limits, capabilities, add-ons) | Plan names, `bestFor` lines and the structure. Limits and features render only when their claim renders. Prices stay hidden until `pricesConfirmed` |
-| Business hosting | `/business-hosting` | Family "web": Essential and Plus (cPanel, unmanaged, any site type). **Confirmed by the owner, 2026-10-07** | Plans and limits as confirmed, prices hidden until confirmed. Never call it managed or WordPress-specific. Email is not included: say so once and link to `/email` |
+| Business hosting | `/business-hosting` | Family "web": Essential and Plus (a control panel, unmanaged, any site type; no cPanel). **Confirmed by the owner, 2026-10-07** | Plans and limits as confirmed, prices hidden until confirmed. Never call it managed or WordPress-specific. Email is not included: say so once and link to `/email` |
 | VPS hosting | `/vps-hosting` | **No VPS plans.** Only the "high-traffic and dedicated" contact entry (no price, no resources) | "Talk to the team". No price, no specs, no "unlimited" |
 | Cloud hosting | `/cloud-hosting` | **No cloud plans** | "Talk to the team". No price or specs |
 | Domain registration | `/domains` | **No domain pricing** (the file says so) | Describe the service. No price. Live search stays off until `domainSearch` is on |
@@ -107,3 +107,11 @@ While `FEATURES.pricesConfirmed` and `FEATURES.checkout` are not both on, the bu
 ### Pre-ship gates
 
 Page works with `pricesConfirmed` and `checkout` both off (no numeric price in metadata or JSON-LD, CTA goes to `/contact`).
+
+## Where prices appear (decision 58, 2026-10-10)
+
+Prices appear only on `/pricing`. Product pages (WordPress, business, VPS and cloud hosting) keep their plan cards with the plan name, description and what is included, and each card links to `/pricing` for the price. No price in a title, description, schema, hero, FAQ answer or comparison table outside `/pricing`. Where the core plan says a money page shows the price, this project links to `/pricing` instead.
+
+## Prices on product pages (decision 63, 2026-10-11)
+
+Supersedes the product-page part of decision 58. Product pages show their plan cards with prices, the renewal price beneath and the tax line, read from the pricing file. Titles, descriptions, schema, heroes, FAQ answers, Home and comparison pages still carry no price.

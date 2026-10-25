@@ -41,7 +41,7 @@ test.describe("page schema", () => {
     expect(PageSpec.safeParse(dup).success).toBe(false);
 
     const badRef = clone(home);
-    (badRef.sections[1] as { content: { claims: string[] } }).content.claims = ["money-back"];
+    (badRef.sections[0] as { content: { assurances: string[] } }).content.assurances = ["money-back"];
     expect(PageSpec.safeParse(badRef).success).toBe(false);
 
     const badCond = clone(home);
@@ -92,8 +92,8 @@ test.describe("resolvers", () => {
   });
 
   test("the real registry renders the four owner-approved assurances and no unverified claim", () => {
-    for (const ref of ["claim:money-back", "claim:support-24-7", "claim:free-migration", "claim:renewal-price-same"]) expect(resolveClaimRef(ref)).toBe(true);
-    for (const ref of ["claim:uptime-sla", "claim:managed-hosting-tasks", "claim:migration-process"]) expect(resolveClaimRef(ref)).toBe(false);
+    for (const ref of ["claim:money-back", "claim:support-24-7", "claim:free-migration", "claim:renewal-price-same", "claim:uptime-sla"]) expect(resolveClaimRef(ref)).toBe(true);
+    for (const ref of ["claim:managed-hosting-tasks", "claim:migration-process"]) expect(resolveClaimRef(ref)).toBe(false);
   });
 
   test("feature: needs its claim AND, when plan-specific, a plan that includes it", () => {
@@ -141,22 +141,22 @@ test.describe("section gating on the home page", () => {
   const ids = (c: ResolveContext) => visibleSections(spec, c).map((s) => s.id);
 
   test("today (nothing verified, prices unconfirmed) the gated sections drop out and no gap is left", () => {
-    expect(ids(ctx())).toEqual(["hero", "proofbar", "router", "why", "evidence", "help", "faq", "cta"]);
+    expect(ids(ctx())).toEqual(["hero", "products", "ratings", "advantages", "solutions", "ecosystem", "reviews", "faq", "provenance", "cta"]);
   });
 
   test("section-level requires and requiresClaim each remove a section", () => {
-    const all = ctx({ claims: ["free-migration"], flags: ["pricesConfirmed"], predicates: ["verifiedReviews", "leadFormReady"] });
-    expect(ids(all)).toEqual(["hero", "proofbar", "router", "plans", "why", "move-my-site", "evidence", "reviews", "help", "faq", "cta"]);
+    const all = ctx({ claims: ["free-migration"], predicates: ["leadFormReady"] });
+    expect(ids(all)).toEqual(["hero", "products", "ratings", "advantages", "solutions", "ecosystem", "reviews", "process", "plan", "faq", "provenance", "cta"]);
   });
 });
 
 test.describe("home conversion links", () => {
-  test("the buttons that say 'Move my site free' anchor to the form section's id, and only show with the form", () => {
-    const hero = (home.sections[0] as { content: { ctaSecondary: { label: string; href: string }; ctaSecondaryRequires: string } }).content;
+  test("the hero's one-field form targets the request form's id, and shows only with it", () => {
+    const hero = (home.sections[0] as unknown as { content: { ctaPrimary: { href: string }; form: { targetId: string }; formRequires: string } }).content;
     const form = home.sections.find((s) => s.type === "MigrationRequest") as { id: string; requires: string };
-    expect(hero.ctaSecondary.label).toBe("Move my site free");
-    expect(hero.ctaSecondary.href).toBe(`/#${form.id}`);
-    expect(hero.ctaSecondaryRequires).toBe(form.requires);
+    expect(hero.form.targetId).toBe(form.id);
+    expect(hero.ctaPrimary.href).toBe(`/#${form.id}`);
+    expect(hero.formRequires).toBe(form.requires);
   });
 });
 

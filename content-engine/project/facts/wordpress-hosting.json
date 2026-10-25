@@ -1,0 +1,569 @@
+{
+ "$comment": "Fact ledger for /wordpress-hosting, built by /write-content on 2026-10-11 from project files only. Claim facts follow content/claims.ts: only claims that render may be stated. A person confirms the ledger at APPROVAL 1.",
+ "slug": "/wordpress-hosting",
+ "updated": "2026-10-11",
+ "facts": [
+  {
+   "id": "F1",
+   "fact": "In prose the name is DronaHost; the domain is dronahost.com",
+   "kind": "business",
+   "source": {
+    "type": "project-file",
+    "ref": "content-engine/project/settings.json brand; PROJECT.md section 1"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker, 2026-10-11), owner to confirm at APPROVAL 1",
+   "status": "verified",
+   "usedIn": [
+    "Entity sentence",
+    "All sections"
+   ]
+  },
+  {
+   "id": "F2",
+   "fact": "DronaHost is a managed WordPress hosting and web services company for businesses, freelancers and agencies worldwide",
+   "kind": "business",
+   "source": {
+    "type": "project-file",
+    "ref": "content-engine/project/PROJECT.md section 3; decision 59"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker, 2026-10-11), owner to confirm at APPROVAL 1",
+   "status": "verified",
+   "usedIn": [
+    "Entity sentence",
+    "AnswerBlock"
+   ]
+  },
+  {
+   "id": "F3",
+   "fact": "WordPress hosting has three plans: Starter (one small business or personal brand site), Growth (small businesses, WooCommerce stores and busy blogs; marked Recommended) and Pro (agencies with a few client sites and larger WooCommerce stores)",
+   "kind": "business",
+   "source": {
+    "type": "project-file",
+    "ref": "data/pricing.json; owner confirmed the WordPress plan limits on 2026-10-11 (decision 61)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "PricingPlans",
+    "Which plan fits"
+   ]
+  },
+  {
+   "id": "F4",
+   "fact": "Plan limits: Starter 1 site, 20 GB storage, 2 GB RAM; Growth 10 sites, 60 GB, 4 GB RAM; Pro 25 sites, 120 GB, 6 GB RAM",
+   "kind": "number",
+   "source": {
+    "type": "project-file",
+    "ref": "data/pricing.json; owner confirmed the WordPress plan limits on 2026-10-11 (decision 61)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "PricingPlans"
+   ]
+  },
+  {
+   "id": "F5",
+   "fact": "Monthly traffic: Starter 200 GB and Growth 500 GB (metered); Pro is fair use, linked to the fair-use policy, never 'unlimited'",
+   "kind": "number",
+   "source": {
+    "type": "project-file",
+    "ref": "data/pricing.json; owner confirmed the WordPress plan limits on 2026-10-11 (decision 61)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "PricingPlans"
+   ]
+  },
+  {
+   "id": "F6",
+   "fact": "Storage is NVMe SSD on every plan",
+   "kind": "claim",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11, /write-content technical facts"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "Hero",
+    "FeatureGrid",
+    "Keyword: wordpress hosting nvme"
+   ]
+  },
+  {
+   "id": "F7",
+   "fact": "LiteSpeed web servers: NOT used. Owner, 2026-10-11: caching is NGINX caching. Never say LiteSpeed",
+   "kind": "claim",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11, /write-content technical facts"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "rejected",
+   "usedIn": [
+    "Hero",
+    "FeatureGrid",
+    "Keyword: wordpress hosting litespeed"
+   ]
+  },
+  {
+   "id": "F8",
+   "fact": "SSH access and WP-CLI on every plan",
+   "kind": "claim",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11, /write-content technical facts"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner withdrew 2026-10-11 (decision 66): SSH and WP-CLI are not offered, for security",
+   "status": "rejected",
+   "usedIn": []
+  },
+  {
+   "id": "F9",
+   "fact": "Staging with clone and sync is available on every WordPress plan through the Plesk WP Toolkit (owner, 2026-10-11, corrects the earlier 'not offered')",
+   "kind": "claim",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11, final follow-up answers (decision 61)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "Hero (SplitHero:staging)",
+    "FeatureGrid",
+    "HonestLimits"
+   ]
+  },
+  {
+   "id": "F10",
+   "fact": "Automatic backups: daily, the latest copy is kept, on every plan",
+   "kind": "claim",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11, answers to the brief's open flags (decision 61)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "FeatureGrid",
+    "HonestLimits (one copy kept)"
+   ]
+  },
+  {
+   "id": "F11",
+   "fact": "Free migration to DronaHost: free on every package, one website per package",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "content/claims.ts free-migration (verified, /migration-terms published)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker, 2026-10-11), owner to confirm at APPROVAL 1",
+   "status": "verified",
+   "usedIn": [
+    "ProcessTimeline",
+    "CTABand"
+   ]
+  },
+  {
+   "id": "F12",
+   "fact": "Migration steps (owner's words: 'they share the access of old hosting, we transfer ask permisioonn, then point DNS, then done'): you share access to your old hosting; we transfer the site; we ask your permission; the DNS is pointed to DronaHost; done. The old site keeps serving visitors until the DNS is pointed. A review on a private link is NOT part of the owner's description",
+   "kind": "procedure",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11, answers before APPROVAL 1 (decision 61)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "ProcessTimeline"
+   ]
+  },
+  {
+   "id": "F13",
+   "fact": "Renewal price equals the signup price, with no end date",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "content/claims.ts renewal-price-same (verified, /pricing-policy published); decision 50"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker, 2026-10-11), owner to confirm at APPROVAL 1",
+   "status": "verified",
+   "usedIn": [
+    "PricingPlans note",
+    "AdvantageGrid/assurance line"
+   ]
+  },
+  {
+   "id": "F14",
+   "fact": "30-day money-back guarantee",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "content/claims.ts money-back (verified, /refund-policy published)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker, 2026-10-11), owner to confirm at APPROVAL 1",
+   "status": "verified",
+   "usedIn": [
+    "PricingPlans",
+    "CTABand"
+   ]
+  },
+  {
+   "id": "F15",
+   "fact": "99.99% uptime SLA with service credits on every hosting plan",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "content/claims.ts uptime-sla (verified, /sla published); decisions 45 and 53"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker, 2026-10-11), owner to confirm at APPROVAL 1",
+   "status": "verified",
+   "usedIn": [
+    "Assurance line",
+    "FAQ"
+   ]
+  },
+  {
+   "id": "F16",
+   "fact": "Support is by ticket and email, 24 hours a day, every day, on every plan including Starter, with no promised reply time",
+   "kind": "claim",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11 (24/7 on every plan); content/claims.ts support-24-7; /support-policy; pricing.json Starter availability set to 24/7 the same day"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "Support line",
+    "FAQ"
+   ]
+  },
+  {
+   "id": "F17",
+   "fact": "No live chat, WhatsApp or phone support",
+   "kind": "business",
+   "source": {
+    "type": "project-file",
+    "ref": "PROJECT.md section 2; decision 22"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker, 2026-10-11), owner to confirm at APPROVAL 1",
+   "status": "verified",
+   "usedIn": [
+    "HonestLimits"
+   ]
+  },
+  {
+   "id": "F18",
+   "fact": "Email is not included with any hosting plan; Business Email (Google Workspace) is a separate service",
+   "kind": "business",
+   "source": {
+    "type": "project-file",
+    "ref": "pricing.json emailNotice; decisions 16, 49, 54, 56"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker, 2026-10-11), owner to confirm at APPROVAL 1",
+   "status": "verified",
+   "usedIn": [
+    "HonestLimits",
+    "Link to /email"
+   ]
+  },
+  {
+   "id": "F19",
+   "fact": "Automatic WordPress updates and NGINX caching on every WordPress plan",
+   "kind": "claim",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11, answers to the brief's open flags (decision 61)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "MeaningSection",
+    "FeatureGrid"
+   ]
+  },
+  {
+   "id": "F20",
+   "fact": "Redis object cache and automated plugin testing are NOT offered (owner, 2026-10-11)",
+   "kind": "claim",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11, /write-content technical facts (decision 61)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "rejected",
+   "usedIn": [
+    "FeatureGrid"
+   ]
+  },
+  {
+   "id": "F21",
+   "fact": "Malware scanning and advanced security on every plan. WooCommerce optimization is only on the Business hosting plans, not on WordPress hosting",
+   "kind": "claim",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11, answers to the brief's open flags (decision 61)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "FeatureGrid"
+   ]
+  },
+  {
+   "id": "F22",
+   "fact": "A free domain for the first year on every plan, with annual billing only. Eligible domain endings and the renewal price are not set",
+   "kind": "claim",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11, answers to the brief's open flags (decision 61)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "PricingPlans"
+   ]
+  },
+  {
+   "id": "F23",
+   "fact": "Free SSL certificates from Let's Encrypt on every plan",
+   "kind": "claim",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11 (decision 61)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "FeatureGrid"
+   ]
+  },
+  {
+   "id": "F24",
+   "fact": "Prices appear only on /pricing; plan cards on this page link there",
+   "kind": "business",
+   "source": {
+    "type": "project-file",
+    "ref": "content-engine/project/DECISIONS.md decision 58"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker, 2026-10-11), owner to confirm at APPROVAL 1",
+   "status": "verified",
+   "usedIn": [
+    "PricingPlans",
+    "Metadata (no price)"
+   ]
+  },
+  {
+   "id": "F25",
+   "fact": "DronaHost owns no data centers and has no fixed server location per plan; no city, provider or 'our servers' wording",
+   "kind": "business",
+   "source": {
+    "type": "project-file",
+    "ref": "PROJECT.md section 3; decision 12"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker, 2026-10-11), owner to confirm at APPROVAL 1",
+   "status": "verified",
+   "usedIn": [
+    "All sections"
+   ]
+  },
+  {
+   "id": "F26",
+   "fact": "mjcbdd.com is not on a WordPress hosting plan (owner, 2026-10-11): the case study stays off this page",
+   "kind": "claim",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11, /write-content technical facts (decision 61)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "rejected",
+   "usedIn": [
+    "CaseStudy (only if the site is on a WordPress hosting plan)"
+   ]
+  },
+  {
+   "id": "F27",
+   "fact": "Support includes WordPress fixes in tickets (errors, plugin conflicts, settings) and installing and updating premium themes and plugins the customer has a license for",
+   "kind": "claim",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11, /write-content technical facts (decision 61)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "FeatureGrid",
+    "Support line"
+   ]
+  },
+  {
+   "id": "F28",
+   "fact": "Redis object cache and automated plugin testing are not offered on any plan (staging is offered, see F9)",
+   "kind": "claim",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11, /write-content technical facts (decision 61)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "Hero variant",
+    "FeatureGrid"
+   ]
+  },
+  {
+   "id": "F29",
+   "fact": "Divi, Elementor Pro and Astra are supplied on every plan as GPL-licensed software (owner: 'for all plans, since wordpress theme and plugins comes with \"General Public License (GPL)\" so we can offer it our in house websites'). Wording must not imply a vendor license key, vendor support or a partnership",
+   "kind": "claim",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11, follow-up answers (decision 61)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "FeatureGrid (only once named)"
+   ]
+  },
+  {
+   "id": "F30",
+   "fact": "Spam and adult websites are not allowed on DronaHost",
+   "kind": "business",
+   "source": {
+    "type": "interview",
+    "ref": "interview A3, 2026-10-11"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "HonestLimits"
+   ]
+  },
+  {
+   "id": "F31",
+   "fact": "WordPress hosting runs on the Plesk control panel with the WP Toolkit (Files, Plugins, Themes, Database, WP-CLI, Clone, Copy Data, Back Up / Restore, Let's Encrypt, NGINX caching), seen in the owner's dashboard screenshot of 2026-10-11",
+   "kind": "business",
+   "source": {
+    "type": "interview",
+    "ref": "owner screenshot of the Plesk dashboard, 2026-10-11 (held privately: it shows a customer's domain, name and IP, so it is never published)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "ResponsibilitySplit",
+    "FeatureGrid",
+    "FAQ"
+   ]
+  },
+  {
+   "id": "F32",
+   "fact": "Three security layers on every plan: a firewall, brute-force login protection and malware scanning. Two backup layers: a local copy and an offsite copy, both daily, each overwriting the previous copy",
+   "kind": "claim",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11, final follow-up answers (decision 61)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "FeatureGrid (only once each layer is named)"
+   ]
+  },
+  {
+   "id": "F33",
+   "fact": "Paid extras: premium SSL (no price in the pricing file yet), extra offsite backup and Extra Layer Security. The Automatic Malware Scanning add-on is removed because scanning is included on every plan",
+   "kind": "business",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11, follow-up answers (decision 61)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "PricingPlans add-ons"
+   ]
+  },
+  {
+   "id": "F34",
+   "fact": "Served through the Cloudflare network",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "content/claims.ts cloudflare-cdn (unverified)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker), owner to confirm",
+   "status": "needs-check",
+   "usedIn": [
+    "not used on this page"
+   ]
+  },
+  {
+   "id": "F35",
+   "fact": "Customers manage files, databases, plugins, themes, staging and backups from the control panel on every WordPress plan; the panel is called \"control panel\" on public pages, never by its product name",
+   "kind": "claim",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11, chat (decision 66)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "BentoGrid",
+    "ResponsibilitySplit",
+    "FAQ"
+   ]
+  },
+  {
+   "id": "F36",
+   "fact": "DronaHost hosts WordPress sites from every industry; online stores, agencies, local businesses and bloggers are examples, not limits. Spam and adult websites are not allowed",
+   "kind": "claim",
+   "source": {
+    "type": "interview",
+    "ref": "owner, 2026-10-11, chat"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Owner confirmed 2026-10-11",
+   "status": "verified",
+   "usedIn": [
+    "PathRouter"
+   ]
+  }
+ ]
+}

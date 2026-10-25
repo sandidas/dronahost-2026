@@ -5,6 +5,12 @@ import ShowcaseSection from "./_components/ShowcaseSection";
 import ShowcaseSidebar from "./_components/ShowcaseSidebar";
 import ShowcaseLayout from "./_components/ShowcaseLayout";
 import PortalShowcase from "./_components/PortalShowcase";
+import homeSpecJson from "@/content/pages/home.json";
+import { parsePage } from "@/lib/content/page";
+import { defaultContext } from "@/lib/content/refs";
+import { SECTION_REGISTRY } from "@/lib/content/registry";
+import VideoEmbed from "@/components/sections/VideoEmbed";
+import type { SectionSpec } from "@/lib/content/schemas/sections";
 
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
@@ -85,6 +91,7 @@ import {
   SAMPLE_PATHS,
   SAMPLE_PATHS_LONG,
   SAMPLE_POSTS,
+  SAMPLE_VIDEO,
   SAMPLE_SPLIT_KEEP,
   SAMPLE_SPLIT_LOOK_AFTER,
   SAMPLE_SPLIT_UNEVEN_LEFT,
@@ -120,6 +127,16 @@ function samplePrices() {
 
 const variantLabel = "mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground";
 const frame = "overflow-hidden rounded-lg border border-border";
+
+
+/** Home look sections rendered from content/pages/home.json through the registry, exactly as Home renders them (luxe look). */
+const HOME_SPEC = parsePage(homeSpecJson);
+function homeSection(id: string) {
+  const section = HOME_SPEC.sections.find((s) => s.id === id) as SectionSpec | undefined;
+  if (!section) return null;
+  const entry = SECTION_REGISTRY[section.type] as { render: (s: SectionSpec, c: typeof defaultContext, l: "luxe") => React.ReactNode };
+  return entry.render(section, defaultContext, "luxe");
+}
 
 export default function V2ShowcasePage() {
   if (process.env.NODE_ENV !== "development" && process.env.E2E_SHOWCASE !== "1") notFound();
@@ -385,6 +402,27 @@ export default function V2ShowcasePage() {
             </div>
           </ShowcaseSection>
 
+          {/* ── Home look (ProductHero "console" and the C1 sections) ── */}
+          {(
+            [
+              ["product-hero-console", "ProductHero (variant console)", "hero", "Home look hero: theme-following band with dot texture and soft light, light Sora 300 headline with a heavier closing phrase, the primary action to the migration section (an optional one-field form exists but Home does not use it), the example console (caption says it is an example) and the assurance rail of rendering claims. No entrance animation."],
+              ["product-cards", "ProductCards", "products", "Two to four product cards straight under the hero: line icon, optional tag, title, one sentence and a full-width button to the product page. No visible heading (screen-reader h2) and no prices (decision 58)."],
+              ["rating-band", "RatingBand", "ratings", "Score and review-platform links from verified review data only (lib/content/reviews.ts loadVerifiedRating). Nothing renders in production today; the sample here is SAMPLE_RATING, with no status label on the page."],
+              ["advantage-grid", "AdvantageGrid", "advantages", "Three or four commitments as large light numerals on a hairline rule, each linked to its policy; an item hides when its claim does not render; firstHand shows the 'Our decision' label (TR7)."],
+              ["solutions-grid", "SolutionsGrid", "solutions", "One or two featured cards and three to eight small cards with line icons; each card is one link; optional small note. Follows the theme."],
+              ["ecosystem", "Ecosystem", "ecosystem", "Points beside a CSS orbit diagram (role=img, label lists every node). Phones get a wrapped cluster instead of the ring."],
+              ["reviews-showcase", "ReviewsShowcase", "reviews", "Featured case study beside review cards, from content/case-studies.ts and verified reviews only; the approved case study shows a real screenshot; unapproved reviews show in development only, with no status label."],
+              ["process-cards", "ProcessTimeline (variant cards)", "process", "Numbered cards with large light numerals; chosen automatically on a page with the console hero."],
+              ["migration-promo", "MigrationPromo", "plan", "No form: three reassurances, one button to the client area (resolved from COMPANY.clientAreaUrl, never typed in the page JSON) and a theme-aware graphic of the move (current host, private copy, DronaHost)."],
+              ["faq-lines", "FAQSection (variant lines)", "faq", "Hairline rows on native details, with a plus that turns into a minus."],
+              ["cta-band-ink", "CTABand (tone ink)", "cta", "Full-width band that follows the theme, with a centred dot texture, soft light and pill actions."],
+            ] as const
+          ).map(([id, title, section, notes]) => (
+            <ShowcaseSection key={id} id={id} title={title} status="built" notes={notes}>
+              <div className="overflow-hidden rounded-lg border border-border">{homeSection(section)}</div>
+            </ShowcaseSection>
+          ))}
+
           <ShowcaseSection
             id="split-hero"
             title="SplitHero"
@@ -608,6 +646,15 @@ export default function V2ShowcasePage() {
             notes="Semantic ordered list. Horizontal from lg, vertical rail on phones. Replaces ProcessSteps / HowItWorks / OurProcess."
           >
             <ProcessTimeline title="How moving your site works" headingLevel="h3" steps={MIGRATION_STEPS} className="!py-0" />
+          </ShowcaseSection>
+
+          <ShowcaseSection
+            id="video-embed"
+            title="VideoEmbed"
+            status="built"
+            notes="One real, captioned video per content page (content rules section 7, CP3). Click-to-load from youtube-nocookie.com: no request to YouTube and no cookie before play, no LCP cost. VideoObject JSON-LD, credit, transcript link and privacy line come with it. Add the section only when the video exists; the fixture below is not a real video."
+          >
+            <VideoEmbed title="See a site move, start to finish" headingLevel="h3" video={SAMPLE_VIDEO} />
           </ShowcaseSection>
 
           <ShowcaseSection

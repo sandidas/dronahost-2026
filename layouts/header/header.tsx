@@ -8,7 +8,9 @@ import CurrencySelector from "@/components/layout/CurrencySelector";
 import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import { COMPANY } from "@/content/company";
 import { ACCOUNT_LINK, HEADER_CTA, PRIMARY_LINKS } from "@/content/navigation";
+import { UI } from "@/content/strings";
 import { FEATURES } from "@/lib/flags";
 import { cn } from "@/utils/cn";
 import HostingMegaMenu from "./HostingMegaMenu";
@@ -129,8 +131,14 @@ export default function Header() {
                     </Button>
                   )}
                 </div>
+                {COMPANY.clientAreaUrl && (
+                  <a href={COMPANY.clientAreaUrl} rel="noopener" className={cn(linkClass, "hidden gap-1.5 lg:inline-flex")}>
+                    <LogIn className="size-4" aria-hidden="true" />
+                    {UI.header.clientLogin}
+                  </a>
+                )}
                 <ThemeToggle />
-                <Button href={HEADER_CTA.href} size="sm">
+                <Button href={HEADER_CTA.href} size="sm" className="rounded-full">
                   {HEADER_CTA.label}
                 </Button>
               </div>

@@ -244,3 +244,82 @@ test("Policy: where the business is based may be said only on the allowed pages 
   const unset = checkDoc(noRule, loadDoc(noRule, guide(text)), { overlap: false }).find((r) => r.id === "PO4");
   assert.equal(unset?.skipped, true, "a project with no locationClaims skips the rule");
 });
+
+/* Writing quality and content-page elements (rules section 7). */
+import { elementRules, inboundRules, isPassive, mechanics, qualityRules } from "./content/rules-quality";
+
+function article(body: string, front = ""): string {
+  const file = join(tmp, `cp${n++}.md`);
+  writeFileSync(file, `---\nslug: /kb/test-page\nprimary_keyword: managed wordpress hosting\nstate: Ready for owner review\n${front}---\n\n# Managed WordPress hosting explained\n\n${body}\n`);
+  return file;
+}
+const cpCtx = (over: Partial<Ctx["config"]["contentPages"]> = {}): Ctx => ({ ...ctx, config: { ...ctx.config, contentPages: { ...ctx.config.contentPages, blueprints: ["C2"], enforce: true, videoRequired: true, ...over } } });
+const cp = (c: Ctx, file: string, id: string) => elementRules(c, loadDoc(c, file)).find((r) => r.id === id);
+const FULL = [
+  "## What managed WordPress hosting includes",
+  "We run updates and backups. Read [our WordPress hosting plans](/wordpress-hosting) and [the migration steps](/migration).",
+  "![Dashboard of a managed WordPress hosting account](/img/dash.png)",
+  "[Watch the setup video](https://www.youtube-nocookie.com/embed/abc123)",
+  "WordPress documents this in [its hosting handbook](https://developer.wordpress.org/advanced-administration/).",
+].join("\n\n");
+
+test("Voice: passive voice and mechanical slips", () => {
+  assert.ok(isPassive("Your site is backed up every day."));
+  assert.ok(!isPassive("We back up your site every day."));
+  assert.ok(!isPassive("The company is based in one country."));
+  assert.deepEqual(mechanics("We run the the backups."), ['repeated word "the the"']);
+  assert.ok(mechanics("We run backups , daily.").includes("space before punctuation"));
+  assert.ok(mechanics("Ask [HUMAN REVIEW: name] , then go.").includes("space before punctuation"));
+  assert.deepEqual(mechanics("Source: https://web.dev/articles/ttfb, read 2026-10-08."), []);
+  assert.deepEqual(mechanics("Ask `[HUMAN REVIEW: x]` and [HUMAN REVIEW: y] today."), []);
+  const passiveHeavy = article("Backups are taken daily. Updates are applied weekly. Sites are moved for free. We answer tickets.");
+  assert.ok((qualityRules(ctx, loadDoc(ctx, passiveHeavy)).find((r) => r.id === "V12")?.warnings.length ?? 0) >= 3);
+});
+
+test("Elements: a content page with every element passes when enforced", () => {
+  const c = cpCtx();
+  const results = elementRules(c, loadDoc(c, article(FULL)));
+  assert.deepEqual(results.filter((r) => !r.ok).map((r) => `${r.id}: ${r.failures[0]?.message}`), []);
+});
+
+test("Elements: each missing element fails when enforced and warns when not", () => {
+  const c = cpCtx();
+  assert.equal(cp(c, article(FULL.replace("## What managed WordPress hosting includes", "## What you get")), "CP1")?.ok, false);
+  assert.equal(cp(c, article(FULL.replace("Dashboard of a managed WordPress hosting account", "Account dashboard")), "CP2")?.ok, false);
+  assert.equal(cp(c, article(FULL.replace(/\[Watch the setup video\]\([^)]*\)/, "")), "CP3")?.ok, false);
+  assert.equal(cp(c, article(FULL.replace(/\[its hosting handbook\]\([^)]*\)/, "its handbook").replace(/\(https:[^)]*youtube[^)]*\)/, "(/video)")), "CP4")?.ok, false);
+  assert.equal(cp(c, article(FULL.replace("[the migration steps](/migration)", "the migration steps")), "CP5")?.ok, false);
+  const soft = cpCtx({ enforce: false, videoRequired: false });
+  const r = cp(soft, article("## Something else\n\nNo links."), "CP1");
+  assert.ok(r?.ok && r.warnings.length === 1, "warns while contentPages.enforce is false");
+  assert.ok(cp(soft, article("x"), "CP3")?.warnings.length, "video warns while videoRequired is false");
+});
+
+test("Elements: one anchor, one URL; exempt pages skip", () => {
+  const c = cpCtx();
+  assert.equal(cp(c, article(`${FULL}\n\nSee [our plans](/pricing) or [our plans](/wordpress-hosting).`), "CP6")?.ok, false);
+  const page = article(FULL, "blueprint: C11\n");
+  assert.ok(cp(c, page, "CP1")?.skipped, "a policy page (blueprint not listed) is not a content page");
+});
+
+test("Elements: page-spec buttons do not count as body links", () => {
+  const c = cpCtx();
+  const file = page((p) => {
+    p.blueprint = "C2";
+    p.sections = [{ id: "hero", type: "SplitHero", content: { h1: "Title", ctaPrimary: { label: "See plans", href: "/pricing" } } },
+      { id: "a", type: "AnswerBlock", content: { answer: "Read [the migration terms](/migration-terms).", link: { label: "Compare plans", href: "/pricing" } } }];
+  });
+  const d = loadDoc(c, file);
+  assert.deepEqual(d.links.filter((l) => l.body).map((l) => l.href).sort(), ["/migration-terms", "/pricing"]);
+  assert.equal(d.links.find((l) => l.text === "See plans")?.body, false);
+});
+
+test("Elements: inbound links are counted across pages", () => {
+  const c = cpCtx({ inboundLinksMin: 1 });
+  const target = loadDoc(c, article(FULL));
+  const other = loadDoc(c, article("See [the managed WordPress hosting guide](/kb/test-page).").replace("cp", "cp"));
+  other.front.slug = "/kb/other";
+  const res = inboundRules(c, [target, other]);
+  assert.equal(res.get(target.file)?.[0].warnings.length, 0);
+  assert.equal(res.get(other.file)?.[0].warnings.length, 1);
+});

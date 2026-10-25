@@ -5,20 +5,16 @@
       "blueprint": "C2",
       "refs": [
         "FEATURES.pricesConfirmed",
-        "claim:litespeed",
-        "claim:ssh-wp-cli",
-        "claim:staging-plans"
+        "claim:wp-control-panel"
       ],
-      "facts": [
-        "Plan limits confirmed (pricing file 'confirmBeforeLaunch')"
-      ]
+      "facts": []
     },
     "/business-hosting": {
       "blueprint": "C2",
       "refs": [
         "FEATURES.pricesConfirmed",
         "claim:business-hosting-scope",
-        "claim:cpanel"
+        "claim:control-panel"
       ],
       "facts": []
     },
@@ -48,9 +44,7 @@
       "refs": [
         "FEATURES.pricesConfirmed"
       ],
-      "facts": [
-        "Confirmation that prices are final"
-      ]
+      "facts": []
     },
     "/migration": {
       "blueprint": "C4",

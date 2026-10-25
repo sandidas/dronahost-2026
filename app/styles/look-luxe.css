@@ -1,0 +1,95 @@
+/*
+ * Site-wide premium look (owner, 2026-10-11): the Home look carried to every marketing page through one scope,
+ * `.look-luxe` on <main> (app/[locale]/(marketing)/layout.tsx). It restyles the shared building blocks (section header,
+ * hero type, cards, buttons, section rhythm and bands) so a page gets the Home feel without rebuilding its sections.
+ * Every colour comes from the theme tokens, so light and dark mode both work and `npm run check:contrast` still covers
+ * them. Motion is transform, shadow and border only and collapses under reduced motion through the duration tokens.
+ */
+@layer components {
+  /* ── Type: light Sora statements, a heavier closing phrase where the markup has one ── */
+  .look-luxe .t-display {
+    font-weight: 300;
+    font-size: clamp(2.5rem, 1.5rem + 4.2vw, 4.5rem);
+    line-height: 1.03;
+    letter-spacing: -0.045em;
+  }
+  .look-luxe .t-display .text-link {
+    font-weight: 500;
+  }
+  .look-luxe .t-h1 {
+    font-weight: 300;
+    letter-spacing: -0.04em;
+  }
+  .look-luxe .t-h2 {
+    font-weight: 300;
+    font-size: clamp(2rem, 1.35rem + 2.5vw, 3.5rem);
+    line-height: 1.06;
+    letter-spacing: -0.04em;
+  }
+  /* Tracked eyebrow led by a short teal hairline, as on Home. */
+  .look-luxe .t-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+  }
+  .look-luxe .t-eyebrow::before {
+    content: "";
+    width: 1.75rem;
+    height: 1px;
+    flex: none;
+    background: var(--accent);
+  }
+
+  /* ── Rhythm: the roomier Home spacing ── */
+  .look-luxe .section-y {
+    padding-block: clamp(4.5rem, 2.75rem + 5vw, 7.5rem);
+  }
+
+  /* ── Bands: every second section gets the soft teal and orange light and a faint dot texture ── */
+  .look-luxe > section:nth-of-type(even):not([data-tone]),
+  .look-luxe .page-tones > section:nth-of-type(even):not([data-tone]) {
+    background-image:
+      radial-gradient(circle 42rem at 94% -8%, var(--glow-teal), transparent 70%),
+      radial-gradient(circle 30rem at -6% 110%, var(--glow-orange), transparent 70%),
+      radial-gradient(var(--grid-line) 1px, transparent 1px);
+    background-size:
+      auto,
+      auto,
+      28px 28px;
+  }
+
+  /* ── Cards: rounder glass panels that lift on hover ── */
+  .look-luxe .surface {
+    border-radius: 1.375rem;
+    transition:
+      transform var(--dur-base) var(--ease-out),
+      box-shadow var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out);
+  }
+  @media (hover: hover) {
+    .look-luxe li > .surface:hover,
+    .look-luxe li > article.surface:hover,
+    .look-luxe a.surface:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-xl);
+    }
+  }
+
+  /* ── Actions: pill buttons, the primary one with a soft orange glow ── */
+  .look-luxe .btn {
+    border-radius: 999px;
+  }
+  .look-luxe .btn-primary {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.3),
+      0 14px 34px -14px color-mix(in srgb, var(--action-fill) 75%, transparent);
+  }
+  .look-luxe .btn-primary:hover {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.3),
+      0 20px 40px -14px color-mix(in srgb, var(--action-fill) 90%, transparent);
+  }
+}

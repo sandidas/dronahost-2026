@@ -15,6 +15,8 @@ export type PairSpec = {
   label: string;
   /** Blend `bg` over `under` at this opacity (tinted badge backgrounds). */
   blend?: { under: string; alpha: number };
+  /** Only these themes (a surface that always carries one scope, such as the `.dark` ink bands). Default: both. */
+  themes?: readonly Theme[];
 };
 
 export type PairResult = PairSpec & { theme: Theme; ratio: number; pass: boolean };
@@ -92,6 +94,10 @@ export const PAIRS: PairSpec[] = [
   { fg: "inverse-muted", bg: "inverse-surface", min: 4.5, label: "muted text on inverse band" },
   { fg: "action", bg: "card", min: 4.5, label: "action badge text on 12% tint", blend: { under: "card", alpha: 0.12 } },
   { fg: "link", bg: "accent", min: 4.5, label: "teal badge text on 12% tint", blend: { under: "card", alpha: 0.12 } },
+  // Ink bands on Home always carry the `.dark` scope, so only the dark text tokens meet them.
+  ...(["ink", "ink-2", "ink-raised"] as const).flatMap((bg): PairSpec[] =>
+    (["foreground", "muted-foreground", "subtle-foreground", "link", "action"] as const).map((fg) => ({ fg, bg, min: 4.5, label: `${fg} on ${bg}`, themes: ["dark"] })),
+  ),
 ];
 
 export function evaluate(tokens: Record<Theme, TokenMap>, pairs: PairSpec[] = PAIRS): PairResult[] {
@@ -99,6 +105,7 @@ export function evaluate(tokens: Record<Theme, TokenMap>, pairs: PairSpec[] = PA
   for (const theme of ["light", "dark"] as const) {
     const t = tokens[theme];
     for (const spec of pairs) {
+      if (spec.themes && !spec.themes.includes(theme)) continue;
       const fg = t[spec.fg];
       let bg = t[spec.bg];
       if (!fg || !bg) throw new Error(`Missing token for "${spec.label}" (${spec.fg} / ${spec.bg}) in ${theme}`);

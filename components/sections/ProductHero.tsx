@@ -1,10 +1,15 @@
 import { useId, type ComponentProps, type ReactNode } from "react";
+import ConsoleHero, { type ConsoleHeroProps } from "./hero/ConsoleHero";
 import HeroContent from "./hero/HeroContent";
 import { SiteDashboardMockup } from "./hero/mockups";
 import type { HeroBaseProps } from "./hero/types";
 import { cn } from "@/utils/cn";
 
 type ProductHeroProps = HeroBaseProps & {
+  /** "dashboard" (default): text beside a screenshot or the dashboard mockup. "console": the Home look (see ConsoleHero). */
+  variant?: "dashboard" | "console";
+  /** The console variant's extras: the one-field form, the console copy and the assurance rail. Required for "console". */
+  consoleProps?: Pick<ConsoleHeroProps, "form" | "console" | "assurances">;
   /** Visual on the right. Undefined shows the site-dashboard mockup. Null shows no visual and centres the text. */
   visual?: ReactNode | null;
   /** Text of the default dashboard mockup (address, status, three tiles, the "example" caption). */
@@ -15,8 +20,14 @@ type ProductHeroProps = HeroBaseProps & {
  * Product hero: large display headline, one primary action, verified highlights, and a
  * dashboard mockup over a soft ambient glow. Use on the homepage and flagship product pages.
  */
-export default function ProductHero({ visual, mockup, className, ...content }: ProductHeroProps) {
+export default function ProductHero({ variant = "dashboard", consoleProps, visual, mockup, className, ...content }: ProductHeroProps) {
   const headingId = useId();
+  if (variant === "console" && consoleProps) {
+    const { highlights: _h, note: _n, ...rest } = content;
+    void _h;
+    void _n;
+    return <ConsoleHero {...rest} {...consoleProps} className={className} />;
+  }
   const noVisual = visual === null;
   return (
     <section aria-labelledby={headingId} className={cn("grain relative isolate overflow-hidden", className)}>

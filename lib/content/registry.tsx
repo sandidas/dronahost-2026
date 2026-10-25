@@ -10,37 +10,91 @@ import MeaningSection from "@/components/sections/bespoke/MeaningSection";
 import ResponsibilitySplit from "@/components/sections/bespoke/ResponsibilitySplit";
 import CTABand from "@/components/sections/CTABand";
 import FAQSection from "@/components/sections/FAQSection";
-import PricingPlans from "@/components/sections/PricingPlans";
+import HostingPricing from "@/components/sections/HostingPricing";
+import RenewalCost from "@/components/sections/bespoke/RenewalCost";
+import PlanGuide from "@/components/sections/bespoke/PlanGuide";
+import { buildPlanGuide, buildRenewalCost, buildResourceTiers } from "@/lib/pricing/plans";
 import ProcessTimeline from "@/components/sections/ProcessTimeline";
 import ProductHero from "@/components/sections/ProductHero";
 import MigrationRequest from "@/components/sections/MigrationRequest";
+import MigrationPromo from "@/components/sections/bespoke/MigrationPromo";
+import SupportTeam from "@/components/sections/bespoke/SupportTeam";
+import { SUPPORT_PHOTO } from "@/content/team";
 import CaseStudy from "@/components/sections/CaseStudy";
 import StatsBar from "@/components/sections/StatsBar";
 import WhyChoose from "@/components/sections/bespoke/WhyChoose";
 import HonestLimits from "@/components/sections/bespoke/HonestLimits";
 import PageProvenance from "@/components/sections/bespoke/PageProvenance";
+import AdvantageGrid from "@/components/sections/bespoke/AdvantageGrid";
+import Ecosystem from "@/components/sections/bespoke/Ecosystem";
+import RatingBand from "@/components/sections/bespoke/RatingBand";
+import ReviewsShowcase from "@/components/sections/bespoke/ReviewsShowcase";
+import SolutionsGrid from "@/components/sections/bespoke/SolutionsGrid";
+import ProductCards from "@/components/sections/bespoke/ProductCards";
+import FeatureSpotlight from "@/components/sections/bespoke/FeatureSpotlight";
+import { PanelMockup } from "@/components/sections/hero/PanelMockup";
+import { BackupsVisual, BuilderEditorVisual, BuilderVisual, CareVisual, ManagedVsSharedVisual, MoveFlowGraphic, ShieldVisual, ControlPanelVisual, ResourceTiersVisual } from "@/components/sections/visuals/motion-graphics";
+import type { ConsoleTile, HeroAssurance } from "@/components/sections/hero/ConsoleHero";
+import { UI } from "@/content/strings";
 import { CASE_STUDIES } from "@/content/case-studies";
 import NextImage from "next/image";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import SupportChannels from "@/components/sections/SupportChannels";
+import VideoEmbed from "@/components/sections/VideoEmbed";
 import Testimonials from "@/components/sections/Testimonials";
 import TrustSignals from "@/components/sections/TrustSignals";
 import type { TrustItem } from "@/content/trust";
-import { CacheVisual, GrowthVisual, ChannelsVisual, RestoreVisual } from "@/components/sections/visuals/bento";
-import { showPrices } from "@/lib/flags";
-import { buildPlanCards, VAT_DISPLAY } from "@/lib/pricing/plans";
+import { CacheVisual, GrowthVisual, ChannelsVisual, MoveVisual, RestoreVisual, UptimeVisual } from "@/components/sections/visuals/bento";
+import { showSamples } from "@/lib/flags";
+import { COMPANY } from "@/content/company";
+import { SAMPLE_CASE_STUDY, SAMPLE_RATING, SAMPLE_STATS } from "@/content/placeholders";
 import { featureById } from "./features";
 import { POLICY_LINKS, PUBLISHED_PAGES } from "./published-pages";
 import { fillTemplate, passes, resolveClaimRef, resolveRequires, type ResolveContext } from "./refs";
-import { loadVerifiedReviews } from "./reviews";
+import { loadPreviewReviews, loadVerifiedRating, loadVerifiedReviews } from "./reviews";
 import * as S from "./schemas/sections";
-import { moneyBackGuarantee } from "@/lib/pricing/guarantee";
 
 type Of<T extends S.SectionType> = Extract<S.SectionSpec, { type: T }>;
-type Entry<T extends S.SectionType> = { schema: ZodType; render: (section: Of<T>, ctx: ResolveContext) => ReactNode };
+/**
+ * How a page looks as a whole. "luxe" is the Home look that the ProductHero "console" variant brings: ink bands, light
+ * display headlines, numbered cards. Shared sections (ProcessTimeline, MigrationRequest, FAQSection, CTABand) switch to their
+ * matching variant on such a page, so the page JSON stays free of styling.
+ */
+export type PageLook = "standard" | "luxe";
+type Entry<T extends S.SectionType> = { schema: ZodType; render: (section: Of<T>, ctx: ResolveContext, look?: PageLook) => ReactNode };
+
+/** The look a page's hero sets for the whole page. */
+export function pageLook(sections: readonly S.SectionSpec[]): PageLook {
+  const hero = sections[0];
+  // The console hero (Home) and the panel hero (product pages) bring the Home variants of the shared sections.
+  return hero?.type === "ProductHero" && (hero.variant === "console" || hero.variant === "panel") ? "luxe" : "standard";
+}
 
 const claimId = (ref: string) => ref.replace(/^claim:/, "");
+const claimOf = (ref: string) => CLAIMS.find((x) => x.id === claimId(ref));
+const lowerFirst = (t: string) => t.charAt(0).toLowerCase() + t.slice(1);
+
+/** Console tiles: a claim shows its label and value while it renders; plain text is "Label: value". */
+function consoleTiles(tiles: readonly string[], ctx: ResolveContext): ConsoleTile[] {
+  return tiles.flatMap((t) => {
+    if (t.startsWith("claim:")) {
+      const claim = claimOf(t);
+      return claim && resolveClaimRef(t, ctx) ? [{ label: claim.label, value: claim.value }] : [];
+    }
+    const at = t.indexOf(": ");
+    return [at > 0 ? { label: t.slice(0, at), value: t.slice(at + 2) } : { label: "", value: t }];
+  });
+}
+
+/** The assurance rail: each rendering claim as "value label", with its terms link. */
+function heroAssurances(refs: readonly string[], ctx: ResolveContext): HeroAssurance[] {
+  return refs.flatMap((ref) => {
+    const claim = claimOf(ref);
+    if (!claim || !claim.termsPage || !resolveClaimRef(ref, ctx)) return [];
+    return [{ title: `${claim.value} ${lowerFirst(claim.label)}`, href: claim.termsPage, linkLabel: claim.termsLabel ?? UI.generic.readTerms }];
+  });
+}
 
 /** A real screenshot from public/screenshots, or null: with no real picture the hero shows none and centres its text. */
 function heroVisual(shot: { src: string; alt: string; width: number; height: number } | undefined): ReactNode | null {
@@ -51,7 +105,7 @@ function heroVisual(shot: { src: string; alt: string; width: number; height: num
     </figure>
   );
 }
-const BENTO_VISUALS = { cache: <CacheVisual />, growth: <GrowthVisual />, restore: <RestoreVisual />, channels: <ChannelsVisual /> } as const;
+const BENTO_VISUALS = { cache: <CacheVisual />, growth: <GrowthVisual />, restore: <RestoreVisual />, channels: <ChannelsVisual />, shield: <ShieldVisual />, backups: <BackupsVisual />, builder: <BuilderVisual />, panel: <ControlPanelVisual />, uptime: <UptimeVisual />, move: <MoveVisual /> } as const;
 
 /**
  * Section type to schema and renderer. The renderer adapts the page JSON (`content`) to the existing component's props and
@@ -61,7 +115,7 @@ const BENTO_VISUALS = { cache: <CacheVisual />, growth: <GrowthVisual />, restor
 export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
   ProductHero: {
     schema: S.ProductHero,
-    render: ({ content: c }, ctx) => {
+    render: ({ variant, content: c }, ctx) => {
       // The reason-led headline shows only while the claims behind its reason render. The fallback is the plain version.
       const reasonOk = !c.h1Requires || c.h1Requires.every((r) => resolveClaimRef(r, ctx));
       const h1 = reasonOk ? c.h1 : (c.h1Fallback ?? c.h1);
@@ -74,7 +128,25 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
         description={c.leadRequiresClaims && !c.leadRequiresClaims.every((r) => resolveClaimRef(r, ctx)) ? (c.leadFallback ?? c.lead) : c.lead}
         primaryCta={c.ctaPrimary}
         secondaryCta={c.ctaSecondary && resolveRequires(c.ctaSecondaryRequires, ctx) ? c.ctaSecondary : undefined}
-        visual={heroVisual(c.screenshot)}
+        variant={variant === "console" ? "console" : "dashboard"}
+        consoleProps={
+          variant === "console" && c.console
+            ? {
+                form: c.form && resolveRequires(c.formRequires, ctx) ? c.form : undefined,
+                console: { ...c.console, tiles: consoleTiles(c.console.tiles, ctx) },
+                assurances: heroAssurances(c.assurances ?? [], ctx),
+              }
+            : undefined
+        }
+        visual={
+          variant === "console"
+            ? null
+            : variant === "tiers"
+              ? <ResourceTiersVisual tiers={buildResourceTiers()} caption={UI.graphics.tiersCaption} alt={c.visual?.alt} footnote={resolveClaimRef("claim:renewal-price-same", ctx) ? UI.graphics.tiersSameRenewal : undefined} />
+              : variant === "panel" && c.panel
+                ? <PanelMockup domain={c.panel.domain} caption={c.panel.caption} alt={c.visual?.alt} className="drop-shadow-2xl" />
+                : heroVisual(c.screenshot)
+        }
         mockup={c.mockup}
         highlights={(c.highlights ?? []).flatMap((h) => {
           if (!h.startsWith("claim:")) return [h];
@@ -104,7 +176,9 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
         const claim = CLAIMS.find((x) => x.id === claimId(ref));
         return claim && claim.kind === "stat" && resolveClaimRef(ref, ctx) ? [{ ...claim, verified: true }] : [];
       });
-      return stats.length >= 3 ? <StatsBar claims={stats} label={c.h2} /> : null;
+      // Development preview only: pad with clearly marked sample numbers so the layout can be reviewed.
+      const shown = stats.length < 3 && showSamples() ? [...stats, ...SAMPLE_STATS].slice(0, 4) : stats;
+      return shown.length >= 3 ? <StatsBar claims={shown} label={c.h2} /> : null;
     },
   },
   WhyChoose: {
@@ -116,13 +190,41 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
   },
   MigrationRequest: {
     schema: S.MigrationRequest,
-    render: ({ id, content: c }) => <MigrationRequest eyebrow={c.eyebrow} title={c.h2} description={c.description} fields={c.fields} anchorId={id} />,
+    render: ({ id, content: c }, _ctx, look) => (
+      <MigrationRequest
+        eyebrow={c.eyebrow}
+        title={c.h2}
+        description={c.description}
+        fields={c.fields}
+        anchorId={id}
+        tone={look === "luxe" ? "ink" : "default"}
+        submitLabel={look === "luxe" ? UI.migrationRequest.submitPlan : undefined}
+      />
+    ),
+  },
+  SupportTeam: {
+    schema: S.SupportTeam,
+    render: ({ content: c }, ctx) => {
+      const points = c.points.filter((p) => passes(p, ctx)).map((p) => ({ title: p.title, text: p.text }));
+      return <SupportTeam eyebrow={c.eyebrow} title={c.h2} accent={c.accent} description={c.description} points={points} links={c.links} photo={SUPPORT_PHOTO} visual={c.visual} />;
+    },
+  },
+  MigrationPromo: {
+    schema: S.MigrationPromo,
+    render: ({ id, content: c }) => {
+      // The client area is the only action today; with no URL set, the section has nothing to offer and is left out.
+      const href = c.cta.action === "client-area" ? COMPANY.clientAreaUrl : null;
+      if (!href) return null;
+      return <MigrationPromo anchorId={id} eyebrow={c.eyebrow} title={c.h2} description={c.description} points={c.points} cta={{ label: c.cta.label, href }} note={c.note} graphic={c.graphic} />;
+    },
   },
   Evidence: {
     schema: S.Evidence,
     render: ({ content: c }) => {
       const study = CASE_STUDIES[0];
-      return study ? <CaseStudy title={c.h2 ?? study.title} description={study.description} metrics={study.metrics} sourceUrl={study.sourceUrl} /> : null;
+      if (study) return <CaseStudy title={c.h2 ?? study.title} description={study.description} metrics={study.metrics} sourceUrl={study.sourceUrl} />;
+      // Development preview only: the sample case study from content/placeholders.ts.
+      return showSamples() ? <CaseStudy title={SAMPLE_CASE_STUDY.title} description={SAMPLE_CASE_STUDY.description} metrics={SAMPLE_CASE_STUDY.metrics} showSamples /> : null;
     },
   },
   PathRouter: {
@@ -135,7 +237,7 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
   },
   AnswerBlock: {
     schema: S.AnswerBlock,
-    render: ({ content: c }) => <AnswerBlock eyebrow={c.eyebrow} title={c.h2} answer={c.answer} detail={c.detail} link={c.link} />,
+    render: ({ content: c }) => <AnswerBlock eyebrow={c.eyebrow} title={c.h2} answer={c.answer} detail={c.detail} link={c.link} visual={c.visual === "care" ? <CareVisual /> : undefined} />,
   },
   ResponsibilitySplit: {
     schema: S.ResponsibilitySplit,
@@ -163,6 +265,7 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
           lookAfterLabel={c.lookAfterLabel}
           keepLabel={c.keepLabel}
           note={c.note}
+          visual={c.visual === "managed-vs-shared" ? <ManagedVsSharedVisual /> : undefined}
         />
       );
     },
@@ -181,7 +284,9 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
   },
   ProcessTimeline: {
     schema: S.ProcessTimeline,
-    render: ({ content: c }) => <ProcessTimeline eyebrow={c.eyebrow} title={c.h2} description={c.description} steps={c.steps.map((s) => ({ title: s.title, description: s.text }))} />,
+    render: ({ content: c }, _ctx, look) => (
+      <ProcessTimeline eyebrow={c.eyebrow} title={c.h2} description={c.description} steps={c.steps.map((s) => ({ title: s.title, description: s.text }))} variant={look === "luxe" ? "cards" : "rail"} graphic={c.graphic ? <MoveFlowGraphic {...c.graphic} /> : undefined} />
+    ),
   },
   BentoGrid: {
     schema: S.BentoGrid,
@@ -198,31 +303,31 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
   },
   PricingPlans: {
     schema: S.PricingPlans,
-    render: ({ content: c }, ctx) => {
-      const plans = buildPlanCards()
-        .filter((p) => c.show.includes(p.id))
-        .map((p) => ({ ...p, highlight: p.id === c.highlight }));
-      if (plans.length === 0) return null;
-      return (
-        <PricingPlans
-          title={c.h2}
-          description={c.description}
-          plans={plans}
-          showPrices={showPrices()}
-          vatDisplay={VAT_DISPLAY}
-          guaranteeNote={ctx.claimRenders("money-back") ? `${CLAIMS.find((x) => x.id === "money-back")?.text ?? ""}.` : null}
-          guaranteeLink={ctx.claimRenders("money-back") ? moneyBackGuarantee().guaranteeLink : null}
-          renewalPromise={ctx.claimRenders("renewal-price-same")}
-        >
-          {c.link && (
-            <p className="mt-8 text-center">
-              <a href={c.link.href} className="text-base font-semibold text-link underline underline-offset-4">
-                {c.link.label}
-              </a>
-            </p>
-          )}
-        </PricingPlans>
-      );
+    // Every page shows the same lineup at the same prices (decision 73): the spec sets only the heading, never the plans.
+    render: ({ id, content: c }) => (
+      <HostingPricing anchorId={id} title={c.h2} description={c.description} extras={false}>
+        {c.link && (
+          <p className="mt-8 text-center">
+            <a href={c.link.href} className="text-base font-semibold text-link underline underline-offset-4">
+              {c.link.label}
+            </a>
+          </p>
+        )}
+      </HostingPricing>
+    ),
+  },
+  RenewalCost: {
+    schema: S.RenewalCost,
+    // Totals are computed from data/pricing.json; the section's requiresClaim keeps it hidden unless renewal-price-same renders.
+    render: ({ content: c }) => <RenewalCost eyebrow={c.eyebrow} title={c.h2} description={c.description} rows={buildRenewalCost()} finding={c.finding} link={c.link} />,
+  },
+  PlanGuide: {
+    schema: S.PlanGuide,
+    // Figures come from data/pricing.json; the spec supplies only who each plan fits. Plans without a fit line are left out.
+    render: ({ content: c }) => {
+      const fit = new Map(c.fit.map((f) => [f.plan, f.text]));
+      const rows = buildPlanGuide().flatMap((r) => (fit.has(r.id) ? [{ ...r, fit: fit.get(r.id) ?? "" }] : []));
+      return rows.length >= 2 ? <PlanGuide eyebrow={c.eyebrow} title={c.h2} description={c.description} rows={rows} note={c.note} link={c.link} /> : null;
     },
   },
   SupportChannels: {
@@ -232,8 +337,10 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
   Testimonials: {
     schema: S.Testimonials,
     render: ({ content: c }) => {
-      const items = loadVerifiedReviews();
-      return items.length ? <Testimonials title={c.h2} items={items} /> : null;
+      const real = loadVerifiedReviews();
+      // Development preview only: every review in data/reviews.json, including those not yet cleared for production.
+      const items = real.length ? real : showSamples() ? loadPreviewReviews() : [];
+      return items.length ? <Testimonials title={c.h2} items={items} showSamples={!real.length && showSamples()} /> : null;
     },
   },
   TrustSignals: {
@@ -250,12 +357,12 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
   },
   FAQSection: {
     schema: S.FAQSection,
-    render: ({ content: c }, ctx) => {
+    render: ({ content: c }, ctx, look) => {
       const items = c.items
         .filter((i) => passes(i, ctx))
         .map((i) => ({ question: i.q, answer: fillTemplate(i.a).trim() }))
         .filter((i) => i.answer.length > 0);
-      return items.length >= 3 ? <FAQSection title={c.h2} items={items} /> : null;
+      return items.length >= 3 ? <FAQSection title={c.h2} items={items} link={c.link} photos={c.photos} variant={look === "luxe" ? "lines" : "cards"} /> : null;
     },
   },
   HonestLimits: {
@@ -269,10 +376,79 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
   PageProvenance: {
     schema: S.PageProvenance,
     // The editorial policy link shows only once that page is published, like every policy link.
-    render: ({ content: c }) => <PageProvenance reviewer={c.reviewer} role={c.role} reviewedOn={c.reviewedOn} howLine={c.howLine} report={c.report} policyHref={c.policyHref && PUBLISHED_PAGES.has(c.policyHref) ? c.policyHref : undefined} />,
+    render: ({ content: c }) => <PageProvenance reviewer={c.reviewer} role={c.role} reviewedOn={c.reviewedOn} howLine={c.howLine} report={c.report} policyHref={c.policyHref && PUBLISHED_PAGES.has(c.policyHref) ? c.policyHref : undefined} variant={c.variant} />,
   },
   CTABand: {
     schema: S.CTABand,
-    render: ({ content: c }, ctx) => <CTABand title={c.h2} description={c.description} primaryCta={c.ctaPrimary} secondaryCta={c.ctaSecondary && resolveRequires(c.ctaSecondaryRequires, ctx) ? c.ctaSecondary : undefined} note={c.note} />,
+    render: ({ content: c }, ctx, look) => (
+      <CTABand
+        title={c.h2}
+        description={c.description}
+        primaryCta={c.ctaPrimary}
+        secondaryCta={c.ctaSecondary && resolveRequires(c.ctaSecondaryRequires, ctx) ? c.ctaSecondary : undefined}
+        note={c.note}
+        tone={look === "luxe" ? "ink" : "card"}
+      />
+    ),
+  },
+  RatingBand: {
+    schema: S.RatingBand,
+    render: () => {
+      const real = loadVerifiedRating();
+      // Development preview only: the sample rating from content/placeholders.ts.
+      const rating = real ?? (showSamples() ? SAMPLE_RATING : null);
+      return rating ? <RatingBand rating={rating} showSamples={!real} /> : null;
+    },
+  },
+  AdvantageGrid: {
+    schema: S.AdvantageGrid,
+    render: ({ content: c }, ctx) => {
+      const items = c.items.filter((i) => resolveClaimRef(i.requiresClaim, ctx)).map((i) => ({ value: i.value, title: i.title, text: i.text, link: i.link, firstHand: i.firstHand }));
+      return <AdvantageGrid eyebrow={c.eyebrow} title={c.h2} accent={c.accent} description={c.description} items={items} />;
+    },
+  },
+  FeatureSpotlight: {
+    schema: S.FeatureSpotlight,
+    render: ({ content: c }, ctx) => {
+      const points = c.points.filter((p) => passes(p, ctx)).map((p) => ({ title: p.title, text: p.text }));
+      return <FeatureSpotlight eyebrow={c.eyebrow} title={c.h2} description={c.description} points={points} visual={c.visual === "builder" ? <BuilderEditorVisual /> : undefined} note={c.note} source={c.source} reverse={c.reverse} />;
+    },
+  },
+  VideoEmbed: {
+    schema: S.VideoEmbed,
+    render: ({ content: c }) => <VideoEmbed eyebrow={c.eyebrow} title={c.h2} description={c.description} video={c.video} />,
+  },
+  ProductCards: {
+    schema: S.ProductCards,
+    render: ({ content: c }, ctx) => {
+      const items = c.items.filter((i) => passes(i, ctx)).map((i) => ({ icon: i.icon, tag: i.tag, title: i.title, text: i.text, href: i.href, cta: i.cta }));
+      return <ProductCards title={c.h2} items={items} />;
+    },
+  },
+  SolutionsGrid: {
+    schema: S.SolutionsGrid,
+    render: ({ id, content: c }, ctx) => {
+      const featured = c.featured.filter((f) => passes(f, ctx)).map((f) => ({ tag: f.tag, title: f.title, text: f.text, href: f.href, cta: f.cta }));
+      const items = c.items.filter((i) => passes(i, ctx)).map((i) => ({ icon: i.icon, title: i.title, text: i.text, href: i.href }));
+      return <SolutionsGrid eyebrow={c.eyebrow} title={c.h2} description={c.description} featured={featured} items={items} note={c.note} anchorId={id} />;
+    },
+  },
+  Ecosystem: {
+    schema: S.Ecosystem,
+    render: ({ content: c }, ctx) => {
+      const points = c.points.filter((p) => passes(p, ctx)).map((p) => ({ title: p.title, text: p.text }));
+      return <Ecosystem eyebrow={c.eyebrow} title={c.h2} accent={c.accent} description={c.description} points={points} nodes={c.nodes} center={c.center} />;
+    },
+  },
+  ReviewsShowcase: {
+    schema: S.ReviewsShowcase,
+    render: ({ content: c }) => {
+      const study = CASE_STUDIES[0] ?? null;
+      const reviews = loadVerifiedReviews();
+      const props = { eyebrow: c.eyebrow, title: c.h2, description: c.description };
+      // Development preview: every review in data/reviews.json joins the real study.
+      if (showSamples()) return <ReviewsShowcase {...props} study={study ?? { ...SAMPLE_CASE_STUDY, sample: true }} reviews={reviews.length ? reviews : loadPreviewReviews()} showSamples />;
+      return study || reviews.length ? <ReviewsShowcase {...props} study={study} reviews={reviews} /> : null;
+    },
   },
 };

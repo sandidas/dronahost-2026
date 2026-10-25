@@ -15,7 +15,16 @@ export type Doc = {
   h1: { n: number; text: string }[];
   headings: { n: number; level: number; text: string }[];
   paragraphs: { n: number; text: string }[];
-  links: { n: number; text: string; href: string }[];
+  /** Internal links. `body` is true for a link in running copy, false for a button, CTA or report link. */
+  links: { n: number; text: string; href: string; body?: boolean }[];
+  /** Links to another site (http or https, any host not in contentPages.ownHosts is decided by the rules). */
+  external: { n: number; text: string; href: string }[];
+  /** Images with their alt text. Page specs: any object with a string `alt`. Markdown: `![alt](src)`. */
+  images: { n: number; alt: string }[];
+  /** Videos. Page specs: any object with a `youtubeId` or `videoUrl`. Markdown: a video link, `<video>` or `<iframe>`. */
+  videos: { n: number; src: string }[];
+  /** The page spec's blueprint id (or front matter `blueprint`), if it names one. */
+  blueprint?: string;
   faq: { n: number; q: string; a: string }[];
   answer?: { n: number; text: string };
   title?: string;
@@ -32,6 +41,9 @@ export const FLAG = /\[HUMAN REVIEW[^\]]*\]/g;
 export const wc = (t: string): number => t.split(/\s+/).filter((w) => /[A-Za-z0-9]/.test(w)).length;
 /** A Markdown link `[text](href "title")`, not an image. Shared by every parser so they agree on what a link is. */
 export const LINK_RE = /(?<!!)\[([^\]]+)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g;
+export const IMAGE_RE = /!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g;
+/** A URL that plays a video: YouTube, Vimeo, Wistia, Loom or a video file. */
+export const VIDEO_URL = /(youtube\.com\/(watch|embed)|youtube-nocookie\.com\/embed|youtu\.be\/|vimeo\.com\/|wistia\.(com|net)\/|loom\.com\/share|\.(mp4|webm)(\?|$))/i;
 /** Images go first (their alt text stays), so `![alt](x.png)` never leaves a stray "!". */
 export const strip = (t: string): string => t.replace(/`[^`]*`/g, "").replace(/\[HUMAN REVIEW[^\]]*\]/g, "").replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1").replace(/\[([^\]]*)\]\([^)]*\)/g, "$1").replace(/[*_>#]/g, "");
 
@@ -96,6 +108,9 @@ function parseMarkdown(file: string, text: string): Doc {
   const headings: Doc["headings"] = [];
   const paragraphs: Doc["paragraphs"] = [];
   const links: Doc["links"] = [];
+  const external: Doc["external"] = [];
+  const images: Doc["images"] = [];
+  const videos: Doc["videos"] = [];
   const faq: Doc["faq"] = [];
   let inFaq = false;
   let fence = false;
@@ -117,7 +132,17 @@ function parseMarkdown(file: string, text: string): Doc {
       }
       continue;
     }
-    for (const m of t.matchAll(LINK_RE)) links.push({ n, text: m[1], href: m[2] });
+    for (const m of t.matchAll(LINK_RE)) {
+      if (/^https?:\/\//i.test(m[2])) external.push({ n, text: m[1], href: m[2] });
+      else links.push({ n, text: m[1], href: m[2], body: true });
+      if (VIDEO_URL.test(m[2])) videos.push({ n, src: m[2] });
+    }
+    // A bare URL is a link too (GitHub-flavored Markdown links it), unless it already sits inside a Markdown link or image.
+    for (const m of t.replace(LINK_RE, "").replace(IMAGE_RE, "").matchAll(/https?:\/\/[^\s)<>"]+/g)) external.push({ n, text: m[0], href: m[0].replace(/[.,;:]+$/, "") });
+    for (const m of t.matchAll(IMAGE_RE)) images.push({ n, alt: m[1] });
+    for (const m of t.matchAll(/<img\b[^>]*\balt="([^"]*)"/gi)) images.push({ n, alt: m[1] });
+    const tag = t.match(/<(?:video|iframe)\b[^>]*\bsrc="([^"]+)"/i);
+    if (tag && (/<video/i.test(t) || VIDEO_URL.test(tag[1]))) videos.push({ n, src: tag[1] });
     if (t.trim() === "") { flushPara(); continue; }
     if (faqQ) { if (!t.trim().startsWith("`")) faqQ.a.push(t.trim()); continue; }
     if (/^(\s*[-*]\s|\s*\d+\.\s|\s*>|\|)/.test(t) || /^\*Drafted with AI|^\*Written by/.test(t.trim())) { flushPara(); continue; }
@@ -129,7 +154,7 @@ function parseMarkdown(file: string, text: string): Doc {
   const h1 = headings.filter((h) => h.level === 1).map(({ n, text: tx }) => ({ n, text: tx }));
   const answer = paragraphs.find((p) => h1.length > 0 && p.n > h1[0].n);
   return {
-    file, kind: "md", front, lines, labels: [], raw, h1, headings, paragraphs, links, faq, answer,
+    file, kind: "md", front, lines, labels: [], raw, h1, headings, paragraphs, links, external, images, videos, faq, answer, blueprint: front.blueprint || undefined,
     title: front.seo_title, description: front.meta_description, state: front.state ?? "",
     schemaTypes: (front.schema ?? "").split(";").map((s) => s.trim()).filter(Boolean), rulesBlock: {}, archetype: front.archetype || undefined,
   };
@@ -144,6 +169,9 @@ function parseJson(file: string, text: string, copy: CopyOptions): Doc {
   const h1: Doc["h1"] = [];
   const headings: Doc["headings"] = [];
   const links: Doc["links"] = [];
+  const external: Doc["external"] = [];
+  const images: Doc["images"] = [];
+  const videos: Doc["videos"] = [];
   const faq: Doc["faq"] = [];
   let answer: Doc["answer"];
   const add = (s: string | undefined, push: (n: number) => void) => s && push(lineOf(raw, s));
@@ -156,15 +184,29 @@ function parseJson(file: string, text: string, copy: CopyOptions): Doc {
       for (const it of c.items as Json[]) if (typeof it.q === "string" && typeof it.a === "string") faq.push({ n: lineOf(raw, it.q), q: it.q, a: it.a });
     }
   }
-  const collect = (v: unknown): void => {
-    if (Array.isArray(v)) v.forEach(collect);
+  // A link under a CTA or report key, or in a hero or closing band, is a button; every other link sits in the page's running copy.
+  const buttonKey = /^(cta|ctaPrimary|ctaSecondary|primaryCta|secondaryCta|report|primary|secondary)$/;
+  const buttonSection = /Hero$|^CTABand$|^ActionBand$/;
+  const collect = (v: unknown, inButton: boolean): void => {
+    if (Array.isArray(v)) v.forEach((x) => collect(x, inButton));
     else if (v && typeof v === "object") {
       const o = v as Json;
-      if (typeof o.href === "string" && o.href.startsWith("/")) links.push({ n: lineOf(raw, o.href), text: String(o.label ?? o.cta ?? o.href), href: o.href });
-      Object.values(o).forEach(collect);
-    } else if (typeof v === "string" && /^\/[a-z0-9-/]*$/.test(v) && v.length > 1) links.push({ n: lineOf(raw, v), text: v, href: v });
+      if (typeof o.href === "string" && o.href.startsWith("/")) links.push({ n: lineOf(raw, o.href), text: String(o.label ?? o.cta ?? o.href), href: o.href, body: !inButton });
+      if (typeof o.href === "string" && /^https?:\/\//i.test(o.href)) external.push({ n: lineOf(raw, o.href), text: String(o.label ?? o.href), href: o.href });
+      if (typeof o.alt === "string") images.push({ n: lineOf(raw, o.alt), alt: o.alt });
+      // A video counts only when it names one: a section that says "video" with nothing to play is not a video.
+      const src = typeof o.youtubeId === "string" ? o.youtubeId : typeof o.videoUrl === "string" ? o.videoUrl : "";
+      if (src) videos.push({ n: lineOf(raw, src), src });
+      const sectionButton = typeof o.type === "string" && buttonSection.test(o.type);
+      // The href itself was handled above; walking it again would count the same link twice.
+      for (const [k, x] of Object.entries(o)) if (k !== "href") collect(x, inButton || sectionButton || buttonKey.test(k));
+    } else if (typeof v === "string" && /^\/[a-z0-9-/]*$/.test(v) && v.length > 1) links.push({ n: lineOf(raw, v), text: v, href: v, body: !inButton });
+    else if (typeof v === "string") for (const m of v.matchAll(LINK_RE)) {
+      if (/^https?:\/\//i.test(m[2])) external.push({ n: lineOf(raw, m[0]), text: m[1], href: m[2] });
+      else if (m[2].startsWith("/")) links.push({ n: lineOf(raw, m[0]), text: m[1], href: m[2], body: true });
+    }
   };
-  collect(spec.sections);
+  collect(spec.sections, false);
   const all = copyStrings(spec.sections, copy);
   const lines: Line[] = all.filter((s) => !s.label).map((s) => ({ n: lineOf(raw, s.text), text: s.text }));
   const labels: Line[] = all.filter((s) => s.label).map((s) => ({ n: lineOf(raw, s.text), text: s.text }));
@@ -172,7 +214,8 @@ function parseJson(file: string, text: string, copy: CopyOptions): Doc {
   const rules = (spec.rules ?? {}) as Json;
   return {
     file, kind: "json", front: { primary_keyword: String(spec.primaryKeyword ?? ""), slug: String(spec.path ?? ""), reviewed_on: String(rules.reviewedOn ?? ""), ...(typeof spec.locale === "string" ? { locale: spec.locale } : {}), ...waiverFront(spec.waivers), ...(typeof spec.searchIntent === "string" ? { intent_primary: spec.searchIntent } : {}), ...(typeof spec.secondaryIntent === "string" ? { intent_secondary: spec.secondaryIntent } : {}) },
-    lines, labels, raw, h1, headings, paragraphs: [], links, faq, answer, title: seo.title as string | undefined,
+    lines, labels, raw, h1, headings, paragraphs: [], links, external, images, videos, faq, answer, title: seo.title as string | undefined,
+    blueprint: typeof spec.blueprint === "string" ? spec.blueprint : undefined,
     description: seo.description as string | undefined, state: "",
     schemaTypes: Array.isArray(seo.schema) ? (seo.schema as unknown[]).map(String) : [], rulesBlock: rules,
     archetype: typeof spec.archetype === "string" ? spec.archetype : undefined,

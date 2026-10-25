@@ -107,11 +107,34 @@ export const ConfigSchema = z.object({
       claimedFigures: z.record(z.string().min(1), z.string().min(1)).default({ "24/7": "support-24-7" }),
       /** IN4: page-spec keys whose object holds a call-to-action label, added to the blueprint data's ctaKeys. */
       ctaKeys: z.array(z.string().min(1)).default(["cta", "ctaPrimary", "ctaSecondary", "primaryCta", "secondaryCta"]),
+      /** V12: warn when more than this share of sentences (percent) reads as passive voice. */
+      passiveWarnAbovePercent: z.number().min(0).max(100).default(10),
+      /** S6 (skimmable): a paragraph or copy string over this many words, and an article stretch over wordsPerHeadingMax with no heading. */
+      paragraphWordsMax: z.number().int().positive().default(80),
+      wordsPerHeadingMax: z.number().int().positive().default(300),
     })
     .refine((l) => l.titleWarnAbove <= l.titleFailAbove, { message: "titleWarnAbove must not exceed titleFailAbove" })
     .refine((l) => l.gradeWarnAbove <= l.gradeFailAbove, { message: "gradeWarnAbove must not exceed gradeFailAbove" })
     .refine((l) => l.faqAnswerWarnBelow <= l.faqAnswerFailAbove, { message: "FAQ warn and fail limits are reversed" })
     .refine((l) => l.keywordDensityWarnAbove <= l.keywordDensityFailAbove, { message: "keywordDensityWarnAbove must not exceed keywordDensityFailAbove" }),
+  /**
+   * Content pages (rules section 7, "Required elements on content pages"): which pages must carry the keyword in an H2 and an image
+   * alt, a video, an external link, body links and inbound links. Page specs count when their blueprint is listed; Markdown
+   * articles always count. While `enforce` is false the CP rules warn (decision 40: warnings first); `videoRequired` gates CP3 alone.
+   */
+  contentPages: z
+    .object({
+      blueprints: z.array(z.string().min(1)).default([]),
+      exemptPaths: z.array(z.string().min(1)).default(["/"]),
+      enforce: z.boolean().default(false),
+      videoRequired: z.boolean().default(false),
+      externalLinksMin: z.number().int().nonnegative().default(1),
+      bodyLinksMin: z.number().int().nonnegative().default(2),
+      inboundLinksMin: z.number().int().nonnegative().default(2),
+      /** Hosts that count as our own site, so a link to them is internal, not external. */
+      ownHosts: z.array(z.string().min(1)).default([]),
+    })
+    .default({ blueprints: [], exemptPaths: ["/"], enforce: false, videoRequired: false, externalLinksMin: 1, bodyLinksMin: 2, inboundLinksMin: 2, ownHosts: [] }),
   web: z.object({ serpSource: z.enum(["claude-web", "serpapi"]), gscSource: z.enum(["csv", "api"]) }),
 });
 

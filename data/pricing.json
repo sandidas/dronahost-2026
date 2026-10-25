@@ -1,18 +1,31 @@
 {
   "_meta": {
-    "version": "3.1.0",
-    "lastUpdated": "2026-10-10",
+    "version": "4.1.0",
+    "lastUpdated": "2026-10-12",
     "status": "recommended-v1-needs-owner-confirmation",
     "category": "Web Hosting and WordPress Hosting",
     "description": "Source of truth for all hosting plan pricing across the DronaHost website. Import this file in components, generateMetadata(), and JSON-LD schemas. Copy never contains a number or promise that is not rendered from this file or from content/claims.ts.",
     "renewalPolicy": "Renewal price equals the signup price for the same billing cycle. No introductory price that rises at renewal. Show the claim wording only when claim renewal-price-same renders.",
-    "billingCycles": ["annual", "monthly"],
+    "billingCycles": [
+      "annual",
+      "monthly"
+    ],
     "defaultBillingCycle": "annual",
-    "annualSavings": "Paying annually costs about 22% to 24% less per month than paying monthly. See pricing.annualDiscountPercent on each plan.",
-    "enabledCurrencies": ["USD"],
-    "currencyNote": "USD only until non-USD prices are final. Do not add estimated prices.",
+    "annualSavings": "Paying annually costs about 19% to 21% less per month than paying monthly in USD; other currencies differ by up to a point after rounding. The site works out the saving from each currency's own prices.",
+    "enabledCurrencies": [
+      "USD",
+      "GBP",
+      "EUR",
+      "AED",
+      "INR"
+    ],
+    "currencyNote": "USD is the base. GBP, EUR, AED and INR prices were calculated once from fixed rates per 1 USD (currencies[].rateFromUSD: GBP 0.76, EUR 0.89, AED 3.6725, INR 96.8; market rates of 8 to 10 October 2026, owner choice 2026-10-12) and rounded up to the next .99 (INR: the next whole rupee). Each price is stored, never converted at runtime. Renewal equals the signup price in every currency. To change a currency's prices, change its rate and recalculate every plan and add-on, or edit the stored prices. Email plans (emailPlans) stay USD only.",
     "emailNotice": "Email is not included with any hosting plan. Email is a separate service, sold on its own.",
     "changesFromV2": [
+      "4.1.0 (2026-10-12, owner): GBP, EUR, AED and INR prices for every plan and add-on, from fixed rates (GBP 0.76, EUR 0.89, AED 3.6725, INR 96.8 per USD) rounded up to .99 (INR to the whole rupee). Renewal equals signup in every currency. The currency selector is on. USD prices unchanged.",
+      "4.0.1 (2026-10-11, owner): corrections, no price or limit changed. Backups: only the latest daily copy is kept, so backupRetentionDays is 1 on every plan and the cards say 'Daily backup, latest copy kept'. Extra Layer Security is included on Pro and Scale and a paid add-on on Starter and Growth; its placeholder sentence is removed. Add-ons drop the removed Essential and Plus and add Scale. annualSavings corrected to 19% to 21%. null now means 'not set, render nothing'; fair-use limits are listed in limits.fairUse (Scale: sites, domains, databases, bandwidth), and limits.trafficType is removed. limits.trafficGB is removed: bandwidth lives only in internal.bandwidthGB. PHP limits come from the PHP settings tab. Headline features name what each higher plan adds. includedWithEveryPlan adds advanced security and server monitoring; the control panel item and its claim are renamed from 'cpanel' to 'control-panel'.",
+      "4.0.0 (2026-10-11, owner): one four-plan lineup from data/dronahost-pricing-plan.xlsx (Plans tab) replaces both families. Starter, Growth, Pro and Scale; Essential and Plus are removed. Prices, sites, NVMe storage, databases, backup days, bandwidth, support tier, performance tuning, Redis (Scale), resource type, CPU and RAM come from the sheet. Rule-safe handling (owner choice): 'Unlimited' is stored as null (fair use, never 'Unlimited'); mailboxes and bandwidth are internal only; visits per month are empty until load-tested; Imunify360 is stored as advancedSecurity and malwareScanning, not named; Redis is gated by a claim; the Growth badge is 'Recommended' (not 'Most popular'); Enterprise uses 'Talk to the team', not WhatsApp. PHP limits are carried over from the old plans (Scale copies Pro) because only the Plans tab was applied.",
+      "2026-10-11 (owner, final): staging with clone and sync in the control panel is available on every WordPress plan (corrects the earlier removal). Advanced security on every plan means three layers: a firewall, brute-force protection and malware scanning. Backups have two layers: local and offsite. Paid extras: premium SSL (not priced yet), extra offsite backup and Extra Layer Security. Earlier the same day: malware scanning, advanced security and a free domain for the first year (annual billing only) on every plan; WooCommerce optimization only on the Business hosting plans (Essential, Plus); NGINX caching and a daily backup with the latest copy kept on every WordPress plan. Redis object cache and automated plugin testing are not offered and are false on every plan (staging was briefly removed, then restored as above). Starter support is 24/7 like every plan. LiteSpeed is not used (removed from includedWithEveryPlan). The Automatic Malware Scanning add-on is removed because malware scanning is included on every plan; Extra Layer Security stays an add-on. WordPress hosting runs on Plesk.",
       "Plan 'pop' renamed to 'pro'.",
       "Mailboxes removed from all limits. Email hosting is discontinued.",
       "3.2.0 (2026-10-10): email is never part of a hosting plan or a hosting add-on. Email will be sold as a separate service with its own plans (owner decision 49). Business Email plans live in emailPlans, outside plans[], priced from Google Workspace US list prices (decision 54).",
@@ -28,22 +41,21 @@
       "CTA labels follow the 'Choose {plan name}' rule. Badge 'Most Popular' replaced by 'Recommended'."
     ],
     "confirmBeforeLaunch": [
-      "All storage, RAM, CPU, site, database, FTP and PHP limits.",
-      "Backups are daily and the old one is deleted (owner, 2026-10-08).",
-      "Automatic WordPress updates, built-in caching, WP-CLI, Redis object cache, staging and sync, automated plugin testing, WooCommerce optimization.",
-      "Advanced security included on Pro, and malware scanning included on Growth and Pro (these are recommendations, not facts).",
-      "Free domain for the first year: eligible TLDs, annual billing only, domain renewal price.",
-      "Support: channels are ticket and email only (WhatsApp, live chat and phone are not offered). Define what 24/7 means with ticket and email, the business hours and time zone, and the 24/7 scope (Growth, Pro, Plus).",
-      "Web plans are unmanaged hosting. They must not claim WordPress-specific management tools.",
-      "Business hosting on the site means the Web hosting plans (Essential, Plus). Confirmed by the owner on 2026-10-07.",
-      "Fair-use and backup policy pages must exist before the fair-use and backup lines render (see the content planner, Plan 07).",
-      "LiteSpeed, NVMe, cPanel, Cloudflare and free SSL statements (add each to content/claims.ts).",
-      "Checkout links: replace /checkout?plan=... with the real WHMCS product links.",
-      "Cost per account for every plan, including refunds and support time, before publishing prices.",
-      "Domain registration pricing is not set in this file yet."
+      "Support hours: the sheet gives Starter 'Standard' and Growth 'Priority' with no hours, while /support-policy promises 24/7 by ticket and email to everyone. Settle which is right (availability is empty for Starter and Growth).",
+      "Plan scope: these four plans now serve WordPress and Business pages alike. Confirm which managed WordPress tools (automatic updates, NGINX caching, staging) apply to every plan, and whether WooCommerce optimization is on any plan (false everywhere until confirmed).",
+      "Redis on Scale: decision 61 said Redis is not offered; claim it before any page mentions it.",
+      "Visits per month per plan, after a load test (sheet row 18).",
+      "Free domain for the first year: eligible TLDs and the domain renewal price.",
+      "Fair-use and backup policy pages must exist before the fair-use and backup lines render.",
+      "FTP accounts and domains per plan (ftpAccounts is null, not set; domains equals sites).",
+      "PHP workers: pmMaxChildren (20, 20, 40, 52) rests on estimates of PHP worker size. Check it against real server measurements before launch.",
+      "Extra Layer Security: describe what the add-on adds beyond the firewall, brute-force protection and malware scanning every plan includes. Its description must not render a placeholder.",
+      "Offsite backup prices: this file has 5 GB $3, 10 GB $5, 30 GB $9, 60 GB $13, 100 GB $25 and 250 GB $35; the Add-ons tab of the sheet has $2, $3, $7, $13, $20 and 200 GB at $35. Which is right?",
+      "First response: no plan has support.avgFirstResponse. At these prices each plan needs a stated first-response time.",
+      "Scale and WooCommerce: Scale's bestFor and description name WooCommerce stores while capabilities.wooCommerceOptimization is false.",
+      "Currencies: check the GBP, EUR, AED and INR prices before launch, and confirm that checkout (WHMCS) bills in the currency shown, with the same amounts."
     ]
   },
-
   "currencies": {
     "USD": {
       "code": "USD",
@@ -53,63 +65,129 @@
       "vatBehavior": "excluded",
       "vatDisplay": null,
       "default": true
+    },
+    "GBP": {
+      "code": "GBP",
+      "symbol": "£",
+      "name": "British Pound",
+      "locale": "en-GB",
+      "vatBehavior": "excluded",
+      "vatDisplay": null,
+      "default": false,
+      "rateFromUSD": 0.76
+    },
+    "EUR": {
+      "code": "EUR",
+      "symbol": "€",
+      "name": "Euro",
+      "locale": "en-IE",
+      "vatBehavior": "excluded",
+      "vatDisplay": null,
+      "default": false,
+      "rateFromUSD": 0.89
+    },
+    "AED": {
+      "code": "AED",
+      "symbol": "AED",
+      "name": "UAE Dirham",
+      "locale": "en-AE",
+      "vatBehavior": "excluded",
+      "vatDisplay": null,
+      "default": false,
+      "rateFromUSD": 3.6725
+    },
+    "INR": {
+      "code": "INR",
+      "symbol": "₹",
+      "name": "Indian Rupee",
+      "locale": "en-IN",
+      "vatBehavior": "excluded",
+      "vatDisplay": null,
+      "default": false,
+      "rateFromUSD": 96.8
     }
   },
-
   "families": [
     {
-      "id": "wordpress",
-      "label": "WordPress hosting",
-      "description": "Managed hosting built for WordPress sites.",
+      "id": "hosting",
+      "label": "Hosting plans",
+      "description": "One lineup for every site: shared plans first, then semi-dedicated and dedicated resources.",
       "default": true,
-      "planIds": ["starter", "growth", "pro"]
-    },
-    {
-      "id": "web",
-      "label": "Web hosting",
-      "description": "Simple hosting for any website, with a cPanel dashboard.",
-      "default": false,
-      "planIds": ["essential", "plus"]
+      "planIds": [
+        "starter",
+        "growth",
+        "pro",
+        "scale"
+      ]
     }
   ],
-
   "plans": [
     {
       "id": "starter",
       "name": "Starter",
       "slug": "starter",
-      "family": "wordpress",
+      "family": "hosting",
       "tier": "public",
       "badge": null,
       "highlight": false,
-      "description": "For one small business site that needs reliable managed WordPress hosting.",
-      "bestFor": "One small business or personal brand site",
+      "description": "For a business site, with room for a second site.",
+      "bestFor": "A business site",
       "cta": {
         "label": "Choose Starter",
         "href": "/checkout?plan=starter"
       },
       "pricing": {
-        "monthly": { "USD": 12.99 },
-        "annual": { "USD": 9.99 },
-        "renewal": { "USD": 9.99 },
-        "renewalMonthlyCycle": { "USD": 12.99 },
-        "annualBilledTotal": { "USD": 119.88 },
-        "annualDiscountPercent": 23
+        "monthly": {
+          "USD": 18.99,
+          "GBP": 14.99,
+          "EUR": 16.99,
+          "AED": 69.99,
+          "INR": 1839
+        },
+        "annual": {
+          "USD": 14.99,
+          "GBP": 11.99,
+          "EUR": 13.99,
+          "AED": 55.99,
+          "INR": 1452
+        },
+        "renewal": {
+          "USD": 14.99,
+          "GBP": 11.99,
+          "EUR": 13.99,
+          "AED": 55.99,
+          "INR": 1452
+        },
+        "renewalMonthlyCycle": {
+          "USD": 18.99,
+          "GBP": 14.99,
+          "EUR": 16.99,
+          "AED": 69.99,
+          "INR": 1839
+        },
+        "annualBilledTotal": {
+          "USD": 179.88,
+          "GBP": 143.88,
+          "EUR": 167.88,
+          "AED": 671.88,
+          "INR": 17424
+        },
+        "annualDiscountPercent": 21
       },
       "limits": {
-        "sites": 1,
-        "siteType": "managed-wordpress",
-        "wordPressSites": 1,
-        "diskSpaceGB": 20,
-        "trafficGB": 200,
-        "trafficType": "metered",
-        "domains": 1,
-        "databases": 2,
-        "ftpAccounts": 5,
-        "cpuCores": null,
-        "ramGB": 2,
+        "sites": 2,
+        "siteType": "any",
+        "wordPressSites": null,
+        "diskSpaceGB": 50,
+        "domains": 2,
+        "databases": 4,
+        "ftpAccounts": null,
+        "cpuCores": 2,
+        "ramGB": 3,
         "backupRetentionDays": 1,
-        "dedicatedResources": false
+        "dedicatedResources": false,
+        "resourceType": "shared",
+        "fairUse": []
       },
       "capabilities": {
         "freeSSL": true,
@@ -119,17 +197,17 @@
         "dailyBackups": true,
         "automaticWordPressUpdates": true,
         "builtInCaching": true,
-        "wpCli": true,
-        "stagingEnvironment": false,
+        "wpCli": false,
+        "stagingEnvironment": true,
         "objectCache": false,
-        "smartStagingSync": false,
+        "smartStagingSync": true,
         "automatedPluginTesting": false,
         "wooCommerceOptimization": false,
-        "malwareScanning": false,
-        "advancedSecurity": false,
-        "freeDomainFirstYear": false,
+        "malwareScanning": true,
+        "advancedSecurity": true,
+        "freeDomainFirstYear": true,
         "performanceTuning": false,
-        "serverMonitoring": false,
+        "serverMonitoring": true,
         "advancedCaching": false,
         "trafficSpikeHandling": false,
         "prioritySupportQueue": false,
@@ -138,66 +216,106 @@
       },
       "support": {
         "tier": "Standard",
-        "channels": ["ticket", "email"],
-        "availability": "Business hours",
+        "channels": [
+          "ticket",
+          "email"
+        ],
+        "availability": null,
         "avgFirstResponse": null
       },
       "php": {
         "memoryLimitMB": 512,
+        "postMaxSizeMB": 256,
+        "uploadMaxFilesizeMB": 256,
         "maxExecutionTimeSec": 120,
-        "maxInputTimeSec": 240,
-        "postMaxSizeMB": 512,
-        "uploadMaxFilesizeMB": 512,
-        "pmMaxChildren": 10,
-        "pmMaxRequests": 900
+        "maxInputTimeSec": 120,
+        "pmMaxChildren": 20,
+        "pmMaxRequests": 300
       },
       "headlineFeatures": [
-        "1 managed WordPress site",
-        "20 GB NVMe storage",
-        "Automatic WordPress updates",
-        "Built-in caching",
+        "2 websites",
+        "50 GB NVMe storage",
+        "3 GB memory, 2 CPU cores",
         "Daily backup, latest copy kept",
-        "Free SSL and free migration"
+        "Free SSL and free migration",
+        "Server monitoring"
       ],
-      "extras": []
+      "extras": [
+        "Free domain for the first year (annual billing)"
+      ],
+      "internal": {
+        "$comment": "Never shown on the site. Mailboxes: email is not part of hosting (decisions 16, 49). bandwidthGB is the only bandwidth figure (null = fair use, see limits.fairUse); show visits per month once load-tested (sheet row 18).",
+        "mailboxes": 10,
+        "bandwidthGB": 200,
+        "visitsPerMonth": null
+      }
     },
-
     {
       "id": "growth",
       "name": "Growth",
       "slug": "growth",
-      "family": "wordpress",
+      "family": "hosting",
       "tier": "public",
       "badge": "Recommended",
       "highlight": true,
-      "description": "For growing sites that need staging, faster caching and round-the-clock support.",
-      "bestFor": "Small businesses, WooCommerce stores and busy blogs",
+      "description": "For a growing business that runs a few sites.",
+      "bestFor": "Growing business, a few sites",
       "cta": {
         "label": "Choose Growth",
         "href": "/checkout?plan=growth"
       },
       "pricing": {
-        "monthly": { "USD": 21.99 },
-        "annual": { "USD": 16.99 },
-        "renewal": { "USD": 16.99 },
-        "renewalMonthlyCycle": { "USD": 21.99 },
-        "annualBilledTotal": { "USD": 203.88 },
-        "annualDiscountPercent": 23
+        "monthly": {
+          "USD": 26.99,
+          "GBP": 20.99,
+          "EUR": 24.99,
+          "AED": 99.99,
+          "INR": 2613
+        },
+        "annual": {
+          "USD": 21.99,
+          "GBP": 16.99,
+          "EUR": 19.99,
+          "AED": 80.99,
+          "INR": 2129
+        },
+        "renewal": {
+          "USD": 21.99,
+          "GBP": 16.99,
+          "EUR": 19.99,
+          "AED": 80.99,
+          "INR": 2129
+        },
+        "renewalMonthlyCycle": {
+          "USD": 26.99,
+          "GBP": 20.99,
+          "EUR": 24.99,
+          "AED": 99.99,
+          "INR": 2613
+        },
+        "annualBilledTotal": {
+          "USD": 263.88,
+          "GBP": 203.88,
+          "EUR": 239.88,
+          "AED": 971.88,
+          "INR": 25548
+        },
+        "annualDiscountPercent": 19
       },
       "limits": {
-        "sites": 10,
-        "siteType": "managed-wordpress",
-        "wordPressSites": 10,
-        "diskSpaceGB": 60,
-        "trafficGB": 500,
-        "trafficType": "metered",
-        "domains": 10,
+        "sites": 5,
+        "siteType": "any",
+        "wordPressSites": null,
+        "diskSpaceGB": 80,
+        "domains": 5,
         "databases": 10,
-        "ftpAccounts": 10,
-        "cpuCores": null,
+        "ftpAccounts": null,
+        "cpuCores": 2,
         "ramGB": 4,
         "backupRetentionDays": 1,
-        "dedicatedResources": false
+        "dedicatedResources": false,
+        "resourceType": "shared",
+        "fairUse": []
       },
       "capabilities": {
         "freeSSL": true,
@@ -207,14 +325,14 @@
         "dailyBackups": true,
         "automaticWordPressUpdates": true,
         "builtInCaching": true,
-        "wpCli": true,
+        "wpCli": false,
         "stagingEnvironment": true,
-        "objectCache": true,
+        "objectCache": false,
         "smartStagingSync": true,
-        "automatedPluginTesting": true,
+        "automatedPluginTesting": false,
         "wooCommerceOptimization": false,
         "malwareScanning": true,
-        "advancedSecurity": false,
+        "advancedSecurity": true,
         "freeDomainFirstYear": true,
         "performanceTuning": false,
         "serverMonitoring": true,
@@ -226,69 +344,106 @@
       },
       "support": {
         "tier": "Priority",
-        "channels": ["ticket", "email"],
-        "availability": "24/7",
+        "channels": [
+          "ticket",
+          "email"
+        ],
+        "availability": null,
         "avgFirstResponse": null
       },
       "php": {
-        "memoryLimitMB": 1024,
-        "maxExecutionTimeSec": 240,
-        "maxInputTimeSec": 300,
+        "memoryLimitMB": 512,
         "postMaxSizeMB": 512,
-        "uploadMaxFilesizeMB": 1024,
-        "pmMaxChildren": 10,
-        "pmMaxRequests": 900
+        "uploadMaxFilesizeMB": 512,
+        "maxExecutionTimeSec": 240,
+        "maxInputTimeSec": 240,
+        "pmMaxChildren": 20,
+        "pmMaxRequests": 500
       },
       "headlineFeatures": [
-        "10 managed WordPress sites",
-        "60 GB NVMe storage",
-        "Staging and sync",
-        "Redis object cache",
-        "Automated plugin testing",
-        "Daily backup, latest copy kept"
+        "5 websites",
+        "80 GB NVMe storage",
+        "4 GB memory, 2 CPU cores",
+        "Priority support",
+        "Daily backup, latest copy kept",
+        "Free SSL and free migration"
       ],
       "extras": [
-        "Free domain for the first year (annual billing)",
-        "Malware scanning included"
-      ]
+        "Free domain for the first year (annual billing)"
+      ],
+      "internal": {
+        "$comment": "Never shown on the site. Mailboxes: email is not part of hosting (decisions 16, 49). bandwidthGB is the only bandwidth figure (null = fair use, see limits.fairUse); show visits per month once load-tested (sheet row 18).",
+        "mailboxes": 25,
+        "bandwidthGB": 500,
+        "visitsPerMonth": null
+      }
     },
-
     {
       "id": "pro",
       "name": "Pro",
       "slug": "pro",
-      "family": "wordpress",
+      "family": "hosting",
       "tier": "public",
       "badge": null,
       "highlight": false,
-      "description": "For several sites or busy stores that need more resources and priority support.",
-      "bestFor": "Agencies with a few client sites and larger WooCommerce stores",
+      "description": "For busy sites and small stores, on semi-dedicated resources.",
+      "bestFor": "Busy sites and small stores",
       "cta": {
         "label": "Choose Pro",
         "href": "/checkout?plan=pro"
       },
       "pricing": {
-        "monthly": { "USD": 38.99 },
-        "annual": { "USD": 29.99 },
-        "renewal": { "USD": 29.99 },
-        "renewalMonthlyCycle": { "USD": 38.99 },
-        "annualBilledTotal": { "USD": 359.88 },
-        "annualDiscountPercent": 23
+        "monthly": {
+          "USD": 61.99,
+          "GBP": 47.99,
+          "EUR": 55.99,
+          "AED": 227.99,
+          "INR": 6001
+        },
+        "annual": {
+          "USD": 49.99,
+          "GBP": 38.99,
+          "EUR": 44.99,
+          "AED": 183.99,
+          "INR": 4840
+        },
+        "renewal": {
+          "USD": 49.99,
+          "GBP": 38.99,
+          "EUR": 44.99,
+          "AED": 183.99,
+          "INR": 4840
+        },
+        "renewalMonthlyCycle": {
+          "USD": 61.99,
+          "GBP": 47.99,
+          "EUR": 55.99,
+          "AED": 227.99,
+          "INR": 6001
+        },
+        "annualBilledTotal": {
+          "USD": 599.88,
+          "GBP": 467.88,
+          "EUR": 539.88,
+          "AED": 2207.88,
+          "INR": 58080
+        },
+        "annualDiscountPercent": 19
       },
       "limits": {
         "sites": 25,
-        "siteType": "managed-wordpress",
-        "wordPressSites": 25,
-        "diskSpaceGB": 120,
-        "trafficGB": null,
-        "trafficType": "fair-use",
+        "siteType": "any",
+        "wordPressSites": null,
+        "diskSpaceGB": 100,
         "domains": 25,
-        "databases": 25,
-        "ftpAccounts": 25,
-        "cpuCores": null,
+        "databases": 50,
+        "ftpAccounts": null,
+        "cpuCores": 4,
         "ramGB": 6,
         "backupRetentionDays": 1,
-        "dedicatedResources": false
+        "dedicatedResources": false,
+        "resourceType": "semi-dedicated",
+        "fairUse": []
       },
       "capabilities": {
         "freeSSL": true,
@@ -298,87 +453,130 @@
         "dailyBackups": true,
         "automaticWordPressUpdates": true,
         "builtInCaching": true,
-        "wpCli": true,
+        "wpCli": false,
         "stagingEnvironment": true,
-        "objectCache": true,
+        "objectCache": false,
         "smartStagingSync": true,
-        "automatedPluginTesting": true,
-        "wooCommerceOptimization": true,
+        "automatedPluginTesting": false,
+        "wooCommerceOptimization": false,
         "malwareScanning": true,
         "advancedSecurity": true,
         "freeDomainFirstYear": true,
         "performanceTuning": true,
         "serverMonitoring": true,
-        "advancedCaching": true,
+        "advancedCaching": false,
         "trafficSpikeHandling": false,
         "prioritySupportQueue": true,
         "onClickScaling": false,
         "dedicatedAccount": false
       },
       "support": {
-        "tier": "Priority",
-        "channels": ["ticket", "email"],
+        "tier": "24/7",
+        "channels": [
+          "ticket",
+          "email"
+        ],
         "availability": "24/7",
         "avgFirstResponse": null
       },
       "php": {
-        "memoryLimitMB": 2048,
-        "maxExecutionTimeSec": 300,
-        "maxInputTimeSec": 600,
+        "memoryLimitMB": 768,
         "postMaxSizeMB": 512,
         "uploadMaxFilesizeMB": 512,
-        "pmMaxChildren": 20,
-        "pmMaxRequests": 1000
+        "maxExecutionTimeSec": 240,
+        "maxInputTimeSec": 240,
+        "pmMaxChildren": 40,
+        "pmMaxRequests": 800
       },
       "headlineFeatures": [
-        "25 managed WordPress sites",
-        "120 GB NVMe storage",
-        "WooCommerce optimization",
-        "Advanced security included",
-        "Priority WordPress support",
-        "Daily backup, latest copy kept"
+        "25 websites",
+        "100 GB NVMe storage",
+        "6 GB memory, 4 CPU cores",
+        "Semi-dedicated resources",
+        "Performance tuning",
+        "24/7 priority support"
       ],
       "extras": [
         "Free domain for the first year (annual billing)"
-      ]
+      ],
+      "internal": {
+        "$comment": "Never shown on the site. Mailboxes: email is not part of hosting (decisions 16, 49). bandwidthGB is the only bandwidth figure (null = fair use, see limits.fairUse); show visits per month once load-tested (sheet row 18).",
+        "mailboxes": 100,
+        "bandwidthGB": 1000,
+        "visitsPerMonth": null
+      }
     },
-
     {
-      "id": "essential",
-      "name": "Essential",
-      "slug": "essential",
-      "family": "web",
+      "id": "scale",
+      "name": "Scale",
+      "slug": "scale",
+      "family": "hosting",
       "tier": "public",
       "badge": null,
       "highlight": false,
-      "description": "For one website on a simple, affordable hosting plan.",
-      "bestFor": "A small site that does not need managed WordPress tools",
+      "description": "For WooCommerce stores and heavy traffic, on dedicated resources.",
+      "bestFor": "WooCommerce and heavy traffic",
       "cta": {
-        "label": "Choose Essential",
-        "href": "/checkout?plan=essential"
+        "label": "Choose Scale",
+        "href": "/checkout?plan=scale"
       },
       "pricing": {
-        "monthly": { "USD": 8.99 },
-        "annual": { "USD": 6.99 },
-        "renewal": { "USD": 6.99 },
-        "renewalMonthlyCycle": { "USD": 8.99 },
-        "annualBilledTotal": { "USD": 83.88 },
-        "annualDiscountPercent": 22
+        "monthly": {
+          "USD": 186.99,
+          "GBP": 142.99,
+          "EUR": 166.99,
+          "AED": 686.99,
+          "INR": 18101
+        },
+        "annual": {
+          "USD": 149.99,
+          "GBP": 114.99,
+          "EUR": 133.99,
+          "AED": 550.99,
+          "INR": 14520
+        },
+        "renewal": {
+          "USD": 149.99,
+          "GBP": 114.99,
+          "EUR": 133.99,
+          "AED": 550.99,
+          "INR": 14520
+        },
+        "renewalMonthlyCycle": {
+          "USD": 186.99,
+          "GBP": 142.99,
+          "EUR": 166.99,
+          "AED": 686.99,
+          "INR": 18101
+        },
+        "annualBilledTotal": {
+          "USD": 1799.88,
+          "GBP": 1379.88,
+          "EUR": 1607.88,
+          "AED": 6611.88,
+          "INR": 174240
+        },
+        "annualDiscountPercent": 20
       },
       "limits": {
-        "sites": 1,
+        "sites": null,
         "siteType": "any",
         "wordPressSites": null,
-        "diskSpaceGB": 15,
-        "trafficGB": null,
-        "trafficType": "fair-use",
-        "domains": 1,
-        "databases": 2,
-        "ftpAccounts": 3,
-        "cpuCores": 1,
-        "ramGB": 1,
+        "diskSpaceGB": 150,
+        "domains": null,
+        "databases": null,
+        "ftpAccounts": null,
+        "cpuCores": 8,
+        "ramGB": 8,
         "backupRetentionDays": 1,
-        "dedicatedResources": false
+        "dedicatedResources": true,
+        "resourceType": "dedicated",
+        "fairUse": [
+          "sites",
+          "domains",
+          "databases",
+          "bandwidth"
+        ]
       },
       "capabilities": {
         "freeSSL": true,
@@ -386,107 +584,19 @@
         "cloudflare": true,
         "freeMigration": true,
         "dailyBackups": true,
-        "automaticWordPressUpdates": false,
-        "builtInCaching": false,
-        "wpCli": false,
-        "stagingEnvironment": false,
-        "objectCache": false,
-        "smartStagingSync": false,
-        "automatedPluginTesting": false,
-        "wooCommerceOptimization": false,
-        "malwareScanning": false,
-        "advancedSecurity": false,
-        "freeDomainFirstYear": false,
-        "performanceTuning": false,
-        "serverMonitoring": false,
-        "advancedCaching": false,
-        "trafficSpikeHandling": false,
-        "prioritySupportQueue": false,
-        "onClickScaling": false,
-        "dedicatedAccount": false
-      },
-      "support": {
-        "tier": "Standard",
-        "channels": ["ticket", "email"],
-        "availability": "Business hours",
-        "avgFirstResponse": null
-      },
-      "php": {
-        "memoryLimitMB": 512,
-        "maxExecutionTimeSec": 120,
-        "maxInputTimeSec": 240,
-        "postMaxSizeMB": 512,
-        "uploadMaxFilesizeMB": 512,
-        "pmMaxChildren": 10,
-        "pmMaxRequests": 900
-      },
-      "headlineFeatures": [
-        "1 website",
-        "15 GB NVMe storage",
-        "1 CPU core and 1 GB RAM",
-        "Daily backup, latest copy kept",
-        "Free SSL",
-        "Free migration"
-      ],
-      "extras": []
-    },
-
-    {
-      "id": "plus",
-      "name": "Plus",
-      "slug": "plus",
-      "family": "web",
-      "tier": "public",
-      "badge": "Recommended",
-      "highlight": true,
-      "description": "For several websites, with staging and priority support.",
-      "bestFor": "Small businesses and freelancers with a few sites",
-      "cta": {
-        "label": "Choose Plus",
-        "href": "/checkout?plan=plus"
-      },
-      "pricing": {
-        "monthly": { "USD": 16.99 },
-        "annual": { "USD": 12.99 },
-        "renewal": { "USD": 12.99 },
-        "renewalMonthlyCycle": { "USD": 16.99 },
-        "annualBilledTotal": { "USD": 155.88 },
-        "annualDiscountPercent": 24
-      },
-      "limits": {
-        "sites": 10,
-        "siteType": "any",
-        "wordPressSites": null,
-        "diskSpaceGB": 50,
-        "trafficGB": null,
-        "trafficType": "fair-use",
-        "domains": 10,
-        "databases": 10,
-        "ftpAccounts": 10,
-        "cpuCores": 2,
-        "ramGB": 2,
-        "backupRetentionDays": 1,
-        "dedicatedResources": false
-      },
-      "capabilities": {
-        "freeSSL": true,
-        "ddosProtection": true,
-        "cloudflare": true,
-        "freeMigration": true,
-        "dailyBackups": true,
-        "automaticWordPressUpdates": false,
-        "builtInCaching": false,
+        "automaticWordPressUpdates": true,
+        "builtInCaching": true,
         "wpCli": false,
         "stagingEnvironment": true,
-        "objectCache": false,
-        "smartStagingSync": false,
+        "objectCache": true,
+        "smartStagingSync": true,
         "automatedPluginTesting": false,
         "wooCommerceOptimization": false,
-        "malwareScanning": false,
-        "advancedSecurity": false,
+        "malwareScanning": true,
+        "advancedSecurity": true,
         "freeDomainFirstYear": true,
-        "performanceTuning": false,
-        "serverMonitoring": false,
+        "performanceTuning": true,
+        "serverMonitoring": true,
         "advancedCaching": false,
         "trafficSpikeHandling": false,
         "prioritySupportQueue": true,
@@ -494,109 +604,208 @@
         "dedicatedAccount": false
       },
       "support": {
-        "tier": "Priority",
-        "channels": ["ticket", "email"],
+        "tier": "24/7, senior experts",
+        "channels": [
+          "ticket",
+          "email"
+        ],
         "availability": "24/7",
         "avgFirstResponse": null
       },
       "php": {
         "memoryLimitMB": 1024,
-        "maxExecutionTimeSec": 240,
-        "maxInputTimeSec": 300,
-        "postMaxSizeMB": 512,
+        "postMaxSizeMB": 1024,
         "uploadMaxFilesizeMB": 1024,
-        "pmMaxChildren": 10,
-        "pmMaxRequests": 900
+        "maxExecutionTimeSec": 300,
+        "maxInputTimeSec": 300,
+        "pmMaxChildren": 52,
+        "pmMaxRequests": 1200
       },
       "headlineFeatures": [
-        "10 websites",
-        "50 GB NVMe storage",
-        "2 CPU cores and 2 GB RAM",
-        "Free staging",
-        "Daily backup, latest copy kept",
-        "Priority support"
+        "Websites under fair use",
+        "150 GB NVMe storage",
+        "8 GB memory, 8 CPU cores",
+        "Dedicated resources",
+        "Performance tuning",
+        "24/7 support from senior experts"
       ],
       "extras": [
         "Free domain for the first year (annual billing)"
-      ]
+      ],
+      "internal": {
+        "$comment": "Never shown on the site. Mailboxes: email is not part of hosting (decisions 16, 49). bandwidthGB is the only bandwidth figure (null = fair use, see limits.fairUse); show visits per month once load-tested (sheet row 18).",
+        "mailboxes": null,
+        "bandwidthGB": null,
+        "visitsPerMonth": null
+      }
     }
   ],
-
   "highTraffic": {
     "id": "high-traffic",
     "name": "High-traffic and dedicated",
     "tier": "contact",
     "description": "For stores and platforms that cannot afford slowdowns. We scope resources, support and price together.",
     "showStartingPrice": false,
-    "startingFromInternalUSD": 99.99,
-    "foldsPlans": ["scale", "dedicated-core", "enterprise"],
+    "startingFromInternalUSD": 300,
+    "foldsPlans": [
+      "dedicated-core",
+      "enterprise"
+    ],
     "cta": {
       "label": "Talk to the team",
       "href": "/contact?inquiry=high-traffic"
     },
     "notes": "Do not publish prices, resource numbers or the word 'unlimited' until the plans are scoped."
   },
-
   "addons": [
     {
       "id": "extra-layer-security",
       "name": "Extra Layer Security",
-      "description": "Web Application Firewall (WAF) with custom rule sets, brute-force protection, and real-time threat intelligence.",
-      "availableOn": ["starter", "growth", "essential", "plus"],
-      "includedOn": ["pro"],
+      "description": "An extra security layer on top of the firewall, brute-force protection and malware scanning that every plan includes.",
+      "availableOn": [
+        "starter",
+        "growth"
+      ],
+      "includedOn": [
+        "pro",
+        "scale"
+      ],
       "pricing": {
-        "monthly": { "USD": 10 }
+        "monthly": {
+          "USD": 10,
+          "GBP": 7.99,
+          "EUR": 8.99,
+          "AED": 36.99,
+          "INR": 968
+        }
       }
     },
     {
       "id": "page-speed-boost",
       "name": "Page Speed Boost",
       "description": "Image optimization (AVIF and WebP conversion), critical CSS extraction, and JavaScript deferral.",
-      "availableOn": ["starter", "growth", "pro", "essential", "plus"],
+      "availableOn": [
+        "starter",
+        "growth",
+        "pro",
+        "scale"
+      ],
       "includedOn": [],
       "pricing": {
-        "monthly": { "USD": 10 }
-      }
-    },
-    {
-      "id": "malware-scanning",
-      "name": "Automatic Malware Scanning",
-      "description": "Daily automated malware scan with email alert and one-click quarantine.",
-      "availableOn": ["starter", "essential", "plus"],
-      "includedOn": ["growth", "pro"],
-      "pricing": {
-        "monthly": { "USD": 2 }
+        "monthly": {
+          "USD": 10,
+          "GBP": 7.99,
+          "EUR": 8.99,
+          "AED": 36.99,
+          "INR": 968
+        }
       }
     },
     {
       "id": "offsite-backup",
       "name": "Offsite Backup",
       "description": "Daily off-server backups stored in an independent data center, with 30-day retention.",
-      "availableOn": ["starter", "growth", "pro", "essential", "plus"],
+      "availableOn": [
+        "starter",
+        "growth",
+        "pro",
+        "scale"
+      ],
       "includedOn": [],
       "options": [
-        { "id": "backup-5gb", "label": "5 GB", "sizeGB": 5, "pricing": { "monthly": { "USD": 3 } } },
-        { "id": "backup-10gb", "label": "10 GB", "sizeGB": 10, "pricing": { "monthly": { "USD": 5 } } },
-        { "id": "backup-30gb", "label": "30 GB", "sizeGB": 30, "pricing": { "monthly": { "USD": 9 } } },
-        { "id": "backup-60gb", "label": "60 GB", "sizeGB": 60, "pricing": { "monthly": { "USD": 13 } } },
-        { "id": "backup-100gb", "label": "100 GB", "sizeGB": 100, "pricing": { "monthly": { "USD": 25 } } },
-        { "id": "backup-250gb", "label": "250 GB", "sizeGB": 250, "pricing": { "monthly": { "USD": 35 } } }
+        {
+          "id": "backup-5gb",
+          "label": "5 GB",
+          "sizeGB": 5,
+          "pricing": {
+            "monthly": {
+              "USD": 3,
+              "GBP": 2.99,
+              "EUR": 2.99,
+              "AED": 11.99,
+              "INR": 291
+            }
+          }
+        },
+        {
+          "id": "backup-10gb",
+          "label": "10 GB",
+          "sizeGB": 10,
+          "pricing": {
+            "monthly": {
+              "USD": 5,
+              "GBP": 3.99,
+              "EUR": 4.99,
+              "AED": 18.99,
+              "INR": 484
+            }
+          }
+        },
+        {
+          "id": "backup-30gb",
+          "label": "30 GB",
+          "sizeGB": 30,
+          "pricing": {
+            "monthly": {
+              "USD": 9,
+              "GBP": 6.99,
+              "EUR": 8.99,
+              "AED": 33.99,
+              "INR": 872
+            }
+          }
+        },
+        {
+          "id": "backup-60gb",
+          "label": "60 GB",
+          "sizeGB": 60,
+          "pricing": {
+            "monthly": {
+              "USD": 13,
+              "GBP": 9.99,
+              "EUR": 11.99,
+              "AED": 47.99,
+              "INR": 1259
+            }
+          }
+        },
+        {
+          "id": "backup-100gb",
+          "label": "100 GB",
+          "sizeGB": 100,
+          "pricing": {
+            "monthly": {
+              "USD": 25,
+              "GBP": 19.99,
+              "EUR": 22.99,
+              "AED": 91.99,
+              "INR": 2420
+            }
+          }
+        },
+        {
+          "id": "backup-250gb",
+          "label": "250 GB",
+          "sizeGB": 250,
+          "pricing": {
+            "monthly": {
+              "USD": 35,
+              "GBP": 26.99,
+              "EUR": 31.99,
+              "AED": 128.99,
+              "INR": 3388
+            }
+          }
+        }
       ]
     }
   ],
-
   "includedWithEveryPlan": [
     {
       "id": "free-ssl",
       "label": "Free SSL certificate",
       "detail": "Issued and renewed automatically.",
       "claimId": "free-ssl"
-    },
-    {
-      "id": "litespeed",
-      "label": "LiteSpeed web server",
-      "detail": "A fast web server with built-in caching support.",
-      "claimId": "litespeed"
     },
     {
       "id": "nvme",
@@ -611,10 +820,10 @@
       "claimId": "cloudflare-cdn"
     },
     {
-      "id": "cpanel",
-      "label": "cPanel dashboard",
+      "id": "control-panel",
+      "label": "Control panel",
       "detail": "A familiar control panel with no lock-in.",
-      "claimId": "cpanel"
+      "claimId": "control-panel"
     },
     {
       "id": "one-click-wp",
@@ -624,8 +833,20 @@
     },
     {
       "id": "daily-backups",
-      "label": "Daily backups",
-      "detail": "Retention depends on your plan.",
+      "label": "Daily backup",
+      "detail": "The latest copy is kept.",
+      "claimId": null
+    },
+    {
+      "id": "advanced-security",
+      "label": "Advanced security",
+      "detail": "A firewall, brute-force protection and malware scanning.",
+      "claimId": "malware-scanning"
+    },
+    {
+      "id": "server-monitoring",
+      "label": "Server monitoring",
+      "detail": "We watch the servers your site runs on.",
       "claimId": null
     },
     {
@@ -647,7 +868,6 @@
       "claimId": "renewal-price-same"
     }
   ],
-
   "notIncludedWithEveryPlan": [
     {
       "id": "email-hosting",

@@ -11,16 +11,27 @@ import type { PlanCardData } from "@/lib/pricing/plans";
 import { UI } from "@/content/strings";
 import { Link } from "@/i18n/link";
 import type { GuaranteeLink } from "@/lib/pricing/guarantee";
+import type { CurrencyCode } from "@/lib/pricing";
+import { FEATURES } from "@/lib/flags";
+import CurrencySelector from "@/components/layout/CurrencySelector";
+import { pickMoney, useCurrency } from "@/components/ui/CurrencyAmount";
 
 type Cycle = "annual" | "monthly";
 
 type PricingPlansProps = {
+  /** The section id, so a link such as #plans scrolls to it. */
+  anchorId?: string;
   eyebrow?: string;
   title?: string;
   description?: string;
   plans: readonly PlanCardData[];
   /** False in production until prices are confirmed: cards show "Price on request". */
   showPrices: boolean;
+  /**
+   * Prices appear only on the pricing page (owner decision 58). Elsewhere pass the pricing page's path: the cards keep the plan
+   * name, description and what is included, and send the reader to that page for the price.
+   */
+  pricesHref?: string;
   /** Tax suffix from pricing.json, e.g. "+ VAT". Null for USD. */
   vatDisplay?: string | null;
   /** Only pass when the guarantee is verified in content/claims.ts. */
@@ -50,18 +61,22 @@ function Price({ amount, vat }: { amount: string; vat?: string | null }) {
 function PlanCard({
   index = 0,
   plan,
+  currency,
   cycle,
   showPrices,
   vat,
   guaranteeNote,
   guaranteeLink,
   renewalPromise = false,
+  pricesHref,
   headingLevel,
 }: {
   index?: number;
   plan: PlanCardData;
+  currency: CurrencyCode;
   cycle: Cycle;
   showPrices: boolean;
+  pricesHref?: string;
   vat?: string | null;
   guaranteeNote?: string | null;
   guaranteeLink?: GuaranteeLink | null;
@@ -69,19 +84,25 @@ function PlanCard({
   headingLevel: "h3" | "h4";
 }) {
   const Heading = headingLevel;
-  const amount = (c: Cycle) => (c === "annual" ? plan.annual : plan.monthly);
+  // Prices in the visitor's currency, each stored in pricing.json (USD until the visitor picks another).
+  const amount = (c: Cycle) => (c === "annual" ? (pickMoney(plan.money.annual, currency) ?? plan.annual) : (pickMoney(plan.money.monthly, currency) ?? plan.monthly));
+  const annualTotal = pickMoney(plan.money.annualTotal, currency) ?? plan.annualTotal;
+  const renewal = pickMoney(plan.money.renewal, currency) ?? plan.renewal;
   const activeAmount = amount(cycle);
   // "Choose {plan name}" when prices are shown (no price in the label). The visible label already names the plan,
   // so it needs no separate aria-label; the generic fallback gets the plan name added for screen readers.
   const priced = !plan.custom && showPrices && Boolean(activeAmount);
-  const ctaLabel = plan.custom ? UI.pricing.customCta : priced ? UI.pricing.choosePlan(plan.name) : UI.pricing.talkAboutPlan(plan.name);
-  const ctaAria = plan.custom || priced ? undefined : `${ctaLabel}: ${plan.name}`;
+  const elsewhere = !plan.custom && Boolean(pricesHref);
+  const ctaLabel = plan.custom ? UI.pricing.customCta : elsewhere ? UI.pricing.seePlanPrice(plan.name) : priced ? UI.pricing.choosePlan(plan.name) : UI.pricing.talkAboutPlan(plan.name);
+  const ctaHref = elsewhere && pricesHref ? `${pricesHref}#${plan.id}` : plan.ctaHref;
+  const ctaAria = plan.custom || priced || elsewhere ? undefined : `${ctaLabel}: ${plan.name}`;
 
   return (
     <li className="flex" {...reveal(index)}>
       <article
+        id={plan.id}
         className={cn(
-          "surface relative flex w-full flex-col p-6 sm:p-7",
+          "surface relative flex w-full scroll-mt-24 flex-col p-6 sm:p-7",
           plan.highlight && "plan-glow surface-raised !border-accent/60 shadow-lg ring-1 ring-accent/30",
         )}
       >
@@ -106,6 +127,15 @@ function PlanCard({
               <p className="font-[family-name:var(--font-heading)] text-3xl font-semibold tracking-tight text-foreground">{UI.pricing.customTitle}</p>
               <p className="t-small mt-2 text-muted-foreground">{UI.pricing.customLine}</p>
             </>
+          ) : elsewhere && pricesHref ? (
+            <>
+              <p className="font-[family-name:var(--font-heading)] text-2xl font-semibold tracking-tight text-foreground">{UI.pricing.pricesElsewhereTitle}</p>
+              <p className="t-small mt-2 text-muted-foreground">
+                <Link href={pricesHref} className="text-link underline underline-offset-4">
+                  {UI.pricing.pricesElsewhereLink}
+                </Link>
+              </p>
+            </>
           ) : !showPrices ? (
             <>
               <p className="font-[family-name:var(--font-heading)] text-3xl font-semibold tracking-tight text-foreground">{UI.pricing.onRequestTitle}</p>
@@ -118,8 +148,8 @@ function PlanCard({
                 <p className="t-small mt-2 text-muted-foreground">
                   {c === "annual" ? (
                     <>
-                      {plan.annualTotal ? `${plan.annualTotal} ${UI.pricing.billedAnnuallyAfter} ` : `${UI.pricing.billedAnnually}. `}
-                      {renewalLine(plan.renewal, { promiseVisible: renewalPromise, sameAsSignup: plan.renewalSame })}
+                      {annualTotal ? `${annualTotal} ${UI.pricing.billedAnnuallyAfter} ` : `${UI.pricing.billedAnnually}. `}
+                      {renewalLine(renewal, { promiseVisible: renewalPromise, sameAsSignup: plan.renewalSame })}
                     </>
                   ) : (
                     `${UI.pricing.billedMonthly}.`
@@ -132,7 +162,7 @@ function PlanCard({
 
         <div className="mt-6">
           <Button
-            href={plan.ctaHref}
+            href={ctaHref}
             variant={plan.highlight ? "primary" : "secondary"}
             fullWidth
             aria-label={ctaAria}
@@ -185,31 +215,30 @@ export default function PricingPlans({
   guaranteeNote,
   guaranteeLink,
   renewalPromise,
+  pricesHref,
   cycles = ["annual", "monthly"],
   defaultCycle = "annual",
   headingLevel = "h2",
   children,
+  anchorId,
   className,
 }: PricingPlansProps) {
   const headingId = useId();
   const [swapped, setSwapped] = useState(false);
   const [cycle, setCycle] = useState<Cycle>(cycles.includes(defaultCycle) ? defaultCycle : cycles[0]);
-  const showToggle = showPrices && cycles.length > 1;
+  const currency = useCurrency();
+  const showCurrency = showPrices && !pricesHref && FEATURES.currencySelector;
+  const showToggle = showPrices && !pricesHref && cycles.length > 1;
   const cardHeading = headingLevel === "h2" ? "h3" : "h4";
 
   return (
-    <section aria-labelledby={title ? headingId : undefined} className={cn("section-y", className)}>
+    <section id={anchorId} aria-labelledby={title ? headingId : undefined} className={cn("section-y scroll-mt-20", className)}>
       <div className="container-site">
         {title && <SectionHeader id={headingId} eyebrow={eyebrow} title={title} description={description} headingLevel={headingLevel} />}
 
-        {showPrices && process.env.NODE_ENV === "development" && (
-          <p role="note" className="mx-auto mt-6 max-w-xl rounded-xl border border-warning/40 bg-warning-surface px-4 py-2 text-center text-sm font-medium text-warning">
-            {UI.sample.draftPrices}
-          </p>
-        )}
-
-        {showToggle && (
-          <div className="mt-10 flex justify-center">
+        {(showToggle || showCurrency) && (
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            {showToggle && (
             <div role="group" aria-label={UI.pricing.billingPeriod} className="inline-flex rounded-xl border border-border-strong bg-muted p-1">
               {cycles.map((c) => (
                 <button
@@ -229,29 +258,35 @@ export default function PricingPlans({
                 </button>
               ))}
             </div>
+            )}
+            {showCurrency && <CurrencySelector />}
           </div>
         )}
 
         {plans.length === 0 ? (
           <p className="t-body mt-12 text-center text-muted-foreground">{UI.pricing.unavailable}</p>
         ) : (
-          <ul data-swapped={swapped || undefined} className={cn("grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3", title || showToggle ? "mt-10" : "")}>
+          <ul data-swapped={swapped || undefined} className={cn("grid grid-cols-1 gap-5 md:grid-cols-2", plans.length === 4 ? "xl:grid-cols-4" : "lg:grid-cols-3", title || showToggle ? "mt-10" : "")}>
             {plans.map((plan, index) => (
               <PlanCard
                 key={plan.id}
                 index={index}
                 plan={plan}
+                currency={currency}
                 cycle={cycle}
                 showPrices={showPrices}
                 vat={vatDisplay}
                 guaranteeNote={guaranteeNote}
                 guaranteeLink={guaranteeLink}
                 renewalPromise={renewalPromise}
+                pricesHref={pricesHref}
                 headingLevel={cardHeading}
               />
             ))}
           </ul>
         )}
+
+        {showPrices && !pricesHref && plans.length > 0 && <p className="mt-6 text-center text-sm text-muted-foreground">{UI.pricing.taxLine}</p>}
 
         {children}
       </div>

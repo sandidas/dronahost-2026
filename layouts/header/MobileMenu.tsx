@@ -7,6 +7,8 @@ import CurrencySelector from "@/components/layout/CurrencySelector";
 import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import { COMPANY } from "@/content/company";
+import { UI } from "@/content/strings";
 import {
   ACCOUNT_LINK,
   HEADER_CTA,
@@ -159,6 +161,12 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
           <Button href={HEADER_CTA.href} fullWidth>
             {HEADER_CTA.label}
           </Button>
+          {COMPANY.clientAreaUrl && (
+            <a href={COMPANY.clientAreaUrl} rel="noopener" className="btn btn-secondary w-full">
+              <LogIn className="size-4" aria-hidden="true" />
+              {UI.header.clientLogin}
+            </a>
+          )}
           {FEATURES.accountArea && (
             <Button href={ACCOUNT_LINK.href} variant="secondary" fullWidth leadingIcon={<LogIn className="size-4" aria-hidden="true" />}>
               {ACCOUNT_LINK.label}

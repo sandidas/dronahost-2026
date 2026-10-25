@@ -10,6 +10,8 @@ import type { SplitItem } from "@/components/sections/bespoke/ResponsibilitySpli
 import type { LogoItem } from "@/components/sections/LogoWall";
 import type { ResourcePost } from "@/components/sections/ResourceGrid";
 import type { TestimonialItem } from "@/components/sections/Testimonials";
+import type { Claim } from "@/content/claims";
+import type { VideoEmbedVideo } from "@/components/sections/VideoEmbed";
 
 export const SAMPLE_TESTIMONIALS: TestimonialItem[] = [
   { quote: "Sample quote describing a migration experience in the customer's own words.", name: "Sample Person", role: "Director", company: "Sample Agency Ltd" },
@@ -42,9 +44,9 @@ define( 'DISALLOW_FILE_EDIT', true );`;
 // those claims is verified, so the live components omit them. The final copy moves to content/pages/home.json.
 export const SAMPLE_PATHS: RouterPath[] = [
   { title: "I already have a WordPress site", line: "We move it to DronaHost and look after it.", href: "/wordpress-hosting", cta: "See WordPress hosting", icon: "layers" },
-  { title: "I need a website built", line: "We design a new WordPress site, then host it.", href: "/web-design", cta: "See website design", icon: "palette", claim: "website-design-service" },
-  { title: "I need simple hosting for a business site", line: "Web hosting with a cPanel dashboard, for any kind of site. Email is not included.", href: "/business-hosting", cta: "See business hosting", icon: "globe", claim: "business-hosting-scope" },
-  { title: "I want full control of my server", line: "Managed VPS with root access.", href: "/vps-hosting", cta: "See managed VPS", icon: "server", claim: "managed-vps-scope" },
+  { title: "I need a website built", line: "We design a new WordPress site, then host it.", href: "/wordpress-website-design", cta: "See website design", icon: "palette", claim: "website-design-service" },
+  { title: "I need simple hosting for a business site", line: "Web hosting with a control panel, for any kind of site. Email is not included.", href: "/business-hosting", cta: "See business hosting", icon: "globe", claim: "business-hosting-scope" },
+  { title: "I want full control of my server", line: "Managed VPS with root access.", href: "/managed-vps-hosting", cta: "See managed VPS", icon: "server", claim: "managed-vps-scope" },
 ];
 
 export const SAMPLE_PATHS_LONG: RouterPath[] = [
@@ -120,7 +122,7 @@ export const SAMPLE_BANNERS = {
   },
   brand: {
     name: "DronaHost",
-    entityLine: "DronaHost is a focused team that offers managed WordPress hosting for small businesses, freelancers and agencies worldwide.",
+    entityLine: "DronaHost is a managed WordPress hosting and web services company for businesses worldwide.",
     destinations: [
       { label: "Plans and pricing", href: "/pricing", icon: "layers" as const },
       { label: "Open a support ticket", href: "/contact", icon: "life-buoy" as const },
@@ -230,6 +232,29 @@ export const SAMPLE_BANNERS = {
   },
 } as const;
 
+/** Sample proof numbers for the development preview only (lib/flags.ts showSamples). Values are obviously fake on purpose. */
+const SAMPLE_STAT = { kind: "stat", status: "unverified", source: null, verifiedBy: null, verifiedOn: null, termsPage: null, termsPageStatus: "draft", verified: true } as const;
+export const SAMPLE_STATS: Claim[] = [
+  { ...SAMPLE_STAT, id: "sample-speed", text: "Sample: average page response time", value: "000 ms", label: "Sample metric: speed" },
+  { ...SAMPLE_STAT, id: "sample-reply", text: "Sample: average first reply", value: "00 min", label: "Sample metric: first reply" },
+  { ...SAMPLE_STAT, id: "sample-sites", text: "Sample: sites hosted", value: "0,000", label: "Sample metric: sites hosted" },
+];
+
+/** Sample rating for the RatingBand, development preview only (showSamples). Obviously fake on purpose. */
+export const SAMPLE_RATING = {
+  score: "[0.0]",
+  outOf: "5",
+  count: "[000]",
+  platform: "[Sample platform]",
+  url: "/contact",
+  platforms: [
+    { name: "[SAMPLE] Review site one", url: "/contact" },
+    { name: "[SAMPLE] Review site two", url: "/contact" },
+    { name: "[SAMPLE] Review site three", url: "/contact" },
+  ],
+  checkedOn: "2026-01-01",
+} as const;
+
 /**
  * Sample records for the team portal components on /v2 (development only). The real portals read MongoDB.
  * Ids are all-zero ObjectIds that match no record, so a button pressed on /v2 changes nothing.
@@ -293,4 +318,14 @@ export const SAMPLE_PORTAL_BUILDER_DOC: import("@/lib/builder/model").BuilderDoc
     { id: "bsamplegal1", type: "Gallery", props: { title: "Sample gallery", images: [{}, {}, {}], layout: "grid", columns: 3, aspect: "square", gap: "medium", lightbox: true } },
     { id: "bsamplecta1", type: "CtaBand", props: { title: "Sample call to action", primaryCta: { label: "See the plans", href: "/pricing" } } },
   ],
+};
+
+/** A layout fixture for the VideoEmbed showcase. The id is not a real video; nothing loads until "play" is pressed. */
+export const SAMPLE_VIDEO: VideoEmbedVideo = {
+  youtubeId: "xxxxxxxxxxx",
+  title: "Sample: moving a WordPress site in four steps",
+  summary: "A layout fixture for the video section. Not a real video.",
+  uploadDate: "2026-01-01",
+  duration: "PT2M30S",
+  credit: "Sample Studio",
 };

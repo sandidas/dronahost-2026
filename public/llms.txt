@@ -1,19 +1,19 @@
 # DronaHost
 > Managed WordPress, cloud and VPS hosting, plus web design and SEO, for businesses in the United States, United Kingdom, United Arab Emirates and Europe.
-> Money-back guarantee: 30-day. Support: 24/7. Site migration: Free. At renewal: Same price. Backups: Backups.
+> Uptime SLA: 99.99%. Money-back guarantee: 30-day. Support: 24/7. Site migration: Free. At renewal: Same price. Backups: Backups. Migration process: Migration.
 
 ## Hosting products
 
-- **Managed WordPress hosting**: LiteSpeed servers with built-in caching, a staging area for testing updates, and a team that moves your existing site across. https://dronahost.com/wordpress-hosting
-- **Cloud hosting**: Flexible cloud hosting for sites and applications whose traffic changes over time and that need to grow without migrating. https://dronahost.com/cloud-hosting
-- **VPS hosting**: Virtual private servers for applications, stores and teams that need dedicated resources and more control than shared hosting. https://dronahost.com/vps-hosting
-- **Business hosting**: Business hosting that sets up your website and business email together, with help from the team. https://dronahost.com/business-hosting
+- **Managed WordPress hosting**: Automatic backups, a team that moves your existing site across and help by support ticket. Plans from $14.99/month, billed annually. https://dronahost.com/wordpress-hosting
+- **Cloud hosting**: Flexible cloud hosting for sites and applications whose traffic changes over time and that need to grow without migrating. https://dronahost.com/cloud-web-hosting
+- **VPS hosting**: Virtual private servers for applications, stores and teams that need dedicated resources and more control than shared hosting. https://dronahost.com/managed-vps-hosting
+- **Business hosting**: Web hosting with a control panel for any kind of site. You manage the site and we run the hosting account. Email is not included. https://dronahost.com/business-hosting
 - **Domain registration**: Register a domain name or transfer one you own, with help from the DronaHost team. https://dronahost.com/domains
 - **Pricing**: Plan comparison with the renewal price shown beside the signup price. https://dronahost.com/pricing
 
 ## Services
 
-- **Web design and development**: WordPress, React and Next.js websites scoped around what your business needs the site to do. https://dronahost.com/web-design
+- **Web design and development**: WordPress, React and Next.js websites scoped around what your business needs the site to do. https://dronahost.com/wordpress-website-design
 - **Growth services**: Support for sites that are ready to grow: integrations, conversion work and ongoing improvement. https://dronahost.com/growth-services
 - **SEO services**: Technical SEO, content strategy and link building on a monthly retainer. https://dronahost.com/seo-services
 
@@ -27,7 +27,7 @@
 ## Company
 
 - **About DronaHost**: https://dronahost.com/about
-- **Contact**: https://dronahost.com/contact
+- **Contact**: https://dronahost.com/contact (support@dronahost.com)
 - **Blog**: Hosting, performance and web design guides. https://dronahost.com/blog
 
 ## Legal and compliance
@@ -38,4 +38,6 @@
 - Service level agreement: https://dronahost.com/sla
 - Security: https://dronahost.com/security
 - Data processing: https://dronahost.com/data-processing
+- Money-back guarantee: If hosting is not right for you, you can cancel within the guarantee period for a refund.
+- Published uptime commitment: Our uptime commitment and service-credit terms are set out in writing.
 

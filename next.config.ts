@@ -25,6 +25,11 @@ const nextConfig: NextConfig = {
       { source: "/web-hosting", destination: "/wordpress-hosting", permanent: true },
       { source: "/hosting-price", destination: "/pricing", permanent: true },
       { source: "/domains-pricing", destination: "/domains", permanent: true },
+      // Service URLs follow the v1 site so existing rankings and links carry over (owner, 2026-10-11, decision 70).
+      { source: "/cloud-hosting", destination: "/cloud-web-hosting", permanent: true },
+      { source: "/vps-hosting", destination: "/managed-vps-hosting", permanent: true },
+      { source: "/web-design", destination: "/wordpress-website-design", permanent: true },
+      { source: "/custom-development", destination: "/custom-website-development", permanent: true },
     ];
   },
 };

@@ -12,7 +12,7 @@ import { join } from "node:path";
 import { passes, resolveClaimRef, resolveFeatureRef, resolveRequires, defaultContext } from "../lib/content/refs";
 import { splitRequires } from "../lib/content/requires-grammar";
 import { parsePage } from "../lib/content/page";
-import { SECTION_REGISTRY } from "../lib/content/registry";
+import { pageLook, SECTION_REGISTRY, type PageLook } from "../lib/content/registry";
 import type { SectionSpec } from "../lib/content/schemas/sections";
 
 const dir = process.argv[2] ?? "content/pages";
@@ -44,19 +44,28 @@ const pages: Record<string, { sections: unknown[] }> = {};
 for (const file of readdirSync(dir).filter((f) => f.endsWith(".json"))) {
   let spec;
   try { spec = parsePage(JSON.parse(readFileSync(join(dir, file), "utf8"))); } catch { continue; }
+  const look = pageLook(spec.sections as SectionSpec[]);
   const sections = (spec.sections as SectionSpec[]).map((s) => {
     const gatesOk = passes(s, ctx);
     const missing = [...missingFacts(s)];
     if (!gatesOk) return { id: s.id, type: s.type, visible: false, reason: "gated" as const, missing, gatesOk, words: 0 };
-    const entry = SECTION_REGISTRY[s.type] as { render: (sec: SectionSpec, c: typeof ctx) => unknown };
-    const html = renderToStaticMarkup(createElement(NextIntlClientProvider, { locale: "en", messages: {}, children: entry.render(s, ctx) as ReactNode }));
+    const entry = SECTION_REGISTRY[s.type] as { render: (sec: SectionSpec, c: typeof ctx, l: PageLook) => unknown };
+    const html = renderToStaticMarkup(createElement(NextIntlClientProvider, { locale: "en", messages: {}, children: entry.render(s, ctx, look) as ReactNode }));
     const visible = html.length > 0;
-    return { id: s.id, type: s.type, visible, reason: visible ? ("ok" as const) : ("empty" as const), missing, gatesOk, words: visible ? textWords(html) : 0 };
+    // A section that sets its own tone (data-tone on its root, for example the ink bands of the Home look) keeps it.
+    const ownTone = /^<[a-z]+\b[^>]*\sdata-tone="([a-z0-9-]+)"/.exec(html)?.[1];
+    return { id: s.id, type: s.type, visible, reason: visible ? ("ok" as const) : ("empty" as const), missing, gatesOk, words: visible ? textWords(html) : 0, ownTone };
   });
-  // Tones follow the page's CSS (.page-tones): every second rendered section is tinted.
+  // Tones follow the page's CSS (.page-tones): every second rendered section is tinted, unless it sets its own tone.
   const shown = sections.filter((s) => s.visible);
-  const tone = new Map(shown.map((s, i) => [s.id, i % 2 === 1 ? "tint" : "base"]));
-  pages[spec.path] = { sections: sections.map((s) => (s.visible ? { ...s, tone: tone.get(s.id) } : s)) };
+  const tone = new Map(shown.map((s, i) => [s.id, s.ownTone ?? (i % 2 === 1 ? "tint" : "base")]));
+  pages[spec.path] = {
+    sections: sections.map((s) => {
+      const { ownTone, ...rest } = s;
+      void ownTone;
+      return rest.visible ? { ...rest, tone: tone.get(rest.id) } : rest;
+    }),
+  };
 }
 void resolveRequires;
 process.stdout.write(`${JSON.stringify({ pages }, null, 2)}\n`);

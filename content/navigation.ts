@@ -5,6 +5,8 @@
  *
  * TODO: replace with verified data. Descriptions are draft copy and avoid unverified claims.
  */
+import { UI } from "./strings";
+
 export type NavIcon =
   | "server"
   | "cloud"
@@ -31,20 +33,20 @@ export const HOSTING_LINKS: readonly NavLink[] = [
   },
   {
     label: "Cloud hosting",
-    href: "/cloud-hosting",
+    href: "/cloud-web-hosting",
     description: "Flexible cloud plans for sites that outgrow shared resources.",
     icon: "cloud",
   },
   {
     label: "VPS hosting",
-    href: "/vps-hosting",
+    href: "/managed-vps-hosting",
     description: "Root access and dedicated resources for applications and teams.",
     icon: "server",
   },
   {
     label: "Business hosting",
     href: "/business-hosting",
-    description: "Web hosting with a cPanel dashboard for any kind of site. Email is not included.",
+    description: "Web hosting with a control panel for any kind of site. Email is not included.",
     icon: "server",
   },
   {
@@ -58,7 +60,7 @@ export const HOSTING_LINKS: readonly NavLink[] = [
 export const SERVICE_LINKS: readonly NavLink[] = [
   {
     label: "Web design",
-    href: "/web-design",
+    href: "/wordpress-website-design",
     description: "WordPress and custom builds scoped around your goals.",
     icon: "palette",
   },
@@ -91,7 +93,11 @@ export const HELP_PANEL = {
 
 /** Header actions. Sign-in route is not built yet. TODO: confirm the account URL. */
 export const ACCOUNT_LINK: NavLink = { label: "Log in", href: "/login" };
-export const HEADER_CTA: NavLink = { label: "View plans", href: "/pricing" };
+/** The header action: the migration plan form on Home (decision 58). The label lives in content/strings.ts. */
+export const HEADER_CTA: NavLink = { label: UI.header.cta, href: UI.header.ctaHref };
+
+/** Policy links in the footer's bottom strip, on the right (the plan cards carry no policy link). */
+export const FOOTER_BOTTOM_LINKS: readonly NavLink[] = [{ label: "Refund policy", href: "/refund-policy" }];
 
 /**
  * The footer lists only what is sold and what is ready: the WordPress hosting plans, and the pages marked Ready in

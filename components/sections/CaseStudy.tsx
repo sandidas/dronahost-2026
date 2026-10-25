@@ -45,7 +45,6 @@ export default function CaseStudy({
           <div>
             <p className="t-eyebrow">
               {eyebrow}
-              {!sourceUrl && <span className="ms-3 font-semibold normal-case tracking-normal text-warning">{UI.caseStudy.sampleData}</span>}
             </p>
             <Heading id={headingId} className="t-h2 mt-3 text-foreground">
               {title}

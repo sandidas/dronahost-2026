@@ -2,24 +2,23 @@ import CTABand from "@/components/sections/CTABand";
 import FAQSection from "@/components/sections/FAQSection";
 import CenteredHero from "@/components/sections/CenteredHero";
 import JsonLd from "@/components/sections/JsonLd";
-import PricingExtras from "@/components/sections/PricingExtras";
-import PricingPlans from "@/components/sections/PricingPlans";
-import { isVerified } from "@/content/claims";
+import ComparisonTable from "@/components/sections/ComparisonTable";
+import HostingPricing from "@/components/sections/HostingPricing";
 import { PRICING_FAQ } from "@/content/faqs";
 import { PRICING_HERO } from "@/content/heroes";
-import { HOME_CTA } from "@/content/home";
-import { showPrices } from "@/lib/flags";
+import { PRICING_CTA } from "@/content/home";
+import { UI } from "@/content/strings";
 import { startingPriceLabel } from "@/lib/pricing";
-import { buildFamilyCards, buildPlanCards, HIGH_TRAFFIC, PLAN_FAMILIES, VAT_DISPLAY } from "@/lib/pricing/plans";
+import { buildPlanComparison } from "@/lib/pricing/compare";
+import { buildPlanCards } from "@/lib/pricing/plans";
 import { breadcrumbSchema, faqPageSchema, hostingPlansSchema } from "@/lib/seo/jsonld";
 import { buildBreadcrumbs } from "@/lib/seo/breadcrumbs";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { moneyBackGuarantee } from "@/lib/pricing/guarantee";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   return buildMetadata({ locale,
-    title: "Pricing: Managed WordPress and Cloud Hosting Plans",
+    title: "Hosting Plans and Pricing",
     description: `Compare DronaHost hosting plans, with the renewal price shown beside the signup price${startingPriceLabel() ? `. Plans from ${startingPriceLabel()}` : ""}.`,
     path: "/pricing",
   });
@@ -27,7 +26,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default function PricingPage() {
   const plans = buildPlanCards();
-  const prices = showPrices();
   const schema = hostingPlansSchema(
     plans.map((p) => ({
       id: p.id,
@@ -42,28 +40,17 @@ export default function PricingPage() {
     <>
       <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs("/pricing")), faqPageSchema(PRICING_FAQ), ...(schema ? [schema] : [])]} />
       <CenteredHero {...PRICING_HERO} />
-      {PLAN_FAMILIES.map((family, i) => (
-        <PricingPlans
-          key={family.id}
-          title={family.label}
-          description={family.description}
-          plans={buildFamilyCards(family.id)}
-          showPrices={prices}
-          vatDisplay={VAT_DISPLAY}
-          {...moneyBackGuarantee()}
-          renewalPromise={isVerified("renewal-price-same")}
-        >
-          {i === PLAN_FAMILIES.length - 1 && <PricingExtras showPrices={prices} />}
-        </PricingPlans>
-      ))}
-      <CTABand
-        title={HIGH_TRAFFIC.name}
-        description={HIGH_TRAFFIC.description}
-        primaryCta={{ label: HIGH_TRAFFIC.ctaLabel, href: HIGH_TRAFFIC.ctaHref }}
-        headingLevel="h2"
+      <HostingPricing compare={false} />
+      <ComparisonTable
+        eyebrow={UI.pricing.compareEyebrow}
+        title={UI.pricing.compareTitle}
+        description={UI.pricing.compareLine}
+        caption={UI.pricing.compareCaption}
+        rowHeader={UI.pricing.compareRowHeader}
+        {...buildPlanComparison({ linkToCards: true })}
       />
       <FAQSection eyebrow="Billing" title="Pricing questions" items={PRICING_FAQ} />
-      <CTABand {...HOME_CTA} title="Not sure which plan fits?" />
+      <CTABand {...PRICING_CTA} title="Not sure which plan fits?" />
     </>
   );
 }

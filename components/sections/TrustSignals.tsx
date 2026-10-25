@@ -46,7 +46,6 @@ export default function TrustSignals({ eyebrow, title, description, items = TRUS
                 <div className="min-w-0 flex-1">
                   <Item className="t-h4 text-foreground">{item.title}</Item>
                   <p className="t-small mt-0.5 text-muted-foreground">{item.description}</p>
-                  {!item.verified && <p className="mt-1 text-xs font-semibold text-warning">{UI.sample.unverified}</p>}
                 </div>
                 {item.href && (
                   <Link href={item.href} className="inline-flex min-h-9 shrink-0 items-center text-sm font-semibold text-link underline underline-offset-4">
@@ -69,7 +68,6 @@ export default function TrustSignals({ eyebrow, title, description, items = TRUS
                     {item.linkLabel ?? UI.generic.readDetails}
                   </Link>
                 )}
-                {!item.verified && <p className="mt-2 text-xs font-semibold text-warning">{UI.sample.unverified}</p>}
               </div>
             </li>
           ))}

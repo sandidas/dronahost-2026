@@ -1,0 +1,135 @@
+/*
+ * Animated product-page illustrations (components/sections/visuals/motion-graphics.tsx) and the hero panel
+ * (components/sections/hero/PanelMockup.tsx). Each animation plays once. Inside a block that RevealObserver armed
+ * (`.reveal-armed`), it waits until the block scrolls into view (`.is-in`); above the fold it plays on load. The markup
+ * is the final state, so reduced motion simply shows the finished picture. Transform and opacity only.
+ */
+@layer components {
+  .gx-path,
+  .gx-packet,
+  .gx-stop,
+  .gx-live,
+  .gx-ring,
+  .gx-pop,
+  .gx-fill,
+  .gx-drop,
+  .gx-type,
+  .gx-line,
+  .gx-toggle,
+  .gx-row {
+    animation-fill-mode: both;
+    animation-timing-function: var(--ease-out);
+  }
+  .gx-path {
+    animation: gx-grow-x 1600ms var(--ease-in-out) 500ms both;
+  }
+  .gx-packet {
+    left: 16%;
+    animation: gx-travel 1600ms var(--ease-in-out) 500ms both;
+  }
+  .gx-stop {
+    animation: gx-pop 500ms var(--ease-out) var(--d, 300ms) both;
+  }
+  .gx-live {
+    animation: gx-rise 500ms var(--ease-out) 2200ms both;
+  }
+  .gx-ring {
+    animation: gx-ring 700ms var(--ease-out) var(--d, 200ms) both;
+  }
+  .gx-pop {
+    animation: gx-pop 420ms var(--ease-out) var(--d, 400ms) both;
+  }
+  .gx-fill {
+    animation: gx-grow-x 900ms var(--ease-out) var(--d, 300ms) both;
+  }
+  .gx-drop {
+    animation: gx-drop 480ms var(--ease-out) var(--d, 200ms) both;
+  }
+  .gx-type {
+    animation: gx-type 1000ms steps(24, end) 300ms both;
+  }
+  .gx-line {
+    animation: gx-rise 400ms var(--ease-out) var(--d, 1300ms) both;
+  }
+  .gx-row {
+    animation: gx-rise 450ms var(--ease-out) var(--d, 300ms) both;
+  }
+  .gx-toggle {
+    animation: gx-knob 360ms var(--ease-out) var(--d, 900ms) both;
+  }
+  [dir="rtl"] .gx-path,
+  [dir="rtl"] .gx-fill {
+    transform-origin: right;
+  }
+
+  /* Wait for the scroll reveal below the fold. */
+  .reveal-armed:not(.is-in) :is(.gx-path, .gx-packet, .gx-stop, .gx-live, .gx-ring, .gx-pop, .gx-fill, .gx-drop, .gx-type, .gx-line, .gx-row, .gx-toggle),
+  .reveal-armed:not(.is-in):is(.gx-scope) :is(.gx-path, .gx-packet, .gx-stop, .gx-live, .gx-ring, .gx-pop, .gx-fill, .gx-drop, .gx-type, .gx-line) {
+    animation-play-state: paused;
+  }
+
+  @keyframes gx-grow-x {
+    from {
+      transform: scaleX(0);
+    }
+  }
+  @keyframes gx-travel {
+    from {
+      left: 16%;
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    to {
+      left: calc(84% - 1rem);
+      opacity: 0;
+    }
+  }
+  @keyframes gx-pop {
+    from {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+  }
+  @keyframes gx-rise {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+  @keyframes gx-ring {
+    from {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+  }
+  @keyframes gx-drop {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes gx-type {
+    from {
+      max-width: 0;
+    }
+    to {
+      max-width: 100%;
+    }
+  }
+  @keyframes gx-knob {
+    from {
+      transform: translateX(-0.75rem);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :is(.gx-path, .gx-packet, .gx-stop, .gx-live, .gx-ring, .gx-pop, .gx-fill, .gx-drop, .gx-type, .gx-line, .gx-row, .gx-toggle) {
+      animation: none;
+    }
+    .gx-packet {
+      display: none;
+    }
+  }
+}

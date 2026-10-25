@@ -1,0 +1,81 @@
+{
+  "_meta": {
+    "lastUpdated": "2026-10-11",
+    "source": "Customer reviews shown on the v1 site (dronahost.com), copied word for word on 2026-10-11. Never edit a quote; ask the customer to approve any change.",
+    "publishRule": "A review renders in production only when role, company and sourceUrl are filled, consentOnFile is true and heldClaims is empty. Until then it shows in the development preview only, with no status label on the page."
+  },
+  "reviews": [
+    {
+      "id": "scott-vyas",
+      "name": "Scott Vyas",
+      "topic": "User-friendly control panel",
+      "rating": 4.5,
+      "quote": "Navigating the control panel is a breeze with DronaHost. Whether you're a novice or an experienced user, you'll find it intuitive and user-friendly. Managing domains, databases, and email accounts has never been easier.",
+      "role": null,
+      "company": null,
+      "sourceUrl": null,
+      "consentOnFile": false,
+      "heldClaims": ["Email accounts: hosting does not include email (decision 16)"]
+    },
+    {
+      "id": "josep-fakih",
+      "name": "Josep Fakih",
+      "topic": "Security features",
+      "rating": 5,
+      "quote": "I value the security of my websites, and DronaHost offers a robust set of security features. Their firewall and malware scanning tools have kept my websites safe from threats, giving me peace of mind.",
+      "role": null,
+      "company": null,
+      "sourceUrl": null,
+      "consentOnFile": false,
+      "heldClaims": ["Firewall and malware scanning: not in the claims registry"]
+    },
+    {
+      "id": "alix-finch",
+      "name": "Alix Finch",
+      "topic": "Value for money",
+      "rating": 5,
+      "quote": "Considering the excellent service and features provided, DronaHost offers exceptional value for money. Their pricing plans are competitive, and the quality of service makes every penny spent well worth it.",
+      "role": null,
+      "company": null,
+      "sourceUrl": null,
+      "consentOnFile": false,
+      "heldClaims": []
+    },
+    {
+      "id": "mathew-anderson",
+      "name": "Mathew Anderson",
+      "topic": "Uptime and reliability",
+      "rating": 5,
+      "quote": "One of the most crucial factors in web hosting is uptime, and I'm thrilled to report that DronaHost has consistently delivered an impressive uptime record. My websites have experienced minimal downtime, if any at all, which has greatly contributed to a seamless online experience for my visitors.",
+      "role": null,
+      "company": null,
+      "sourceUrl": null,
+      "consentOnFile": false,
+      "heldClaims": ["Uptime record: no verified uptime figure or SLA published"]
+    },
+    {
+      "id": "william-ko",
+      "name": "William Ko",
+      "topic": "Performance",
+      "rating": 5,
+      "quote": "Website speed and performance are critical for user satisfaction and search engine rankings. With DronaHost, my websites load incredibly fast, even during traffic spikes. Their servers are optimized to handle high loads efficiently, and this has had a noticeable impact on my website's performance.",
+      "role": null,
+      "company": null,
+      "sourceUrl": null,
+      "consentOnFile": false,
+      "heldClaims": []
+    },
+    {
+      "id": "andrew-licausi",
+      "name": "Andrew LiCausi",
+      "topic": "Customer support",
+      "rating": 5,
+      "quote": "The customer support team at DronaHost deserves special mention. They are available 24/7 and are always ready to assist with any queries or issues I have encountered. Their response time is lightning-fast, and their staff is not only knowledgeable but also incredibly friendly and patient.",
+      "role": null,
+      "company": null,
+      "sourceUrl": null,
+      "consentOnFile": false,
+      "heldClaims": ["24/7 and lightning-fast response: no published support hours or response time"]
+    }
+  ]
+}

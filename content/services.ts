@@ -31,8 +31,8 @@ export type ServiceContent = {
 const CONTACT = { label: "Talk to our team", href: "/contact" };
 
 export const SERVICES: Record<string, ServiceContent> = {
-  "vps-hosting": {
-    slug: "vps-hosting",
+  "managed-vps-hosting": {
+    slug: "managed-vps-hosting",
     metaTitle: "VPS Hosting",
     metaDescription: "Virtual private servers for applications, stores and teams that need dedicated resources and more control than shared hosting.",
     schemaName: "VPS hosting",
@@ -62,8 +62,8 @@ export const SERVICES: Record<string, ServiceContent> = {
       { question: "Is VPS hosting managed?", answer: "Scope varies by setup. Contact the team to agree what we look after and what you manage yourself." },
     ],
   },
-  "cloud-hosting": {
-    slug: "cloud-hosting",
+  "cloud-web-hosting": {
+    slug: "cloud-web-hosting",
     metaTitle: "Cloud Hosting",
     metaDescription: "Flexible cloud hosting for sites and applications whose traffic changes over time and that need to grow without migrating.",
     schemaName: "Cloud hosting",
@@ -95,15 +95,15 @@ export const SERVICES: Record<string, ServiceContent> = {
   },
   "business-hosting": {
     slug: "business-hosting",
-    metaTitle: "Business Hosting with a cPanel Dashboard",
-    metaDescription: "Web hosting with a cPanel dashboard for any kind of site. You manage the site and we run the hosting account. Email is not included.",
+    metaTitle: "Business Hosting with a Control Panel",
+    metaDescription: "Web hosting with a control panel for any kind of site. You manage the site and we run the hosting account. Email is not included.",
     schemaName: "Business hosting",
-    schemaDescription: "Web hosting with a cPanel dashboard for any kind of site. Email is not included.",
+    schemaDescription: "Web hosting with a control panel for any kind of site. Email is not included.",
     hero: {
       eyebrow: "Business hosting",
-      title: "Web hosting with a cPanel dashboard,",
+      title: "Web hosting with a control panel,",
       titleAccent: "for any kind of site",
-      description: "Host your website and manage it from a cPanel dashboard. You manage the site. We run the hosting account.",
+      description: "Host your website and manage it from a control panel. You manage the site. We run the hosting account.",
       primaryCta: CONTACT,
       secondaryCta: { label: "See business hosting plans", href: "/pricing" },
     },
@@ -113,7 +113,7 @@ export const SERVICES: Record<string, ServiceContent> = {
       description: "Business hosting is for small teams that want their website and domain in one account, managed from a familiar dashboard.",
       items: [
         { icon: "globe", title: "Your own domain", description: "Register or transfer a domain and keep everything in one account." },
-        { icon: "layers", title: "You manage the site. We run the hosting account.", description: "You look after your site, its updates and its content in cPanel. We keep the hosting account running." },
+        { icon: "layers", title: "You manage the site. We run the hosting account.", description: "You look after your site, its updates and its content in the control panel. We keep the hosting account running." },
         { icon: "life-buoy", title: "Setup help", description: "Tell us what you have today and we will help you move it." },
       ],
     },
@@ -154,8 +154,8 @@ export const SERVICES: Record<string, ServiceContent> = {
       { question: "What does registration cost?", answer: "Pricing depends on the extension. The team will quote the full price, including any registry fees, before you commit." },
     ],
   },
-  "web-design": {
-    slug: "web-design",
+  "wordpress-website-design": {
+    slug: "wordpress-website-design",
     metaTitle: "Web Design and Development",
     metaDescription: "WordPress, React and Next.js websites scoped around what your business needs the site to do.",
     schemaName: "Web design and development",

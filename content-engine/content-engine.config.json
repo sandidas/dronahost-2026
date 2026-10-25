@@ -42,7 +42,13 @@
         "hoursFrom",
         "onlyPublished",
         "hideIfEmpty",
-        "showRenewalPrice"
+        "showRenewalPrice",
+        "youtubeId",
+        "uploadDate",
+        "duration",
+        "captions",
+        "transcriptHref",
+        "src"
       ],
       "labelKeys": [
         "label",
@@ -92,8 +98,8 @@
     }
   },
   "governor": {
-    "maxInFlight": 3,
-    "monthlyNewPages": 4,
+    "maxInFlight": 6,
+    "monthlyNewPages": 9,
     "paused": false
   },
   "cta": {
@@ -123,7 +129,7 @@
     "faqItemsByArchetype": {
       "money": [
         6,
-        8
+        10
       ],
       "pricing": [
         6,
@@ -158,6 +164,31 @@
       "decision": "guide",
       "trust": "brand"
     }
+  },
+  "contentPages": {
+    "blueprints": [
+      "C2",
+      "C4",
+      "C5",
+      "C6",
+      "C7",
+      "C8",
+      "C9",
+      "C12",
+      "C13"
+    ],
+    "exemptPaths": [
+      "/"
+    ],
+    "enforce": false,
+    "videoRequired": false,
+    "externalLinksMin": 1,
+    "bodyLinksMin": 2,
+    "inboundLinksMin": 2,
+    "ownHosts": [
+      "dronahost.com",
+      "my.dronahost.com"
+    ]
   },
   "web": {
     "serpSource": "claude-web",

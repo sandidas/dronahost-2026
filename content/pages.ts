@@ -17,7 +17,7 @@ export const ABOUT_WHAT_WE_DO: Grid = {
   description: "We run the servers and we build and grow the sites on them, so you deal with one team.",
   items: [
     { icon: "layers", title: "Managed hosting", description: "WordPress, cloud and VPS hosting, with the server work handled for you.", cta: { label: "See hosting", href: "/wordpress-hosting" } },
-    { icon: "palette", title: "Web design", description: "WordPress and custom builds scoped around what your business needs the site to do.", cta: { label: "See web design", href: "/web-design" } },
+    { icon: "palette", title: "Web design", description: "WordPress and custom builds scoped around what your business needs the site to do.", cta: { label: "See web design", href: "/wordpress-website-design" } },
     { icon: "search", title: "SEO services", description: "Technical fixes, content and link work with plain reporting.", cta: { label: "See SEO services", href: "/seo-services" } },
     { icon: "code", title: "Custom development", description: "React and Next.js solutions for products that outgrow a template.", cta: { label: "Talk to us", href: "/contact" } },
   ],

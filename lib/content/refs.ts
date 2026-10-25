@@ -1,5 +1,5 @@
 import { CLAIMS, claimRenders } from "@/content/claims";
-import { FEATURES } from "@/lib/flags";
+import { FEATURES, showSamples } from "@/lib/flags";
 import { leadFormReady } from "@/lib/leads/config";
 import { startingPrice, formatPrice, DEFAULT_CURRENCY } from "@/lib/pricing";
 import pricing from "@/data/pricing.json";
@@ -24,11 +24,15 @@ export type ResolveContext = {
 export const defaultContext: ResolveContext = {
   claimRenders: (id) => {
     const claim = CLAIMS.find((c) => c.id === id);
-    return claim ? claimRenders(claim) : false;
+    // Development preview: an owner-verified claim whose terms page is still a draft (for example a product page under
+    // review) renders, so the owner can review the page before publishing it. Production and the content checks use the
+    // single gate (verified AND terms page published).
+    return claim ? claimRenders(claim) || (showSamples() && claim.status === "verified" && Boolean(claim.termsPage)) : false;
   },
   flag: (name) => (name in FEATURES ? Boolean((FEATURES as Record<string, boolean>)[name]) : false),
-  // verifiedReviews stays false until reviews.json exists. leadFormReady is true when a request has somewhere to go (and in development).
-  predicate: (name) => (name === "leadFormReady" ? leadFormReady() : false),
+  // verifiedReviews stays false in production until data/reviews.json has a publishable entry. leadFormReady is true when a request has somewhere to go (and in development).
+  // verifiedReviews is true in the development sample preview only (showSamples), so the sample reviews can render there.
+  predicate: (name) => (name === "leadFormReady" ? leadFormReady() : name === "verifiedReviews" ? showSamples() : false),
   plansWithFeature,
 };
 

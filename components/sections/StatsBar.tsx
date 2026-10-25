@@ -58,7 +58,6 @@ export default function StatsBar({ ids, label = UI.stats.region, claims, classNa
                   )}
                 </dt>
                 {stat.note && <dd className="mt-1 text-xs text-subtle-foreground">{stat.note}</dd>}
-                {!stat.verified && <dd className="mt-1 text-xs font-semibold text-warning">{UI.sample.unverified}</dd>}
               </div>
             );
           })}

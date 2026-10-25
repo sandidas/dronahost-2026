@@ -2,6 +2,9 @@
 @import "./styles/tokens.css";
 @import "./styles/buttons.css";
 @import "./styles/motion.css";
+@import "./styles/luxe.css";
+@import "./styles/look-luxe.css";
+@import "./styles/graphics.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

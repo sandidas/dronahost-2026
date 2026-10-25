@@ -14,7 +14,7 @@ For each one: confirm it is true today, or tell me to remove it. Source column =
 | **"Unlimited" resources** | Scale, Dedicated Core and Enterprise: WordPress sites, storage, traffic, domains, mailboxes, databases (null limit renders "Unlimited") | `data/pricing.json` limits |
 | LiteSpeed web servers with server-level caching | Home and WordPress heroes, bento, split, FAQ, site description | `content/heroes.ts`, `content/home.ts` |
 | NVMe SSD storage | "Included with every plan" (from pricing.json) | `data/pricing.json` |
-| cPanel dashboard, one-click WordPress install | "Included with every plan" | `data/pricing.json` |
+| Control panel, one-click WordPress install | "Included with every plan" | `data/pricing.json` |
 | Free migration, review before DNS switch | Hero, split section, FAQ, every plan | `content/*`, `data/pricing.json` |
 | Backups, restore points, per-plan retention (1 to 30 days) | Plan cards, comparison table, split section | `data/pricing.json` limits |
 | Malware scanning, SSL auto-renew, network-level DDoS | WordPress features, home split | `content/wordpress.ts`, `content/home.ts` |

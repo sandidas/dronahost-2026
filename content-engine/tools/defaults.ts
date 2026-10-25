@@ -19,7 +19,7 @@ export const DEFAULT_IDIOMS = [
 ];
 
 /** Keys of a page spec whose strings are structure, not copy, when a project has no page-spec adapter. */
-export const DEFAULT_NON_COPY_KEYS = ["id", "type", "variant", "icon", "href", "source", "show", "highlight", "claims", "links", "requires"];
+export const DEFAULT_NON_COPY_KEYS = ["id", "type", "variant", "icon", "href", "source", "show", "highlight", "claims", "links", "requires", "youtubeId", "uploadDate", "duration", "captions", "transcriptHref", "src"];
 export const DEFAULT_LABEL_KEYS = ["label", "cta"];
 
 export const DEFAULT_WORDPRESS = {

@@ -2,15 +2,15 @@ import { SITE_URL } from "./config";
 
 const LABEL_MAP: Record<string, string> = {
   "wordpress-hosting": "WordPress Hosting",
-  "vps-hosting": "VPS Hosting",
-  "cloud-hosting": "Cloud Hosting",
+  "managed-vps-hosting": "VPS Hosting",
+  "cloud-web-hosting": "Cloud Hosting",
   "business-hosting": "Business Hosting",
   "pricing": "Pricing",
   "domains": "Domains",
   "blog": "Blog",
   "about": "About",
   "contact": "Contact",
-  "web-design": "Web Design",
+  "wordpress-website-design": "Web Design",
   "seo-services": "SEO Services",
   "growth-services": "Growth Services",
   "hosting": "Hosting",

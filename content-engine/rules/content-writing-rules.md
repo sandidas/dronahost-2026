@@ -52,6 +52,20 @@ second language, who compare providers carefully and who distrust hype.
 - US English by default. Regional variants only when that locale exists.
 - Default currency and the currency selector: see `project/brand.md`. Never show a currency without its symbol and billing period.
 
+## Writing quality standards
+
+Every page meets all seven. The checks catch what a machine can see; a person proofreads the rest before APPROVAL 2.
+
+| Standard | What it means here | How it is checked |
+|---|---|---|
+| Semantically optimized | Cover the topic, not only the keyword. Name the entities and terms the top results share (brief section 3, "recurring entities and terms"), answer the questions people ask next (brief "Next questions"), and use natural variants of the keyword. Never repeat the exact keyword to hit a count | Brief review; K2, K3, IN5 |
+| Skimmable | The answer sits under the H1. A heading every 300 words or fewer, written as the question it answers. Paragraphs of 80 words or fewer, one idea each. A series of three or more items becomes a list or a table. Bold only the key fact in a block, never a whole sentence | S3, S6 (`paragraphWordsMax`, `wordsPerHeadingMax`) |
+| Better than the top results | The page covers what the top results all cover, then adds one thing they miss (information gain). Never claim we are better without a fact behind it | Brief "Information gain"; E3, OV2 ([information-gain.md](information-gain.md)) |
+| Easy to read | Grade 8 to 10, short sentences, plain words, outcome first and the technical term second | V3, V4, V7, V11 |
+| Written in the native language | Written by a fluent writer in the page's own locale and spelling, never machine-translated. A localized page is rewritten, not translated word for word, and a native speaker reviews it before it goes live | V10; owner review |
+| No grammar or punctuation mistakes | A person proofreads every page before APPROVAL 2. The checker fails repeated words, double spaces, a space before punctuation, a missing space after a comma, unbalanced parentheses, doubled punctuation and Markdown paragraphs with no end punctuation | V13, plus a human proofread |
+| Active voice | Name who does the action: "We back up your site every day", not "Your site is backed up every day". Passive voice only when the actor is unknown or does not matter | V12 warns when more than 10% of sentences are passive (`passiveWarnAbovePercent`) |
+
 ## Claims discipline
 
 Copy never contains a number, guarantee, SLA, location or certification that is not rendered from the claims registry
@@ -586,7 +600,22 @@ Which keywords to target and which to avoid is a project decision: see `project/
 - Primary keyword: in `<h1>`, first 100 words of body, at least one `<h2>`, naturally throughout
 - Do not stuff — if a keyword appears more than once every 100 words it is excessive
 - Use semantic variants (Google understands synonyms): "WordPress hosting" and "WordPress host" and "managed WordPress" are all valid
-- Keyword in the image `alt` attribute when it is genuinely descriptive of the image
+- On content pages (below), at least one real image whose `alt` describes it and naturally includes the keyword or a close variant. Every other `alt` stays purely descriptive (WCAG 2.1 AA). Never stuff an `alt`, and a decorative image keeps an empty `alt`
+
+### Required elements on content pages
+
+Content pages are product, service, comparison, regional, domain, migration and email pages, and every guide or blog article: the blueprints listed in `contentPages.blueprints` in the config, plus all Markdown articles. Home, pricing, about, trust, contact, reviews, policy, glossary and hub pages are exempt, and so is any path in `contentPages.exemptPaths`.
+
+| # | Element | Rule | Check |
+|---|---|---|---|
+| 1 | Keyword in the title | The primary keyword, or all its words, in the SEO title | K2 |
+| 2 | Keyword in an H2 | At least one H2 holds the keyword or all its words, phrased as the question the section answers | CP1 |
+| 3 | Keyword in an image alt | At least one real image (a screenshot, diagram or licensed photo, never a stock photo presented as ours) whose alt describes it in words that include the keyword | CP2 |
+| 4 | A video | At least one real video that helps the reader: our own screen recording or explainer, or a credited video from an authoritative source (for example WordPress.org). Never stock or AI footage presented as ours. It loads on click (privacy-enhanced embed such as youtube-nocookie, no third-party cookies before consent, no LCP cost) and has captions | CP3 |
+| 5 | A link to another site | At least one https link to an authoritative source the page relies on: official documentation, a standard, a regulator or the source of a cited number. Never a competitor's sales page or an affiliate link | CP4 |
+| 6 | Links to our own pages | At least 3 internal links (S5), of which at least 2 sit in running copy, not only in buttons, the hero or the closing band | S5, CP5 |
+
+**Rollout (decision 77).** CP1, CP2, CP4 and CP5 warn while `contentPages.enforce` is false; the owner switches it on once the live pages are fixed. CP3 (video) warns while `contentPages.videoRequired` is false, because no real video exists yet; a page without one carries `[HUMAN REVIEW: video]` in its brief. In a Draft these rules always warn.
 
 ### Content length
 
@@ -637,10 +666,23 @@ AI tools increasingly cite specific pages in answers. To be cited:
 
 ### Internal linking rules
 
-Every page links to at least 3 related pages. Internal links:
-- Use descriptive anchor text (never "click here" or "read more")
-- Link to the most relevant destination (not always the homepage)
-- Plan internal links before writing, not after
+Internal links follow a hub-and-spoke map. Every page links to at least 3 related pages (S5), at least 2 of them from running copy (CP5), and every content page receives links from at least 2 other pages (CP7).
+
+**The map.** Each content page belongs to one hub (a product, a service or a guide hub). Plan its links in the brief, before writing:
+
+| Direction | Link to | Example |
+|---|---|---|
+| Up | Its hub page, once, early in the body | A WordPress guide links to the WordPress hosting page |
+| Across | 1 or 2 sibling pages under the same hub | A guide on caching links to the guide on page speed |
+| Down | The guides or policies that answer the reader's next question | A product page links to the migration terms |
+| Back | When a page is published, add a link to it from its hub and from one sibling (update those pages in the same change) | The hub's list of guides gains the new guide |
+
+**Anchor text:**
+- Describes the target page and, where it reads naturally, names its keyword or a close variant ("our WordPress hosting plans", not "click here", "read more" or a bare URL)
+- One anchor text points to one URL. Never use the same anchor for two different pages (CP6)
+- Vary anchors to the same page across the site; never repeat the exact keyword in every anchor
+- Link to the most relevant page, not always the homepage, and never to a page that redirects
+- `npm run content:suggest-links -- <file>` suggests links from the register; CP6 warns when an anchor shares no word with its target's keyword, and CP7 warns when fewer than 2 other pages link to a content page (navigation and footer links are not counted)
 
 The project's URL map and which pages exist: see the project's plan-specifics for this file and `project/page-map.md`.
 

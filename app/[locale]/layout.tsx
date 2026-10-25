@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import RootDocument from "@/components/layout/RootDocument";
 import { LIVE_LOCALES, LOCALES, isLive } from "@/lib/i18n/config";
-import { startingPriceLabel } from "@/lib/pricing";
 
 /* ───────────────── METADATA ───────────────── */
 
@@ -13,10 +12,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://dronahost.com"),
     title: {
-      default: "DronaHost — Managed WordPress & Cloud Hosting",
+      default: "DronaHost: Managed WordPress Hosting and Web Services",
       template: "%s | DronaHost",
     },
-    description: `Managed WordPress, VPS and cloud hosting for businesses in the US, UK, UAE and Europe${startingPriceLabel() ? `, from ${startingPriceLabel()}` : ""}.`,
+    // No price here: prices appear only on /pricing (decision 58).
+    description: "DronaHost is a managed WordPress hosting and web services company for businesses worldwide.",
     openGraph: { siteName: "DronaHost", locale: og, type: "website" },
   };
 }

@@ -2,6 +2,8 @@ import { Check, Minus } from "lucide-react";
 import { Link } from "@/i18n/link";
 import { Fragment, useId } from "react";
 import { cn } from "@/utils/cn";
+import CurrencyAmount from "@/components/ui/CurrencyAmount";
+import type { Money } from "@/lib/pricing";
 import SectionHeader from "./SectionHeader";
 
 export type ComparisonColumn = {
@@ -14,8 +16,8 @@ export type ComparisonColumn = {
   href?: string;
 };
 
-/** true = included, false = not included, string = shown as text, null = not applicable. */
-export type ComparisonValue = boolean | string | null;
+/** true = included, false = not included, string = shown as text, null = not applicable, { amounts } = a price in the visitor's currency. */
+export type ComparisonValue = boolean | string | null | { amounts: Money };
 
 export type ComparisonRow = {
   label: string;
@@ -61,6 +63,12 @@ function Cell({ value }: { value: ComparisonValue }) {
       </>
     );
   if (value === null) return <span className="text-subtle-foreground">Not applicable</span>;
+  if (typeof value === "object")
+    return (
+      <span className="tabular-nums text-foreground">
+        <CurrencyAmount amounts={value.amounts} />
+      </span>
+    );
   return <span className="text-foreground">{value}</span>;
 }
 

@@ -92,20 +92,21 @@ Google US phrasing, read **2026-10-08** with a search tool that returned titles 
 
 Added 2026-10-09 (engine 1.0.8, rule IN5). Sources: the reader's problem in section 1, the gaps in section 3, and the FAQ the owner approved on 2026-10-08. "People also ask" is still missing (section 19), so this list is the owner's and Claude's reading, not a measured one. `[HUMAN REVIEW: owner adds or removes questions from a real search and from support tickets]`
 
+Revised 2026-10-10 for the brand home page (decisions 58 and 59). The earlier table is replaced; prices moved to `/pricing`.
+
 | Question | Answered on the page by |
 |---|---|
-| What does DronaHost do? | H1: Managed WordPress hosting without the technical worry |
-| Which service is right for my situation? | H2: Where are you starting from? |
-| What does DronaHost promise, and where are the terms? | H2: Three promises you can read in full |
-| What does DronaHost not do? | H2: What DronaHost does not do |
-| Do I need technical skills? | FAQ: Do I need technical skills to use DronaHost? |
-| Does DronaHost host my email? | FAQ: Does DronaHost host email? |
-| Can I move my existing site, and is it free? | FAQ: Can I move my existing WordPress site to DronaHost? |
-| How much does WordPress hosting cost? | [HUMAN REVIEW: the FAQ item exists but is hidden until FEATURES.pricesConfirmed] |
-| Will the price go up when I renew? | FAQ: Will the price go up when my plan renews? |
-| What if I am not happy? | FAQ: What if I am not happy with my plan? |
-| How do I reach a person? | FAQ: How do I reach support? |
-| Who runs DronaHost, and can I check? | [HUMAN REVIEW: needs the legal entity, address and team names (interview Q1, Q2, Q5); until then the provenance section names the owner as reviewer and the policies are the checkable facts] |
+| What does DronaHost offer? | FAQ: What does DronaHost offer? |
+| Which service fits my business? | H2: Everything your website needs, from one provider |
+| Why choose DronaHost, and where are the terms? | H2: Engineered for growth. Run for you. |
+| How does it all fit together? | H2: One ecosystem for every part of your online business |
+| Will my website go offline when I move? | FAQ: Will my website go offline during the migration? |
+| How does the move work? | H2: We move your site. You approve every step. |
+| Will my price increase at renewal? | FAQ: Will my price increase at renewal? |
+| What if it is not right for me? | FAQ: What if DronaHost is not right for me? |
+| Is email included? | FAQ: Is email included with hosting? |
+| How do I log in? | FAQ: How do I log in to my DronaHost account? |
+| How do I reach support? | FAQ: How do I contact DronaHost support? |
 
 ## 5. Human first (owner)
 

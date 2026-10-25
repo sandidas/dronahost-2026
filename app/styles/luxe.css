@@ -1,0 +1,286 @@
+/*
+ * Home look ("luxe"): theme-following bands (light in light mode, dark in dark mode, alternating only through
+ * `.page-tones` for a minimal variation), fine dot texture, soft teal and orange light, very large light Sora headlines with a heavier
+ * closing phrase, tracked eyebrows with a hairline, hairline rules and pill actions. Used by the ProductHero "console" variant
+ * and the sections it brings with it (docs/components/README.md, "Home sections"). Every colour comes from the theme
+ * tokens, so the same markup is light in light mode and dark in dark mode, and `npm run check:contrast` covers both. Motion is colour, border, shadow and
+ * transform only, and collapses under reduced motion through the duration tokens.
+ */
+@layer components {
+  /* ── Bands ── */
+  /* A section that follows the theme. Its background comes from `.page-tones` (page background or the muted band), so
+     neighbours differ only slightly in either theme. */
+  .luxe-band {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    color: var(--foreground);
+  }
+  /* Two soft lights from the theme's glow tokens (faint in both themes). */
+  .luxe-glow::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background-image:
+      radial-gradient(circle 46rem at 92% -6%, var(--glow-teal), transparent 72%),
+      radial-gradient(circle 32rem at -4% 108%, var(--glow-orange), transparent 72%);
+  }
+  .section-luxe {
+    padding-block: clamp(4.5rem, 2.75rem + 5vw, 7.5rem);
+  }
+  .tone-ink,
+  .tone-ink-2 {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    color: var(--foreground);
+    background-color: var(--ink);
+    background-image:
+      radial-gradient(circle 46rem at 92% -6%, rgb(5 162 198 / 0.2), transparent 72%),
+      radial-gradient(circle 32rem at -4% 108%, rgb(254 85 4 / 0.12), transparent 72%);
+  }
+  .tone-ink-2 {
+    background-color: var(--ink-2);
+    background-image: radial-gradient(ellipse 42rem 26rem at 50% 0%, rgb(5 162 198 / 0.14), transparent 75%);
+    border-block: 1px solid var(--border);
+  }
+  /* Fine dot texture, faded out towards the edges. Decorative only. */
+  .dot-field::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(var(--grid-line) 1px, transparent 1px);
+    background-size: 28px 28px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 70% 30%, #000 30%, transparent 75%);
+    mask-image: radial-gradient(ellipse 80% 70% at 70% 30%, #000 30%, transparent 75%);
+  }
+  .dot-field-center::before {
+    -webkit-mask-image: radial-gradient(ellipse 60% 80% at 50% 50%, #000 20%, transparent 70%);
+    mask-image: radial-gradient(ellipse 60% 80% at 50% 50%, #000 20%, transparent 70%);
+  }
+
+  /* ── Type: light Sora statements with one heavier closing phrase ── */
+  .t-luxe-display {
+    font-family: var(--font-heading);
+    font-weight: 300;
+    font-size: clamp(2.5rem, 1.5rem + 4.2vw, 4.75rem);
+    line-height: 1.03;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+    color: var(--foreground);
+  }
+  .t-luxe-h2 {
+    font-family: var(--font-heading);
+    font-weight: 300;
+    font-size: clamp(2.05rem, 1.35rem + 2.7vw, 3.75rem);
+    line-height: 1.06;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+    color: var(--foreground);
+  }
+  .t-luxe-h3 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.125rem);
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  .luxe-accent {
+    font-weight: 500;
+  }
+  .t-luxe-lead {
+    font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
+    line-height: 1.65;
+    color: var(--muted-foreground);
+    text-wrap: pretty;
+  }
+  .t-luxe-numeral {
+    font-family: var(--font-heading);
+    font-weight: 300;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  /* Uppercase tracked eyebrow led by a short teal hairline. */
+  .eyebrow-rule {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--link);
+  }
+  .eyebrow-rule::before {
+    content: "";
+    width: 1.75rem;
+    height: 1px;
+    flex: none;
+    background: var(--accent);
+  }
+  .eyebrow-plain {
+    font-size: 0.75rem;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--link);
+  }
+
+  /* ── Actions: pill buttons with a soft orange glow ── */
+  .btn-glow {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.3),
+      0 14px 34px -14px color-mix(in srgb, var(--action-fill) 75%, transparent);
+  }
+  .btn-glow:hover {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.3),
+      0 20px 40px -14px color-mix(in srgb, var(--action-fill) 90%, transparent);
+  }
+  .arrow-nudge {
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  a:hover .arrow-nudge,
+  button:hover .arrow-nudge {
+    transform: translateX(4px);
+  }
+  [dir="rtl"] .arrow-nudge {
+    transform: scaleX(-1);
+  }
+
+  /* ── Cards ── */
+  /* Glass card on an ink band. */
+  .luxe-card {
+    position: relative;
+    border: 1px solid var(--border);
+    background: linear-gradient(160deg, var(--surface-raised), color-mix(in srgb, var(--card) 70%, transparent));
+    transition:
+      transform var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out);
+  }
+  .luxe-card-quiet {
+    background: color-mix(in srgb, var(--card) 75%, transparent);
+  }
+  /* Card on a light band: hairline border, deeper shadow on hover. */
+  .luxe-card-light {
+    position: relative;
+    border: 1px solid var(--border);
+    background: var(--card);
+    transition:
+      transform var(--dur-base) var(--ease-out),
+      box-shadow var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out);
+  }
+  .luxe-card:focus-within,
+  .luxe-card-light:focus-within {
+    border-color: var(--border-strong);
+  }
+  @media (hover: hover) {
+    .luxe-card:hover {
+      transform: translateY(-4px);
+      border-color: color-mix(in srgb, var(--link) 45%, transparent);
+    }
+    .luxe-card-light:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-xl);
+    }
+  }
+  /* Concentric rings in the corner of a featured card. */
+  .luxe-rings {
+    position: absolute;
+    right: -3.75rem;
+    bottom: -3.75rem;
+    width: 16rem;
+    height: 16rem;
+    border-radius: 9999px;
+    border: 1px solid color-mix(in srgb, var(--link) 18%, transparent);
+    box-shadow:
+      0 0 0 2.5rem color-mix(in srgb, var(--link) 4%, transparent),
+      0 0 0 5rem color-mix(in srgb, var(--link) 2.5%, transparent);
+    pointer-events: none;
+  }
+  /* The gradient hairline around the hero console. */
+  .console-frame {
+    border-radius: 1.625rem;
+    padding: 1px;
+    background: linear-gradient(150deg, var(--border-strong), var(--border) 38%, color-mix(in srgb, var(--accent) 40%, transparent));
+  }
+  .console-body {
+    border-radius: 1.5625rem;
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--surface-raised), var(--card));
+    box-shadow: 0 60px 120px -40px rgb(var(--shadow-rgb) / calc(0.18 * var(--shadow-k)));
+  }
+  .console-progress {
+    background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--link) 50%, #ffffff));
+  }
+  /* Translucent field holder for the hero's one-field form. */
+  .glass-pill {
+    background: color-mix(in srgb, var(--card) 80%, transparent);
+    border: 1px solid var(--border-strong);
+    box-shadow: 0 40px 100px -40px rgb(var(--shadow-rgb) / calc(0.18 * var(--shadow-k)));
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+  /* The field has no outline of its own, so the pill shows the focus ring. */
+  .glass-pill:has(input:focus-visible) {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+  .glass-form {
+    background: linear-gradient(180deg, var(--surface-raised), color-mix(in srgb, var(--card) 80%, transparent));
+    border: 1px solid var(--border-strong);
+    box-shadow: 0 60px 120px -50px rgb(var(--shadow-rgb) / calc(0.18 * var(--shadow-k)));
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+
+  /* ── Ecosystem orbit ── */
+  .orbit-ring {
+    position: absolute;
+    border-radius: 9999px;
+    pointer-events: none;
+  }
+  .orbit-core {
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 35%, transparent), color-mix(in srgb, var(--accent) 4%, transparent));
+    border: 1px solid color-mix(in srgb, var(--link) 35%, transparent);
+  }
+  .orbit-node {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    box-shadow: 0 14px 30px -14px rgb(var(--shadow-rgb) / calc(0.18 * var(--shadow-k)));
+  }
+
+  /* ── FAQ "lines" variant: hairline rows with a plus that turns into a minus ── */
+  .faq-plus {
+    position: relative;
+  }
+  .faq-plus::before,
+  .faq-plus::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0.75rem;
+    height: 1px;
+    background: currentColor;
+    transform: translate(-50%, -50%);
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  .faq-plus::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+  details[open] .faq-plus::after {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+}

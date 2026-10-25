@@ -40,6 +40,8 @@ export function voiceCard(settings: Settings, voice: Voice, loaded: Pick<Loaded,
   out.push(`- Exclamation marks: ${voice.exclamationMarks ? "allowed" : "never"}.`);
   out.push(`- Titles: the helper adds "${config.limits.titleSuffix}"; warn above ${config.limits.titleWarnAbove} characters with it, fail above ${config.limits.titleFailAbove}. Never type the brand into a title.`);
   out.push(`- Answer block under the H1: ${config.limits.answerBlockWords[0]} to ${config.limits.answerBlockWords[1]} words. FAQ answers: ${config.limits.faqAnswerWarnBelow} to ${config.limits.faqAnswerFailAbove} words. Internal links: ${config.limits.internalLinksMin} or more.`);
+  out.push(`- Active voice (warn above ${config.limits.passiveWarnAbovePercent}% passive sentences). Paragraphs ${config.limits.paragraphWordsMax} words or fewer; a heading every ${config.limits.wordsPerHeadingMax} words or fewer.`);
+  out.push(`- Content pages: keyword in the title, one H2 and one image alt; a real video; ${config.contentPages.externalLinksMin}+ outside source link; ${config.contentPages.bodyLinksMin}+ internal links in body copy; ${config.contentPages.inboundLinksMin}+ pages linking in (rules section 7).`);
   out.push("", "## Words", "");
   out.push("| Avoid | Use |", "|---|---|");
   for (const s of voice.wordSwaps) out.push(`| ${s.avoid.join(", ")} | ${s.use} |`);

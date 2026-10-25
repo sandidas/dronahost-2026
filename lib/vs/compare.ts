@@ -3,7 +3,6 @@ import type { ComparisonRow } from "@/components/sections/ComparisonTable";
 import { CLAIMS, isVerified } from "@/content/claims";
 import type { CompetitorData, FactKey } from "@/data/vs/types";
 import { showPrices } from "@/lib/flags";
-import { formatPrice } from "@/lib/pricing";
 
 /** Row order and wording of the table. */
 export const FACT_LABELS: Record<FactKey, string> = {
@@ -38,12 +37,13 @@ export function dronahostFacts(planId: string): Partial<Record<FactKey, string>>
   const out: Partial<Record<FactKey, string>> = {};
   const annual = plan.pricing.annual.USD;
   const renewal = plan.pricing.renewal.USD;
-  if (showPrices() && annual != null) out.price = `${formatPrice(annual)}/mo, billed annually`;
-  if (showPrices() && renewal != null) out.renewal = `${formatPrice(renewal)}/mo`;
+  // Prices appear only on /pricing (decision 58): the comparison names the same-price renewal rule and links there instead.
+  if (showPrices() && annual != null) out.price = "See the pricing page";
+  if (showPrices() && renewal != null) out.renewal = isVerified("renewal-price-same") ? "Same as the signup price" : "See the pricing page";
   const { sites, diskSpaceGB, backupRetentionDays } = plan.limits;
   if (sites != null) out.sites = sites === 1 ? "1 website" : `${sites} websites`;
   if (diskSpaceGB != null) out.storage = `${diskSpaceGB} GB`;
-  if (isVerified("backup-retention") && backupRetentionDays != null) out.backups = `Daily backups, kept for ${backupRetentionDays} days`;
+  if (isVerified("backup-retention") && backupRetentionDays != null) out.backups = backupRetentionDays === 1 ? "Daily backup, latest copy kept" : `Daily backups, kept for ${backupRetentionDays} days`;
   else if (isVerified("backups")) out.backups = claimText("backups") ?? undefined;
   const channels = plan.support.channels;
   if (channels.length > 0) {
@@ -111,7 +111,7 @@ export function priceInPlainTerms(d: CompetitorData): string[] {
   const out: string[] = [];
   if (price && renewal) out.push(`${d.name} ${d.plan.name}: ${price}. After the first term it renews at ${renewal}.`);
   else if (price) out.push(`${d.name} ${d.plan.name}: ${price}. The page we checked does not state the renewal price.`);
-  if (mine.price && mine.renewal) out.push(`DronaHost ${planLabel(d.dronahostPlanId)}: ${mine.price}. It renews at ${mine.renewal}.`);
+  if (mine.price) out.push(`DronaHost ${planLabel(d.dronahostPlanId)}: the price is on the DronaHost pricing page${isVerified("renewal-price-same") ? ", and it renews at the same price" : ""}.`);
   if (out.length > 0) out.push("Prices exclude tax. Customers in India pay GST at checkout. Check each source for the current price before you decide.");
   return out;
 }
@@ -134,7 +134,7 @@ export function comparisonFaq(d: CompetitorData): VsFaq[] {
   if (price && renewal) {
     faqs.push({
       question: `Is ${d.name} cheaper at renewal?`,
-      answer: `${d.name} lists ${price} for ${d.plan.name} and ${renewal} after the first term, as read on ${formatReviewDate(d.reviewedOn)}. ${mine.renewal ? `DronaHost ${planLabel(d.dronahostPlanId)} renews at ${mine.renewal}.` : "DronaHost shows the renewal price on each plan card once prices are confirmed."} Compare the renewal figures, not only the first-term price, because that is what you pay for most of the years you stay.`,
+      answer: `${d.name} lists ${price} for ${d.plan.name} and ${renewal} after the first term, as read on ${formatReviewDate(d.reviewedOn)}. ${isVerified("renewal-price-same") ? `DronaHost ${planLabel(d.dronahostPlanId)} renews at the same price you start on; the pricing page lists it.` : "The DronaHost pricing page lists each plan's renewal price beside its signup price."} Compare the renewal figures, not only the first-term price, because that is what you pay for most of the years you stay.`,
     });
   }
   faqs.push({

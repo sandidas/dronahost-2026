@@ -1,0 +1,445 @@
+{
+ "$comment": "Fact ledger for /business-hosting. The draft may use only these facts, interview answers and claims that render.",
+ "slug": "/business-hosting",
+ "updated": "2026-10-12",
+ "facts": [
+  {
+   "id": "F1",
+   "fact": "Business hosting shows the same four plans as every hosting page (Starter, Growth, Pro, Scale); the page leads with Pro and Scale for growing and larger business sites, any kind of site",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "DECISIONS.md 72, 73; interview A1, A2 (2026-10-11, 2026-10-12)"
+   },
+   "retrievedOn": "2026-10-12",
+   "checkedBy": "Claude (fact-checker) 2026-10-12, from data/pricing.json 4.1.0",
+   "status": "verified",
+   "usedIn": [
+    "Hero",
+    "AnswerBlock",
+    "Meaning"
+   ]
+  },
+  {
+   "id": "F2",
+   "fact": "Pro: 25 websites, 100 GB NVMe storage, 4 CPU cores, 6 GB memory, 50 databases, semi-dedicated resources, performance tuning",
+   "kind": "number",
+   "source": {
+    "type": "project-file",
+    "ref": "data/pricing.json 4.1.0 plans[pro]"
+   },
+   "retrievedOn": "2026-10-12",
+   "checkedBy": "Claude (fact-checker) 2026-10-12, from data/pricing.json 4.1.0",
+   "status": "verified",
+   "usedIn": [
+    "Meaning",
+    "PricingPlans"
+   ]
+  },
+  {
+   "id": "F3",
+   "fact": "Scale: websites, domains and databases under fair use, 150 GB NVMe storage, 8 CPU cores, 8 GB memory, dedicated resources, performance tuning, 24/7 support from senior experts",
+   "kind": "number",
+   "source": {
+    "type": "project-file",
+    "ref": "data/pricing.json 4.1.0 plans[scale]"
+   },
+   "retrievedOn": "2026-10-12",
+   "checkedBy": "Claude (fact-checker) 2026-10-12, from data/pricing.json 4.1.0",
+   "status": "verified",
+   "usedIn": [
+    "Meaning",
+    "PricingPlans"
+   ]
+  },
+  {
+   "id": "F4",
+   "fact": "Prices, renewal prices and billing periods come only from data/pricing.json (never typed into copy)",
+   "kind": "business",
+   "source": {
+    "type": "project-file",
+    "ref": "data/pricing.json (plans essential, plus)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker) 2026-10-11, owner to confirm",
+   "status": "verified",
+   "usedIn": [
+    "PricingPlans"
+   ]
+  },
+  {
+   "id": "F5",
+   "fact": "The renewal price equals the signup price, with no end date",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "content/claims.ts renewal-price-same (published /pricing-policy); decision 50"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker) 2026-10-11, owner to confirm",
+   "status": "verified",
+   "usedIn": [
+    "Hero",
+    "AnswerBlock",
+    "FAQ"
+   ]
+  },
+  {
+   "id": "F6",
+   "fact": "Every hosting package includes the free migration of one website (published /migration-terms)",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "content/claims.ts free-migration (published /migration-terms); pricing.json freeMigration true; claim migration-process"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker) 2026-10-11, owner to confirm",
+   "status": "verified",
+   "usedIn": [
+    "ProcessTimeline",
+    "FAQ"
+   ]
+  },
+  {
+   "id": "F7",
+   "fact": "30-day money-back guarantee",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "content/claims.ts money-back (published /refund-policy)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker) 2026-10-11, owner to confirm",
+   "status": "verified",
+   "usedIn": [
+    "AssuranceStrip",
+    "CTABand"
+   ]
+  },
+  {
+   "id": "F8",
+   "fact": "Support is by ticket and email only; no live chat, WhatsApp or phone",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "content-engine/project/DECISIONS.md decision 22"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker) 2026-10-11, owner to confirm",
+   "status": "verified",
+   "usedIn": [
+    "FAQ",
+    "SupportBand"
+   ]
+  },
+  {
+   "id": "F9",
+   "fact": "Support tiers: Starter Standard, Growth Priority, Pro 24/7, Scale 24/7 with senior experts; hours for Starter and Growth are not set (open in confirmBeforeLaunch)",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "data/pricing.json 4.1.0 support; _meta.confirmBeforeLaunch"
+   },
+   "retrievedOn": "2026-10-12",
+   "checkedBy": "Claude (fact-checker) 2026-10-12, from data/pricing.json 4.1.0",
+   "status": "needs-check",
+   "usedIn": [
+    "PricingPlans",
+    "AssuranceStrip"
+   ]
+  },
+  {
+   "id": "F10",
+   "fact": "Free SSL certificates from Let's Encrypt on every plan",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "pricing.json freeSSL true; claim free-ssl (owner 2026-10-11, decision 61)"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker) 2026-10-11, owner to confirm",
+   "status": "verified",
+   "usedIn": [
+    "BentoGrid"
+   ]
+  },
+  {
+   "id": "F11",
+   "fact": "Daily backup on every plan; only the latest copy is kept",
+   "kind": "number",
+   "source": {
+    "type": "project-file",
+    "ref": "DECISIONS.md 74; data/pricing.json limits.backupRetentionDays = 1"
+   },
+   "retrievedOn": "2026-10-12",
+   "checkedBy": "Claude (fact-checker) 2026-10-12, from data/pricing.json 4.1.0",
+   "status": "verified",
+   "usedIn": [
+    "BentoGrid",
+    "FAQ"
+   ]
+  },
+  {
+   "id": "F12",
+   "fact": "Two daily backup layers, local and offsite, each replacing the copy before it, on every plan",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "content/claims.ts backup-layers (verified, terms page /wordpress-hosting draft); DECISIONS.md 61, 74"
+   },
+   "retrievedOn": "2026-10-12",
+   "checkedBy": "Claude (fact-checker) 2026-10-12: claim backup-layers is verified for every plan, and one lineup serves every page (decision 73), so it applies here too",
+   "status": "verified",
+   "usedIn": [
+    "BentoGrid"
+   ]
+  },
+  {
+   "id": "F13",
+   "fact": "Malware scanning and advanced security on every plan",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "pricing.json malwareScanning, advancedSecurity true; decision 61"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker) 2026-10-11, owner to confirm",
+   "status": "verified",
+   "usedIn": [
+    "BentoGrid"
+   ]
+  },
+  {
+   "id": "F14",
+   "fact": "Free domain for the first year on annual plans",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "pricing.json freeDomainFirstYear true; owner 2026-10-11 'All plan for annual paid only'"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker) 2026-10-11, owner to confirm",
+   "status": "verified",
+   "usedIn": [
+    "PricingPlans"
+   ]
+  },
+  {
+   "id": "F15",
+   "fact": "Which domain endings the free domain covers and its renewal price",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "handoffs/wordpress-hosting.md open flag"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker) 2026-10-11: needs owner",
+   "status": "needs-check",
+   "usedIn": [
+    "FAQ"
+   ]
+  },
+  {
+   "id": "F16",
+   "fact": "Customers manage their sites in a control panel; the panel product is never named and cPanel is not offered",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "content-engine/project/DECISIONS.md decision 65 and 66"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker) 2026-10-11, owner to confirm",
+   "status": "verified",
+   "usedIn": [
+    "Hero",
+    "BentoGrid"
+   ]
+  },
+  {
+   "id": "F17",
+   "fact": "Email is not included with any hosting plan; business email is a separate service",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "content-engine/project/DECISIONS.md decision 16 and 49"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker) 2026-10-11, owner to confirm",
+   "status": "verified",
+   "usedIn": [
+    "FAQ",
+    "Meaning"
+   ]
+  },
+  {
+   "id": "F18",
+   "fact": "WooCommerce optimization is not included on any plan (false until the owner confirms)",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "data/pricing.json 4.1.0 capabilities.wooCommerceOptimization"
+   },
+   "retrievedOn": "2026-10-12",
+   "checkedBy": "Claude (fact-checker) 2026-10-12, from data/pricing.json 4.1.0",
+   "status": "verified",
+   "usedIn": [
+    "none: do not claim"
+   ]
+  },
+  {
+   "id": "F19",
+   "fact": "DDoS protection through Cloudflare on Business hosting plans",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "pricing.json ddosProtection, cloudflare true; claim cloudflare-cdn unverified"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker) 2026-10-11: needs owner",
+   "status": "needs-check",
+   "usedIn": [
+    "BentoGrid"
+   ]
+  },
+  {
+   "id": "F20",
+   "fact": "NVMe SSD storage on every plan",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "content/claims.ts nvme (verified by owner 2026-10-11); data/pricing.json headlineFeatures"
+   },
+   "retrievedOn": "2026-10-12",
+   "checkedBy": "Claude (fact-checker) 2026-10-12, from data/pricing.json 4.1.0",
+   "status": "verified",
+   "usedIn": [
+    "BentoGrid"
+   ]
+  },
+  {
+   "id": "F21",
+   "fact": "PHP limits from the PHP settings tab: memory 512, 512, 768 and 1,024 MB; max execution 120, 240, 240 and 300 seconds (Starter to Scale); worker counts still to be measured",
+   "kind": "number",
+   "source": {
+    "type": "project-file",
+    "ref": "data/pricing.json 4.1.0 php; _meta.confirmBeforeLaunch"
+   },
+   "retrievedOn": "2026-10-12",
+   "checkedBy": "Claude (fact-checker) 2026-10-12, from data/pricing.json 4.1.0",
+   "status": "needs-check",
+   "usedIn": [
+    "none until measured"
+   ]
+  },
+  {
+   "id": "F22",
+   "fact": "Customers manage files, databases, apps and backups in the control panel; no root, SSH or WP-CLI",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "DECISIONS.md 66; content/claims.ts wp-control-panel"
+   },
+   "retrievedOn": "2026-10-12",
+   "checkedBy": "Claude (fact-checker) 2026-10-12, from data/pricing.json 4.1.0",
+   "status": "verified",
+   "usedIn": [
+    "ResponsibilitySplit"
+   ]
+  },
+  {
+   "id": "F23",
+   "fact": "DronaHost hosts sites from every industry except spam and adult websites",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "DECISIONS.md 61; /wordpress-hosting spec (owner 2026-10-11)"
+   },
+   "retrievedOn": "2026-10-12",
+   "checkedBy": "Claude (fact-checker) 2026-10-12, from data/pricing.json 4.1.0",
+   "status": "verified",
+   "usedIn": [
+    "PathRouter",
+    "FAQ"
+   ]
+  },
+  {
+   "id": "F24",
+   "fact": "Of 18 hosts whose renewal price HostingScale knows, 16 raise it at renewal (HostingScale, updated 30 July 2026)",
+   "kind": "number",
+   "source": {
+    "type": "url",
+    "ref": "https://hostingscale.com/statistics/hosting-renewal-prices/",
+    "title": "Hosting Renewal Price Report 2026",
+    "pageDate": "2026-07-30"
+   },
+   "retrievedOn": "2026-10-11",
+   "checkedBy": "Claude (fact-checker) 2026-10-11, owner to confirm",
+   "status": "verified",
+   "usedIn": [
+    "AnswerBlock or Meaning"
+   ]
+  },
+  {
+   "id": "F25",
+   "fact": "Growth adds priority support; Pro adds semi-dedicated resources and performance tuning; Scale adds dedicated resources and senior experts",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "data/pricing.json 4.1.0 headlineFeatures"
+   },
+   "retrievedOn": "2026-10-12",
+   "checkedBy": "Claude (fact-checker) 2026-10-12, from data/pricing.json 4.1.0",
+   "status": "verified",
+   "usedIn": [
+    "Meaning",
+    "PricingPlans"
+   ]
+  },
+  {
+   "id": "F26",
+   "fact": "Extra Layer Security is included on Pro and Scale and a paid add-on on Starter and Growth",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "data/pricing.json 4.1.0 addons; DECISIONS.md 74"
+   },
+   "retrievedOn": "2026-10-12",
+   "checkedBy": "Claude (fact-checker) 2026-10-12, from data/pricing.json 4.1.0",
+   "status": "verified",
+   "usedIn": [
+    "PricingPlans"
+   ]
+  },
+  {
+   "id": "F27",
+   "fact": "Prices show in USD, GBP, EUR, AED and INR; the currency follows the visitor's choice or location; the same plans and prices apply in every country",
+   "kind": "business",
+   "source": {
+    "type": "project-file",
+    "ref": "data/pricing.json 4.1.0; DECISIONS.md 75"
+   },
+   "retrievedOn": "2026-10-12",
+   "checkedBy": "Claude (fact-checker) 2026-10-12, from data/pricing.json 4.1.0",
+   "status": "verified",
+   "usedIn": [
+    "PricingPlans"
+   ]
+  },
+  {
+   "id": "F28",
+   "fact": "Above Scale: high-traffic and dedicated plans are scoped with the team, with no published price",
+   "kind": "claim",
+   "source": {
+    "type": "project-file",
+    "ref": "data/pricing.json highTraffic"
+   },
+   "retrievedOn": "2026-10-12",
+   "checkedBy": "Claude (fact-checker) 2026-10-12, from data/pricing.json 4.1.0",
+   "status": "verified",
+   "usedIn": [
+    "PricingPlans",
+    "FAQ"
+   ]
+  }
+ ]
+}

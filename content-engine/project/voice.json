@@ -1,10 +1,10 @@
 {
   "$comment": "Brand voice as data: the one place to change tone, readability limits, spelling, word swaps and the banned lists. The checks read it (V1 to V11, M1) and `npm run content:voice` prints it as a card for writers and agents. Schema: schemas/voice.ts. Worked examples per page type stay in project/brand.md.",
-  "summary": "Confident, specific, calm. Plain international English, grade 8 to 10, for a smart reader who may not read English as a first language.",
+  "summary": "Confident, precise, calm: the voice of a premium global brand. Plain international English, grade 8 to 10, for a smart reader who may not read English as a first language.",
   "attributes": [
     {
       "name": "Confident",
-      "means": "State verified facts, not hopes. Never \"we try our best\"."
+      "means": "Speak as a global brand: state verified facts plainly, never hopes. Never \"we try our best\", never \"small team\"."
     },
     {
       "name": "Specific",
@@ -16,7 +16,7 @@
     },
     {
       "name": "Honest",
-      "means": "Say what we do not do. Do not imply a location, size or channel we do not have. Being a focused team is a feature."
+      "means": "Every number, size, location and customer claim has a published fact behind it. Say what a plan does not include. Never name a channel we do not offer."
     },
     {
       "name": "Technical, second",
@@ -39,8 +39,8 @@
     "hype-driven reseller sites built on pressure and countdowns"
   ],
   "person": {
-    "we": "the company, and only for something we actually did",
-    "you": "the reader, a business owner deciding or fixing something"
+    "we": "DronaHost as a company, only for something it actually does",
+    "you": "the reader, a business deciding or fixing something"
   },
   "readability": {
     "gradeTarget": [
@@ -197,6 +197,19 @@
         "approximately"
       ],
       "use": "about"
+    },
+    {
+      "avoid": [
+        "cPanel"
+      ],
+      "use": "control panel (DronaHost does not offer cPanel, decision 65)"
+    },
+    {
+      "avoid": [
+        "Plesk",
+        "WP Toolkit"
+      ],
+      "use": "control panel (never name the panel product on public pages, decision 66)"
     }
   ],
   "bannedPhrases": [
