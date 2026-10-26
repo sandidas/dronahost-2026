@@ -423,6 +423,32 @@
       "usedIn": [
         "faq: How much does cloud hosting cost for a small business?"
       ]
+    },
+    {
+      "id": "F38",
+      "fact": "Email is a separate service because running email and websites on the same server can open a security gap for the sites (owner, 2026-10-26)",
+      "kind": "business",
+      "source": {
+        "type": "owner",
+        "ref": "owner in chat, 2026-10-26 (decision 83)"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F39",
+      "fact": "A site is not shut down when it needs more resources: support can move it up a plan at any time, and if it suddenly needs more, DronaHost adds resources at no charge and notifies the customer to act right away (owner, 2026-10-26)",
+      "kind": "business",
+      "source": {
+        "type": "owner",
+        "ref": "owner in chat, 2026-10-26 (decision 83)"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
     }
   ]
 }

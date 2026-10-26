@@ -15,7 +15,7 @@ export default function Page() {
   return (
     <>
       <JsonLd schema={[breadcrumbSchema(buildBreadcrumbs("/pricing-policy"))]} />
-      <LegalPage title="Pricing and Renewal Policy" path="/pricing-policy" updated="2026-10-10">
+      <LegalPage title="Pricing and Renewal Policy" path="/pricing-policy" updated="2026-10-26">
         {/* Owner 2026-10-10 (decision 50): the renewal price equals the signup price with no end date. */}
         <p>Your hosting price does not change when you renew. You pay the same price you paid at signup, with no end date.</p>
 
@@ -24,6 +24,10 @@ export default function Page() {
 
         <h2>Tax</h2>
         <p>Prices exclude tax. Customers in India pay GST at checkout. Customers elsewhere pay no tax.</p>
+
+        {/* Owner 2026-10-26 (decision 82): approved wording, backs the no-hidden-fees claim. */}
+        <h2>No hidden fees</h2>
+        <p>We charge no setup fee. At checkout, we add only GST for customers in India and any domain or add-on you choose. Every add-on and its price is listed on the <Link href="/pricing" className="text-link underline underline-offset-4">pricing page</Link>.</p>
 
         <h2>Domains</h2>
         <p>Domain prices are shown at checkout. They are not covered by the renewal promise on this page.</p>

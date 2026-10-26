@@ -130,13 +130,14 @@ See [cloud-web-hosting-interview.md](cloud-web-hosting-interview.md): A0 to A4 (
 
 ## 11. Outline (owner layout, 2026-10-26; replaces the 2026-10-24 outline)
 
-The owner designed this layout in the UI on 2026-10-26 and asked for copy to fit it ("based on ui write the content and update this page"). That counts as approval of the section list. BP3 and BP4 are waived in the page spec. The plan guide (the original element in section 6) is not in this layout; its answer moves to the FAQ "Which plan should I choose?". 
+The owner designed this layout in the UI on 2026-10-26 and asked for copy to fit it ("based on ui write the content and update this page"). That counts as approval of the section list. BP3 and BP4 are waived in the page spec. The plan guide (the original element in section 6) returns right after the plan cards (owner, 2026-10-26, decision 82); the FAQ "Which plan should I choose?" stays as a short answer. 
 
 1. **OfferHero** (split): H1 "Cloud hosting for small business at a price you can plan". Ticket with the lowest plan's price and renewal price from data/pricing.json; "See cloud hosting plans"; money-back line.
-2. **NoteBand**: "Same price at renewal, with no hidden fees. Your site runs on AWS, Google Cloud, DigitalOcean or another established provider." (decisions 80 and 81; no-hidden-fees waits for /pricing-policy).
+2. **NoteBand**: "Same price at renewal, with no hidden fees. Your site runs on AWS, Google Cloud, DigitalOcean or another established provider." (decisions 80 to 82; /pricing-policy states no hidden fees).
 3. **AdvantageGrid**: four commitments, each with its policy link (uptime SLA, 24/7 support, renewal price, money-back).
 4. **MigrationPromo**: "We move your site to your cloud plan" (free-migration).
 5. **PricingPlans**: "Cloud hosting plans for small business" (HostingPricing, whole lineup).
+5b. **PlanGuide** (original element): "Which plan fits your business now", figures from data/pricing.json.
 6. **LogoStrip** (hosting set): "Technology we use".
 7. **Meaning**: "Who cloud hosting is for", a good fit / look elsewhere if.
 8. **BentoGrid**: "What every cloud plan includes".

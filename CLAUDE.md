@@ -81,13 +81,14 @@ UI microcopy (labels, errors, empty states, success and helper text) lives in `c
 Guard bullets, non-negotiable even if you skip the folder:
 
 - Business facts come only from `content-engine/project/PROJECT.md` and the registries it names (identity in `project/settings.json`). A missing fact becomes `[HUMAN REVIEW: ...]`. Never invent an address, number, name, location, guarantee or review.
-- Prices come only from `data/pricing.json`; same plans and prices for every country; only the currency changes. Prices appear on `/pricing` and on product pages' plan cards (decision 63, which reopened decision 58 for product pages); Home, comparisons, titles, descriptions, schema and FAQ answers carry no price.
+- Prices come only from `data/pricing.json`; same plans and prices for every country; only the currency changes. Prices appear on `/pricing`, on product pages' plan cards (decision 63, which reopened decision 58 for product pages) and in a product page's offer-ticket hero, with the renewal price and tax line (decision 82); Home, comparisons, titles, descriptions, schema and FAQ answers carry no price.
 - Tax: customers in India pay GST, everyone else pays none. Never "+ VAT" or "VAT included".
 - No location claims. Cloud providers (AWS, Google Cloud, DigitalOcean) may be named in plain text in FAQ and answer copy and in the band directly under the banner of hosting pages, with a line that the provider can vary; never their logos, "partner" or "powered by", or in titles, descriptions or headings (decision 80). Write "for UK businesses", never "UK servers".
 - Where we are based is said on `/about` only (decision 34). No title, description, headline or lead on any other page says "India" or "a team in India". The GST line is a tax rule and stays. `npm run check:content` enforces it (PO4).
 - Page titles carry a reason to choose us (decision 35), from a rendering claim, a ledger fact or the page's plain job.
 - Every page shows who reviewed it and when (`PageProvenance` section or a byline), one visible first-hand element, and its honest limits (`HonestLimits`); never pressure wording. Where trust and intent sit on the page: `content-engine/rules/trust-and-intent-design.md`. Checks IN5 and TR6 to TR8 enforce it (warnings first, decision 40).
 - One keyword, one URL. Run `npm run check:register` after changing the register.
+- **No assumptions by Claude Code (owner, 2026-10-26).** Every statement, reason, benefit or explanation on a page comes from the owner's own words, a registry or a checked fact. Never write a reason the owner did not give (for example why a limit exists), and never fill a gap with a likely answer: ask the owner, or leave a `[HUMAN REVIEW: ...]` flag.
 - A person fills the brief (reader's question, our angle, first-hand knowledge, one original element) before any AI draft. Show the brief before long copy.
 - Never use AI for testimonials, reviews, team bios, case-study results or unreviewed legal text.
 - After publishing, update the register and run `npm run check:content` (it includes the page-spec and copy-source checks), `npm run check:register` and `npm run check:copy-source`.

@@ -66,7 +66,7 @@
       "BP3",
       "BP4"
     ],
-    "reason": "Owner layout for /cloud-web-hosting (2026-10-26): offer ticket hero, the renewal and providers band, advantages, migration and pricing first, then the technology strip; no AnswerBlock or closing CTABand; HonestLimits and PageProvenance at the end.",
+    "reason": "Owner layout for /cloud-web-hosting (2026-10-26): offer ticket hero, the renewal and providers band, advantages, migration, pricing and the plan guide first, then the technology strip; no AnswerBlock or closing CTABand; HonestLimits and PageProvenance at the end.",
     "approvedBy": "Owner (2026-10-26)"
   },
   "sections": [
@@ -138,7 +138,7 @@
           {
             "value": "24/7",
             "title": "Help at any hour",
-            "text": "Support by ticket and email, any hour of any day, with every reply in writing.",
+            "text": "Support by ticket and email, any hour of any day.",
             "link": {
               "label": "Read the support policy",
               "href": "/support-policy"
@@ -153,8 +153,7 @@
               "label": "Read how renewals work",
               "href": "/pricing-policy"
             },
-            "requiresClaim": "claim:renewal-price-same",
-            "firstHand": true
+            "requiresClaim": "claim:renewal-price-same"
           },
           {
             "value": "30",
@@ -210,6 +209,39 @@
         ],
         "highlight": "growth",
         "showRenewalPrice": true,
+        "link": {
+          "label": "Compare every plan and add-on",
+          "href": "/pricing"
+        }
+      }
+    },
+    {
+      "id": "guide",
+      "type": "PlanGuide",
+      "content": {
+        "eyebrow": "Choose a plan",
+        "h2": "Which plan fits your business now",
+        "description": "Start with the plan that fits your site today. Every figure in the table comes from our published plan data.",
+        "source": "pricing.json",
+        "fit": [
+          {
+            "plan": "starter",
+            "text": "For a first business site, or a small business that is starting out online."
+          },
+          {
+            "plan": "growth",
+            "text": "Adds priority support, for a business site that is starting to grow."
+          },
+          {
+            "plan": "pro",
+            "text": "Adds semi-dedicated resources and performance tuning, for busier sites or several sites on one plan."
+          },
+          {
+            "plan": "scale",
+            "text": "Adds dedicated resources and senior experts, for larger or high-traffic business sites."
+          }
+        ],
+        "note": "When your site outgrows its plan, move up to the next one. Above Scale, the team scopes high-traffic plans with you.",
         "link": {
           "label": "Compare every plan and add-on",
           "href": "/pricing"
@@ -413,7 +445,7 @@
           },
           {
             "q": "What happens when my site outgrows its plan?",
-            "a": "You move up to a larger plan. Plans do not scale automatically, so your resources stay fixed until you change plan. The plan guide on this page shows what each larger plan adds. If your site needs more than Scale, the team scopes a high-traffic plan with you, with no published price."
+            "a": "You move up to a larger plan, and you can ask support at any time, day or night. If your site suddenly needs more resources, we add them at no charge and notify you so you can act right away. The plan guide on this page shows what each larger plan adds. Above Scale, the team scopes a high-traffic plan with you."
           },
           {
             "q": "Will my site stay up?",
@@ -422,7 +454,7 @@
           },
           {
             "q": "How does support work?",
-            "a": "Support runs 24/7 by ticket and email, so every reply is in writing. DronaHost does not offer live chat or phone support. Growth adds priority support, and Scale adds senior experts. The support policy sets out what support covers. Open a ticket from the contact page.",
+            "a": "Support runs 24/7 by ticket and email, so every reply is in writing. Growth adds priority support, and Scale adds senior experts. The support policy sets out what support covers. Open a ticket from the contact page, or send an email at any time.",
             "requiresClaim": "claim:support-24-7"
           },
           {
@@ -440,26 +472,15 @@
       "id": "limits",
       "type": "HonestLimits",
       "content": {
-        "h2": "What to know before you choose",
+        "h2": "Good to know before you choose",
         "items": [
           {
-            "text": "Email is not included.",
-            "reason": "Business email is a separate service that we never bundle with a hosting plan.",
-            "firstHand": true
+            "text": "Email is a separate service, not part of your hosting plan.",
+            "reason": "Running email and websites on the same server can open a security gap for your sites. Add our business email service when you need it."
           },
           {
-            "text": "Plans do not scale automatically. When your site outgrows its plan, you move up to a larger one.",
-            "reason": "Each plan has fixed resources and a fixed price, so you know what you get before you buy.",
-            "firstHand": true
-          },
-          {
-            "text": "Support is by ticket and email only, with no live chat or phone.",
-            "reason": "Written answers give you a record you can keep and share with your team.",
-            "firstHand": true,
-            "link": {
-              "label": "Read the support policy",
-              "href": "/support-policy"
-            }
+            "text": "Plans do not grow on their own, but your site does not go offline when it needs more.",
+            "reason": "Ask our 24/7 support at any time to move up a plan. If your site suddenly needs more resources, we add them at no charge and notify you so you can act right away."
           }
         ]
       }
