@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "version": "4.1.0",
-    "lastUpdated": "2026-10-12",
+    "version": "4.1.1",
+    "lastUpdated": "2026-10-26",
     "status": "recommended-v1-needs-owner-confirmation",
     "category": "Web Hosting and WordPress Hosting",
     "description": "Source of truth for all hosting plan pricing across the DronaHost website. Import this file in components, generateMetadata(), and JSON-LD schemas. Copy never contains a number or promise that is not rendered from this file or from content/claims.ts.",
@@ -37,6 +37,7 @@
       "Non-USD prices, regions block and first-response times removed.",
       "Unverified performance multipliers removed from includedWithEveryPlan. Each included item now carries a claimId.",
       "Offsite backup add-on collapsed into one add-on with size options.",
+      "4.1.1 (2026-10-26, owner, decision 84): live chat added to every plan's support channels, 24/7 on the website and in the client area, with ticket and email. No price changed.",
       "3.1.0: support channels reduced to ticket and email. WhatsApp, live chat and phone are not offered (owner decision 22, 2026-10-07).",
       "CTA labels follow the 'Choose {plan name}' rule. Badge 'Most Popular' replaced by 'Recommended'."
     ],
@@ -217,6 +218,7 @@
       "support": {
         "tier": "Standard",
         "channels": [
+          "live chat",
           "ticket",
           "email"
         ],
@@ -345,6 +347,7 @@
       "support": {
         "tier": "Priority",
         "channels": [
+          "live chat",
           "ticket",
           "email"
         ],
@@ -473,6 +476,7 @@
       "support": {
         "tier": "24/7",
         "channels": [
+          "live chat",
           "ticket",
           "email"
         ],
@@ -606,6 +610,7 @@
       "support": {
         "tier": "24/7, senior experts",
         "channels": [
+          "live chat",
           "ticket",
           "email"
         ],

@@ -68,7 +68,7 @@ const TOOL_ROWS: Row[] = [
   { label: "Performance tuning", get: cap("performanceTuning") },
 ];
 
-/** ["ticket", "email"] reads "Ticket and email". */
+/** ["live chat", "ticket", "email"] reads "Live chat, ticket and email". */
 const channels = (list: readonly string[]): ComparisonValue => {
   if (!list.length) return false;
   const text = list.length > 1 ? `${list.slice(0, -1).join(", ")} and ${list.at(-1)}` : list[0];

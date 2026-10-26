@@ -42,7 +42,7 @@ Two reminders that apply on every page: numbers and benchmarks come from verifie
 
 ### Channels not offered
 
-**Not offered (owner, 2026-10-07):** live chat, WhatsApp and phone support. Never mention them in copy, metadata, schema, UI text or `pricing.json`. Support channels are **ticket and email**. Email is never part of a hosting plan; it will be sold as a separate service (decision 49). Write "email support" for contacting us, and send mailbox questions to `/email`.
+**Support channels (owner, 2026-10-26, decision 84):** live chat on the website and in the client area, support ticket and email, 24/7. WhatsApp and phone support are not offered; never mention them, and never write a "we do not offer" line. Earlier wording: support channels were **ticket and email**. Email is never part of a hosting plan; it will be sold as a separate service (decision 49). Write "email support" for contacting us, and send mailbox questions to `/email`.
 
 ### Regions and locations: infrastructure naming
 
@@ -155,7 +155,7 @@ Bad FAQ questions:
 ### Email and support pages (Plans 14 and 07)
 
 - Email: "Get business email on your own domain with Google Workspace. It is a separate service from hosting, so you add it only if you need it." Trademark line on the page: "Google Workspace is a trademark of Google LLC." Never name the distributor. `[HUMAN REVIEW: confirm the premium email provider and what we help with]`
-- Support: "You can reach the team by support ticket or email." (No chat, WhatsApp or phone. Hours only from the published support policy.)
+- Support: "You can reach the team by live chat, support ticket or email, 24/7." (Hours only from the published support policy.)
 - Honest limit: "We cannot fix a mailbox hosted by another provider, but we can check that your DNS records point to it." `[HUMAN REVIEW]`
 
 ## Reason-led headlines (the "because" pattern)

@@ -78,7 +78,7 @@
           "claim:free-migration",
           "claim:renewal-price-same"
         ],
-        "leadFallback": "Business hosting from DronaHost for growing and larger sites of any kind, WordPress or not. Manage your site in a control panel and reach us by ticket or email.",
+        "leadFallback": "Business hosting from DronaHost for growing and larger sites of any kind, WordPress or not. Manage your site in a control panel and reach us by live chat, support ticket or email.",
         "ctaPrimary": {
           "label": "Choose a business plan",
           "href": "/business-hosting#plans"
@@ -369,7 +369,7 @@
           },
           {
             "q": "How does support work?",
-            "a": "Support runs 24/7 by ticket and email. Open a ticket or send an email, and you get a written reply, so you keep a record of every answer. Growth adds priority support, and Scale adds senior experts. The support policy sets out the full terms, including what support covers.",
+            "a": "Support runs 24/7 by live chat, ticket and email. Start a chat on our website or in the client area, open a ticket, or send an email. Growth adds priority support, and Scale adds senior experts. The support policy sets out the full terms, including what support covers.",
             "requiresClaim": "claim:support-24-7"
           },
           {

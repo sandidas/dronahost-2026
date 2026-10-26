@@ -125,7 +125,7 @@ export const UI = {
   /** The drawn support exchange in the FAQ collage (components/sections/visuals/FaqCollage.tsx), shown until real photos are supplied. */
   faqVisual: {
     answered: "Answered in your ticket",
-    channels: "Support by ticket and email",
+    channels: "Support by live chat, ticket and email",
     ticketSteps: ["Ticket opened", "Reply sent", "Question solved"],
   },
   provenance: {

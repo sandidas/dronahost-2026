@@ -447,10 +447,10 @@ All integrations wrapped in `/lib/services/[service].ts`. Each service exports t
 - Track conversions: signup, purchase, contact form, discovery call booking
 - Consider server-side tracking for accuracy (Stape, or custom)
 
-### Live Chat (not offered)
+### Support channels (decision 84)
 
-- Live chat, WhatsApp and phone support are not offered (owner decision 22, 2026-10-07). Support is by ticket and email only.
-- Do not add a chat widget, a chat or WhatsApp button, or a phone number anywhere. If this changes, the owner reopens decision 22 first.
+- Support is by live chat (on the website and in the client area), support ticket and email, 24/7 (owner, 2026-10-26; reopens decision 22).
+- Pages name only the channels we offer. Never write what we do not offer (no "no phone" or "no WhatsApp" lines), and do not add a phone number or a WhatsApp button.
 
 ## Security Rules (hosting companies are high-value targets)
 

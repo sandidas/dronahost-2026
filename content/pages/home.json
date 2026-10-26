@@ -71,7 +71,7 @@
           "claim:free-migration",
           "claim:support-24-7"
         ],
-        "leadFallback": "DronaHost is a managed WordPress hosting and web services company for businesses worldwide. Reach us by support ticket or email.",
+        "leadFallback": "DronaHost is a managed WordPress hosting and web services company for businesses worldwide. Reach us by live chat, support ticket or email.",
         "ctaPrimary": {
           "label": "Plan my migration",
           "href": "/#plan"
@@ -188,7 +188,7 @@
           {
             "value": "24/7",
             "title": "Help at any hour",
-            "text": "Support by ticket and email, any hour of any day.",
+            "text": "Support by live chat, ticket and email, any hour of any day.",
             "link": {
               "label": "Read the support policy",
               "href": "/support-policy"
@@ -396,7 +396,7 @@
           },
           {
             "q": "How do I contact DronaHost support?",
-            "a": "Open a support ticket from the client area or the contact page, or email support@dronahost.com. Support is open by ticket and email at any hour of any day. The support policy explains how support works and what to include in a request so we can help you faster.",
+            "a": "Start a live chat on our website or in the client area, open a support ticket from the contact page, or email support@dronahost.com. Support is open at any hour of any day. The support policy explains how support works and what to include in a request so we can help you faster.",
             "requiresClaim": "claim:support-24-7"
           }
         ]

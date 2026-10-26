@@ -78,7 +78,7 @@
           "claim:free-migration",
           "claim:managed-hosting-tasks"
         ],
-        "leadFallback": "Managed WordPress hosting from DronaHost for business sites, online stores, blogs and agency client sites. Reach us by support ticket or email.",
+        "leadFallback": "Managed WordPress hosting from DronaHost for business sites, online stores, blogs and agency client sites. Reach us by live chat, support ticket or email.",
         "ctaPrimary": {
           "label": "See WordPress plans",
           "href": "/wordpress-hosting#plans"
@@ -428,7 +428,7 @@
           },
           {
             "q": "What is not included?",
-            "a": "Email is not included with any hosting plan; business email with Google Workspace is a separate service. Support is by ticket and email only, with no live chat or phone. WordPress hosting does not include root access, SSH or WP-CLI; you manage your site from the control panel. Spam and adult websites are not allowed on DronaHost."
+            "a": "Email is not included with any hosting plan; business email with Google Workspace is a separate service. WordPress hosting does not include root access, SSH or WP-CLI; you manage your site from the control panel. Spam and adult websites are not allowed on DronaHost."
           },
           {
             "q": "Can I run a WooCommerce store?",

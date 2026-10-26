@@ -691,7 +691,7 @@ export default function V2ShowcasePage() {
             id="support-channels"
             title="SupportChannels"
             status="needs-verification"
-            notes="Ticket and email only (owner decision 22). Email shows only when a support address is set in content/company.ts; ticket is always real. Samples forced on here."
+            notes="Ticket and email cards; live chat (decision 84) gets a card once the site has a chat to open. Email shows only when a support address is set in content/company.ts; ticket is always real. Samples forced on here."
             verify={["Support email address (hidden until set)", "Ticket system exists", "Hours text comes from the published support policy"]}
           >
             <SupportChannels title="Reach the team" headingLevel="h3" showSamples className="!py-0" />

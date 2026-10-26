@@ -116,11 +116,11 @@
   },
   "support": {
     "channels": [
+      "live chat",
       "support ticket",
       "email"
     ],
     "notOffered": [
-      "live chat",
       "WhatsApp",
       "phone support"
     ]

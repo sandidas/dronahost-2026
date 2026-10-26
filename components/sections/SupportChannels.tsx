@@ -24,7 +24,8 @@ type SupportChannelsProps = {
 };
 
 /**
- * Support channels: support ticket and email only (owner decision 22). WhatsApp, live chat and phone are not offered.
+ * Support channels: live chat, support ticket and email (decision 84). Live chat has no card until the site has a chat to
+ * open; the cards show the ticket and email.
  * Email shows only once a support address is set in `content/company.ts`, so the page never advertises an address nobody
  * has confirmed. The ticket (the contact form) is always real.
  */

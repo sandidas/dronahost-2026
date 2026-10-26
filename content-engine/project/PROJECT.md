@@ -30,7 +30,7 @@ Where a fact also lives in code, that file is what the website renders. If this 
 | Registered business address | **MISSING** (India is fine to show, never a made-up US or UK address) | Missing |
 | Public support email | support@dronahost.com | Confirmed 2026-10-10 |
 | Phone | **MISSING.** No phone number is shown unless a person answers it in English | Missing |
-| WhatsApp, live chat, phone support | Not offered. The site must not mention them. Support channels are **ticket and email** | Confirmed 2026-10-07 |
+| Support channels | **Live chat** (website and client area), **support ticket** and **email**, 24/7. Pages never say which channels are not offered. WhatsApp and phone are not offered and never mentioned | Owner, 2026-10-26 (decision 84) |
 | Content roles | Claude drafts. The owner edits and approves. No other writer or editor is named | Confirmed 2026-10-07 |
 | Legal reviewer | **NONE appointed.** Claude may draft. A qualified human must review Tier B documents (see `plans/07`) | Open, blocks Tier B pages |
 | Founding year | Owner says about 7 years of trading. Older notes show 2019 and 2022 | Reported, unconfirmed |
@@ -98,7 +98,7 @@ A claim renders only when it is verified **and** its terms page is published. Th
 | Claim | Status (2026-10-10, rows dated individually) |
 |---|---|
 | 30-day money-back guarantee | Owner-approved and published 2026-10-08 (`/refund-policy`). Renders |
-| 24/7 support | Owner-approved 2026-10-08, reworded 2026-10-09 (decision 36): ticket and email, any hour. No reply time is promised. Terms page `/support-policy` |
+| 24/7 support | Owner-approved 2026-10-08, reworded 2026-10-09 (decision 36), live chat added 2026-10-26 (decision 84): live chat, ticket and email, any hour. No reply time is promised. Terms page `/support-policy` |
 | Free migration | Owner-approved and published 2026-10-08 (`/migration-terms`): free on every package, one website per package, up to 10 on a VPS. Renders |
 | Renewal price equals signup price | Owner-approved and published 2026-10-08 (`/pricing-policy`): hosting price does not change on renewal, with no end date (decision 50). Renders. Terms of Service must not say prices can change at any time |
 | 99.99% uptime SLA with service credits | Owner-approved 2026-10-10 (decisions 45 and 53), terms published on `/sla`. Renders. The home ProofBar still needs 3 verified numbers before it shows |

@@ -138,7 +138,7 @@
           {
             "value": "24/7",
             "title": "Help at any hour",
-            "text": "Support by ticket and email, any hour of any day.",
+            "text": "Support by live chat, ticket and email, any hour of any day.",
             "link": {
               "label": "Read the support policy",
               "href": "/support-policy"
@@ -369,7 +369,7 @@
           {
             "icon": "life-buoy",
             "title": "Answers in writing, any hour",
-            "text": "Support runs 24/7 by ticket and email, so every reply is on record.",
+            "text": "Support runs 24/7 by live chat, ticket and email.",
             "source": {
               "label": "Read the support policy",
               "href": "/support-policy"
@@ -454,7 +454,7 @@
           },
           {
             "q": "How does support work?",
-            "a": "Support runs 24/7 by ticket and email, so every reply is in writing. Growth adds priority support, and Scale adds senior experts. The support policy sets out what support covers. Open a ticket from the contact page, or send an email at any time.",
+            "a": "Support runs 24/7 by live chat, ticket and email. Start a chat on our website or in the client area, open a ticket from the contact page, or send an email. Growth adds priority support, and Scale adds senior experts. The support policy sets out what support covers.",
             "requiresClaim": "claim:support-24-7"
           },
           {
