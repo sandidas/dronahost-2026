@@ -1,3 +1,4 @@
+import { Cloud } from "lucide-react";
 import { useId, type CSSProperties } from "react";
 import { reveal } from "@/lib/motion";
 import { cn } from "@/utils/cn";
@@ -6,7 +7,7 @@ import type { LogoEntry } from "@/content/logos";
 type LogoStripProps = {
   eyebrow?: string;
   title?: string;
-  /** One plain line under the logos. */
+  /** One plain line in its own band under the logos, for example where the servers come from (decision 80). */
   note?: string;
   /** Already gated by the caller on each logo's claim. */
   logos: readonly LogoEntry[];
@@ -56,39 +57,48 @@ export default function LogoStrip({ eyebrow, title, note, logos, variant = "marq
   const marquee = variant === "marquee" && logos.length >= 5;
 
   return (
-    <section aria-labelledby={title ? headingId : undefined} className={cn("py-12 sm:py-16", className)}>
-      <div className="container-site text-center">
-        {eyebrow && <p className="t-eyebrow">{eyebrow}</p>}
-        {title && (
-          <Heading id={headingId} className={cn("t-h4 text-muted-foreground", eyebrow && "mt-2")}>
-            {title}
-          </Heading>
+    <section aria-labelledby={title ? headingId : undefined} className={className}>
+      <div className="py-12 sm:py-16">
+        <div className="container-site text-center">
+          {eyebrow && <p className="t-eyebrow">{eyebrow}</p>}
+          {title && (
+            <Heading id={headingId} className={cn("t-h4 text-muted-foreground", eyebrow && "mt-2")}>
+              {title}
+            </Heading>
+          )}
+        </div>
+        {marquee ? (
+          <div className={cn("logo-marquee container-site", (title || eyebrow) && "mt-10")} {...reveal()}>
+            <div className="logo-marquee-track">
+              <ul className="flex items-center gap-x-16 pe-16 sm:gap-x-24 sm:pe-24">
+                {logos.map((logo) => (
+                  <Item key={logo.name} logo={logo} />
+                ))}
+              </ul>
+              {/* The second copy makes the loop seamless; screen readers and the keyboard skip it. */}
+              <ul aria-hidden="true" className="flex items-center gap-x-16 pe-16 sm:gap-x-24 sm:pe-24">
+                {logos.map((logo) => (
+                  <Item key={logo.name} logo={logo} hidden />
+                ))}
+              </ul>
+            </div>
+          </div>
+        ) : (
+          <ul className={cn("container-site flex flex-wrap items-center justify-center gap-x-16 gap-y-8 sm:gap-x-24", (title || eyebrow) && "mt-10")} {...reveal()}>
+            {logos.map((logo) => (
+              <Item key={logo.name} logo={logo} />
+            ))}
+          </ul>
         )}
       </div>
-      {marquee ? (
-        <div className={cn("logo-marquee container-site", (title || eyebrow) && "mt-10")} {...reveal()}>
-          <div className="logo-marquee-track">
-            <ul className="flex items-center gap-x-16 pe-16 sm:gap-x-24 sm:pe-24">
-              {logos.map((logo) => (
-                <Item key={logo.name} logo={logo} />
-              ))}
-            </ul>
-            {/* The second copy makes the loop seamless; screen readers and the keyboard skip it. */}
-            <ul aria-hidden="true" className="flex items-center gap-x-16 pe-16 sm:gap-x-24 sm:pe-24">
-              {logos.map((logo) => (
-                <Item key={logo.name} logo={logo} hidden />
-              ))}
-            </ul>
-          </div>
+      {note && (
+        <div className="border-t border-border bg-card">
+          <p className="container-site flex items-center justify-center gap-3 py-5 text-center text-sm text-foreground sm:text-base">
+            <Cloud aria-hidden="true" className="size-5 shrink-0 text-link" />
+            {note}
+          </p>
         </div>
-      ) : (
-        <ul className={cn("container-site flex flex-wrap items-center justify-center gap-x-16 gap-y-8 sm:gap-x-24", (title || eyebrow) && "mt-10")} {...reveal()}>
-          {logos.map((logo) => (
-            <Item key={logo.name} logo={logo} />
-          ))}
-        </ul>
       )}
-      {note && <p className="t-small container-site mt-8 text-center text-muted-foreground">{note}</p>}
     </section>
   );
 }

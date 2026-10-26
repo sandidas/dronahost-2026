@@ -20,6 +20,7 @@ import OfferBanner, { type OfferPrice } from "@/components/sections/banners/Offe
 import TwoColumn from "@/components/sections/TwoColumn";
 import LogoStrip from "@/components/sections/LogoStrip";
 import { TECH_LOGOS } from "@/content/logos";
+import { claimConfirmed } from "@/content/claims";
 import CurrencyAmount from "@/components/ui/CurrencyAmount";
 import pricing from "@/data/pricing.json";
 import { DEFAULT_CURRENCY, formatMoney } from "@/lib/pricing";
@@ -156,6 +157,8 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
           nextStep={c.nextStep}
           highlights={gated(c.highlights, ctx)}
           layout={variant}
+          // The page hero follows the visitor's light or dark theme.
+          scope="page"
           headingLevel="h1"
         />
       );
@@ -164,7 +167,8 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
   LogoStrip: {
     schema: S.LogoStrip,
     render: ({ variant, content: c }, ctx) => {
-      const logos = TECH_LOGOS.filter((l) => ctx.claimRenders(l.claim));
+      // A logo carries no terms, so an owner-confirmed claim is enough (decision 81).
+      const logos = TECH_LOGOS.filter((l) => l.set === c.set && claimConfirmed(l.claim));
       return <LogoStrip eyebrow={c.eyebrow} title={c.h2} note={c.note} logos={logos} variant={variant} />;
     },
   },

@@ -568,6 +568,13 @@ body {
       radial-gradient(50% 60% at 0% 0%, var(--glow-teal), transparent 65%),
       linear-gradient(180deg, var(--inverse-surface), var(--background));
   }
+  /* The same light on the page background, for a buy banner that follows the theme (the OfferHero). */
+  .horizon-glow-soft {
+    background:
+      radial-gradient(70% 55% at 50% 115%, rgb(254 85 4 / 0.12), transparent 70%),
+      radial-gradient(50% 60% at 0% 0%, var(--glow-teal), transparent 65%),
+      var(--background);
+  }
   .dotted-leader {
     flex: 1;
     min-width: 1.5rem;

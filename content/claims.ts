@@ -107,6 +107,7 @@ const RECORDS: readonly ClaimRecord[] = [
   { id: "imunify360", kind: "feature", text: "Imunify360 security on our hosting servers", value: "Imunify360", label: "Server security", ...OWNER_CONFIRMED, source: "owner 2026-10-26 (technology strip); /security must name it before this is published", verifiedOn: "2026-10-26", termsPage: "/security", termsPageStatus: "draft" },
   { id: "plesk", kind: "feature", text: "WordPress hosting runs on the Plesk control panel", value: "Plesk", label: "Control panel", ...OWNER_CONFIRMED, source: "owner 2026-10-11 interview (Plesk with WP Toolkit); naming allowed 2026-10-26 (decision 79)", verifiedOn: "2026-10-26", termsPage: "/wordpress-hosting", termsPageStatus: "draft" },
   { id: "cpanel-in-use", kind: "feature", text: "cPanel is part of the technology we run (which products include it is not stated yet)", value: "cPanel", label: "Control panel", ...OWNER_CONFIRMED, source: "owner 2026-10-26 (decision 79); products not named yet", verifiedOn: "2026-10-26", termsPage: "/business-hosting", termsPageStatus: "draft" },
+  { id: "cloudpanel-in-use", kind: "feature", text: "CloudPanel is part of the technology we run (which products include it is not stated yet)", value: "CloudPanel", label: "Control panel", ...OWNER_CONFIRMED, source: "owner 2026-10-26 (decision 81): most hosting runs Plesk; cPanel and CloudPanel are also used", verifiedOn: "2026-10-26", termsPage: null, termsPageStatus: "draft" },
   { id: "cloudflare-cdn", kind: "assurance", icon: "cloud", text: "Served through the Cloudflare network", value: "CDN", label: "Cloudflare network", ...NONE },
 ];
 
@@ -121,6 +122,12 @@ export const claimHiddenReason = (c: ClaimRecord): string | null => {
   if (!c.termsPage) return "no terms page";
   return "terms page is a draft";
 };
+
+/**
+ * Owner-confirmed, with or without a published terms page. Only for facts that carry no terms, such as the software in a
+ * technology logo strip (decision 81). Guarantees, figures and promises use claimRenders.
+ */
+export const claimConfirmed = (id: string): boolean => RECORDS.some((c) => c.id === id && c.status === "verified");
 
 export const CLAIMS: readonly Claim[] = RECORDS.map((c) => ({ ...c, verified: claimRenders(c) }));
 

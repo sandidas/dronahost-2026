@@ -36,7 +36,7 @@ export type OfferBannerProps = {
   highlights?: readonly string[];
   /** split = text beside an upright ticket · centered = text over a long ticket · compact = the whole banner is the ticket. */
   layout?: "split" | "centered" | "compact";
-  /** ink = navy with the orange horizon light · page = the site background. */
+  /** ink = navy with the orange horizon light in both themes · page = follows the light or dark theme. */
   scope?: BannerScope;
   headingLevel?: "h1" | "h2";
   className?: string;
@@ -79,7 +79,8 @@ export default function OfferBanner({ eyebrow, title, titleAccent, description, 
   const priceBlock = price ? (
     <div>
       <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <span className="font-heading text-6xl leading-none tracking-[-0.05em] text-foreground sm:text-7xl">{price.amount}</span>
+        {/* The upright ticket is narrow, so a long amount ("AED 55.99") uses a smaller size there. */}
+        <span className={cn("font-heading leading-none tracking-[-0.05em] text-foreground", compact || centered ? "text-6xl sm:text-7xl" : "text-5xl")}>{price.amount}</span>
         <span className="t-meta text-muted-foreground">{price.period}</span>
       </p>
       <dl className="mt-6">
@@ -138,7 +139,8 @@ export default function OfferBanner({ eyebrow, title, titleAccent, description, 
     </div>
   );
 
-  const bg = ink ? "horizon-glow" : "bg-background";
+  // ink keeps the navy band in both themes; page follows the theme, with a softer glow except on the compact ticket.
+  const bg = ink ? "horizon-glow" : compact ? "bg-background" : "horizon-glow-soft";
 
   if (compact) {
     return (

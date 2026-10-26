@@ -16,10 +16,10 @@
   ],
   "layoutSignature": [
     "OfferHero:split",
+    "LogoStrip",
     "AdvantageGrid",
     "MigrationPromo",
-    "PricingPlans",
-    "Meaning"
+    "PricingPlans"
   ],
   "seo": {
     "title": "Cloud Hosting for Small Business, Fixed Price",
@@ -66,7 +66,7 @@
       "BP3",
       "BP4"
     ],
-    "reason": "Owner layout for /cloud-web-hosting (2026-10-26): offer ticket hero, advantages, migration and pricing first; no AnswerBlock or closing CTABand; a technology strip after the feature grid; HonestLimits and PageProvenance at the end.",
+    "reason": "Owner layout for /cloud-web-hosting (2026-10-26): offer ticket hero, technology strip, advantages, migration and pricing first; no AnswerBlock or closing CTABand; HonestLimits and PageProvenance at the end.",
     "approvedBy": "Owner (2026-10-26)"
   },
   "sections": [
@@ -102,6 +102,16 @@
             "requiresClaim": "claim:renewal-price-same"
           }
         ]
+      }
+    },
+    {
+      "id": "tech",
+      "type": "LogoStrip",
+      "variant": "marquee",
+      "content": {
+        "set": "hosting",
+        "eyebrow": "Technology we use",
+        "note": "Your site runs on servers we rent from AWS, Google Cloud, DigitalOcean and others. The provider that hosts your site can vary."
       }
     },
     {
@@ -245,15 +255,6 @@
           "feature:uptime",
           "feature:migration"
         ]
-      }
-    },
-    {
-      "id": "tech",
-      "type": "LogoStrip",
-      "variant": "marquee",
-      "content": {
-        "eyebrow": "Technology we use",
-        "note": "Your site runs on servers we rent from AWS, Google Cloud, DigitalOcean and others. The provider that hosts your site can vary."
       }
     },
     {

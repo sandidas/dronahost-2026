@@ -16,10 +16,10 @@
   ],
   "layoutSignature": [
     "ProductHero:tiers",
+    "LogoStrip",
     "AssuranceStrip",
     "AnswerBlock",
-    "ProcessTimeline",
-    "PathRouter"
+    "ProcessTimeline"
   ],
   "seo": {
     "title": "Business Hosting That Renews at the Same Price",
@@ -91,6 +91,16 @@
         "visual": {
           "alt": "Illustration of web hosting plans by CPU and memory, each with no renewal price increase"
         }
+      }
+    },
+    {
+      "id": "tech",
+      "type": "LogoStrip",
+      "variant": "marquee",
+      "content": {
+        "set": "hosting",
+        "eyebrow": "Technology we use",
+        "note": "Your site runs on servers we rent from AWS, Google Cloud, DigitalOcean and others. The provider that hosts your site can vary."
       }
     },
     {

@@ -630,8 +630,8 @@ export const OfferHero = z.strictObject({
 });
 
 /**
- * One row of logos: the technology we run (content/logos.ts TECH_LOGOS), each shown only while its claim renders. The spec
- * never lists logos; with none to show the section is left out. Customer logos are not shown (owner, 2026-10-26).
+ * One row of logos: the technology we run (content/logos.ts TECH_LOGOS), one set per strip, each logo shown once its claim
+ * is owner-confirmed (decision 81). The spec never lists logos; with none to show the section is left out. No customer logos.
  */
 export const LogoStrip = z.strictObject({
   ...sectionBase,
@@ -639,6 +639,8 @@ export const LogoStrip = z.strictObject({
   /** marquee = one slowly scrolling row · static = a centred row. */
   variant: z.enum(["marquee", "static"]),
   content: z.strictObject({
+    /** Which logos: "hosting" under the banner of the hosting pages, "development" for custom development. */
+    set: z.enum(["hosting", "development"]),
     eyebrow,
     h2: z.string().min(8).max(70).optional(),
     /** One plain line under the logos, for example where the servers come from (decision 80). */
