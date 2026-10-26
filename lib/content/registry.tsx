@@ -169,7 +169,8 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
     render: ({ variant, content: c }, ctx) => {
       // A logo carries no terms, so an owner-confirmed claim is enough (decision 81).
       const logos = TECH_LOGOS.filter((l) => l.set === c.set && claimConfirmed(l.claim));
-      return <LogoStrip eyebrow={c.eyebrow} title={c.h2} note={c.note} logos={logos} variant={variant} />;
+      const noteOk = (c.noteRequires ?? []).every((ref) => resolveClaimRef(ref, ctx));
+      return <LogoStrip eyebrow={c.eyebrow} title={c.h2} note={noteOk ? c.note : c.noteFallback} logos={logos} variant={variant} />;
     },
   },
   TwoColumn: {

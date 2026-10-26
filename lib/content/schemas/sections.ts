@@ -643,8 +643,11 @@ export const LogoStrip = z.strictObject({
     set: z.enum(["hosting", "development"]),
     eyebrow,
     h2: z.string().min(8).max(70).optional(),
-    /** One plain line under the logos, for example where the servers come from (decision 80). */
+    /** One plain line in its own band under the logos, for example where the servers come from (decision 80). */
     note: z.string().min(10).max(160).optional(),
+    /** The note shows only while every one of these claims renders; otherwise `noteFallback` shows. */
+    noteRequires: z.array(ClaimRef).min(1).max(3).optional(),
+    noteFallback: z.string().min(10).max(160).optional(),
   }),
 });
 

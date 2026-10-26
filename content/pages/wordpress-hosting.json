@@ -104,7 +104,12 @@
       "content": {
         "set": "hosting",
         "eyebrow": "Technology we use",
-        "note": "Your site runs on servers we rent from AWS, Google Cloud, DigitalOcean and others. The provider that hosts your site can vary."
+        "note": "Same price at renewal, with no hidden fees. Your site runs on AWS, Google Cloud, DigitalOcean or another established provider.",
+        "noteRequires": [
+          "claim:renewal-price-same",
+          "claim:no-hidden-fees"
+        ],
+        "noteFallback": "Your site runs on AWS, Google Cloud, DigitalOcean or another established provider."
       }
     },
     {
