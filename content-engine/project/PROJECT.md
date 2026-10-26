@@ -54,7 +54,7 @@ When a missing fact is given, add it to `content/company.ts` (rendering) and to 
 **What the copy may and may not say about this**
 - Say: "DronaHost" or "we" (never "a focused team" or "small team", decision 59; never where it is based, except on `/about`), "runs on infrastructure from leading cloud providers", "for UK businesses".
 - Do not say: "our data center", "our servers", "UK servers", "powered by [provider]", "partner of [provider]".
-- Name the cloud providers only in the sub-processor list, the DPA and the privacy policy.
+- FAQ and answer copy may name AWS, Google Cloud and DigitalOcean in plain text, with a line that the provider for a site can vary (decision 80). Never their logos, and never in titles, descriptions or headings. Every provider, Hetzner included, is listed in the sub-processor list, the DPA and the privacy policy.
 - A city is named only if the infrastructure registry (to be built) confirms it for that plan.
 - Never target "near me" queries. Never claim a local office or phone line.
 
@@ -63,7 +63,7 @@ When a missing fact is given, add it to `content/company.ts` (rendering) and to 
 | Service | Page | Data behind it today | May state |
 |---|---|---|---|
 | WordPress hosting | `/wordpress-hosting` | `data/pricing.json`: Starter, Growth, Pro | Plans and limits as confirmed. Prices hidden until confirmed |
-| Business hosting | `/business-hosting` | `data/pricing.json`, family "web": Essential, Plus (a control panel, unmanaged, any site type; DronaHost does not offer cPanel, owner 2026-10-11). **Confirmed by the owner, 2026-10-07** | Plans and limits as confirmed. Never call it managed or WordPress-specific. Email is not included. Prices hidden until confirmed |
+| Business hosting | `/business-hosting` | `data/pricing.json`, family "web": Essential, Plus (a control panel, unmanaged, any site type; cPanel is in use but which products include it is not stated, decision 79). **Confirmed by the owner, 2026-10-07** | Plans and limits as confirmed. Never call it managed or WordPress-specific. Email is not included. Prices hidden until confirmed |
 | VPS hosting | `/vps-hosting` | None yet. Owner will add plans to `pricing.json` | "Talk to the team" |
 | Cloud hosting | `/cloud-hosting` | None yet. Same | "Talk to the team" |
 | Migration service | `/migration` | Request form exists. Terms page planned (`/migration-terms`) | Process only until the terms page is published (Plan 14) |

@@ -47,7 +47,8 @@ import { HOME_HERO, WORDPRESS_HERO, ABOUT_HERO } from "@/content/heroes";
 import CaseStudy from "@/components/sections/CaseStudy";
 import CTABand from "@/components/sections/CTABand";
 import FAQSection from "@/components/sections/FAQSection";
-import LogoWall from "@/components/sections/LogoWall";
+import LogoStrip from "@/components/sections/LogoStrip";
+import { TECH_LOGOS } from "@/content/logos";
 import NewsletterSignup from "@/components/sections/NewsletterSignup";
 import ProcessTimeline from "@/components/sections/ProcessTimeline";
 import ResourceGrid from "@/components/sections/ResourceGrid";
@@ -87,7 +88,6 @@ import {
   SAMPLE_BANNERS,
   SAMPLE_CASE_STUDY,
   SAMPLE_CODE,
-  SAMPLE_LOGOS,
   SAMPLE_PATHS,
   SAMPLE_PATHS_LONG,
   SAMPLE_POSTS,
@@ -563,12 +563,15 @@ export default function V2ShowcasePage() {
           </ShowcaseSection>
 
           <ShowcaseSection
-            id="logo-wall"
-            title="LogoWall"
+            id="logo-strip"
+            title="LogoStrip"
             status="built"
-            notes="Verified logos only (written permission). Hidden when none. Third-party rating only with a source link. Text wordmark when an image is missing."
+            notes="One row of monochrome logos for the technology we run (content/logos.ts), each gated on its claim on real pages (this showcase shows them all). No customer logos (owner, 2026-10-26). One-colour SVGs in public/logos are tinted with the text colour; without a file the name shows as a wordmark. The marquee pauses on hover and focus, stays still with reduced motion, and needs five logos (fewer fall back to the static row)."
           >
-            <LogoWall title="Businesses that host with DronaHost" headingLevel="h3" logos={SAMPLE_LOGOS} showSamples className="!py-0" />
+            <div className="space-y-6">
+              <LogoStrip eyebrow="Technology we use" title="The software behind your hosting" headingLevel="h3" logos={TECH_LOGOS} className="!py-0" />
+              <LogoStrip headingLevel="h3" logos={TECH_LOGOS.slice(0, 4)} variant="static" className="!py-0" />
+            </div>
           </ShowcaseSection>
 
           <ShowcaseSection

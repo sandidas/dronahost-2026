@@ -10,7 +10,7 @@
  */
 import type { FeatureIconName } from "@/components/ui/FeatureIcon";
 import type { FaqItem } from "@/components/sections/FAQSection";
-import type { LogoItem } from "@/components/sections/LogoWall";
+import type { LogoEntry } from "@/content/logos";
 import type { TestimonialItem } from "@/components/sections/Testimonials";
 import { isVerified } from "./claims";
 
@@ -216,7 +216,7 @@ export const HOME_TESTIMONIALS: { eyebrow: string; title: string; items: Testimo
 };
 
 /** Empty until customers give written permission; the component hides itself. */
-export const HOME_LOGOS: { title: string; logos: LogoItem[] } = { title: "Businesses that host with DronaHost", logos: [] };
+export const HOME_LOGOS: { title: string; logos: LogoEntry[] } = { title: "Businesses that host with DronaHost", logos: [] };
 
 export const HOME_FAQ: { eyebrow: string; title: string; aside: { title: string; body: string; cta?: { label: string; href: string } }; items: FaqItem[] } = {
   eyebrow: "Hosting basics",

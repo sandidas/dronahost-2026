@@ -16,6 +16,13 @@ import PlanGuide from "@/components/sections/bespoke/PlanGuide";
 import { buildPlanGuide, buildRenewalCost, buildResourceTiers } from "@/lib/pricing/plans";
 import ProcessTimeline from "@/components/sections/ProcessTimeline";
 import ProductHero from "@/components/sections/ProductHero";
+import OfferBanner, { type OfferPrice } from "@/components/sections/banners/OfferBanner";
+import TwoColumn from "@/components/sections/TwoColumn";
+import LogoStrip from "@/components/sections/LogoStrip";
+import { TECH_LOGOS } from "@/content/logos";
+import CurrencyAmount from "@/components/ui/CurrencyAmount";
+import pricing from "@/data/pricing.json";
+import { DEFAULT_CURRENCY, formatMoney } from "@/lib/pricing";
 import MigrationRequest from "@/components/sections/MigrationRequest";
 import MigrationPromo from "@/components/sections/bespoke/MigrationPromo";
 import SupportTeam from "@/components/sections/bespoke/SupportTeam";
@@ -46,7 +53,7 @@ import Testimonials from "@/components/sections/Testimonials";
 import TrustSignals from "@/components/sections/TrustSignals";
 import type { TrustItem } from "@/content/trust";
 import { CacheVisual, GrowthVisual, ChannelsVisual, MoveVisual, RestoreVisual, UptimeVisual } from "@/components/sections/visuals/bento";
-import { showSamples } from "@/lib/flags";
+import { showPrices, showSamples } from "@/lib/flags";
 import { COMPANY } from "@/content/company";
 import { SAMPLE_CASE_STUDY, SAMPLE_RATING, SAMPLE_STATS } from "@/content/placeholders";
 import { featureById } from "./features";
@@ -105,6 +112,24 @@ function heroVisual(shot: { src: string; alt: string; width: number; height: num
     </figure>
   );
 }
+/** The lowest annual price and its renewal price, from data/pricing.json, in every enabled currency. Null while prices are hidden. */
+function lowestPlanPrice(): { planName: string; price: OfferPrice } | null {
+  if (!showPrices()) return null;
+  const priced = pricing.plans.filter((p) => typeof p.pricing.annual[DEFAULT_CURRENCY] === "number");
+  const plan = priced.reduce<(typeof priced)[number] | null>((low, p) => (!low || (p.pricing.annual[DEFAULT_CURRENCY] ?? Infinity) < (low.pricing.annual[DEFAULT_CURRENCY] ?? Infinity) ? p : low), null);
+  const amount = plan && formatMoney(plan.pricing.annual);
+  if (!plan || !amount) return null;
+  const renewal = formatMoney(plan.pricing.renewal);
+  return {
+    planName: plan.name,
+    price: { amount: <CurrencyAmount amounts={amount} />, period: UI.banners.perMonthBilledAnnually, renewal: renewal ? <CurrencyAmount amounts={renewal} /> : undefined, taxLine: UI.pricing.taxLine },
+  };
+}
+
+/** Plain text, or text shown only while its claim renders. */
+const gated = (items: readonly (string | { text: string; requiresClaim?: string })[] | undefined, ctx: ResolveContext): string[] =>
+  (items ?? []).flatMap((i) => (typeof i === "string" ? [i] : !i.requiresClaim || resolveClaimRef(i.requiresClaim, ctx) ? [i.text] : []));
+
 const BENTO_VISUALS = { cache: <CacheVisual />, growth: <GrowthVisual />, restore: <RestoreVisual />, channels: <ChannelsVisual />, shield: <ShieldVisual />, backups: <BackupsVisual />, builder: <BuilderVisual />, panel: <ControlPanelVisual />, uptime: <UptimeVisual />, move: <MoveVisual /> } as const;
 
 /**
@@ -113,6 +138,45 @@ const BENTO_VISUALS = { cache: <CacheVisual />, growth: <GrowthVisual />, restor
  * which is how `hideIfEmpty` works: the page never has an empty gap.
  */
 export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
+  OfferHero: {
+    schema: S.OfferHero,
+    render: ({ variant, content: c }, ctx) => {
+      const offer = lowestPlanPrice();
+      const risk = c.riskReducer && resolveClaimRef(c.riskReducer.requiresClaim, ctx) ? { text: c.riskReducer.text, href: c.riskReducer.href } : undefined;
+      return (
+        <OfferBanner
+          eyebrow={c.eyebrow}
+          title={c.h1}
+          titleAccent={c.accent}
+          description={c.lead}
+          planName={offer?.planName ?? c.eyebrow}
+          price={offer?.price}
+          primaryCta={c.ctaPrimary}
+          riskReducer={risk}
+          nextStep={c.nextStep}
+          highlights={gated(c.highlights, ctx)}
+          layout={variant}
+          headingLevel="h1"
+        />
+      );
+    },
+  },
+  LogoStrip: {
+    schema: S.LogoStrip,
+    render: ({ variant, content: c }, ctx) => {
+      const logos = TECH_LOGOS.filter((l) => ctx.claimRenders(l.claim));
+      return <LogoStrip eyebrow={c.eyebrow} title={c.h2} note={c.note} logos={logos} variant={variant} />;
+    },
+  },
+  TwoColumn: {
+    schema: S.TwoColumn,
+    render: ({ content: c }, ctx) => (
+      <TwoColumn eyebrow={c.eyebrow} title={c.h2} description={c.description} features={gated(c.points, ctx)} cta={c.ctas}
+        // The shared visuals are drawn for a tile, so they sit in a raised card here.
+        visual={<div aria-hidden="true" className="surface surface-raised relative flex aspect-[4/3] items-center justify-center overflow-hidden !rounded-2xl p-8"><div className="scale-125 sm:scale-150">{BENTO_VISUALS[c.visual]}</div></div>}
+        visualPosition={c.visualPosition} />
+    ),
+  },
   ProductHero: {
     schema: S.ProductHero,
     render: ({ variant, content: c }, ctx) => {

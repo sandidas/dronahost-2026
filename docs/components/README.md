@@ -103,7 +103,7 @@ Local intent is served without a local claim: no office, phone or map, no "near 
 | Component | Renders only when |
 |---|---|
 | `Testimonials` | name, role, company **and** source link are present; photo optional |
-| `LogoWall` | logos are flagged `verified` (written permission); rating needs a source URL |
+| `LogoStrip` | each logo needs its claim to render |
 | `CaseStudy` | it links to a published, customer-approved `sourceUrl` |
 | `StatsBar` | a claim in `content/claims.ts` is `verified` |
 | `TrustSignals` | an item in `content/trust.ts` is `verified` (`variant="list"` is the compact divided list) |

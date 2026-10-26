@@ -161,7 +161,7 @@
     },
     {
       "id": "F16",
-      "fact": "Customers manage their sites in a control panel; the panel product is never named and cPanel is not offered",
+      "fact": "Customers manage their sites in a control panel. The panel may be named (decision 79), but which products include cPanel is not stated, so copy never says this plan includes it",
       "kind": "claim",
       "source": {
         "type": "project-file",
@@ -319,7 +319,7 @@
     },
     {
       "id": "F30",
-      "fact": "DronaHost owns no servers or data centers; plans run on infrastructure from leading cloud providers, with no fixed provider or location per plan; provider names appear only in the sub-processor list, DPA and privacy policy",
+      "fact": "DronaHost owns no servers or data centers; plans run on infrastructure from leading cloud providers, with no fixed provider or location per plan; FAQ and answer copy may name AWS, Google Cloud and DigitalOcean in plain text with a line that the provider can vary (decision 80), never as logos",
       "kind": "business",
       "source": {
         "type": "project-file",

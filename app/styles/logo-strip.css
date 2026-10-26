@@ -1,0 +1,40 @@
+/* LogoStrip: one-colour logos tinted through a mask, and the scrolling row. */
+@layer components {
+  .logo-mask {
+    mask: var(--logo) center / contain no-repeat;
+    -webkit-mask: var(--logo) center / contain no-repeat;
+  }
+
+  /* Fade the row out at both edges. */
+  .logo-marquee {
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  }
+
+  .logo-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: logo-scroll 40s linear infinite;
+  }
+
+  .logo-marquee:hover .logo-marquee-track,
+  .logo-marquee:focus-within .logo-marquee-track {
+    animation-play-state: paused;
+  }
+
+  [dir="rtl"] .logo-marquee-track {
+    animation-direction: reverse;
+  }
+
+  @keyframes logo-scroll {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-marquee-track {
+      animation: none;
+    }
+  }
+}

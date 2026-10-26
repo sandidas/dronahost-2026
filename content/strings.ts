@@ -187,6 +187,7 @@ export const UI = {
     verdict: "Verdict",
     criteria: "How we compared",
     renewsAt: "Renews at",
+    perMonthBilledAnnually: "/month, billed annually",
     whatHappensNext: "What happens next",
     source: "Source",
     quickLinks: "Quick links",

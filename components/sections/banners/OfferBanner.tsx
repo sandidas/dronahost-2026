@@ -7,12 +7,12 @@ import BannerShell, { type BannerScope, Kicker, PrimaryAction, SCOPE } from "./B
 import Ticket from "./Ticket";
 
 export type OfferPrice = {
-  /** Already formatted with its symbol, from lib/pricing: "$9.99". Never typed by hand. */
-  amount: string;
+  /** Already formatted with its symbol, from lib/pricing: "$9.99", or a CurrencyAmount. Never typed by hand. */
+  amount: ReactNode;
   /** "/month billed annually". */
   period: string;
-  /** Formatted renewal price. Always shown when prices show. */
-  renewal?: string;
+  /** Formatted renewal price, or a CurrencyAmount. Always shown when prices show. */
+  renewal?: ReactNode;
   /** The one tax sentence from the project rules. */
   taxLine?: string;
 };

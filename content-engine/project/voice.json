@@ -202,14 +202,7 @@
       "avoid": [
         "cPanel"
       ],
-      "use": "control panel (DronaHost does not offer cPanel, decision 65)"
-    },
-    {
-      "avoid": [
-        "Plesk",
-        "WP Toolkit"
-      ],
-      "use": "control panel (never name the panel product on public pages, decision 66)"
+      "use": "control panel (cPanel is in use, but which products include it is not stated yet; do not say a plan includes it, decision 79)"
     }
   ],
   "bannedPhrases": [

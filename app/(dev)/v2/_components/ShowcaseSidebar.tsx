@@ -69,7 +69,7 @@ const categories: Category[] = [
     label: "Social proof",
     items: [
       { id: "testimonials", label: "Testimonials" },
-      { id: "logo-wall", label: "LogoWall" },
+      { id: "logo-strip", label: "LogoStrip" },
       { id: "case-study", label: "CaseStudy" },
       { id: "stats-bar", label: "StatsBar" },
       { id: "assurance-strip", label: "AssuranceStrip" },

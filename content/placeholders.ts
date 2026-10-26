@@ -7,7 +7,6 @@
 // ---------------------------------------------------------------------------
 import type { RouterPath } from "@/components/sections/bespoke/PathRouter";
 import type { SplitItem } from "@/components/sections/bespoke/ResponsibilitySplit";
-import type { LogoItem } from "@/components/sections/LogoWall";
 import type { ResourcePost } from "@/components/sections/ResourceGrid";
 import type { TestimonialItem } from "@/components/sections/Testimonials";
 import type { Claim } from "@/content/claims";
@@ -19,7 +18,6 @@ export const SAMPLE_TESTIMONIALS: TestimonialItem[] = [
   { quote: "Sample quote about renewal pricing and clarity, used only to test the layout.", name: "Third Sample", role: "CTO", company: "Sample Software GmbH" },
 ];
 
-export const SAMPLE_LOGOS: LogoItem[] = ["Sample One", "Sample Two", "Sample Three", "Sample Four", "Sample Five"].map((name) => ({ name }));
 
 export const SAMPLE_CASE_STUDY = {
   title: "A sample case study headline about a measurable improvement",

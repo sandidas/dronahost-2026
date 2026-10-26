@@ -605,8 +605,64 @@ export const VideoEmbed = z.strictObject({
   }),
 });
 
+/**
+ * The OfferBanner ticket as a page hero. The price on the ticket is the lowest plan's, read from data/pricing.json by the
+ * renderer and hidden until prices show; the spec never names a plan or a price (decision 73).
+ */
+export const OfferHero = z.strictObject({
+  ...sectionBase,
+  type: z.literal("OfferHero"),
+  /** split = text beside an upright ticket · centered = text over a long ticket · compact = the whole banner is the ticket. */
+  variant: z.enum(["split", "centered", "compact"]),
+  content: z.strictObject({
+    eyebrow,
+    h1: z.string().min(20).max(70),
+    /** A phrase shown after the h1 in teal. */
+    accent: z.string().min(4).max(40).optional(),
+    lead: z.string().max(220).optional(),
+    ctaPrimary: Cta,
+    /** The risk reducer under the button, shown only while its claim renders. */
+    riskReducer: z.strictObject({ text: z.string().min(10).max(80), href: Href, requiresClaim: ClaimRef }).optional(),
+    /** One sentence on what happens after the click. */
+    nextStep: z.string().min(10).max(160).optional(),
+    highlights: z.array(gatedText).max(4).optional(),
+  }),
+});
+
+/**
+ * One row of logos: the technology we run (content/logos.ts TECH_LOGOS), each shown only while its claim renders. The spec
+ * never lists logos; with none to show the section is left out. Customer logos are not shown (owner, 2026-10-26).
+ */
+export const LogoStrip = z.strictObject({
+  ...sectionBase,
+  type: z.literal("LogoStrip"),
+  /** marquee = one slowly scrolling row · static = a centred row. */
+  variant: z.enum(["marquee", "static"]),
+  content: z.strictObject({
+    eyebrow,
+    h2: z.string().min(8).max(70).optional(),
+    /** One plain line under the logos, for example where the servers come from (decision 80). */
+    note: z.string().min(10).max(160).optional(),
+  }),
+});
+
+/** Text, a checklist and actions beside one of the shared visuals. */
+export const TwoColumn = z.strictObject({
+  ...sectionBase,
+  type: z.literal("TwoColumn"),
+  content: z.strictObject({
+    eyebrow,
+    h2: z.string().min(8).max(70),
+    description,
+    points: z.array(gatedText).max(6).optional(),
+    ctas: z.array(Cta).max(2).optional(),
+    visual: z.enum(["cache", "growth", "restore", "channels", "shield", "backups", "panel", "uptime", "move"]),
+    visualPosition: z.enum(["left", "right"]).optional(),
+  }),
+});
+
 export const Section = z.discriminatedUnion("type", [
-  ProductHero, AssuranceStrip, ProofBar, PathRouter, AnswerBlock, ResponsibilitySplit, Meaning, WhyChoose, MigrationRequest, MigrationPromo, SupportTeam, Evidence, ProcessTimeline, BentoGrid, PricingPlans,
+  OfferHero, TwoColumn, LogoStrip, ProductHero, AssuranceStrip, ProofBar, PathRouter, AnswerBlock, ResponsibilitySplit, Meaning, WhyChoose, MigrationRequest, MigrationPromo, SupportTeam, Evidence, ProcessTimeline, BentoGrid, PricingPlans,
   SupportChannels, HelpAndPolicies, Testimonials, TrustSignals, FAQSection, HonestLimits, PageProvenance, CTABand,
   RatingBand, ProductCards, FeatureSpotlight, AdvantageGrid, SolutionsGrid, Ecosystem, ReviewsShowcase, RenewalCost, PlanGuide, VideoEmbed,
 ]);

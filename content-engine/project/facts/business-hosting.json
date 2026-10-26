@@ -241,7 +241,7 @@
   },
   {
    "id": "F16",
-   "fact": "Customers manage their sites in a control panel; the panel product is never named and cPanel is not offered",
+   "fact": "Customers manage their sites in a control panel. The panel may be named (decision 79), but which products include cPanel is not stated, so copy never says this plan includes it",
    "kind": "claim",
    "source": {
     "type": "project-file",

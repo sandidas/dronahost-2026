@@ -5,6 +5,7 @@
 @import "./styles/luxe.css";
 @import "./styles/look-luxe.css";
 @import "./styles/graphics.css";
+@import "./styles/logo-strip.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

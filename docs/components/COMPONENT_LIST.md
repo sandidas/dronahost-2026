@@ -65,7 +65,7 @@ motion is CSS-first and respects `prefers-reduced-motion`; internal links use `L
 | `TrustSignals` | Guarantee, SLA, security, DPA, support items | Gated (`content/trust.ts`) |
 | `TrustBadges` | Accepted payment methods only, never trust marks | Gated |
 | `Testimonials` | Real, verifiable people only | Gated |
-| `LogoWall` | Customer logos with permission | Gated |
+| `LogoStrip` | The technology we run (claim-gated); marquee or static row | Gated |
 | `CaseStudy` | One to four concrete results | Gated |
 | `SupportChannels` | Support ticket and email cards only (owner decision 22). Email shows only when a support address is set in `content/company.ts` | Built; used on the home page |
 | `DomainSearch` | Domain availability through the WHMCS WhoisLookup API | Gated (`FEATURES.domainSearch` and credentials) |
