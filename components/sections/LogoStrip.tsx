@@ -1,4 +1,3 @@
-import { Cloud } from "lucide-react";
 import { useId, type CSSProperties } from "react";
 import { reveal } from "@/lib/motion";
 import { cn } from "@/utils/cn";
@@ -7,8 +6,6 @@ import type { LogoEntry } from "@/content/logos";
 type LogoStripProps = {
   eyebrow?: string;
   title?: string;
-  /** One plain line in its own band under the logos, for example where the servers come from (decision 80). */
-  note?: string;
   /** Already gated by the caller on each logo's claim. */
   logos: readonly LogoEntry[];
   /** marquee = one row that scrolls slowly (pauses on hover and focus, still with reduced motion) · static = a centred row. */
@@ -50,7 +47,7 @@ function Item({ logo, hidden }: { logo: LogoEntry; hidden?: boolean }) {
  * One row of monochrome logos for the technology we run. The caller passes only logos that may show; with none the section
  * is left out. The marquee needs at least five logos to fill a row, so fewer fall back to the static row.
  */
-export default function LogoStrip({ eyebrow, title, note, logos, variant = "marquee", headingLevel = "h2", className }: LogoStripProps) {
+export default function LogoStrip({ eyebrow, title, logos, variant = "marquee", headingLevel = "h2", className }: LogoStripProps) {
   const headingId = useId();
   if (logos.length === 0) return null;
   const Heading = headingLevel;
@@ -91,14 +88,6 @@ export default function LogoStrip({ eyebrow, title, note, logos, variant = "marq
           </ul>
         )}
       </div>
-      {note && (
-        <div className="border-t border-border bg-card">
-          <p className="container-site flex items-center justify-center gap-3 py-5 text-center text-sm text-foreground sm:text-base">
-            <Cloud aria-hidden="true" className="size-5 shrink-0 text-link" />
-            {note}
-          </p>
-        </div>
-      )}
     </section>
   );
 }

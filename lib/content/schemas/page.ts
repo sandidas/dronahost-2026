@@ -69,7 +69,7 @@ export const PageSpec = z
     }),
     /** Rules the owner has overruled for this page (check-content shows their failures as warnings). Needs a reason and an approver. */
     waivers: z.strictObject({ rules: z.array(z.string().regex(/^[A-Z]{1,3}\d{1,2}$/)).min(1), reason: z.string().min(10), approvedBy: z.string().min(3) }).optional(),
-    sections: z.array(Section).min(3).max(15),
+    sections: z.array(Section).min(3).max(16),
   })
   .superRefine((page, ctx) => {
     const sections = page.sections as SectionSpec[];

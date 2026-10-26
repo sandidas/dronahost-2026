@@ -68,14 +68,14 @@ The researcher could not read the Google results page directly or see People Als
 | Question | Answered on the page by |
 |---|---|
 | What is cloud hosting, in plain words? | AnswerBlock; FAQ "What is cloud web hosting?" |
-| Is it right for my business, or overkill? | TwoColumn "Who cloud hosting suits" |
-| Do I need technical skills? | FAQ "Do I need technical skills?"; ResponsibilitySplit |
-| Will my bill jump with traffic or at renewal? | FAQ "Will my bill change?"; AssuranceStrip |
+| Is it right for my business, or overkill? | Meaning "Who cloud hosting is for" |
+| Do I need technical skills? | FAQ "Do I need technical skills?"; TwoColumn "What we run, and what you control" |
+| Will my bill jump with traffic or at renewal? | FAQ "Will my bill change with traffic or at renewal?"; NoteBand under the banner |
 | What happens when my site outgrows its plan? | HonestLimits; plan guide; FAQ "What happens when my site outgrows its plan?" |
-| Which plan should I choose? | Plan guide "Which plan fits your business now" |
-| Will my site stay up? | AssuranceStrip (uptime SLA); FAQ "Will my site stay up?" |
-| Can you move my site without breaking it? | ProcessTimeline "How we move your site to cloud hosting"; feature card "Free move of one site" |
-| Can I reach a person? | FAQ "How does support work?"; HelpAndPolicies |
+| Which plan should I choose? | FAQ "Which plan should I choose?" |
+| Will my site stay up? | FAQ "Will my site stay up?"; AdvantageGrid (uptime SLA) |
+| Can you move my site without breaking it? | MigrationPromo "We move your site to your cloud plan" |
+| Can I reach a person? | FAQ "How does support work?" |
 | How is it different from WordPress, Business hosting or a VPS? | FAQ "How is this different from your other hosting?" |
 
 ## 5. Human first (owner)
@@ -128,27 +128,28 @@ See [cloud-web-hosting-interview.md](cloud-web-hosting-interview.md): A0 to A4 (
 | Nothing padded? | yes (planned) | 900 to 1,300 words, inside C2 (decision 62 allows up to 1,800) |
 | Honest limits, no pressure? | yes (planned) | HonestLimits: email not included; no automatic scaling |
 
-## 11. Outline (15 sections, blueprint C2 order; 900 to 1,300 words)
+## 11. Outline (owner layout, 2026-10-26; replaces the 2026-10-24 outline)
 
-1. **SplitHero** (variant cloud) H1 "Cloud hosting for small business, at a price you can plan". Lead: the four plans run on infrastructure from leading cloud providers; we run the hosting, you run your business. Primary "See cloud hosting plans", secondary "Help me choose a plan".
-2. **AssuranceStrip** (3): same price at renewal, uptime SLA, free migration (each a rendering claim, values from claims.ts).
-3. **AnswerBlock** (40 to 80 words): what cloud web hosting is for a small business, who it suits, and that plans are fixed-price with a step up when you grow.
-4. **TwoColumn** H2 "Who cloud hosting suits": for you (a growing business site, uneven traffic, several sites, no wish to manage servers) / not for you (you want pay-as-you-go resources that scale by the minute; you want full server control, then see Managed VPS hosting).
-5. **HonestLimits** H2 "What to know before you choose": email is not included (A3, decision 49); plans do not scale automatically, you move up a plan (A3b). Support by ticket and email only (decision 22) in the FAQ.
-6. **FeatureGrid** H2 "What every cloud plan includes": daily backup with the latest copy kept, server monitoring, free migration of one site, the same price at renewal, uptime SLA. Tiles gated on draft claims stay hidden.
-7. **Plan guide** (original element, section 6) H2 "Which plan fits your business now".
-8. **ProcessTimeline** H2 "How we move your site to the cloud": access, transfer, your check, DNS switch (claim migration-process).
-9. **ResponsibilitySplit** H2 "What we run, and what you control" (lines only where a claim renders).
-10. **PricingPlans** H2 "Cloud hosting plans" (HostingPricing, whole lineup).
-11. **HelpAndPolicies**: support policy, SLA, refund policy, migration terms, pricing policy.
-12. **CaseStudy** (6b, if confirmed).
-13. **FAQSection** (8): What is cloud web hosting? Do I need technical skills? Will my bill change with traffic or at renewal? What happens when my site outgrows its plan? How reliable is it? Can you move my site? How does support work? How is this different from your other hosting?
+The owner designed this layout in the UI on 2026-10-26 and asked for copy to fit it ("based on ui write the content and update this page"). That counts as approval of the section list. BP3 and BP4 are waived in the page spec. The plan guide (the original element in section 6) is not in this layout; its answer moves to the FAQ "Which plan should I choose?". 
+
+1. **OfferHero** (split): H1 "Cloud hosting for small business at a price you can plan". Ticket with the lowest plan's price and renewal price from data/pricing.json; "See cloud hosting plans"; money-back line.
+2. **NoteBand**: "Same price at renewal, with no hidden fees. Your site runs on AWS, Google Cloud, DigitalOcean or another established provider." (decisions 80 and 81; no-hidden-fees waits for /pricing-policy).
+3. **AdvantageGrid**: four commitments, each with its policy link (uptime SLA, 24/7 support, renewal price, money-back).
+4. **MigrationPromo**: "We move your site to your cloud plan" (free-migration).
+5. **PricingPlans**: "Cloud hosting plans for small business" (HostingPricing, whole lineup).
+6. **LogoStrip** (hosting set): "Technology we use".
+7. **Meaning**: "Who cloud hosting is for", a good fit / look elsewhere if.
+8. **BentoGrid**: "What every cloud plan includes".
+9. **SolutionsGrid**: "More than cloud hosting, from one provider".
+10. **WhyChoose**: "Why small businesses choose DronaHost cloud hosting".
+11. **TwoColumn**: "What we run, and what you control".
+12. **FAQSection** (10 questions, including "Which plan should I choose?").
+13. **HonestLimits**: email not included; no automatic scaling; ticket and email support only.
 14. **PageProvenance** byline.
-15. **CTABand**: "See cloud hosting plans", secondary "Help me choose a plan".
 
 ## 12. Headline
 
-Reason-led: "Cloud hosting for small business, at a price you can plan". Fallback: "Cloud hosting for growing small businesses".
+Reason-led: "Cloud hosting for small business at a price you can plan" (owner layout: H1 plus accent, no comma). Fallback: "Cloud hosting for growing small businesses".
 
 ## 13. Tool or table needed
 

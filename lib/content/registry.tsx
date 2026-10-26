@@ -19,6 +19,7 @@ import ProductHero from "@/components/sections/ProductHero";
 import OfferBanner, { type OfferPrice } from "@/components/sections/banners/OfferBanner";
 import TwoColumn from "@/components/sections/TwoColumn";
 import LogoStrip from "@/components/sections/LogoStrip";
+import NoteBand from "@/components/sections/NoteBand";
 import { TECH_LOGOS } from "@/content/logos";
 import { claimConfirmed } from "@/content/claims";
 import CurrencyAmount from "@/components/ui/CurrencyAmount";
@@ -169,8 +170,15 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
     render: ({ variant, content: c }, ctx) => {
       // A logo carries no terms, so an owner-confirmed claim is enough (decision 81).
       const logos = TECH_LOGOS.filter((l) => l.set === c.set && claimConfirmed(l.claim));
-      const noteOk = (c.noteRequires ?? []).every((ref) => resolveClaimRef(ref, ctx));
-      return <LogoStrip eyebrow={c.eyebrow} title={c.h2} note={noteOk ? c.note : c.noteFallback} logos={logos} variant={variant} />;
+      return <LogoStrip eyebrow={c.eyebrow} title={c.h2} logos={logos} variant={variant} />;
+    },
+  },
+  NoteBand: {
+    schema: S.NoteBand,
+    render: ({ content: c }, ctx) => {
+      const ok = (c.textRequires ?? []).every((ref) => resolveClaimRef(ref, ctx));
+      const text = ok ? c.text : c.fallback;
+      return text ? <NoteBand text={text} /> : null;
     },
   },
   TwoColumn: {

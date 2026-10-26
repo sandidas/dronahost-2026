@@ -643,11 +643,18 @@ export const LogoStrip = z.strictObject({
     set: z.enum(["hosting", "development"]),
     eyebrow,
     h2: z.string().min(8).max(70).optional(),
-    /** One plain line in its own band under the logos, for example where the servers come from (decision 80). */
-    note: z.string().min(10).max(160).optional(),
-    /** The note shows only while every one of these claims renders; otherwise `noteFallback` shows. */
-    noteRequires: z.array(ClaimRef).min(1).max(3).optional(),
-    noteFallback: z.string().min(10).max(160).optional(),
+  }),
+});
+
+/** One line in a thin full-width band, for example right under the banner (decision 80). */
+export const NoteBand = z.strictObject({
+  ...sectionBase,
+  type: z.literal("NoteBand"),
+  content: z.strictObject({
+    text: z.string().min(10).max(160),
+    /** `text` shows only while every one of these claims renders; otherwise `fallback` shows, or nothing. */
+    textRequires: z.array(ClaimRef).min(1).max(3).optional(),
+    fallback: z.string().min(10).max(160).optional(),
   }),
 });
 
@@ -667,7 +674,7 @@ export const TwoColumn = z.strictObject({
 });
 
 export const Section = z.discriminatedUnion("type", [
-  OfferHero, TwoColumn, LogoStrip, ProductHero, AssuranceStrip, ProofBar, PathRouter, AnswerBlock, ResponsibilitySplit, Meaning, WhyChoose, MigrationRequest, MigrationPromo, SupportTeam, Evidence, ProcessTimeline, BentoGrid, PricingPlans,
+  OfferHero, TwoColumn, LogoStrip, NoteBand, ProductHero, AssuranceStrip, ProofBar, PathRouter, AnswerBlock, ResponsibilitySplit, Meaning, WhyChoose, MigrationRequest, MigrationPromo, SupportTeam, Evidence, ProcessTimeline, BentoGrid, PricingPlans,
   SupportChannels, HelpAndPolicies, Testimonials, TrustSignals, FAQSection, HonestLimits, PageProvenance, CTABand,
   RatingBand, ProductCards, FeatureSpotlight, AdvantageGrid, SolutionsGrid, Ecosystem, ReviewsShowcase, RenewalCost, PlanGuide, VideoEmbed,
 ]);

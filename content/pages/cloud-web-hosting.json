@@ -16,7 +16,7 @@
   ],
   "layoutSignature": [
     "OfferHero:split",
-    "LogoStrip",
+    "NoteBand",
     "AdvantageGrid",
     "MigrationPromo",
     "PricingPlans"
@@ -66,7 +66,7 @@
       "BP3",
       "BP4"
     ],
-    "reason": "Owner layout for /cloud-web-hosting (2026-10-26): offer ticket hero, technology strip, advantages, migration and pricing first; no AnswerBlock or closing CTABand; HonestLimits and PageProvenance at the end.",
+    "reason": "Owner layout for /cloud-web-hosting (2026-10-26): offer ticket hero, the renewal and providers band, advantages, migration and pricing first, then the technology strip; no AnswerBlock or closing CTABand; HonestLimits and PageProvenance at the end.",
     "approvedBy": "Owner (2026-10-26)"
   },
   "sections": [
@@ -76,9 +76,9 @@
       "variant": "split",
       "content": {
         "eyebrow": "Cloud hosting",
-        "h1": "Cloud hosting for small business,",
+        "h1": "Cloud hosting for small business",
         "accent": "at a price you can plan",
-        "lead": "Four plans on infrastructure from leading cloud providers. DronaHost runs the hosting, and you manage your site in a control panel.",
+        "lead": "Four fixed plans on servers from established cloud providers. We run the hosting, you manage your site in a control panel, and your price stays the same at renewal.",
         "ctaPrimary": {
           "label": "See cloud hosting plans",
           "href": "/cloud-web-hosting#plans"
@@ -105,32 +105,29 @@
       }
     },
     {
-      "id": "tech",
-      "type": "LogoStrip",
-      "variant": "marquee",
+      "id": "providers",
+      "type": "NoteBand",
       "content": {
-        "set": "hosting",
-        "eyebrow": "Technology we use",
-        "note": "Same price at renewal, with no hidden fees. Your site runs on AWS, Google Cloud, DigitalOcean or another established provider.",
-        "noteRequires": [
+        "text": "Same price at renewal, with no hidden fees. Your site runs on AWS, Google Cloud, DigitalOcean or another established provider.",
+        "textRequires": [
           "claim:renewal-price-same",
           "claim:no-hidden-fees"
         ],
-        "noteFallback": "Your site runs on AWS, Google Cloud, DigitalOcean or another established provider."
+        "fallback": "Your site runs on AWS, Google Cloud, DigitalOcean or another established provider."
       }
     },
     {
       "id": "advantages",
       "type": "AdvantageGrid",
       "content": {
-        "eyebrow": "The DronaHost advantage",
-        "h2": "Engineered for growth. Run for you.",
-        "accent": "Run for you.",
-        "description": "Four commitments sit behind every plan. Each one is written into a published policy, so you can read the terms before you buy.",
+        "eyebrow": "Why it holds up",
+        "h2": "Four commitments behind every cloud plan",
+        "accent": "every cloud plan",
+        "description": "Each one is written into a published policy, so you can read the terms before you buy.",
         "items": [
           {
             "value": "99.99%",
-            "title": "Engineered to stay online",
+            "title": "Built to stay online",
             "text": "A monthly uptime commitment, with a service credit if we ever miss it.",
             "link": {
               "label": "Read the SLA",
@@ -141,7 +138,7 @@
           {
             "value": "24/7",
             "title": "Help at any hour",
-            "text": "Support by ticket and email, any hour of any day.",
+            "text": "Support by ticket and email, any hour of any day, with every reply in writing.",
             "link": {
               "label": "Read the support policy",
               "href": "/support-policy"
@@ -177,12 +174,12 @@
       "type": "MigrationPromo",
       "requires": "claim:free-migration",
       "content": {
-        "eyebrow": "Managed migration",
-        "h2": "Move your website to DronaHost",
-        "description": "Start in the client area. Share access to your current hosting, we transfer your website, and we switch only after you give permission.",
+        "eyebrow": "Free migration",
+        "h2": "We move your site to your cloud plan",
+        "description": "Start in the client area. Share access to your current host, we copy your site, and we switch only after you approve.",
         "points": [
-          "Migration included with every hosting plan",
-          "Your current site stays live until you switch",
+          "The move of one website is included with every plan",
+          "Your current site stays online during the move",
           "Nothing switches until you give permission"
         ],
         "cta": {
@@ -192,9 +189,9 @@
         "note": "Opens the DronaHost client area.",
         "graphic": {
           "from": "Your current host",
-          "middle": "We transfer your site",
-          "to": "DronaHost cloud plan",
-          "caption": "How a move works: your current host, the transfer, then DronaHost"
+          "middle": "We copy your site",
+          "to": "Your DronaHost plan",
+          "caption": "Moving a small business site to DronaHost cloud hosting, step by step"
         }
       }
     },
@@ -202,8 +199,8 @@
       "id": "plans",
       "type": "PricingPlans",
       "content": {
-        "h2": "Cloud hosting plans",
-        "description": "Prices show in your currency, with the renewal price under each signup price.",
+        "h2": "Cloud hosting plans for small business",
+        "description": "The same four plans as every DronaHost hosting page. Each card shows the signup price and the renewal price in your currency.",
         "source": "pricing.json",
         "show": [
           "starter",
@@ -220,12 +217,21 @@
       }
     },
     {
+      "id": "tech",
+      "type": "LogoStrip",
+      "variant": "marquee",
+      "content": {
+        "set": "hosting",
+        "eyebrow": "Technology we use"
+      }
+    },
+    {
       "id": "fit",
       "type": "Meaning",
       "content": {
         "eyebrow": "Who it is for",
         "h2": "Who cloud hosting is for",
-        "answer": "Cloud hosting suits growing small businesses whose traffic is rising or uneven. You can grow without changing host, and you never run a server. Cloud web hosting for small business at DronaHost lets you start on the plan your site needs today and move up when you need more.",
+        "answer": "Cloud hosting suits a small business whose traffic is rising or changes from month to month. You get room to grow without changing host, and you never run a server. Start on the plan your site needs today, and move up a plan when you need more.",
         "lookAfterLabel": "A good fit",
         "keepLabel": "Look elsewhere if",
         "weLookAfter": [
@@ -241,7 +247,7 @@
           "You want pay-as-you-go resources that scale by the minute",
           "You want full server control: see Managed VPS hosting"
         ],
-        "note": "Not sure? Send the team your site address, and we will help you choose a plan."
+        "note": "Not sure which plan fits? Send the team your site address, and we will suggest one."
       }
     },
     {
@@ -267,8 +273,8 @@
       "type": "SolutionsGrid",
       "content": {
         "eyebrow": "What we offer",
-        "h2": "More than hosting, from the same provider",
-        "description": "Design, search and email services that work with your hosting.",
+        "h2": "More than cloud hosting, from one provider",
+        "description": "Design, search and email services that work with your cloud plan.",
         "featured": [
           {
             "tag": "Web design",
@@ -338,7 +344,8 @@
             },
             "requiresClaim": "claim:support-24-7"
           }
-        ]
+        ],
+        "description": "Three promises, each backed by a published policy you can read before you buy."
       }
     },
     {
@@ -347,7 +354,7 @@
       "content": {
         "eyebrow": "You and DronaHost",
         "h2": "What we run, and what you control",
-        "description": "DronaHost runs the hosting account. You run your site.",
+        "description": "DronaHost runs the hosting account and the servers behind it. You run your site, its content and the apps you install.",
         "points": [
           {
             "text": "The hosting servers your account runs on",
@@ -361,7 +368,8 @@
           {
             "text": "A firewall, brute-force protection and malware scanning",
             "requiresClaim": "claim:malware-scanning"
-          }
+          },
+          "Your site, your content and your data stay yours"
         ],
         "ctas": [
           {
@@ -398,6 +406,10 @@
             "q": "Will my bill change with traffic or at renewal?",
             "a": "Your price does not rise at renewal. Every plan renews at your signup price for the same billing cycle, with no end date. Plans do not scale on their own, so a busy month does not move you to a larger plan.",
             "requiresClaim": "claim:renewal-price-same"
+          },
+          {
+            "q": "Which plan should I choose?",
+            "a": "Start with the plan that fits your site today. Starter suits a first business site. Growth adds priority support for a site that is starting to grow. Pro adds semi-dedicated resources and performance tuning for busier sites. Scale adds dedicated resources and senior experts. When your site outgrows its plan, you move up to the next one."
           },
           {
             "q": "What happens when my site outgrows its plan?",

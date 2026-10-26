@@ -16,10 +16,10 @@
   ],
   "layoutSignature": [
     "ProductHero:panel",
+    "NoteBand",
     "LogoStrip",
     "AssuranceStrip",
-    "AnswerBlock",
-    "ProcessTimeline"
+    "AnswerBlock"
   ],
   "seo": {
     "title": "WordPress Hosting with Free Migration",
@@ -98,18 +98,24 @@
       }
     },
     {
+      "id": "providers",
+      "type": "NoteBand",
+      "content": {
+        "text": "Same price at renewal, with no hidden fees. Your site runs on AWS, Google Cloud, DigitalOcean or another established provider.",
+        "textRequires": [
+          "claim:renewal-price-same",
+          "claim:no-hidden-fees"
+        ],
+        "fallback": "Your site runs on AWS, Google Cloud, DigitalOcean or another established provider."
+      }
+    },
+    {
       "id": "tech",
       "type": "LogoStrip",
       "variant": "marquee",
       "content": {
         "set": "hosting",
-        "eyebrow": "Technology we use",
-        "note": "Same price at renewal, with no hidden fees. Your site runs on AWS, Google Cloud, DigitalOcean or another established provider.",
-        "noteRequires": [
-          "claim:renewal-price-same",
-          "claim:no-hidden-fees"
-        ],
-        "noteFallback": "Your site runs on AWS, Google Cloud, DigitalOcean or another established provider."
+        "eyebrow": "Technology we use"
       }
     },
     {
