@@ -26,7 +26,7 @@ Valid plans are the section titles below (Plans 01 to 10 and Plan 14). Plan 15 (
 | Keyword | Locale | Secondary | Intent check | Volume / KD | Target URL | Owner | Status | Next review | AI cited |
 |---|---|---|---|---|---|---|---|---|---|
 | wordpress hosting with free migration | en-US | managed wordpress hosting; managed vs shared wordpress hosting; how much does wordpress hosting cost; managed wordpress hosting for small business; hosting for small business | product (2026-10-11) | | `/wordpress-hosting` | Sandipan Das | briefed | | |
-| managed vps hosting | en-US | vps hosting with root access | | | `/managed-vps-hosting` | | unvalidated | | |
+| fully managed vps hosting | en-US | vps hosting with root access | | | `/managed-vps-hosting` | | unvalidated | | |
 | cloud hosting for small business | en-US | cloud web hosting for small business; managed cloud hosting for small business; cloud hosting services for small business; cloud web hosting | listicle, mixed with product (2026-10-24) | | `/cloud-web-hosting` | Sandipan Das | validated | | |
 | web hosting with no renewal price increase | en-US | web hosting with same renewal price; web hosting for multiple websites; small business web hosting; business web hosting | buy, mixed with learn (2026-10-11) | | `/business-hosting` | Sandipan Das | validated | | |
 | reseller hosting | en-US | white label reseller hosting | | | `/reseller-hosting` | | unvalidated | | |

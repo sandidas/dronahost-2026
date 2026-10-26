@@ -44,7 +44,7 @@ export const SAMPLE_PATHS: RouterPath[] = [
   { title: "I already have a WordPress site", line: "We move it to DronaHost and look after it.", href: "/wordpress-hosting", cta: "See WordPress hosting", icon: "layers" },
   { title: "I need a website built", line: "We design a new WordPress site, then host it.", href: "/wordpress-website-design", cta: "See website design", icon: "palette", claim: "website-design-service" },
   { title: "I need simple hosting for a business site", line: "Web hosting with a control panel, for any kind of site. Email is not included.", href: "/business-hosting", cta: "See business hosting", icon: "globe", claim: "business-hosting-scope" },
-  { title: "I want full control of my server", line: "Managed VPS with root access.", href: "/managed-vps-hosting", cta: "See managed VPS", icon: "server", claim: "managed-vps-scope" },
+  { title: "I want full control of my server", line: "A managed virtual private server.", href: "/managed-vps-hosting", cta: "See managed VPS", icon: "server", claim: "managed-vps-scope" },
 ];
 
 export const SAMPLE_PATHS_LONG: RouterPath[] = [

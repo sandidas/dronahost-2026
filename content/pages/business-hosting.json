@@ -220,7 +220,7 @@
       "content": {
         "eyebrow": "Where it fits",
         "h2": "Between WordPress hosting and a VPS",
-        "answer": "WordPress hosting covers small business sites built on WordPress. A VPS suits you when you need root access and want to run your own server. Business hosting sits between the two. Pro gives you semi-dedicated resources and Scale gives you dedicated resources, for any kind of site, with no server to run. You manage files, databases, apps and backups in a control panel.",
+        "answer": "WordPress hosting covers small business sites built on WordPress. Business hosting sits between WordPress hosting and a managed VPS. Pro gives you semi-dedicated resources and Scale gives you dedicated resources, for any kind of site, with no server to run. You manage files, databases, apps and backups in a control panel.",
         "lookAfterLabel": "Business hosting",
         "keepLabel": "WordPress hosting or a VPS",
         "weLookAfter": [
@@ -231,8 +231,7 @@
           "Files, databases, apps and backups in one control panel"
         ],
         "youKeep": [
-          "WordPress hosting: small business sites built on WordPress",
-          "A VPS: root access, for when you want to run your own server"
+          "WordPress hosting: small business sites built on WordPress"
         ],
         "note": "Running only WordPress? Compare WordPress hosting. Not sure which fits? Contact the team before you buy."
       }

@@ -40,7 +40,7 @@ export const HOSTING_LINKS: readonly NavLink[] = [
   {
     label: "VPS hosting",
     href: "/managed-vps-hosting",
-    description: "Root access and dedicated resources for applications and teams.",
+    description: "Managed virtual private servers for applications and teams.",
     icon: "server",
   },
   {

@@ -143,7 +143,7 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
   OfferHero: {
     schema: S.OfferHero,
     render: ({ variant, content: c }, ctx) => {
-      const offer = lowestPlanPrice();
+      const offer = c.showPrice === false ? null : lowestPlanPrice();
       const risk = c.riskReducer && resolveClaimRef(c.riskReducer.requiresClaim, ctx) ? { text: c.riskReducer.text, href: c.riskReducer.href } : undefined;
       return (
         <OfferBanner
@@ -172,6 +172,11 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
       const logos = TECH_LOGOS.filter((l) => l.set === c.set && claimConfirmed(l.claim));
       return <LogoStrip eyebrow={c.eyebrow} title={c.h2} logos={logos} variant={variant} />;
     },
+  },
+  Slot: {
+    schema: S.Slot,
+    // A reserved place for a section still to be built; nothing shows until it is.
+    render: () => null,
   },
   NoteBand: {
     schema: S.NoteBand,
@@ -368,7 +373,11 @@ export const SECTION_REGISTRY: { [T in S.SectionType]: Entry<T> } = {
   BentoGrid: {
     schema: S.BentoGrid,
     render: ({ content: c }, ctx) => {
-      const items: BentoItem[] = c.tiles.flatMap((ref) => {
+      if (c.items) {
+        const written: BentoItem[] = c.items.map((i) => ({ icon: i.icon, title: i.title, description: i.text, visual: i.visual ? BENTO_VISUALS[i.visual] : undefined }));
+        return <BentoGrid eyebrow={c.eyebrow} title={c.h2} description={c.description} items={written} />;
+      }
+      const items: BentoItem[] = (c.tiles ?? []).flatMap((ref) => {
         const feature = featureById(ref.replace(/^feature:/, ""));
         if (!feature || !(ctx.claimRenders(feature.claim) && (feature.inPlan === null || ctx.plansWithFeature(feature.id).length > 0))) return [];
         const { visual, ...tile } = feature.tile;

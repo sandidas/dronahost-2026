@@ -1,0 +1,418 @@
+{
+  "id": "managed-vps-hosting",
+  "path": "/managed-vps-hosting",
+  "blueprint": "C2",
+  "archetype": "product",
+  "intent": "transactional",
+  "searchIntent": "Buy",
+  "secondaryIntent": "Learn",
+  "audience": "Businesses whose sites or applications outgrow shared or managed WordPress hosting",
+  "primaryKeyword": "fully managed vps hosting",
+  "secondaryKeywords": [],
+  "layoutSignature": [
+    "ProductHero:panel",
+    "AdvantageGrid",
+    "MigrationPromo",
+    "Slot",
+    "Meaning"
+  ],
+  "seo": {
+    "title": "Fully Managed VPS Hosting with Free Migration",
+    "description": "Fully managed VPS hosting for sites that outgrow shared hosting. We manage the server, you use Plesk, cPanel or CloudPanel. Free migration of up to 10 sites.",
+    "schema": [
+      "BreadcrumbList",
+      "Service",
+      "FAQPage"
+    ],
+    "ogImage": "/og/managed-vps-hosting.jpg"
+  },
+  "rules": {
+    "primaryCta": {
+      "label": "Plan my migration",
+      "href": "/managed-vps-hosting#migration"
+    },
+    "requiredSections": [
+      "hero",
+      "features",
+      "faq",
+      "limits",
+      "provenance"
+    ],
+    "mustLinkTo": [
+      "/sla",
+      "/support-policy",
+      "/migration-terms"
+    ],
+    "forbiddenClaims": [
+      "unlimited",
+      "Redis",
+      "LiteSpeed",
+      "WooCommerce optimization",
+      "auto-scaling",
+      "Hetzner"
+    ],
+    "reviewedOn": "2026-10-26"
+  },
+  "waivers": {
+    "rules": [
+      "BP3",
+      "BP4"
+    ],
+    "reason": "Owner layout for /managed-vps-hosting (2026-10-26), the same as the first /cloud-web-hosting layout: control-panel hero with migration and contact buttons, advantages, migration, a slot for the quote form (no plans or prices), who it is for, on every plan, what we offer, why DronaHost, two columns, FAQ, honest limits, provenance.",
+    "approvedBy": "Owner (2026-10-26)"
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "type": "ProductHero",
+      "variant": "panel",
+      "content": {
+        "eyebrow": "Fully managed VPS hosting",
+        "h1": "Fully managed VPS hosting for growing sites",
+        "accent": "for growing sites",
+        "lead": "A virtual private server for sites and applications that outgrow shared or WordPress hosting. Our team manages the server, and you manage your sites in a control panel.",
+        "ctaPrimary": {
+          "label": "Plan my migration",
+          "href": "/managed-vps-hosting#migration"
+        },
+        "ctaSecondary": {
+          "label": "Talk to the team",
+          "href": "/contact"
+        },
+        "highlights": [
+          "claim:free-migration",
+          "claim:uptime-sla",
+          "claim:support-24-7"
+        ],
+        "panel": {
+          "domain": "yourbusiness.com",
+          "caption": "Illustration of the Plesk control panel on a managed VPS"
+        },
+        "visual": {
+          "alt": "Illustration of the Plesk control panel used to manage sites on a fully managed VPS"
+        }
+      }
+    },
+    {
+      "id": "advantages",
+      "type": "AdvantageGrid",
+      "content": {
+        "eyebrow": "Why it holds up",
+        "h2": "Three commitments behind every managed VPS",
+        "accent": "every managed VPS",
+        "description": "Each one is written into a published policy, so you can read the terms before you decide.",
+        "items": [
+          {
+            "value": "99.99%",
+            "title": "Built to stay online",
+            "text": "A monthly uptime commitment, with a service credit if we ever miss it.",
+            "link": {
+              "label": "Read the SLA",
+              "href": "/sla"
+            },
+            "requiresClaim": "claim:uptime-sla"
+          },
+          {
+            "value": "24/7",
+            "title": "Help at any hour",
+            "text": "Live chat, ticket and email, any hour of any day.",
+            "link": {
+              "label": "Read the support policy",
+              "href": "/support-policy"
+            },
+            "requiresClaim": "claim:support-24-7"
+          },
+          {
+            "value": "Free",
+            "title": "Website moves",
+            "text": "We move up to 10 websites to your VPS for you.",
+            "link": {
+              "label": "Read the migration terms",
+              "href": "/migration-terms"
+            },
+            "requiresClaim": "claim:free-migration"
+          }
+        ]
+      }
+    },
+    {
+      "id": "migration",
+      "type": "MigrationPromo",
+      "requires": "claim:free-migration",
+      "content": {
+        "eyebrow": "Free migration",
+        "h2": "We move your websites to your VPS",
+        "description": "Share access to your current host, we copy your sites, and we switch only after you approve.",
+        "points": [
+          "The move of up to 10 websites is included",
+          "Your current sites stay online during the move",
+          "Nothing switches until you give permission"
+        ],
+        "cta": {
+          "label": "Plan my migration",
+          "action": "client-area"
+        },
+        "note": "Opens the DronaHost client area.",
+        "graphic": {
+          "from": "Your current host",
+          "middle": "We copy your sites",
+          "to": "Your managed VPS",
+          "caption": "Moving websites to a DronaHost fully managed VPS, step by step"
+        }
+      }
+    },
+    {
+      "id": "plans",
+      "type": "Slot",
+      "content": {
+        "purpose": "Custom quote form for managed VPS, to be built later (owner, 2026-10-26). No plans or prices on this page."
+      }
+    },
+    {
+      "id": "fit",
+      "type": "Meaning",
+      "content": {
+        "eyebrow": "Who it is for",
+        "h2": "Who fully managed VPS hosting is for",
+        "answer": "Fully managed VPS hosting suits a site or application that has outgrown shared or WordPress hosting. You get a virtual private server, and our team manages it for you. You manage your sites in a control panel, and support is there at any hour.",
+        "lookAfterLabel": "A good fit",
+        "keepLabel": "Look elsewhere if",
+        "weLookAfter": [
+          "Your site or application has outgrown shared or WordPress hosting",
+          "You want a server without managing it yourself",
+          "You want to work in a control panel: Plesk, cPanel or CloudPanel"
+        ],
+        "youKeep": [
+          "You need root access to the server"
+        ],
+        "note": "Not sure a VPS is right for you? Ask the team by live chat, ticket or email."
+      }
+    },
+    {
+      "id": "features",
+      "type": "BentoGrid",
+      "hideIfEmpty": true,
+      "content": {
+        "eyebrow": "On every VPS",
+        "h2": "What every managed VPS includes",
+        "description": "Every managed VPS we set up comes with all of this.",
+        "items": [
+          {
+            "icon": "server",
+            "title": "A fully managed server",
+            "text": "Our team manages your Ubuntu server for you. Root access is not included.",
+            "visual": "uptime"
+          },
+          {
+            "icon": "layers",
+            "title": "A control panel",
+            "text": "Manage your sites in Plesk, cPanel or CloudPanel. Plesk includes the WordPress Toolkit.",
+            "visual": "panel"
+          },
+          {
+            "icon": "shield-check",
+            "title": "Firewall and DDoS protection",
+            "text": "An integrated firewall, DDoS protection and regular security updates.",
+            "visual": "shield"
+          },
+          {
+            "icon": "activity",
+            "title": "Monitoring and backups",
+            "text": "We monitor your server 24/7 and take backups.",
+            "visual": "backups"
+          },
+          {
+            "icon": "lock",
+            "title": "Free SSL",
+            "text": "Free SSL certificates for your sites."
+          },
+          {
+            "icon": "users",
+            "title": "A dedicated expert",
+            "text": "A dedicated expert looks after your server."
+          },
+          {
+            "icon": "trending-up",
+            "title": "Room to grow",
+            "text": "We can increase your server's resources as your site grows.",
+            "visual": "growth"
+          },
+          {
+            "icon": "globe",
+            "title": "Free domain",
+            "text": "With annual billing, get a free domain: .com, .net or .info."
+          }
+        ]
+      }
+    },
+    {
+      "id": "offer",
+      "type": "SolutionsGrid",
+      "content": {
+        "eyebrow": "What we offer",
+        "h2": "More than VPS hosting, from one provider",
+        "description": "Design, search and email services that work with your server.",
+        "featured": [
+          {
+            "tag": "Web design",
+            "title": "Website Design",
+            "text": "A WordPress website designed around how your customers buy.",
+            "href": "/wordpress-website-design",
+            "cta": "Explore website design"
+          }
+        ],
+        "items": [
+          {
+            "icon": "mail",
+            "title": "Business Email",
+            "text": "Google Workspace email on your own domain.",
+            "href": "/contact"
+          },
+          {
+            "icon": "trending-up",
+            "title": "SEO Services",
+            "text": "Technical and content work that helps customers find your site.",
+            "href": "/seo-services"
+          },
+          {
+            "icon": "code",
+            "title": "Custom Development",
+            "text": "React and Next.js builds for products that outgrow templates.",
+            "href": "/consultation"
+          }
+        ],
+        "note": "Google Workspace is a trademark of Google LLC."
+      }
+    },
+    {
+      "id": "why",
+      "type": "WhyChoose",
+      "content": {
+        "eyebrow": "Why DronaHost",
+        "h2": "Why businesses choose DronaHost managed VPS",
+        "description": "Three promises, each backed by a published policy you can read before you decide.",
+        "items": [
+          {
+            "icon": "activity",
+            "title": "Uptime in writing",
+            "text": "A 99.99% uptime SLA, with service credits if we miss it.",
+            "source": {
+              "label": "Read the SLA",
+              "href": "/sla"
+            },
+            "requiresClaim": "claim:uptime-sla"
+          },
+          {
+            "icon": "life-buoy",
+            "title": "Help at any hour",
+            "text": "Support runs 24/7 by live chat, ticket and email.",
+            "source": {
+              "label": "Read the support policy",
+              "href": "/support-policy"
+            },
+            "requiresClaim": "claim:support-24-7"
+          },
+          {
+            "icon": "refresh-cw",
+            "title": "Free website moves",
+            "text": "We move up to 10 websites to your VPS, and we switch only after you approve.",
+            "source": {
+              "label": "Read the migration terms",
+              "href": "/migration-terms"
+            },
+            "requiresClaim": "claim:free-migration"
+          }
+        ]
+      }
+    },
+    {
+      "id": "split",
+      "type": "TwoColumn",
+      "content": {
+        "eyebrow": "You and DronaHost",
+        "h2": "What we run, and what you control",
+        "description": "Our team manages the server. You run your sites and applications in the control panel.",
+        "points": [
+          "Server management, by our team",
+          "Security updates, firewall and DDoS protection",
+          "24/7 monitoring and backups",
+          "Your sites, content and data stay yours"
+        ],
+        "visual": "panel"
+      }
+    },
+    {
+      "id": "faq",
+      "type": "FAQSection",
+      "content": {
+        "h2": "Questions about fully managed VPS hosting",
+        "items": [
+          {
+            "q": "What is fully managed VPS hosting?",
+            "a": "Fully managed VPS hosting gives your site or application a virtual private server, a reserved share of a physical server. Our team manages the server for you, with security updates, monitoring and backups. You manage your sites in a control panel. Root access is not included."
+          },
+          {
+            "q": "Do I get root access?",
+            "a": "No. Managed VPS at DronaHost does not include root access. Our team manages the server for you, and you manage your sites in the control panel: Plesk, cPanel or CloudPanel. For a change at server level, ask support by live chat, ticket or email at any hour."
+          },
+          {
+            "q": "How long does setup take?",
+            "a": "Your VPS is live within minutes of ordering. If you are moving from another host, our team then moves up to 10 websites for you for free. Your current sites stay online during the move, and nothing switches until you give permission."
+          },
+          {
+            "q": "Can my server grow with my site?",
+            "a": "Yes. We can increase your server's resources as your site grows. Ask support at any time by live chat, ticket or email, and the team takes it from there. Support is open at any hour of any day, so you never wait for office hours."
+          },
+          {
+            "q": "Is email included?",
+            "a": "No. Email is a separate service. Running email and websites on the same server can open a security gap for your sites, so we keep email on its own service. You can add our business email service whenever you need it, alongside your managed VPS."
+          },
+          {
+            "q": "Will my server stay up?",
+            "a": "Managed VPS is covered by our 99.99% uptime SLA, backed by service credits. If uptime falls below that in a month, you can claim a credit. The SLA explains how we measure uptime and how to claim. We also monitor your server 24/7.",
+            "requiresClaim": "claim:uptime-sla"
+          }
+        ],
+        "link": {
+          "label": "Read the migration terms",
+          "href": "/migration-terms"
+        }
+      }
+    },
+    {
+      "id": "limits",
+      "type": "HonestLimits",
+      "content": {
+        "h2": "Good to know before you choose",
+        "items": [
+          {
+            "text": "Root access is not included. Our team manages the server for you."
+          },
+          {
+            "text": "VPS plans are prepaid and are not refundable."
+          },
+          {
+            "text": "Email is a separate service, not part of your VPS.",
+            "reason": "Running email and websites on the same server can open a security gap for your sites."
+          }
+        ]
+      }
+    },
+    {
+      "id": "provenance",
+      "type": "PageProvenance",
+      "content": {
+        "reviewer": "DronaHost editorial team",
+        "role": "editorial review",
+        "reviewedOn": "2026-10-26",
+        "howLine": "Facts here come from the owner's answers and our published policies, checked on 26 October 2026. Drafted with AI assistance, then edited and checked by our editorial team.",
+        "report": {
+          "label": "Report an error on this page",
+          "href": "/contact"
+        },
+        "policyHref": "/editorial-policy",
+        "variant": "byline"
+      }
+    }
+  ]
+}

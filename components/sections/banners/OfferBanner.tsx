@@ -179,6 +179,9 @@ export default function OfferBanner({ eyebrow, title, titleAccent, description, 
           {intro}
           <Ticket row main={ticketMain} stub={ticketStub} stubWidth="19rem" className="mx-auto mt-14 max-w-4xl" />
         </>
+      ) : !price && !primaryCta && !riskReducer && !nextStep ? (
+        // Nothing to print on the ticket: the text stands alone.
+        intro
       ) : (
         <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,1fr)_25rem] lg:gap-20">
           {intro}

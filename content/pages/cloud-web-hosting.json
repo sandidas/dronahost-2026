@@ -276,8 +276,7 @@
           }
         ],
         "youKeep": [
-          "You want pay-as-you-go resources that scale by the minute",
-          "You want full server control: see Managed VPS hosting"
+          "You want pay-as-you-go resources that scale by the minute"
         ],
         "note": "Not sure which plan fits? Send the team your site address, and we will suggest one."
       }
@@ -459,7 +458,7 @@
           },
           {
             "q": "How is this different from your other hosting?",
-            "a": "Cloud hosting, WordPress hosting and Business hosting use the same four plans at the same prices. This page covers our cloud hosting services for small business, for owners who want room to grow. Choose by the size of your site, not the page name. For full server control, see Managed VPS hosting."
+            "a": "Cloud hosting, WordPress hosting and Business hosting use the same four plans at the same prices. This page covers our cloud hosting services for small business, for owners who want room to grow. Choose by the size of your site, not the page name."
           }
         ],
         "link": {

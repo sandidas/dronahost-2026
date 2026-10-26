@@ -322,7 +322,21 @@ export const ProcessTimeline = z.strictObject({
 export const BentoGrid = z.strictObject({
   ...sectionBase,
   type: z.literal("BentoGrid"),
-  content: z.strictObject({ eyebrow, h2: z.string().min(8).max(70), description, tiles: z.array(FeatureRef).min(1).max(6) }),
+  content: z
+    .strictObject({
+      eyebrow,
+      h2: z.string().min(8).max(70),
+      description,
+      /** Tiles from the feature registry, gated on the hosting plans. */
+      tiles: z.array(FeatureRef).min(1).max(6).optional(),
+      /** Tiles written for a page with no plans in data/pricing.json (for example managed VPS): owner-confirmed facts only. */
+      items: z
+        .array(z.strictObject({ icon: IconName.optional(), title: z.string().min(3).max(50), text: z.string().min(10).max(160), visual: z.enum(["cache", "growth", "restore", "channels", "shield", "backups", "panel", "uptime", "move"]).optional() }))
+        .min(2)
+        .max(8)
+        .optional(),
+    })
+    .refine((c) => Boolean(c.tiles) !== Boolean(c.items), { message: "set either tiles or items" }),
 });
 
 export const PricingPlans = z.strictObject({
@@ -620,7 +634,10 @@ export const OfferHero = z.strictObject({
     /** A phrase shown after the h1 in teal. */
     accent: z.string().min(4).max(40).optional(),
     lead: z.string().max(220).optional(),
-    ctaPrimary: Cta,
+    /** Optional: a page with no plans (managed VPS) has no buy button. With no price and no button the ticket is left out. */
+    ctaPrimary: Cta.optional(),
+    /** false: the ticket shows no price, for a page that sells no listed plan. Default true. */
+    showPrice: z.boolean().optional(),
     /** The risk reducer under the button, shown only while its claim renders. */
     riskReducer: z.strictObject({ text: z.string().min(10).max(80), href: Href, requiresClaim: ClaimRef }).optional(),
     /** One sentence on what happens after the click. */
@@ -644,6 +661,13 @@ export const LogoStrip = z.strictObject({
     eyebrow,
     h2: z.string().min(8).max(70).optional(),
   }),
+});
+
+/** Holds a place in the page for a section that is not built yet (for example a quote form). Renders nothing. */
+export const Slot = z.strictObject({
+  ...sectionBase,
+  type: z.literal("Slot"),
+  content: z.strictObject({ purpose: z.string().min(5).max(160) }),
 });
 
 /** One line in a thin full-width band, for example right under the banner (decision 80). */
@@ -674,7 +698,7 @@ export const TwoColumn = z.strictObject({
 });
 
 export const Section = z.discriminatedUnion("type", [
-  OfferHero, TwoColumn, LogoStrip, NoteBand, ProductHero, AssuranceStrip, ProofBar, PathRouter, AnswerBlock, ResponsibilitySplit, Meaning, WhyChoose, MigrationRequest, MigrationPromo, SupportTeam, Evidence, ProcessTimeline, BentoGrid, PricingPlans,
+  OfferHero, TwoColumn, LogoStrip, NoteBand, Slot, ProductHero, AssuranceStrip, ProofBar, PathRouter, AnswerBlock, ResponsibilitySplit, Meaning, WhyChoose, MigrationRequest, MigrationPromo, SupportTeam, Evidence, ProcessTimeline, BentoGrid, PricingPlans,
   SupportChannels, HelpAndPolicies, Testimonials, TrustSignals, FAQSection, HonestLimits, PageProvenance, CTABand,
   RatingBand, ProductCards, FeatureSpotlight, AdvantageGrid, SolutionsGrid, Ecosystem, ReviewsShowcase, RenewalCost, PlanGuide, VideoEmbed,
 ]);

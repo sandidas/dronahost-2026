@@ -1,0 +1,241 @@
+{
+  "$comment": "Fact ledger for /managed-vps-hosting. Owner-confirmed list from chat on 2026-10-26 plus the decisions it cites. Imunify360 on VPS: 'it depends', so not used. The draft may use only these verified facts and claims that render.",
+  "slug": "/managed-vps-hosting",
+  "updated": "2026-10-26",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "Fully managed: DronaHost manages the server; root access is not included (decision 85)",
+      "kind": "business",
+      "source": {
+        "type": "owner",
+        "ref": "owner in chat, 2026-10-26 (confirmed list for /managed-vps-hosting)"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F2",
+      "fact": "Control panels: Plesk (with the WordPress Toolkit), cPanel and CloudPanel; which one a server gets is not stated [HUMAN REVIEW]",
+      "kind": "business",
+      "source": {
+        "type": "owner",
+        "ref": "owner in chat, 2026-10-26 (confirmed list for /managed-vps-hosting)"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F3",
+      "fact": "The server runs Ubuntu",
+      "kind": "business",
+      "source": {
+        "type": "owner",
+        "ref": "owner in chat, 2026-10-26 (confirmed list for /managed-vps-hosting)"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F4",
+      "fact": "Security: an integrated firewall, DDoS protection and regular security updates",
+      "kind": "business",
+      "source": {
+        "type": "owner",
+        "ref": "owner in chat, 2026-10-26 (confirmed list for /managed-vps-hosting)"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F5",
+      "fact": "Free SSL certificates",
+      "kind": "business",
+      "source": {
+        "type": "owner",
+        "ref": "owner in chat, 2026-10-26 (confirmed list for /managed-vps-hosting)"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F6",
+      "fact": "24/7 monitoring and backups; backup frequency and copies kept are not stated [HUMAN REVIEW]",
+      "kind": "business",
+      "source": {
+        "type": "owner",
+        "ref": "owner in chat, 2026-10-26 (confirmed list for /managed-vps-hosting)"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F7",
+      "fact": "A dedicated expert for the server",
+      "kind": "business",
+      "source": {
+        "type": "owner",
+        "ref": "owner in chat, 2026-10-26 (confirmed list for /managed-vps-hosting)"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F8",
+      "fact": "Resources can be increased as the site grows",
+      "kind": "business",
+      "source": {
+        "type": "owner",
+        "ref": "owner in chat, 2026-10-26 (confirmed list for /managed-vps-hosting)"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F9",
+      "fact": "The server is live within minutes of ordering",
+      "kind": "business",
+      "source": {
+        "type": "owner",
+        "ref": "owner in chat, 2026-10-26 (confirmed list for /managed-vps-hosting)"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F10",
+      "fact": "Who it is for: sites and applications that outgrow shared or WordPress hosting",
+      "kind": "business",
+      "source": {
+        "type": "owner",
+        "ref": "owner in chat, 2026-10-26 (confirmed list for /managed-vps-hosting)"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F11",
+      "fact": "Free migration of up to 10 websites to a VPS",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "DECISIONS.md 51; /migration-terms (published)"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F12",
+      "fact": "Support 24/7 by live chat (website and client area), ticket and email",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "DECISIONS.md 84; claim support-24-7"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F13",
+      "fact": "Email is a separate service: running email and websites on the same server can open a security gap",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "DECISIONS.md 83"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F14",
+      "fact": "VPS plans are prepaid and are not refundable",
+      "kind": "business",
+      "source": {
+        "type": "project-file",
+        "ref": "DECISIONS.md 44"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F15",
+      "fact": "99.99% uptime SLA with service credits applies to managed VPS (owner: \"yes 99.99\")",
+      "kind": "number",
+      "source": {
+        "type": "project-file",
+        "ref": "content/claims.ts uptime-sla (99.99%); owner 2026-10-26: applies to managed VPS"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F16",
+      "fact": "A free domain with annual billing: .com, .net or .info (owner, 2026-10-26)",
+      "kind": "business",
+      "source": {
+        "type": "owner",
+        "ref": "owner in chat, 2026-10-26 (confirmed list for /managed-vps-hosting)"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F17",
+      "fact": "No plans or prices are shown on this page; a custom form comes later; no buy button in the hero",
+      "kind": "business",
+      "source": {
+        "type": "owner",
+        "ref": "owner in chat, 2026-10-26 (confirmed list for /managed-vps-hosting)"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    },
+    {
+      "id": "F18",
+      "fact": "Facts checked on 26 October 2026",
+      "kind": "date",
+      "source": {
+        "type": "project-file",
+        "ref": "this ledger"
+      },
+      "retrievedOn": "2026-10-26",
+      "checkedBy": "owner 2026-10-26",
+      "status": "verified",
+      "usedIn": []
+    }
+  ]
+}

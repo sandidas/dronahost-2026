@@ -165,7 +165,7 @@ Use on money, service, regional and landing pages, once per page. Each needs its
 | Do | Fallback while the claim is hidden | Do not |
 |---|---|---|
 | "Managed WordPress hosting, because we run the server for you" | "Managed WordPress hosting for small business sites" | "The best hosting because we are number one" |
-| "Choose a VPS because you need root access and full control" | "VPS hosting with root access" | "Fast hosting because we use the latest technology" |
+| "Choose managed VPS because [HUMAN REVIEW: the owner's reason; no root access, decision 85]" | "Managed VPS hosting" | "Fast hosting because we use the latest technology" |
 | "Move your site to us because your old host charges more at renewal" (needs a sourced competitor fact) | "Moving your WordPress site to DronaHost" | "Trusted by thousands because we are reliable" |
 | "A smaller plan is enough because one site needs one plan" | "Plans for one site or many" | "Because we care about you" |
 
